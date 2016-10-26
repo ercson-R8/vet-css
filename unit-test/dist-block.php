@@ -84,7 +84,7 @@ for ($i = 0; $i < 50; $i++){
     $totalPeriodsPerWeek = rand(2, 20);
     $numberDaysPerWeek = rand(1, 5);
     $numberPeriodsPerDay = rand(1, 4);;
-    $_subjectId = "Subject Code" . rand(1001, 2000);
+    $_subjectId = "No. ".$i. " Subject Code" . rand(1001, 2000);
     distributeBlockPeriods($_subjectId, $totalPeriodsPerWeek, $numberDaysPerWeek, $numberPeriodsPerDay);
 
 }
