@@ -18,12 +18,12 @@ class Rooms{
     private $roomLocation = null;
 
     /**
-        * Constructor method 
-        *
-        * @param   $teacherID an interger ID number
-        *          $teacherName string name of the teacher
-        * @return  none;
-        */
+     * Constructor method 
+     *
+     * @param   $teacherID an interger ID number
+     *          $teacherName string name of the teacher
+     * @return  none;
+     */
     public function __construct ($roomID = null, $roomName = null, $roomType = null, $roomLocation = null ){
         $this->roomID = $roomID;
         $this->roomName = $roomName;
@@ -126,6 +126,4 @@ class Rooms{
                 $this->roomLocation
                 ];
     }
-
-
 }

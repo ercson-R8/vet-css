@@ -2,7 +2,8 @@
 
 require "Teachers.php";
 require "Rooms.php";
-
+require "Subjects.php";
+require "TraineeGroups.php";
 
 $teacher1 = new Teachers (5, "Ada");
 echo "First...";
@@ -17,10 +18,26 @@ echo "<pre> ";
 echo print_r($teacher2->GetTeacherInformation());
 
 
-
-
-
 $room1 = new Rooms(1, "Room 1", "ComLab", "Building 1");
 echo "<pre>";
 echo print_r($room1->GetRoomInformation());
-// echo "<br/> ".print_r($room1->GetRoomType());
+echo "<br/> ";
+
+
+$subject = [];
+for ( $i=0; $i < 2; $i++){
+    $subject[$i] = new Subjects ($i, $i+100, 
+                                    "Subject ".$i, 20,
+                                    "Subject Description" );
+}
+
+echo print_r($subject);
+
+
+$traineeGroup = [];
+for ( $i = 0; $i < 3; $i++){
+    $traineeGroup[$i] = new TraineeGroups ($i, "Group No. ". $i+1, "Batch 2016-2017", 2);
+
+}
+
+echo print_r($traineeGroup);
