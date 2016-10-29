@@ -78,7 +78,7 @@ function distributeBlockPeriods($_subjectId = "", $_totalPeriodsPerWeek = 20, $_
 }
 
 $_subjectId = "My Subject Code" . rand(1001, 2000);
-distributeBlockPeriods($_subjectId, 9, 5, 3);
+distributeBlockPeriods($_subjectId, 15, 4, 4);
 
 for ($i = 0; $i < 50; $i++){
     $totalPeriodsPerWeek = rand(2, 20);

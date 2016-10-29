@@ -5,6 +5,9 @@ require "Rooms.php";
 require "Subjects.php";
 require "TraineeGroups.php";
 require "Timetables.php";
+require "Schedules.php";
+require "SubjectClasses.php";
+
 $teacher1 = new Teachers (5, "Ada");
 echo "First...";
 echo $teacher1->GetTeacherID(). " ";
@@ -24,10 +27,23 @@ echo print_r($room1->GetRoomInformation());
 echo "<br/> ";
 
 
+$teacher = [];
+for ($i = 0 ; $i < 3; $i++){
+    $teacher[$i] = new Teachers($i+5000, "Teacher No.".$i);
+}
+
+$room = [];
+for ($i = 0 ; $i < 3; $i++){
+    $room[$i] = new Rooms($i+100, "Room No.".$i, "ComLAB", "Building ".$i);
+}
+
+
 $subject = [];
-for ( $i=0; $i < 2; $i++){
-    $subject[$i] = new Subjects ($i, $i+100, 
-                                    "Subject ".$i, 20,
+for ( $i=0; $i < 3; $i++){
+    $subject[$i] = new Subjects (   $i,             //subjectID
+                                    $i+100,         //subjectCode
+                                    "Subject ".$i,  //SubjectName
+                                    6+$i,             //subjectRequiredPeriod
                                     "Subject Description" );
 }
 
@@ -36,7 +52,10 @@ echo print_r($subject);
 
 $traineeGroup = [];
 for ( $i = 0; $i < 3; $i++){
-    $traineeGroup[$i] = new TraineeGroups ($i, "Group No. ". $i+1, "Batch 2016-2017", 2);
+    $ys = $i + 2016;;
+    $ye = $i + 2017;
+    $batch = "Batch ". $ys. " - ". $ye;
+    $traineeGroup[$i] = new TraineeGroups ($i, "Group No. ". $i+1, $batch, 2);
 
 }
 
@@ -49,3 +68,34 @@ for ($i = 0 ; $i < 3; $i++){
 }
 
 echo print_r($timetable);
+
+
+
+$subjectClass = [];
+for ($i = 0; $i < 3; $i++){
+    $subjectClass[$i] = new SubjectClasses(
+                            $i,                         //subjectClassesID 
+                            $subject[$i],               //subjectClassesSubjectID
+                            $traineeGroup[$i],          //subjectClassesTraineeGroupID
+                            $teacher[$i],                //subjectClassesTeacherID
+                            $room[$i],         //subjectClassesRoomID 
+                            1,              //subjectClassesPreferredStartPeriod
+                            8,              //subjectClassesPreferredEndPeriod
+                            $i+4,              //subjectClassesPreferredNumberDays
+                            2,              //subjectClassesPreferredNumberPeriodsDay 
+                            null);
+
+}
+echo "<br/><br/><br/> ";
+echo print_r($subjectClass);
+
+$schedule = [];
+for ($i = 0; $i < 3; $i++){
+    $schedule[$i] = new Schedules(  $i + 100, 
+                                    $subjectClass[$i], 
+                                    $i);
+}
+echo "<br/><br/><br/> =====<br/> ";
+echo print_r($schedule);
+$s = $schedule[1]->GetSchedulesInformation();
+// echo print_r($s);

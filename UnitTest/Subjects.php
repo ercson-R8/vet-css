@@ -136,11 +136,11 @@ class Subjects{
      * GetSubjectRequiredPeriod method 
      *
      * @param 	 none
-     * @return	 $RequiredPeriod int: require number of periods per week
+     * @return	 $subjectRequiredPeriod int: require number of periods per week
      */
     public function GetSubjectRequiredPeriod (){
         
-        return $this->RequiredPeriod;
+        return $this->subjectRequiredPeriod;
     }
 
     /**
