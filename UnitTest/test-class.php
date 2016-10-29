@@ -4,7 +4,7 @@ require "Teachers.php";
 require "Rooms.php";
 require "Subjects.php";
 require "TraineeGroups.php";
-
+require "Timetables.php";
 $teacher1 = new Teachers (5, "Ada");
 echo "First...";
 echo $teacher1->GetTeacherID(). " ";
@@ -41,3 +41,11 @@ for ( $i = 0; $i < 3; $i++){
 }
 
 echo print_r($traineeGroup);
+
+
+$timetable = [];
+for ($i = 0 ; $i < 3; $i++){
+    $timetable[$i] = new Timetables($i, 2016, 1, "Sample timetable population");
+}
+
+echo print_r($timetable);

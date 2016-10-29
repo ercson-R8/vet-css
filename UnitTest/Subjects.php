@@ -4,7 +4,7 @@
 /**
  * Subjects Model
  * 
- * This class define attributes and methods required
+ * This class defines attributes and methods required
  * to implement a chromosome (timetable). 
  * 
  * This class will be used by the SubjectClasses object. 
@@ -138,7 +138,7 @@ class Subjects{
      * @param 	 none
      * @return	 $RequiredPeriod int: require number of periods per week
      */
-    public function RequiredPeriod (){
+    public function GetSubjectRequiredPeriod (){
         
         return $this->RequiredPeriod;
     }

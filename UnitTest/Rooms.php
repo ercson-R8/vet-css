@@ -4,7 +4,7 @@
 /**
  * Rooms Model
  * 
- * This class define attributes and methods required
+ * This class defines attributes and methods required
  * to implement a chromosome (timetable). 
  * 
  * This class will be used by the SubjectClasses object. 
