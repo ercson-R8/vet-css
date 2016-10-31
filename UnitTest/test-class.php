@@ -7,6 +7,7 @@ require "TraineeGroups.php";
 require "Timetables.php";
 require "Schedules.php";
 require "SubjectClasses.php";
+require "Preferences.php";
 
 $teacher1 = new Teachers (5, "Ada");
 echo "First...";
@@ -71,6 +72,25 @@ echo print_r($timetable);
 
 
 
+
+
+
+
+
+$pref = [];
+for ($i = 0 ; $i < 3; $i++){
+    $pref[$i] = new Preferences ($i, // $preferencesID = null,
+                                  1, //  $preferencesPreferredStartPeriod = null, 
+                                  5, //  $preferencesPreferredEndPeriod = null, 
+                                  3, //  $preferencesPreferredNumberDays = null,
+                                  3  //  $preferencesPreferredNumberPeriodsDay = null
+                                  );
+    // print_r($pref[$i]->GetPreferencesInformation());
+    
+}
+echo print_r($pref);
+
+
 $subjectClass = [];
 for ($i = 0; $i < 3; $i++){
     $subjectClass[$i] = new SubjectClasses(
@@ -79,7 +99,7 @@ for ($i = 0; $i < 3; $i++){
                             $traineeGroup[$i],          //subjectClassesTraineeGroupID
                             $teacher[$i],                //subjectClassesTeacherID
                             $room[$i],         //subjectClassesRoomID 
-                            1,              //subjectClassesPreferredStartPeriod
+                            $pref[$i],              //subjectClassesPreferredStartPeriod
                             8,              //subjectClassesPreferredEndPeriod
                             $i+4,              //subjectClassesPreferredNumberDays
                             2,              //subjectClassesPreferredNumberPeriodsDay 
@@ -88,7 +108,12 @@ for ($i = 0; $i < 3; $i++){
 }
 echo "<br/><br/><br/> ";
 echo print_r($subjectClass);
-
+echo "<br/><br/><br/> ";
+if ( $subjectClass[0]->GetIsPossibleToDistribute() ){
+    echo "Possible..";
+}else{
+    echo "NOT Possible..";
+}
 $schedule = [];
 for ($i = 0; $i < 3; $i++){
     $schedule[$i] = new Schedules(  $i + 100, 

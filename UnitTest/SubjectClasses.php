@@ -18,11 +18,8 @@ class SubjectClasses{
     private $subjectClassesTraineeGroupID;
     private $subjectClassesTeacherID;
     private $subjectClassesRoomID; 
+    private $subjectClassesPreferenceID;
 
-    private $subjectClassesPreferredStartPeriod; 
-    private $subjectClassesPreferredEndPeriod; 
-    private $subjectClassesPreferredNumberDays; 
-    private $subjectClassesPreferredNumberPeriodsDay;
     private $subjectClassesDistributionBlock;
 
     private $isPossibleToDistribute = false;
@@ -37,17 +34,14 @@ class SubjectClasses{
      *          $subjectClassesTraineeGroupID           subjectClassesTraineeGroupID object: the group who will attend this subject_class
      *          $subjectClassesTeacherID                subjectClassesTeacherID object: the teacher who will be teaching this subject_class
      *          $subjectClassesRoomID                   subjectClassesRoomID object: where this subject_class will be held
-     *          $subjectClassesPreferredStartPeriod     int: for special group with irregular schedule
-     *          $subjectClassesPreferredEndPeriod       int: for special group with irregular schedule
+     *          $subjectClassesPreferenceID             subjectClassesPreferenceID object: the object that constains the preferences
      *          $subjectClassesPreferredNumberDays      int: teacher's preferrence;
-     *          $subjectClassesDistributionBlock        array: how periods be distributed in "n" days;
+
      * @return  none;
      */
 
     public function __construct ($subjectClassesID = null, $subjectClassesSubjectID = null ,$subjectClassesTraineeGroupID = null, 
-                                $subjectClassesTeacherID = null, $subjectClassesRoomID = null, $subjectClassesPreferredStartPeriod = null, 
-                                $subjectClassesPreferredEndPeriod = null, $subjectClassesPreferredNumberDays = null,
-                                $subjectClassesPreferredNumberPeriodsDay = null, $subjectClassesDistributionBlock = null){
+                                $subjectClassesTeacherID = null, $subjectClassesRoomID = null, $subjectClassesPreferenceID = null){
 
         $this->subjectClassesID = $subjectClassesID;
         $this->subjectClassesSubjectID = $subjectClassesSubjectID;
@@ -55,16 +49,17 @@ class SubjectClasses{
         $this->subjectClassesTeacherID = $subjectClassesTeacherID;
 
         $this->subjectClassesRoomID = $subjectClassesRoomID;
-        $this->subjectClassesPreferredStartPeriod = $subjectClassesPreferredStartPeriod;
-        $this->subjectClassesPreferredEndPeriod = $subjectClassesPreferredEndPeriod;
-
-        $this->subjectClassesPreferredNumberDays = $subjectClassesPreferredNumberDays;
-        $this->subjectClassesPreferredNumberPeriodsDay = $subjectClassesPreferredNumberPeriodsDay;;
-        $this->subjectClassesDistributionBlock = $subjectClassesDistributionBlock;
+        $this->subjectClassesPreferenceID = $subjectClassesPreferenceID;
+        
+;
+        // $this->subjectClassesDistributionBlock = $subjectClassesDistributionBlock;
         $this->isPossibleToDistribute = $this->DistributeBlockPeriods();
 
 
     }
+
+
+
 
     /**
      * SetSubjectClassesID method 
@@ -182,50 +177,16 @@ class SubjectClasses{
 
 
     /**
-     * GetSubjectClassesPreferredStartPeriod method 
+     * GetSubjectClassesPreferenceID method 
      *
      * @param 	
-     * @return	 $subjectClassesPreferredStartPeriod
+     * @return	 $subjectClassesRoomID
      */
-    public function GetSubjectClassesPreferredStartPeriod (){
+    public function GetSubjectClassesPreferenceID (){
         
-        return $this->subjectClassesPreferredStartPeriod;
+        return $this->subjectClassesPreferenceID ;
     }
 
-
-    /**
-     * GetSubjectClassesPreferredEndPeriod method 
-     *
-     * @param 	
-     * @return	 $subjectClassesPreferredEndPeriod
-     */
-    public function GetSubjectClassesPreferredEndPeriod (){
-        
-        return $this->subjectClassesPreferredEndPeriod;
-    }
-
-    /**
-     * GetSubjectClassesPreferredNumberDays method 
-     *
-     * @param 	
-     * @return	 $subjectClassesPreferredNumberDays
-     */
-    public function GetSubjectClassesPreferredNumberDays (){
-        
-        return $this->subjectClassesPreferredNumberDays;
-    }
-
-
-    /**
-     * GetSubjectClassesPreferredNumberPeriodsDay method 
-     *
-     * @param 	
-     * @return	 $subjectClassesPreferredNumberPeriodsDay
-     */
-    public function GetSubjectClassesPreferredNumberPeriodsDay (){
-        
-        return $this->subjectClassesPreferredNumberPeriodsDay ;
-    }
 
     /**
      * GetIsPossibleToDistribute method 
@@ -245,10 +206,15 @@ class SubjectClasses{
         * $numberPeriodsPerDay <= $totalPeriodsPerWeek
         * ($numberDaysPerWeek * $numberPeriodsPerDay) >= $totalPeriodsPerWeek
         */                   
+
+
         $_subjectId = $this->GetSubjectClassesSubjectID()->GetSubjectID();
         $_totalPeriodsPerWeek = $this->GetSubjectClassesSubjectID()->GetSubjectRequiredPeriod();
-        $_numberDaysPerWeek=$this->GetSubjectClassesPreferredNumberDays();
-        $_numberPeriodsPerDay = $this->GetSubjectClassesPreferredNumberPeriodsDay();
+
+
+        $_numberDaysPerWeek = $this->GetSubjectClassesPreferenceID()->GetPreferencesPreferredNumberDays();          
+        $_numberPeriodsPerDay = $this->GetSubjectClassesPreferenceID()->GetPreferencesPreferredNumberPeriodsDay();
+
         echo "===========<br/><br/>Testing possibilities for <b>$_subjectId</b><br/>";
         echo "Total number of periods: <b>$_totalPeriodsPerWeek</b><br/>";
         echo "Preferred number of days/week: <b>$_numberDaysPerWeek</b> <br/>";
