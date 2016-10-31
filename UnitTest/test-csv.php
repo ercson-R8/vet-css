@@ -91,7 +91,7 @@
 
 
     // *********************************************************************
-    {   // Fetch Rooms
+    {   // Preferences Rooms
         require "Preferences.php";
         $filePreferences = file('../csv/Preferences.csv');
         $line = 0; // exclude the header. set to 1 to include headers
