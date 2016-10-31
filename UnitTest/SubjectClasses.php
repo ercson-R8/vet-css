@@ -122,51 +122,6 @@ class SubjectClasses{
     }
 
 
-    /**
-     * SetSubjectClassesPreferredStartPeriod method 
-     *
-     * @param 	$subjectClassesPreferredStartPeriod
-     * @return	 
-     */
-    public function SetSubjectClassesPreferredStartPeriod ($subjectClassesPreferredStartPeriod){
-        
-        $this->subjectClassesPreferredStartPeriod = $subjectClassesPreferredStartPeriod ;
-    }
-
-
-    /**
-     * SetSubjectClassesPreferredEndPeriod method 
-     *
-     * @param 	$subjectClassesPreferredEndPeriod
-     * @return	 
-     */
-    public function SetSubjectClassesPreferredEndPeriod ($subjectClassesPreferredEndPeriod){
-        
-        $this->subjectClassesPreferredEndPeriod = $subjectClassesPreferredEndPeriod ;
-    }
-
-    /**
-     * SetSubjectClassesPreferredNumberDays method 
-     *
-     * @param 	$subjectClassesPreferredNumberDays
-     * @return	 
-     */
-    public function SetSubjectClassesPreferredNumberDays ($subjectClassesPreferredNumberDays){
-        
-        $this->subjectClassesPreferredNumberDays = $subjectClassesPreferredNumberDays ;
-    }
-
-    /**
-     * SetSubjectClassesPreferredNumberPeriodsDay method 
-     *
-     * @param 	$subjectClassesPreferredNumberPeriodsDay
-     * @return	 
-     */
-    public function SetSubjectClassesPreferredNumberPeriodsDay ($subjectClassesPreferredNumberPeriodsDay){
-        
-        $this->subjectClassesPreferredNumberPeriodsDay = $subjectClassesPreferredNumberPeriodsDay ;
-    }
-
     // Getter methods
 
 

@@ -1,0 +1,4 @@
+subjectClassesID,subjectClassesSubjectID,subjectClassesTraineeGroupID,subjectClassesTeacherID,subjectClassesRoomID,subjectClassesPreferredStartPeriod,subjectClassesPreferredEndPeriod,subjectClassesPreferredNumberDays,subjectClassesDistributionBlock
+1,0,0,0,,1,4,2,
+2,0,0,0,,1,4,2,
+3,0,0,0,,1,4,2,

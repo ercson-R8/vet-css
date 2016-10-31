@@ -15,6 +15,13 @@ $slot = [
 echo "<pre>";
 echo print_r( ($slot) );
 
+$s = "4,2,3";
+$str = explode(",",$s);
+
+print_r($str);
+
+
+
 
 class First{
 
@@ -69,3 +76,31 @@ echo print_r($sObj);
 echo "<br/><br/>";
 echo $sObj->GetForeignObject()->GetMessage();
 
+$cars=array
+    (
+    "Volvo"=>array
+    (
+    "XC60",
+    "XC90"
+    ),
+    "BMW"=>array
+    (
+    "X3",
+    "X5"
+    ),
+    "Toyota"=>array
+    (
+    "Highlander"
+    )
+    );
+
+$cars=array("Volvo","BMW","Toyota");
+echo "<br/>Normal count: " . sizeof($cars)."<br>";
+echo "Recursive count: " . sizeof($cars,1);
+print_r($cars);
+
+
+$zipcode = "1000";
+$zipcodeInt = (int)$zipcode + 2000;
+ 
+var_dump($zipcodeInt);
