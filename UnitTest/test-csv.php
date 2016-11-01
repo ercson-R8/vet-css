@@ -1,5 +1,6 @@
 <?php
     echo "<pre>";
+        define("DEBUG_INFO", false);
     // *********************************************************************
     {   // Fetch Subjects
         require "Subjects.php";
@@ -21,12 +22,12 @@
                                         $subjectRequiredPeriod[$i], //subjectRequiredPeriod
                                         $subjectDescription[$i] );
         }
-        echo print_r($subject);
+        if (DEBUG_INFO) echo print_r($subject);
     }
     // *********************************************************************
     {   // Fetch Trainee groups
         require "traineeGroups.php";
-        $fileTrainees = file('../csv/trainees.csv');
+        $fileTrainees = file('../csv/traineeGroups.csv');
         $line = 0; // exclude the header. set to 1 to include headers
         foreach ($fileTrainees as $trainee){
             // fetch all the data including the worksheet header;
@@ -38,16 +39,16 @@
             }
             $line += 1;
         }
-        $trainee = [];
+        $traineeGroup = [];
         for ( $i=0; $i < $line-1; $i++){
-            $trainee[$i] = new TraineeGroups (  $traineeGroupID[$i],             //subjectID
+            $traineeGroup[$i] = new TraineeGroups (  $traineeGroupID[$i],             //subjectID
                                                 $traineeGroupName[$i],           //subjectCode
                                                 $traineeGroupRemarks[$i],           //SubjectName
                                                 $traineeGroupLevel[$i] );
 
         }
 
-        echo print_r($trainee);
+        if (DEBUG_INFO) echo print_r($traineeGroup);
     }
     // *********************************************************************
     {   // Fetch Teachers
@@ -65,7 +66,7 @@
         for ( $i=0; $i < $line-1; $i++){
             $teacher[$i] = new Teachers (   $teacherID[$i], $teacherName[$i], $teacherDescription[$i] );
         }
-        echo print_r($teacher);
+        if (DEBUG_INFO) echo print_r($teacher);
     }
 
 
@@ -85,7 +86,7 @@
         for ( $i=0; $i < $line-1; $i++){
             $room[$i] = new Rooms ( $roomID[$i], $roomName[$i], $roomType[$i], $roomLocation[$i]  );
         }
-        echo print_r($room);
+        if (DEBUG_INFO) echo print_r($room);
     }
 
 
@@ -98,7 +99,8 @@
         foreach ($filePreferences as $preference){
             // fetch all the data including the worksheet header;
             if($line > 0 ){
-                list ($preference_ID[], $preferencesPreferredStartPeriod[],
+                list ($preferenceID[], $traineeGroupID[], $subjectID[], $teacherID[], 
+                        $preferenceRoomType[], $preferencesPreferredStartPeriod[],
                         $preferencesPreferredEndPeriod[], $preferencesPreferredNumberDays[],
                          $preferencesPreferredNumberPeriodsDay[] ) = explode(',' , $preference);
             }
@@ -106,11 +108,15 @@
         }
         $preference = [];
         for ( $i=0; $i < $line-1; $i++){
-            $preference[$i] = new Preferences ( $preference_ID[$i], $preferencesPreferredStartPeriod[$i], 
-                                                $preferencesPreferredEndPeriod[$i], $preferencesPreferredNumberDays[$i] ,
-                                                 $preferencesPreferredNumberPeriodsDay[$i]);
+            $preference[$i] = new Preferences ( $preferenceID[$i], $traineeGroupID[$i], $subjectID[$i], $teacherID[$i], 
+                                                $preferenceRoomType[$i], $preferencesPreferredStartPeriod[$i],
+                                                $preferencesPreferredEndPeriod[$i], $preferencesPreferredNumberDays[$i],
+                                                $preferencesPreferredNumberPeriodsDay[$i]);
         }
-        echo print_r($preference);
+        if (DEBUG_INFO) echo print_r($preference);
+
+
+
 }
 
 

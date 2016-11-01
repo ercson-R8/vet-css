@@ -13,14 +13,14 @@
 
 class SubjectClasses{
 
-    private $subjectClassesID;
-    private $subjectClassesSubjectID;
-    private $subjectClassesTraineeGroupID;
-    private $subjectClassesTeacherID;
-    private $subjectClassesRoomID; 
-    private $subjectClassesPreferenceID;
+    private $subjectClassID;
+    private $subjectClassSubjectID;
+    private $subjectClassTraineeGroupID;
+    private $subjectClassTeacherID;
+    private $subjectClassRoomID; 
+    private $subjectClassPreferenceID;
 
-    private $subjectClassesDistributionBlock;
+    private $subjectClassDistributionBlock;
 
     private $isPossibleToDistribute = false;
 
@@ -29,30 +29,26 @@ class SubjectClasses{
     /**
      * Constructor method 
      *
-     * @param   $subjectClassesID                       int: subject class id number
-     *          $subjectClassesSubjectID                subjectClassesSubjectID object: the subject of this subject_class
-     *          $subjectClassesTraineeGroupID           subjectClassesTraineeGroupID object: the group who will attend this subject_class
-     *          $subjectClassesTeacherID                subjectClassesTeacherID object: the teacher who will be teaching this subject_class
-     *          $subjectClassesRoomID                   subjectClassesRoomID object: where this subject_class will be held
-     *          $subjectClassesPreferenceID             subjectClassesPreferenceID object: the object that constains the preferences
-     *          $subjectClassesPreferredNumberDays      int: teacher's preferrence;
+     * @param   $subjectClassID                       int: subject class id number
+     *          $subjectClassSubjectID                subjectClassSubjectID object: the subject of this subject_class
+     *          $subjectClassTraineeGroupID           subjectClassTraineeGroupID object: the group who will attend this subject_class
+     *          $subjectClassTeacherID                subjectClassTeacherID object: the teacher who will be teaching this subject_class
+     *          $subjectClassRoomID                   subjectClassRoomID object: where this subject_class will be held
+     *          $subjectClassPreferenceID             subjectClassPreferenceID object: the object that constains the preferences
 
      * @return  none;
      */
 
-    public function __construct ($subjectClassesID = null, $subjectClassesSubjectID = null ,$subjectClassesTraineeGroupID = null, 
-                                $subjectClassesTeacherID = null, $subjectClassesRoomID = null, $subjectClassesPreferenceID = null){
+    public function __construct ($subjectClassID = null, $subjectClassSubjectID = null ,$subjectClassTraineeGroupID = null, 
+                                $subjectClassTeacherID = null, $subjectClassRoomID = null, $subjectClassPreferenceID = null){
 
-        $this->subjectClassesID = $subjectClassesID;
-        $this->subjectClassesSubjectID = $subjectClassesSubjectID;
-        $this->subjectClassesTraineeGroupID = $subjectClassesTraineeGroupID;
-        $this->subjectClassesTeacherID = $subjectClassesTeacherID;
+        $this->subjectClassID = $subjectClassID;
+        $this->subjectClassSubjectID = $subjectClassSubjectID;
+        $this->subjectClassTraineeGroupID = $subjectClassTraineeGroupID;
+        $this->subjectClassTeacherID = $subjectClassTeacherID;
 
-        $this->subjectClassesRoomID = $subjectClassesRoomID;
-        $this->subjectClassesPreferenceID = $subjectClassesPreferenceID;
-        
-;
-        // $this->subjectClassesDistributionBlock = $subjectClassesDistributionBlock;
+        $this->subjectClassRoomID = $subjectClassRoomID;
+        $this->subjectClassPreferenceID = $subjectClassPreferenceID;
         $this->isPossibleToDistribute = $this->DistributeBlockPeriods();
 
 
@@ -62,58 +58,58 @@ class SubjectClasses{
 
 
     /**
-     * SetSubjectClassesID method 
+     * SetSubjectClassID method 
      *
-     * @param 	$subjectClassesID
+     * @param 	$subjectClassID
      * @return	 
      */
-    public function SetSubjectClassesID ($subjectClassesID){
+    public function SetSubjectClassID ($subjectClassID){
         
-        $this->subjectClassesID = $subjectClassesID ;
+        $this->subjectClassID = $subjectClassID ;
     }
 
     /**
-     * SetSubjectClassesSubjectID method 
+     * SetSubjectClassSubjectID method 
      *
-     * @param 	$subjectClassesSubjectID
+     * @param 	$subjectClassSubjectID
      * @return	 
      */
-    public function SetSubjectClassesSubjectID ($subjectClassesSubjectID){
+    public function SetSubjectClassSubjectID ($subjectClassSubjectID){
         
-        $this->subjectClassesSubjectID = $subjectClassesSubjectID ;
+        $this->subjectClassSubjectID = $subjectClassSubjectID ;
     }
 
     /**
-     * SetSubjectClassesTraineeGroupID method 
+     * SetSubjectClassTraineeGroupID method 
      *
-     * @param 	$subjectClassesTraineeGroupID
+     * @param 	$subjectClassTraineeGroupID
      * @return	 
      */
-    public function SetSubjectClassesTraineeGroupID ($subjectClassesTraineeGroupID){
+    public function SetSubjectClassTraineeGroupID ($subjectClassTraineeGroupID){
         
-        $this->subjectClassesTraineeGroupID = $subjectClassesTraineeGroupID ;
+        $this->subjectClassTraineeGroupID = $subjectClassTraineeGroupID ;
     }
 
     /**
-     * SetSubjectClassesTeacherID method 
+     * SetSubjectClassTeacherID method 
      *
-     * @param 	$subjectClassesTeacherID
+     * @param 	$subjectClassTeacherID
      * @return	 
      */
-    public function SetSubjectClassesTeacherID ($subjectClassesTeacherID){
+    public function SetSubjectClassTeacherID ($subjectClassTeacherID){
         
-        $this->subjectClassesTeacherID = $subjectClassesTeacherID ;
+        $this->subjectClassTeacherID = $subjectClassTeacherID ;
     }
 
     /**
-     * SetSubjectClassesRoomID method 
+     * SetSubjectClassRoomID method 
      *
-     * @param 	$subjectClassesRoomID
+     * @param 	$subjectClassRoomID
      * @return	 
      */
-    public function SetSubjectClassesRoomID ($subjectClassesRoomID){
+    public function SetSubjectClassRoomID ($subjectClassRoomID){
         
-        $this->subjectClassesRoomID = $subjectClassesRoomID ;
+        $this->subjectClassRoomID = $subjectClassRoomID ;
     }
 
 
@@ -121,70 +117,70 @@ class SubjectClasses{
 
 
     /**
-     * GetSubjectClassesID method 
+     * GetSubjectClassID method 
      *
      * @param 	
-     * @return	 $subjectClassesID
+     * @return	 $subjectClassID
      */
-    public function GetSubjectClassesID (){
+    public function GetSubjectClassID (){
         
-        return $this->subjectClassesID ;
+        return $this->subjectClassID ;
     }
 
     /**
-     * GetSubjectClassesSubjectID method 
+     * GetSubjectClassSubjectID method 
      *
      * @param 	
-     * @return	 $subjectClassesSubjectID
+     * @return	 $subjectClassSubjectID
      */
-    public function GetSubjectClassesSubjectID (){
+    public function GetSubjectClassSubjectID (){
         
-        return $this->subjectClassesSubjectID ;
+        return $this->subjectClassSubjectID ;
     }
 
     /**
-     * GetSubjectClassesTraineeGroupID method 
+     * GetSubjectClassTraineeGroupID method 
      *
      * @param 	
-     * @return	 $subjectClassesTraineeGroupID
+     * @return	 $subjectClassTraineeGroupID
      */
-    public function GetSubjectClassesTraineeGroupID (){
+    public function GetSubjectClassTraineeGroupID (){
         
-        return $this->subjectClassesTraineeGroupID;
+        return $this->subjectClassTraineeGroupID;
     }
 
     /**
-     * GetSubjectClassesTeacherID method 
+     * GetSubjectClassTeacherID method 
      *
      * @param 	
-     * @return	 $subjectClassesTeacherID
+     * @return	 $subjectClassTeacherID
      */
-    public function GetSubjectClassesTeacherID (){
+    public function GetSubjectClassTeacherID (){
         
-        return $this->subjectClassesTeacherID;
+        return $this->subjectClassTeacherID;
     }
 
     /**
-     * GetSubjectClassesRoomID method 
+     * GetSubjectClassRoomID method 
      *
      * @param 	
-     * @return	 $subjectClassesRoomID
+     * @return	 $subjectClassRoomID
      */
-    public function GetSubjectClassesRoomID (){
+    public function GetSubjectClassRoomID (){
         
-        return $this->subjectClassesRoomID ;
+        return $this->subjectClassRoomID ;
     }
 
 
     /**
-     * GetSubjectClassesPreferenceID method 
+     * GetSubjectClassPreferenceID method 
      *
      * @param 	
-     * @return	 $subjectClassesRoomID
+     * @return	 $subjectClassRoomID
      */
-    public function GetSubjectClassesPreferenceID (){
+    public function GetSubjectClassPreferenceID (){
         
-        return $this->subjectClassesPreferenceID ;
+        return $this->subjectClassPreferenceID ;
     }
 
 
@@ -208,14 +204,18 @@ class SubjectClasses{
         */                   
 
 
-        $_subjectId = $this->GetSubjectClassesSubjectID()->GetSubjectID();
-        $_totalPeriodsPerWeek = $this->GetSubjectClassesSubjectID()->GetSubjectRequiredPeriod();
+        $_subjectId = $this->GetSubjectClassSubjectID()->GetSubjectID();
+        $_subjectName = $this->GetSubjectClassSubjectID()->GetSubjectName();
+        $_totalPeriodsPerWeek = $this->GetSubjectClassSubjectID()->GetSubjectRequiredPeriod();
 
 
-        $_numberDaysPerWeek = $this->GetSubjectClassesPreferenceID()->GetPreferencesPreferredNumberDays();          
-        $_numberPeriodsPerDay = $this->GetSubjectClassesPreferenceID()->GetPreferencesPreferredNumberPeriodsDay();
+        $_clID = $this->GetSubjectClassID();
 
-        echo "===========<br/><br/>Testing possibilities for <b>$_subjectId</b><br/>";
+        $_numberDaysPerWeek = $this->GetSubjectClassPreferenceID()->GetPreferencePreferredNumberDays();          
+        $_numberPeriodsPerDay = $this->GetSubjectClassPreferenceID()->GetPreferencePreferredNumberPeriodsDay();
+
+        echo "===========<br/><br/>Testing possibilities for Subject :<b>$_subjectName $_subjectId </b><br/>";
+        echo "===========<br/><br/>Class ID : $_clID</b><br/>";
         echo "Total number of periods: <b>$_totalPeriodsPerWeek</b><br/>";
         echo "Preferred number of days/week: <b>$_numberDaysPerWeek</b> <br/>";
         echo "Preferred number of periods/day: <b>$_numberPeriodsPerDay</b><br/>";
@@ -277,30 +277,27 @@ class SubjectClasses{
             }
             echo"<br/>";
         }
-        $this->subjectClassesDistributionBlock = $dist;
+        $this->subjectClassDistributionBlock = $dist;
         return true;
     }
 
 
     /**
-     * GetSubjectClassesInformation method 
+     * GetSubjectClassInformation method 
      *
      * @param 	none
      * @return	asso array SubjectClasses attributes
      */
-    public function GetSubjectClassesInformation(){
+    public function GetSubjectClassInformation(){
 
         return [
-                $this->subjectClassesID,
-                $this->subjectClassesSubjectID,
-                $this->subjectClassesTraineeGroupID,
-                $this->subjectClassesTeacherID,
-                $this->subjectClassesRoomID,
+                $this->subjectClassID,
+                $this->subjectClassSubjectID,
+                $this->subjectClassTraineeGroupID,
+                $this->subjectClassTeacherID,
+                $this->subjectClassRoomID,
 
-                $this->subjectClassesPreferredStartPeriod,
-                $this->subjectClassesPreferredEndPeriod,
-                $this->subjectClassesPreferredNumberDays,
-                $this->subjectClassesDistributionBlock
+                $this->subjectClassDistributionBlock
                 ];
     }
 

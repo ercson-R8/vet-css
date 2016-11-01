@@ -2,7 +2,7 @@
 
 
 /**
- * Schedules Model
+ * Schedule Model
  * 
  * This class defines attributes and methods required
  * to implement a chromosome (timetable). 
@@ -15,8 +15,8 @@ class Schedules{
 
     private $scheduleID;
     // private $timetableID;
-    private $SchedulesSubjectClassID;
-    private $scheduleSlot;
+    private $ScheduleSubjectClassID;
+    private $schedulSlot;
     // private $scheduleConflicts; 
 
     /**
@@ -30,10 +30,10 @@ class Schedules{
      * @return  none;
      */
 
-    public function __construct ($scheduleID = null, $SchedulesSubjectClassID = null, $scheduleSlot = null){
+    public function __construct ($scheduleID = null, $scheduleSubjectClassID = null, $scheduleSlot = null){
         $this->scheduleID = $scheduleID;
         // $this->timetableID = $timetableID;
-        $this->SchedulesSubjectClassID = $SchedulesSubjectClassID;
+        $this->scheduleSubjectClassID = $scheduleSubjectClassID;
         $this->scheduleSlot = $scheduleSlot;
     }
 
@@ -55,7 +55,7 @@ class Schedules{
      * @param 	$SchedulesSubjectClassID
      * @return	 none;
      */
-    public function SetSchedulesSubjectClassID ($SchedulesSubjectClassID){
+    public function SetScheduleSubjectClassID ($SchedulesSubjectClassID){
         
         $this->SchedulesSubjectClassID = $SchedulesSubjectClassID;
     }
@@ -90,9 +90,9 @@ class Schedules{
      * @param 	none;
      * @return	 $SchedulesSubjectClassID
      */
-    public function GetSchedulesSubjectClassID (){
+    public function GetScheduleSubjectClassID (){
         
-        return $this->SchedulesSubjectClassID;
+        return $this->ScheduleSubjectClassID;
     }
 
 
@@ -114,10 +114,10 @@ class Schedules{
      * @param 	none
      * @return	asso array Schedule attributes
      */
-    public function GetSchedulesInformation(){
+    public function GetScheduleInformation(){
 
         return [$this->scheduleID, 
-                $this->SchedulesSubjectClassID, 
+                $this->ScheduleSubjectClassID, 
                 $this->scheduleSlot 
                 ];
     }

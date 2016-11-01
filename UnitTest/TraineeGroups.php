@@ -86,7 +86,7 @@ class TraineeGroups{
      * @param 	 none
      * @return	 $traineeGroup
      */
-    public function GetTraineeGroupID ($traineeGroupID){
+    public function GetTraineeGroupID (){
         
         return $this->traineeGroupID;
         
@@ -98,7 +98,7 @@ class TraineeGroups{
      * @param 	 none
      * @return	 $traineeGroupName
      */
-    public function GetTraineeGroupName ($traineeGroupName){
+    public function GetTraineeGroupName (){
         
         return $this->traineeGroupName;
         
@@ -110,7 +110,7 @@ class TraineeGroups{
      * @param 	 none
      * @return	 $traineeGroupRemarks
      */
-    public function GetTraineeGroupRemarks ($traineeGroupRemarks){
+    public function GetTraineeGroupRemarks (){
         
         return $this->traineeGroupRemarks;
         
@@ -123,7 +123,7 @@ class TraineeGroups{
      * @param 	 none
      * @return	 $traineeGroupLevel
      */
-    public function GetTraineeGroupLevel ($traineeGroupLevel){
+    public function GetTraineeGroupLevel (){
         
         return $this->traineeGroupLevel ;
         

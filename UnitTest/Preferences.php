@@ -15,10 +15,14 @@ class Preferences{
 
 
     private $preferencesID;
-    private $preferencesPreferredStartPeriod; 
-    private $preferencesPreferredEndPeriod; 
-    private $preferencesPreferredNumberDays; 
-    private $preferencesPreferredNumberPeriodsDay;
+    private $traineeGroupID;
+    private $subjectID;
+    private $teacherID;
+    private $preferenceRoomType;
+    private $preferencePreferredStartPeriod; 
+    private $preferencePreferredEndPeriod; 
+    private $preferencePreferredNumberDays; 
+    private $preferencePreferredNumberPeriodsDay;
 
 
 
@@ -28,6 +32,10 @@ class Preferences{
      *
      * @param   $preferencesID                       int: id 
      *          $preferencesPreferredStartPeriod     int: for special group with irregular schedule
+     *          $traineeGroupID
+     *          $subjectID;
+     *          $teacherID;
+     *          $preferenceRoomType
      *          $preferencesPreferredEndPeriod       int: for special group with irregular schedule
      *          $preferencesPreferredNumberDays      int: teacher's preferrence;
      *          $preferencesDistributionBlock        array: how periods be distributed in "n" days;
@@ -35,17 +43,26 @@ class Preferences{
      */
 
     public function __construct (   $preferencesID = null,
-                                    $preferencesPreferredStartPeriod = null, 
-                                    $preferencesPreferredEndPeriod = null, 
-                                    $preferencesPreferredNumberDays = null,
-                                    $preferencesPreferredNumberPeriodsDay = null){
+                                    $traineeGroupID = null,
+                                    $subjectID = null,
+                                    $teacherID = null,
+                                    $preferenceRoomType = null,
+                                    $preferencePreferredStartPeriod = null, 
+                                    $preferencePreferredEndPeriod = null, 
+                                    $preferencePreferredNumberDays = null,
+                                    $preferencePreferredNumberPeriodsDay = null){
         
         $this->preferencesID = $preferencesID ;
-        $this->preferencesPreferredStartPeriod = $preferencesPreferredStartPeriod;
-        $this->preferencesPreferredEndPeriod = $preferencesPreferredEndPeriod;
+        $this->traineeGroupID = $traineeGroupID ;
+        $this->subjectID = $subjectID ;
+        $this->teacherID = $teacherID ;
+        $this->preferenceRoomType = $preferenceRoomType ;
 
-        $this->preferencesPreferredNumberDays = $preferencesPreferredNumberDays;
-        $this->preferencesPreferredNumberPeriodsDay = $preferencesPreferredNumberPeriodsDay;
+        $this->preferencePreferredStartPeriod = $preferencePreferredStartPeriod;
+        $this->preferencePreferredEndPeriod = $preferencePreferredEndPeriod;
+
+        $this->preferencePreferredNumberDays = $preferencePreferredNumberDays;
+        $this->preferencePreferredNumberPeriodsDay = $preferencePreferredNumberPeriodsDay;
 
 
 
@@ -57,10 +74,12 @@ class Preferences{
      * @param 	$preferencesID
      * @return	 
      */
-    public function SetPreferencesID ($preferencesID){
+    public function SetPreferenceID ($preferencesID){
         
         $this->preferencesID = $preferencesID ;
     }
+
+
 
 
 
@@ -73,11 +92,58 @@ class Preferences{
      * @param 	
      * @return	 $preferencesID
      */
-    public function GetPreferencesID (){
+    public function GetPreferenceID (){
         
         return $this->preferencesID ;
     }
 
+//-------------------
+    /**
+     * GetPreferencesTraineeGroupID method 
+     *
+     * @param 	
+     * @return	 $preferencesID
+     */
+    public function GetPreferenceTraineeGroupID (){
+        
+        return $this->traineeGroupID ;
+    }
+
+    /**
+     * GetPreferencesSubjectID method 
+     *
+     * @param 	
+     * @return	 $preferencesID
+     */
+    public function GetPreferenceSubjectID (){
+        
+        return $this->subjectID ;
+    }
+
+    /**
+     * GetPreferencesTeacherID method 
+     *
+     * @param 	
+     * @return	 $preferencesID
+     */
+    public function GetPreferenceTeacherID (){
+        
+        return $this->teacherID ;
+    }
+
+    /**
+     * GetPreferencesPreferenceRoomType method 
+     *
+     * @param 	
+     * @return	 $preferencesID
+     */
+    public function GetPreferencePreferenceRoomType (){
+        
+        return $this->preferenceRoomType ;
+    }
+
+
+//------------------
 
     /**
      * GetPreferencesPreferredStartPeriod method 
@@ -85,9 +151,9 @@ class Preferences{
      * @param 	
      * @return	 $preferencesPreferredStartPeriod
      */
-    public function GetPreferencesPreferredStartPeriod (){
+    public function GetPreferencePreferredStartPeriod (){
         
-        return $this->preferencesPreferredStartPeriod;
+        return $this->preferencePreferredStartPeriod;
     }
 
 
@@ -97,9 +163,9 @@ class Preferences{
      * @param 	
      * @return	 $preferencesPreferredEndPeriod
      */
-    public function GetPreferencesPreferredEndPeriod (){
+    public function GetPreferencePreferredEndPeriod (){
         
-        return $this->preferencesPreferredEndPeriod;
+        return $this->preferencePreferredEndPeriod;
     }
 
     /**
@@ -108,9 +174,9 @@ class Preferences{
      * @param 	
      * @return	 $preferencesPreferredNumberDays
      */
-    public function GetPreferencesPreferredNumberDays (){
+    public function GetPreferencePreferredNumberDays (){
         
-        return $this->preferencesPreferredNumberDays;
+        return $this->preferencePreferredNumberDays;
     }
 
 
@@ -120,9 +186,9 @@ class Preferences{
      * @param 	
      * @return	 $preferencesPreferredNumberPeriodsDay
      */
-    public function GetPreferencesPreferredNumberPeriodsDay (){
+    public function GetPreferencePreferredNumberPeriodsDay (){
         
-        return $this->preferencesPreferredNumberPeriodsDay ;
+        return $this->preferencePreferredNumberPeriodsDay ;
     }
 
 

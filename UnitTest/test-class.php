@@ -1,5 +1,5 @@
 <?php
-
+define("DEBUG_INFO", FALSE);
 require "Teachers.php";
 require "Rooms.php";
 require "Subjects.php";
@@ -19,12 +19,12 @@ echo "<br/>New teacher created: ";
 $teacher2->SetTeacherID(10);
 $teacher2->SetTeacherName("Lovelace");
 echo "<pre> ";
-echo print_r($teacher2->GetTeacherInformation());
+if (DEBUG_INFO) echo print_r($teacher2->GetTeacherInformation());
 
 
 $room1 = new Rooms(1, "Room 1", "ComLab", "Building 1");
 echo "<pre>";
-echo print_r($room1->GetRoomInformation());
+if (DEBUG_INFO) echo print_r($room1->GetRoomInformation());
 echo "<br/> ";
 
 
@@ -44,11 +44,11 @@ for ( $i=0; $i < 3; $i++){
     $subject[$i] = new Subjects (   $i,             //subjectID
                                     $i+100,         //subjectCode
                                     "Subject ".$i,  //SubjectName
-                                    6+$i,             //subjectRequiredPeriod
+                                    7+$i,             //subjectRequiredPeriod
                                     "Subject Description" );
 }
 
-echo print_r($subject);
+if (DEBUG_INFO) echo print_r($subject);
 
 
 $traineeGroup = [];
@@ -60,7 +60,7 @@ for ( $i = 0; $i < 3; $i++){
 
 }
 
-echo print_r($traineeGroup);
+if (DEBUG_INFO) echo print_r($traineeGroup);
 
 
 $timetable = [];
@@ -68,7 +68,7 @@ for ($i = 0 ; $i < 3; $i++){
     $timetable[$i] = new Timetables($i, 2016, 1, "Sample timetable population");
 }
 
-echo print_r($timetable);
+if (DEBUG_INFO) echo print_r($timetable);
 
 
 
@@ -98,17 +98,15 @@ for ($i = 0; $i < 3; $i++){
                             $subject[$i],               //subjectClassesSubjectID
                             $traineeGroup[$i],          //subjectClassesTraineeGroupID
                             $teacher[$i],                //subjectClassesTeacherID
-                            $room[$i],         //subjectClassesRoomID 
-                            $pref[$i],              //subjectClassesPreferredStartPeriod
-                            8,              //subjectClassesPreferredEndPeriod
-                            $i+4,              //subjectClassesPreferredNumberDays
-                            2,              //subjectClassesPreferredNumberPeriodsDay 
-                            null);
+                            null, //$room[$i],         //subjectClassesRoomID 
+                            $pref[$i]             //subjectClassesPreferredStartPeriod
+                         );
 
 }
 echo "<br/><br/><br/> ";
 echo print_r($subjectClass);
 echo "<br/><br/><br/> ";
+
 if ( $subjectClass[0]->GetIsPossibleToDistribute() ){
     echo "Possible..";
 }else{
@@ -121,6 +119,6 @@ for ($i = 0; $i < 3; $i++){
                                     $i);
 }
 echo "<br/><br/><br/> =====<br/> ";
-echo print_r($schedule);
-$s = $schedule[1]->GetSchedulesInformation();
+if (DEBUG_INFO)echo print_r($schedule);
+$s = $schedule[1]->GetScheduleInformation();
 // echo print_r($s);
