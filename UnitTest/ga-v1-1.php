@@ -47,16 +47,16 @@ for($i = 0 ; $i < TOTAL_SLOTS; $i++){
 
 
 $slot[0][] = $subjectClass[0];
-// $slot[0][] = $subjectClass[1];
-// print_r($slot);
-// print_r($slot[0][0]->GetSubjectClassTraineeGroupID()->GetTraineeGroupName());
+$slot[0][] = $subjectClass[1];
+print_r($slot);
+print_r($slot[0][0]->GetSubjectClassTraineeGroupID()->GetTraineeGroupName());
 
-// print_r($slot[0][0]->GetSubjectClassDistributionBlock());
+print_r($slot[0][0]->GetSubjectClassDistributionBlock());
 print_r($subjectClass[0]);
 
 for ($i = 0; $i < sizeof($subjectClass); $i++){
     for($j = 0; $j <  sizeof($subjectClass[$i]->GetSubjectClassDistributionBlock()); $j++){
-        print_r ($subjectClass[$i]->GetSubjectClassDistributionBlock()[$j]);
+        print_r ($subjectClass[$i]->GetSubjectClassDistributionBlock());
     }
 
 
