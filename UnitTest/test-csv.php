@@ -99,7 +99,7 @@
         foreach ($filePreferences as $preference){
             // fetch all the data including the worksheet header;
             if($line > 0 ){
-                list ($preferenceID[], $traineeGroupID[], $subjectID[], $teacherID[], 
+                list ($preferenceID[], $subjectID[], $traineeGroupID[], $teacherID[], 
                         $preferenceRoomType[], $preferencesPreferredStartPeriod[],
                         $preferencesPreferredEndPeriod[], $preferencesPreferredNumberDays[],
                          $preferencesPreferredNumberPeriodsDay[] ) = explode(',' , $preference);
@@ -108,7 +108,7 @@
         }
         $preference = [];
         for ( $i=0; $i < $line-1; $i++){
-            $preference[$i] = new Preferences ( $preferenceID[$i], $traineeGroupID[$i], $subjectID[$i], $teacherID[$i], 
+            $preference[$i] = new Preferences ( $preferenceID[$i],  $subjectID[$i], $traineeGroupID[$i], $teacherID[$i], 
                                                 $preferenceRoomType[$i], $preferencesPreferredStartPeriod[$i],
                                                 $preferencesPreferredEndPeriod[$i], $preferencesPreferredNumberDays[$i],
                                                 $preferencesPreferredNumberPeriodsDay[$i]);

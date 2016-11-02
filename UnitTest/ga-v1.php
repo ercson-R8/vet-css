@@ -22,14 +22,10 @@ function cmp($a, $b)
 
 
 
-
-
-
 // ---------------------------
 // main code 
 
 usort($traineeGroup, "cmp");
-print_r($preference);
 
 
 // echo "<br/><pre>the 1st key is: ".print_r($preference[1]->GetPreferenceTraineeGroupID());
@@ -38,8 +34,10 @@ echo "<br/>";
 $tg = getObjectID ($traineeGroup, 'GetTraineeGroupID');
 $sb = getObjectID ($subject, 'GetSubjectID' );
 $tr = getObjectID ($teacher, 'GetTeacherID');
-
-// print_r($tg);
+print_r($sb);
+print_r($tg);
+print_r($tr);
+print_r($preference);
 // echo array_search($preference[7]->GetPreferenceTraineeGroupID(),$tg,true);
 // print_r($traineeGroup[0]);
 
@@ -53,14 +51,15 @@ $tr = getObjectID ($teacher, 'GetTeacherID');
     //     $preference [7]
     //     );
 
+
 for ($i = 0; $i < sizeof($preference); $i++){
         $subjectClass[$i] = new SubjectClasses ($i,
-        $subject[array_search($preference[$i]->GetPreferenceTraineeGroupID(),$tg,true) ],
-        $traineeGroup[array_search($preference[$i]->GetPreferenceTraineeGroupID(),$sb,true)],
-        $teacher[array_search($preference[$i]->GetPreferenceTraineeGroupID(),$tr,true)],
-        null,
-        $preference [$i]
-        );
+                            $subject[array_search($preference[$i]->GetPreferenceSubjectID(),$sb,true) ],
+                            $traineeGroup[array_search($preference[$i]->GetPreferenceTraineeGroupID(),$tg,true)],
+                            $teacher[array_search($preference[$i]->GetPreferenceTeacherID(),$tr,true)],
+                            null,
+                            $preference [$i]
+                            );
 }
 print_r($subjectClass);
 

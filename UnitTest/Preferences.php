@@ -43,8 +43,8 @@ class Preferences{
      */
 
     public function __construct (   $preferencesID = null,
-                                    $traineeGroupID = null,
                                     $subjectID = null,
+                                    $traineeGroupID = null,
                                     $teacherID = null,
                                     $preferenceRoomType = null,
                                     $preferencePreferredStartPeriod = null, 

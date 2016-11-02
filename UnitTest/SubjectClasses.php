@@ -39,7 +39,7 @@ class SubjectClasses{
      * @return  none;
      */
 
-    public function __construct ($subjectClassID = null, $subjectClassSubjectID = null ,$subjectClassTraineeGroupID = null, 
+    public function __construct ($subjectClassID = null,  $subjectClassSubjectID = null ,$subjectClassTraineeGroupID = null, 
                                 $subjectClassTeacherID = null, $subjectClassRoomID = null, $subjectClassPreferenceID = null){
 
         $this->subjectClassID = $subjectClassID;
