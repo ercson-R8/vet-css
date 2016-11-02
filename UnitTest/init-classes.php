@@ -1,10 +1,19 @@
 <?php
     echo "<pre>";
+        require "Subjects.php";
+        require "traineeGroups.php";
+        require "teachers.php";
+        require "Preferences.php";
+        require "Rooms.php";
+        require "Schedules.php";
+
         define("DEBUG_INFO", false);
         define("TOTAL_SLOTS", 10);
+
+
     // *********************************************************************
-    {   // Fetch Subjects
-        require "Subjects.php";
+    function createSubjects(){   // Fetch Subjects
+
         $fileSubjects = file('../csv/Subjects.csv');
         $line = 0; // exclude the header. set to 1 to include headers
         foreach ($fileSubjects as $subject){
@@ -24,10 +33,13 @@
                                         $subjectDescription[$i] );
         }
         if (DEBUG_INFO) echo print_r($subject);
+        return $subject;
     }
+
+    
     // *********************************************************************
-    {   // Fetch Trainee groups
-        require "traineeGroups.php";
+    function createTraineeGroups(){   // Fetch Trainee groups
+
         $fileTrainees = file('../csv/traineeGroups.csv');
         $line = 0; // exclude the header. set to 1 to include headers
         foreach ($fileTrainees as $trainee){
@@ -50,10 +62,13 @@
         }
 
         if (DEBUG_INFO) echo print_r($traineeGroup);
+        return $traineeGroup;
     }
+
+    
     // *********************************************************************
-    {   // Fetch Teachers
-        require "teachers.php";
+    function createTeachers(){   // Fetch Teachers
+        
         $fileTeachers = file('../csv/teachers.csv');
         $line = 0; // exclude the header. set to 1 to include headers
         foreach ($fileTeachers as $teacher){
@@ -68,12 +83,13 @@
             $teacher[$i] = new Teachers (   $teacherID[$i], $teacherName[$i], $teacherDescription[$i] );
         }
         if (DEBUG_INFO) echo print_r($teacher);
+        return $teacher;
     }
 
 
     // *********************************************************************
-        {   // Fetch Rooms
-        require "Rooms.php";
+    function createRooms(){   // Fetch Rooms
+        
         $fileRooms = file('../csv/Rooms.csv');
         $line = 0; // exclude the header. set to 1 to include headers
         foreach ($fileRooms as $room){
@@ -88,13 +104,14 @@
             $room[$i] = new Rooms ( $roomID[$i], $roomName[$i], $roomType[$i], $roomLocation[$i]  );
         }
         if (DEBUG_INFO) echo print_r($room);
+        return $room;
     }
 
 
 
     // *********************************************************************
-    {   // Preferences Rooms
-        require "Preferences.php";
+    function createPreferences(){   // Fetch Preferences 
+        
         $filePreferences = file('../csv/Preferences.csv');
         $line = 0; // exclude the header. set to 1 to include headers
         foreach ($filePreferences as $preference){
@@ -115,30 +132,68 @@
                                                 $preferencesPreferredNumberPeriodsDay[$i]);
         }
         if (DEBUG_INFO) echo print_r($preference);
+        return $preference;
+
+    }
 
 
-
-
-
-
-}
-
-
-    // *********************************************************************
-    {   // Schedules
-        require "Schedules.php";
+   
+    function createSchedules(){   // Schedules
+        
         $schedule = [];
         $schedule[0] = new Schedules ();
         
 
         if (DEBUG_INFO) echo print_r($schedule);
 
+        return $schedule;
+    }
+
+    function getObjectID( $obj, $getter ){
+        
+        for ($j=0; $j < sizeof($obj); $j++){
+            $localObj [] = $obj[$j]->$getter();
+        }
+        return $localObj;
+    }
 
 
+     // *********************************************************************
+    function createObjects(){       // create objects required by 
+        // initial objects
 
 
+        $subject = createSubjects();
+        $traineeGroup = createTraineeGroups();
+        $teacher = createTeachers();
+        $room = createRooms();
+        $preference = createPreferences ();
+        
+        // get corresponding ID of objects 
+        $tg = getObjectID ($traineeGroup, 'GetTraineeGroupID');
+        $sb = getObjectID ($subject, 'GetSubjectID' );
+        $tr = getObjectID ($teacher, 'GetTeacherID');
+        // print_r($sb);
+        // print_r($tg);
+        // print_r($tr);
 
-}
+
+        // compose subject classess based on the above objects;
+        for ($i = 0; $i < sizeof($preference); $i++){
+                $subjectClass[$i] = new SubjectClasses ($i,
+                                    $subject[array_search($preference[$i]->GetPreferenceSubjectID(),$sb,true) ],
+                                    $traineeGroup[array_search($preference[$i]->GetPreferenceTraineeGroupID(),$tg,true)],
+                                    $teacher[array_search($preference[$i]->GetPreferenceTeacherID(),$tr,true)],
+                                    null,
+                                    $preference [$i]
+                                    );
+        }
+
+
+        return [$subject, $traineeGroup, $teacher, $room, $preference, $subjectClass];
+
+    }
+
 
 
 

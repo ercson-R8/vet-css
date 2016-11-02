@@ -51,7 +51,6 @@ print_r($preference);
     //     $preference [7]
     //     );
 
-
 for ($i = 0; $i < sizeof($preference); $i++){
         $subjectClass[$i] = new SubjectClasses ($i,
                             $subject[array_search($preference[$i]->GetPreferenceSubjectID(),$sb,true) ],
@@ -61,11 +60,14 @@ for ($i = 0; $i < sizeof($preference); $i++){
                             $preference [$i]
                             );
 }
-print_r($subjectClass);
 
 
 
+// $subjectClass[0]->SetSubjectClassRoomID($room[0]);
 
+// print_r($subjectClass);     
+
+// print_r($subjectClass[0]->GetSubjectClassRoomID()->GetRoomName() );
 
 
 

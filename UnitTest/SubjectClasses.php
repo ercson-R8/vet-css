@@ -115,6 +115,17 @@ class SubjectClasses{
 
     // Getter methods
 
+    /**
+     * GetSubjectClassDistributionBlock method 
+     *
+     * @param 	
+     * @return	 
+     */
+    public function GetSubjectClassDistributionBlock (){
+        return $this->subjectClassDistributionBlock;
+        return ;
+    }
+
 
     /**
      * GetSubjectClassID method 
@@ -216,7 +227,7 @@ class SubjectClasses{
 
         echo "===========<br/><br/>Testing possibilities for Subject :<b>$_subjectName $_subjectId </b><br/>";
         echo "===========<br/><br/>Class ID : $_clID</b><br/>";
-        echo "Total number of periods: <b>$_totalPeriodsPerWeek</b><br/>";
+        echo "Total required number of periods: <b>$_totalPeriodsPerWeek</b><br/>";
         echo "Preferred number of days/week: <b>$_numberDaysPerWeek</b> <br/>";
         echo "Preferred number of periods/day: <b>$_numberPeriodsPerDay</b><br/>";
         
@@ -296,7 +307,6 @@ class SubjectClasses{
                 $this->subjectClassTraineeGroupID,
                 $this->subjectClassTeacherID,
                 $this->subjectClassRoomID,
-
                 $this->subjectClassDistributionBlock
                 ];
     }
