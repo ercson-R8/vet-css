@@ -30,65 +30,54 @@ for($i = 0 ; $i < TOTAL_SLOTS; $i++){
 
 $firstPeriod = 0;
 $lastPeriod = 9;
+// $slot[0][] = $subjectClass[0];
+// $slot[0][] = $subjectClass[1];
+// print_r($slot);
+// print_r($slot[0][0]->GetSubjectClassTraineeGroupID()->GetTraineeGroupName());
+
+// print_r($slot[0][0]->GetSubjectClassDistributionBlock());
+// print_r($subjectClass[0]);
+
 
 // per classID (0-7) per subject class
 for ($i = 0; $i < sizeof($subjectClass); $i++){ 
-    // $r = (mt_rand(1, sizeof($room)));
-    // echo "<br/>room: ";print_r($r);echo "<br/>";
-    $subjectClass[$i]->SetSubjectClassRoomID( $room[(mt_rand(0, sizeof($room)-1))]    );
     //per distBlock( this version uses 1x block or 1 day) w/ 2-3periods{
     for($j = 0; $j <  sizeof($subjectClass[$i]->GetSubjectClassDistributionBlock()); $j++){
+        // print_r ($subjectClass[$i]->GetSubjectClassDistributionBlock()[$j]);
         // number of period for this subject per day
         $numPeriod = ($subjectClass[$i]->GetSubjectClassDistributionBlock()[$j]);
         $sameDay = false;
-        
-
+        echo "<br/>=========<br/><br/> ";
         while (!$sameDay){
             // find random (0-9) strating period n
             $classStartingPeriod = mt_rand($firstPeriod, $lastPeriod-1); // start at period zero up to period 9
-            
+            $x = [];
             $y = [];
-            // // check if random period n to n+NumOfPeriods are all on the same day
+            // // check if random period n and n+ is on the same day
+            $x[] = [$numPeriod, $classStartingPeriod];
+            print_r ($x);
             for($k = $classStartingPeriod; $k < ($classStartingPeriod + $numPeriod); $k++ ){
+                echo $k. "-";
                 $y[] = ( (int) ($k/5) );
             }
-
-            // print_r(($y));
-            if (count(array_unique($y)) == 1){ // same day, break loop
+            echo "<br/> days: ";
+            print_r($y);
+            print_r(count(array_unique($y)));
+            if (count(array_unique($y)) == 1) 
                 $sameDay = true;
-                echo "<br/>=========classStartingPeriod: $classStartingPeriod<br/><br/> ";
-            }
+            // if ( ( (int) ($min/5) ) ==  ((int) (($min+1)/5) ) ){
+            //     echo "<br/> $min = ";
+            //     print_r ( (int) ($min/5) );
+            //     echo " <> ";
+            //     print_r ((int) (($min+1)/5) );
+                
+            //     echo "<br/>";
+            // }
+            
         }
 
-        // per period, start random n period up n+numOfPeriod period
-        for($l=$classStartingPeriod; $l < $k; $l++){
-            echo "<br> >> $l - ";
-            $booked = false;
-            // select a random room
+        // per period{ start random n period up n+1 period
 
-            while (!$booked){
-                if (sizeof($slot[$classStartingPeriod]) == 0 ){
-                    //print_r($slot[$classStartingPeriod]);
-                    $slot[$l] = $subjectClass[$i];
-                    echo "<br>";
-                    print_r($slot[$l]->GetSubjectClassInformation());
-                }else{
-
-                }
-
-                $booked = true;
-
-            }
-
-        }
-
-        
-
-
-
-     
-        
-        
 
     }
 }
