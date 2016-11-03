@@ -22,7 +22,6 @@ per classID (0-7){ // persubject class
                     fitness += all matching rooms
                     reserve the slot
                     booked = true
-
                 }               
 
             }
