@@ -2,13 +2,14 @@
 
 require "init-classes.php";
 
-require "SubjectClasses.php";
+
+
+
 
 
 // sort trainee group by level
 // the lowest level will be processed first as they would require fewer subjects
-function cmp($a, $b)
-{
+function cmpTraineeGroup($a, $b){
 	
 	return strcmp($a->getTraineeGroupLevel(), $b->getTraineeGroupLevel());
 	
@@ -30,17 +31,13 @@ $room           = $obj[3];
 $preference     = $obj[4];
 $subjectClass   = $obj[5];
 
- 
-
-usort($traineeGroup, "cmp");
-
+usort($traineeGroup, "cmpTraineeGroup");
 $slot = [];
 for ($i = 0 ; $i < TOTAL_SLOTS; $i++){
 	
 	$slot[$i] = null;
 	
 }
-
 
 $firstPeriod = 0;
 $lastPeriod = 9;
@@ -130,7 +127,7 @@ for ($i = 0; $i < sizeof($subjectClass); $i++){
     print_r(sizeof($schedule));
     echo "<br/>************<br/>";
 
-    print_r(($slot));
+    // print_r(($slot));
     
     print_r($timetable[0]);
 	

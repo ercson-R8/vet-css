@@ -7,9 +7,10 @@
         require "Rooms.php";
         require "Schedules.php";
         require "Timetables.php";
-
+        require "SubjectClasses.php";
         define("DEBUG_INFO", false);
         define("TOTAL_SLOTS", 10);
+        define("TOTAL_PERIODS", 5);
 
 
     // *********************************************************************
