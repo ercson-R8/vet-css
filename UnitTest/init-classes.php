@@ -6,6 +6,7 @@
         require "Preferences.php";
         require "Rooms.php";
         require "Schedules.php";
+        require "Timetables.php";
 
         define("DEBUG_INFO", false);
         define("TOTAL_SLOTS", 10);
@@ -136,19 +137,6 @@
 
     }
 
-
-   
-    function createSchedules(){   // Schedules
-        
-        $schedule = [];
-        $schedule[0] = new Schedules ();
-        
-
-        if (DEBUG_INFO) echo print_r($schedule);
-
-        return $schedule;
-    }
-
     function getObjectID( $obj, $getter ){
         
         for ($j=0; $j < sizeof($obj); $j++){
@@ -159,7 +147,7 @@
 
 
      // *********************************************************************
-    function createObjects(){       // create objects required by 
+    function createObjects(){       // create objects required by timetable
         // initial objects
 
 
@@ -168,14 +156,12 @@
         $teacher = createTeachers();
         $room = createRooms();
         $preference = createPreferences ();
+
         
         // get corresponding ID of objects 
         $tg = getObjectID ($traineeGroup, 'GetTraineeGroupID');
         $sb = getObjectID ($subject, 'GetSubjectID' );
         $tr = getObjectID ($teacher, 'GetTeacherID');
-        // print_r($sb);
-        // print_r($tg);
-        // print_r($tr);
 
 
         // compose subject classess based on the above objects;

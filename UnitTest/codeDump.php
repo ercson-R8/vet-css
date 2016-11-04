@@ -99,7 +99,30 @@ for ($i = 0; $i < sizeof($subjectClass); $i++){
 
 
 
+==============================
+    // *********************************************************************   
+    function createSchedules(){   // Schedules
+        
+        
+        $schedule = new Schedules ();
+        
 
+        if (true) echo print_r($schedule); echo"<br/>";
+
+        return $schedule;
+    }
+
+    // *********************************************************************   
+    function createTimetables(){   // Timetable
+        
+        $timetable = [];
+        $timetable[] = new Timetables ();
+        
+
+        if (DEBUG_INFO) echo print_r($timetable); echo"<br/>";
+
+        return $timetable;
+    }
 
 
 

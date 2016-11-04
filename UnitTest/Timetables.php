@@ -16,7 +16,7 @@ class Timetables{
     private $timetableAcademicYear;
     private $timetableTerm;
     private $timetableDescription;
-    private $timetableFitness = 0;
+    private $timetableFitness; // number of conflicts
     /**
      * Constructor method 
      *
@@ -28,13 +28,14 @@ class Timetables{
      */
 
     public function __construct ($timetableID = null, $timetableAcademicYear = null, 
-                                    $timetableTerm = null, $timetableDescription = null
-                                    ){
+                                    $timetableTerm = null, $timetableDescription = null,
+                                    $timetableFitness = 1){
         $this->timetableID = $timetableID;
         $this->timetableAcademicYear = $timetableAcademicYear;
         $this->timetableTerm = $timetableTerm;
         $this->timetableDescription = $timetableDescription;
-        
+        $this->timetableFitness = $timetableFitness ;
+        echo "from object tt fitness: ".$this->timetableFitness. "<br/>";
     }
 
     /**
@@ -93,6 +94,8 @@ class Timetables{
     }
 
 
+
+
     /**
      * GetTimetableID method 
      *
@@ -126,7 +129,6 @@ class Timetables{
         return $this->timetableTerm ;
     }
 
-
     /**
      * GetTimetable method 
      *
@@ -145,8 +147,7 @@ class Timetables{
      * @return	 $timetableFitness int: pertains to conflicts;;
      */
     public function GetTimetableFitness (){
-        
-        $this->timetableFitness = $timetableFitness;
+        return $this->timetableFitness;
     }
 
     /**
@@ -164,7 +165,6 @@ class Timetables{
                 $this->timetableFitness
         ];
     }
-
 
 
 }

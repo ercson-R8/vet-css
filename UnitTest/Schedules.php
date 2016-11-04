@@ -14,27 +14,30 @@
 class Schedules{
 
     private $scheduleID;
-    // private $timetableID;
-    private $ScheduleSubjectClassID;
-    private $schedulSlot;
+    private $scheduleTimetableID;
+    private $scheduleSubjectClassID;
+    private $scheduleSlot;
     // private $scheduleConflicts; 
 
     /**
      * Constructor method 
      *
      * @param   $scheduleID         int: schedule id number
-     *          $timetableID        string: the timetable which this schedule belongs
+     *          $timetableID        Object: the timetable which this schedule belongs to
      *          $SchedulesSubjectClassID     SubjectClasses object: descriptive name for the subject
      *          $scheduleSlot       int: the required number of periods per week
      *          $scheduleConflicts  int: number of slot in conflict
      * @return  none;
      */
 
-    public function __construct ($scheduleID = null, $scheduleSubjectClassID = null, $scheduleSlot = null){
+    public function __construct ($scheduleID = null, $scheduleTimetableID = null, 
+                                    $scheduleSubjectClassID = null, $scheduleSlot = null){
         $this->scheduleID = $scheduleID;
-        // $this->timetableID = $timetableID;
+        $this->scheduleTimetableID = $scheduleTimetableID;
         $this->scheduleSubjectClassID = $scheduleSubjectClassID;
         $this->scheduleSlot = $scheduleSlot;
+        // $this->scheduleConflicts = 0;
+
     }
 
 
@@ -47,6 +50,17 @@ class Schedules{
     public function SetScheduleID ($scheduleID){
         
         $this->scheduleID =  $scheduleID;
+    }
+
+    /**
+     * SetScheduleTimetableID method 
+     *
+     * @param 	$timetableID int: timetable id number
+     * @return	 none;
+     */
+    public function SetScheduleTimetableID ($scheduleTimetableID){
+        
+        $this->scheduleTimetableID =  $scheduleTimetableID;
     }
 
     /**
@@ -72,6 +86,9 @@ class Schedules{
     }
 
 
+
+
+    // Getters
     /**
      * GetScheduleID method 
      *
@@ -83,6 +100,16 @@ class Schedules{
         return $this->scheduleID;
     }
 
+    /**
+     * GetScheduleTimetable method 
+     *
+     * @param 	none;
+     * @return	 $TimetableID
+     */
+    public function GetScheduleTimetable (){
+        
+        return $this->scheduleTimetableID;
+    }
 
     /**
      * GetSchedulesSubjectClassID method 
@@ -92,7 +119,7 @@ class Schedules{
      */
     public function GetScheduleSubjectClassID (){
         
-        return $this->ScheduleSubjectClassID;
+        return $this->scheduleSubjectClassID;
     }
 
 
@@ -117,6 +144,7 @@ class Schedules{
     public function GetScheduleInformation(){
 
         return [$this->scheduleID, 
+                $this->timetableID,
                 $this->ScheduleSubjectClassID, 
                 $this->scheduleSlot 
                 ];

@@ -106,3 +106,9 @@ $zipcodeInt = (int)$zipcode + 2000;
 var_dump($zipcodeInt);
 
 list($a[], $b[]) =  explode(',' , "asd, cvb");
+
+$i = '0';
+$y = '0';
+
+ $x = intval($i.$y) + 1;
+ echo $x;

@@ -12,7 +12,7 @@
  */
 
 class SubjectClasses{
-
+    
     private $subjectClassID;
     private $subjectClassSubjectID;
     private $subjectClassTraineeGroupID;
@@ -224,16 +224,17 @@ class SubjectClasses{
 
         $_numberDaysPerWeek = $this->GetSubjectClassPreferenceID()->GetPreferencePreferredNumberDays();          
         $_numberPeriodsPerDay = $this->GetSubjectClassPreferenceID()->GetPreferencePreferredNumberPeriodsDay();
-
-        echo "===========<br/><br/>Testing possibilities for Subject :<b>$_subjectName $_subjectId </b><br/>";
-        echo "===========<br/><br/>Class ID : $_clID</b><br/>";
-        echo "Total required number of periods: <b>$_totalPeriodsPerWeek</b><br/>";
-        echo "Preferred number of days/week: <b>$_numberDaysPerWeek</b> <br/>";
-        echo "Preferred number of periods/day: <b>$_numberPeriodsPerDay</b><br/>";
-        
+        if(DEBUG_INFO){
+            echo "===========<br/><br/>Testing possibilities for Subject :<b>$_subjectName $_subjectId </b><br/>";
+            echo "===========<br/><br/>Class ID : $_clID</b><br/>";
+            echo "Total required number of periods: <b>$_totalPeriodsPerWeek</b><br/>";
+            echo "Preferred number of days/week: <b>$_numberDaysPerWeek</b> <br/>";
+            echo "Preferred number of periods/day: <b>$_numberPeriodsPerDay</b><br/>";
+        }
+            
         if (($_numberDaysPerWeek * $_numberPeriodsPerDay) < $_totalPeriodsPerWeek) {
 
-            echo "<b> NOT POSSIBLE </b>to schedule  <br/><br/>";
+            if(DEBUG_INFO)echo "<b> NOT POSSIBLE </b>to schedule  <br/><br/>";
             return false;
         }else {
             $totalPeriodsPerWeek = $_totalPeriodsPerWeek;
@@ -263,7 +264,7 @@ class SubjectClasses{
                             $done = true;
                             break;
                         }else{ 
-                            echo "$isPossibleToDistribute NOT POSSIBLE<br/>";
+                            if(DEBUG_INFO) echo "$isPossibleToDistribute NOT POSSIBLE<br/>";
                             $done = true;
                             $dist = [];
                             // break;
@@ -280,13 +281,12 @@ class SubjectClasses{
                 $remainingPeriods -= $blockPeriod;
             }
 
-            //echo "<br/><br/>" . (print_r($dist)) . "<br/><br/>";
             shuffle ($dist);
             foreach ($dist as $key => $value){
                 $k = $key + 1;
-                echo "Day$k : <b>$value </b>| ";
+                if(DEBUG_INFO)echo "Day$k : <b>$value </b>| ";
             }
-            echo"<br/>";
+            if(DEBUG_INFO)echo"<br/>";
         }
         $this->subjectClassDistributionBlock = $dist;
         return true;
