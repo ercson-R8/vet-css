@@ -127,84 +127,103 @@ $i = 0;
 usort($schedule[0], "cmpSchedule");
 echo "<br/><br/>";
 
-echo "<table border=\"1\">";
-echo "<tr style=\"background-color:lightgray;\"> ";
-echo "<th>Slot - Day - Period</th>";
-// echo "<th>Subject Group</th>";
-echo "<th>Room 1</th>";
-echo "<th>Room 2</th>";
-echo "</tr>";
-foreach($schedule[0] as $key => $value){
-
-
-    
-
-    // echo "<br><br><br>--------   --------<br>";
-    $slot = $value->GetScheduleSlot();
-
-    echo "<tr  >";
-    
-    $day = (int) ( $value->GetScheduleSlot() / TOTAL_PERIODS) ;
-    $period = ( $value->GetScheduleSlot()  % TOTAL_PERIODS )  ;
-    
-    // 1st col 
-    echo "<td>Slot: $slot Day: $day Period: $period &nbsp;</td>";
-    //print_r($key);
-
-
-
-    
-    if ($value->GetScheduleSubjectClassID()->GetSubjectClassRoomID()->GetRoomID() == 401){
-        echo "<td style=\"text-align:center;\">";
-        // print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassRoomID()->GetRoomName());
-        // 2nd col 
-        echo "<b> ";print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassSubjectID()->GetSubjectCode());
-        echo " ClassID: ";
-        print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassID());
-        echo " </b><br/>";
-        print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassTraineeGroupID()->GetTraineeGroupName());
-        echo " ";
-        print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassTraineeGroupID()->GetTraineeGroupID());
-        echo "<br/> ";
-        echo "Instructor: Mr. ";
-        print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassTeacherID()->GetTeacherName());
-        echo "<br/> ";
-        echo " ";
-        echo (" &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ");
-        echo "</td> ";
-    }else {
-        echo "<td style=\"text-align:center;\">";
-    }
-    
-    
-
-    
-    if ($value->GetScheduleSubjectClassID()->GetSubjectClassRoomID()->GetRoomID() == 402){
-        echo "<td style=\"text-align:center; \" \"width=\"%0%\"\">";
-        // print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassRoomID()->GetRoomName());
-        // 2nd col 
-        echo "<b> ";print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassSubjectID()->GetSubjectCode());
-        echo " ClassID: ";
-        print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassID());
-        echo "</b> <br/>";
-        print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassTraineeGroupID()->GetTraineeGroupName());
-        echo " ";
-        print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassTraineeGroupID()->GetTraineeGroupID());
+$i = 0;
+echo "<br/>\ti \tGetScheduleID \tGetScheduleSlot\tGetSubjectClassID<br/>";
+foreach ($schedule[0] as $key => $value){
+    $day = (int) ($i / TOTAL_PERIODS);
+    echo "<br/>\t$i";
+    if (true){
+        echo "\t ";print_r($value->GetScheduleID());
+        echo "\t\t ";print_r($value->GetScheduleSlot());
+        echo "\t\t\t ";print_r($value->GetScheduleSubjectClassID()->GetSubjectClassID());
+        echo "<br/>";
+    }else{
         echo " <br/>";
-        echo "Instructor: Mr. ";
-        print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassTeacherID()->GetTeacherName());
-        echo "<br/> ";
-        echo (" &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ");
-        echo "</td> ";    
-    }else {
-       echo "<td style=\"text-align:center;\">";
     }
-    
 
-
-
-    echo "</tr>";
     $i += 1;
 }
 
+// echo "i = $i";
+// print_r($schedule[0]);
+echo "<br/><br/>";
+
+
+echo "<table cellpadding=\"0\" cellspacing=\"0\" border=\"3px\" >";
+echo "<tr> ";
+echo "<th>Slot \t Day \t Period</th>"; echo "<th> Details</th>";
+echo "</tr>";
+
+// 2-day class schedule
+for ($i = 0; $i < TOTAL_PERIODS * 2; $i++){
+    $day = (int) ($i / TOTAL_PERIODS);
+    $period = (int) ($i % TOTAL_PERIODS);
+    echo "<tr>";
+    echo "<td>($i) Day: $day Period: $period</td>";
+
+    echo "<td> <table cellpadding=\"0\" cellspacing=\"0\" border=\"1px\">  ";
+    
+    foreach ($schedule[0] as $key => $value){
+        
+        if($value->GetScheduleSlot()== $i){
+            echo "<tr> <col width=\"200\"><col width=\"200\"> ";
+            if ($value->GetScheduleSubjectClassID()->GetSubjectClassRoomID()->GetRoomID() == 401){
+                echo "<td style=\"text-align:center;\">";
+                print_r($value->GetScheduleSlot()); 
+                echo "<b> ";print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassSubjectID()->GetSubjectCode());
+                echo " ClassID: ";
+                print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassID());
+                echo " </b><br/>";
+                print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassTraineeGroupID()->GetTraineeGroupName());
+                echo " ";
+                print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassTraineeGroupID()->GetTraineeGroupID());
+                echo "<br/> ";
+                echo "Instructor: Mr. ";print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassTeacherID()->GetTeacherName());
+                echo "<br/> ";
+                echo "Room No.: ";
+                        print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassRoomID()->GetRoomID());
+               
+                
+                echo "</td>";
+                echo "<td>";                
+                   
+
+                echo "</td>";
+            }
+            if ($value->GetScheduleSubjectClassID()->GetSubjectClassRoomID()->GetRoomID() == 402){
+                echo "<td>";
+                    
+
+                echo "</td>";
+                echo "<td style=\"text-align:center;\">";
+                print_r($value->GetScheduleSlot()); 
+                echo "<b> ";print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassSubjectID()->GetSubjectCode());
+                echo " ClassID: ";
+                print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassID());
+                echo " </b><br/>";
+                print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassTraineeGroupID()->GetTraineeGroupName());
+                echo " ";
+                print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassTraineeGroupID()->GetTraineeGroupID());
+                echo "<br/> ";
+                echo "Instructor: Mr. ";print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassTeacherID()->GetTeacherName());
+                echo "<br/> ";
+                echo "Room No.: ";
+                print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassRoomID()->GetRoomID());
+               
+                echo "</td>";
+            }
+            echo "</tr>";
+        }else{ // no subject class assigned to this current slot;
+            // echo "<td>-";
+            // echo "</td>";
+        }
+  
+    }
+    
+    // echo "<tr>---&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</tr>";
+    echo "</table> </td> ";
+    echo "</tr>";
+
+
+}
 echo "</table>";

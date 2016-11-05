@@ -23,7 +23,7 @@ class Teachers{
          *          $teacherName string name of the teacher
          * @return  none;
          */
-        public function __construct ($teacherName = null, $teacherID = null, $teacherDescription = null ){
+        public function __construct ( $teacherID = null, $teacherName = null, $teacherDescription = null ){
             $this->teacherName = $teacherName;
             $this->teacherID = $teacherID;
             $this->teacherDescription = $teacherDescription;
