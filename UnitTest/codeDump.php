@@ -163,9 +163,6 @@ echo "<th>Room 2</th>";
 echo "</tr>";
 foreach($schedule[0] as $key => $value){
 
-
-    
-
     // echo "<br><br><br>--------   --------<br>";
     $slot = $value->GetScheduleSlot();
 
@@ -179,8 +176,6 @@ foreach($schedule[0] as $key => $value){
     //print_r($key);
 
 
-
-    
     if ($value->GetScheduleSubjectClassID()->GetSubjectClassRoomID()->GetRoomID() == 401){
         echo "<td style=\"text-align:center;\">";
         // print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassRoomID()->GetRoomName());
@@ -202,10 +197,7 @@ foreach($schedule[0] as $key => $value){
     }else {
         echo "<td style=\"text-align:center;\">";
     }
-    
-    
 
-    
     if ($value->GetScheduleSubjectClassID()->GetSubjectClassRoomID()->GetRoomID() == 402){
         echo "<td style=\"text-align:center; \" \"width=\"%0%\"\">";
         // print_r ($value->GetScheduleSubjectClassID()->GetSubjectClassRoomID()->GetRoomName());

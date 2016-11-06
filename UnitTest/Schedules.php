@@ -106,7 +106,7 @@ class Schedules{
      * @param 	none;
      * @return	 $TimetableID
      */
-    public function GetScheduleTimetable (){
+    public function GetScheduleTimetableID (){
         
         return $this->scheduleTimetableID;
     }

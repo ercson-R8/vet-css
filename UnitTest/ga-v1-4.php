@@ -15,8 +15,8 @@ function cmpSchedule($a, $b){
 
 // ---------------------------
 // main code 
-function createTimetables(){
-    $timetable  = new Timetables(1, 2016, 1, "blah",0);
+function createTimetables($timetableID){
+    $timetable  = new Timetables($timetableID, 2016, 1, "test table",0);
     print_r ($timetable); 
 
 
@@ -34,7 +34,7 @@ function createTimetables(){
     for ($i = 0 ; $i < TOTAL_SLOTS; $i++){
         $slot[$i] = null;        
     }
-
+    $totalConflicts = 0;
     $firstPeriod = 0;
     $lastPeriod = 9;
 
@@ -59,23 +59,23 @@ function createTimetables(){
             while (!$sameDay){
                 
                 // 	find random (0-9) strating period n
-                $classStartingPeriod = mt_rand($firstPeriod, $lastPeriod-1);
+                $classStartingPeriod = mt_rand($firstPeriod, $lastPeriod);
                 // 	start at period zero up to period 9
                 
-                $y = [];
+                $day = [];
                 
                 // 	check if random period n to n+NumOfPeriods are all on the same day
                 for ($k = $classStartingPeriod; $k < ($classStartingPeriod + $numPeriod); $k++ ){
                     
-                    $y[] = ( (int) ($k/TOTAL_PERIODS) );
+                    $day[] = ( (int) ($k/TOTAL_PERIODS) );
                     
                 }
                 $classEndingPeriod = $k-1;
                                 
-                if (count(array_unique($y)) == 1){
+                if (count(array_unique($day)) == 1){
                     // 	same day, break loop
                     $sameDay = true;
-                    echo "[ Day:$y[0] Period: $classStartingPeriod - $classEndingPeriod]<br/>";
+                    echo "[ Day:$day[0] Period: $classStartingPeriod - $classEndingPeriod]<br/>";
                 }
             }
             
@@ -83,26 +83,62 @@ function createTimetables(){
             for ($l=$classStartingPeriod; $l < $k; $l++){
                 $schedID = intval( (string) ($i) . (string) ($j) . (string) ($l) );
                 echo "<br>period: >> $l ";				
-                    
+                     echo "<br>slot $l: ";
+                    print_r( $slot[$l]);
+                    echo "<br/>";
+
+
                 // $l is the first period in the distBlock
                 if (sizeof($slot[$l]) == 0 ){
-
                     // create a new schedule;
                     $schedule [ $schedID ]= new Schedules($schedID, $timetable, $subjectClass[$i],  $l);
-                    echo "<br/>booked @ Schedule ID: ";print_r ($schedule [ $schedID ]->GetScheduleID()); echo "<br/>";
-                    
+                    echo "<br/>booked Schedule ID: ";print_r ($schedule [ $schedID ]->GetScheduleID()); echo "";
+                    echo "<br/>booked @ Schedule Slot: ";print_r ($schedule [ $schedID ]->GetScheduleSlot()); echo "<br/>";
                     $slot[$l][] = $schedule[ $schedID]->GetScheduleID();
-                    
+                    print_r( $slot[$l]);
+                    echo "<br>--------------------------------------------------<br/>";
                 }
-                else{ // slot already constains subjectClass/es                     
+                else{ // slot already constains subjectClass/es 
+                    // echo "Non-empty slot $l: ";
+                    // print_r( $slot[$l]);
+                    $conflicts = [];
+                    for($m = 0; $m < sizeof($slot[$l]); $m++){
+                        echo"else: ";print_r( $slot[$l][$m]);echo "<br/>";
+                        $tg = ($schedule [ $slot[$l][$m] ]->GetScheduleSubjectClassID()->
+                                    GetSubjectClassTraineeGroupID()->GetTraineeGroupName()); 
+                        $conflicts[] = $tg;
+                        $tr = ($schedule [ $slot[$l][$m] ]->GetScheduleSubjectClassID()->
+                                    GetSubjectClassTeacherID()->GetTeacherName()); 
+                        $conflicts[] = $tr;
+                        $rm =  ($schedule [ $slot[$l][$m] ]->GetScheduleSubjectClassID()->
+                                    GetSubjectClassRoomID()->GetRoomName()); 
+                        $conflicts[] = $rm;
+                       
+                        echo "<br/>";
+
+                    }
+                    print_r ($conflicts);
+                    echo " unique: ";
+                    print_r ( count(array_unique($conflicts)) );
+                    echo " conflict size: ";
+                    print_r (  sizeof($conflicts) );
+                    echo " total conflicts: ";
+                    print_r ( sizeof($conflicts) - count(array_unique($conflicts)) );
+                    echo "<br>------<br/>";
+
                     $schedule [ $schedID ]= new Schedules($schedID, $timetable, $subjectClass[$i],  $l);
                     $slot[$l][] = $schedule[ $schedID]->GetScheduleID();
-                    $timetable->SetTimetableFitness($timetable->GetTimetableFitness() + 1);
-                    echo "<br/>Non-empty slot: ".$l." day: ".$y[0]." [+1 conflicts] ";
-                    echo "<br/>booked @ Schedule ID: ";print_r ($schedule [ $schedID ]->GetScheduleID()); echo "<br/>";
+                    $timetable->SetTimetableFitness($timetable->GetTimetableFitness() + ( sizeof($conflicts) - count(array_unique($conflicts)) ));
+                    echo "<br/>Non-empty slot: ";print_r ($schedule [ $schedID ]->GetScheduleSlot());
+                    echo " day: ".$day[0]." checking for room conflicts<br/> ";
+
+                    print_r( $slot[$l]);
+
+                    echo "<br/>booked Schedule ID: ";print_r ($schedule [ $schedID ]->GetScheduleID()); echo "<br/>";
+                    echo "<br/>booked @ Schedule Slot: ";print_r ($schedule [ $schedID ]->GetScheduleSlot()); echo "<br/>";
                     echo "fitness: ".$timetable->GetTimetableFitness();
-                    
-                    $booked = true;
+                    echo "<br>";
+;
                 }					
             }
             
@@ -110,7 +146,7 @@ function createTimetables(){
         }
             
     }
-
+    print_r( $slot);
 
     return $schedule;
 } // end function createTimetables
@@ -120,11 +156,17 @@ function createTimetables(){
 
 
 
-$schedule[0] = createTimetables ();
+$schedule[0] = createTimetables (0);
 echo "<br/><br/>schedule: ";
 print_r(sizeof($schedule[0]));
 $i = 0;
 usort($schedule[0], "cmpSchedule");
+echo "<br>table fitness: ";
+print_r($schedule[0][5]->GetScheduleTimetableID()->GetTimetableFitness());
+
+
+
+
 echo "<br/><br/>";
 
 $i = 0;
@@ -144,10 +186,7 @@ foreach ($schedule[0] as $key => $value){
     $i += 1;
 }
 
-// echo "i = $i";
-// print_r($schedule[0]);
 echo "<br/><br/>";
-
 
 echo "<table cellpadding=\"0\" cellspacing=\"0\" border=\"3px\" >";
 echo "<tr> ";
@@ -214,16 +253,17 @@ for ($i = 0; $i < TOTAL_PERIODS * 2; $i++){
             }
             echo "</tr>";
         }else{ // no subject class assigned to this current slot;
-            // echo "<td>-";
-            // echo "</td>";
+
         }
   
     }
     
-    // echo "<tr>---&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</tr>";
     echo "</table> </td> ";
     echo "</tr>";
 
 
 }
 echo "</table>";
+
+
+// print_r($schedule[0][0]->GetScheduleTimetable()->GetTimetableFitness());

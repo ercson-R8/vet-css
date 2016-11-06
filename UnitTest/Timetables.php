@@ -29,7 +29,7 @@ class Timetables{
 
     public function __construct ($timetableID = null, $timetableAcademicYear = null, 
                                     $timetableTerm = null, $timetableDescription = null,
-                                    $timetableFitness = 1){
+                                    $timetableFitness = 0){
         $this->timetableID = $timetableID;
         $this->timetableAcademicYear = $timetableAcademicYear;
         $this->timetableTerm = $timetableTerm;

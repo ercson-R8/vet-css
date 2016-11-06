@@ -94,12 +94,18 @@ $cars=array
     )
     );
 
+
+
 $cars=array("Volvo","BMW","Toyota");
 echo "<br/>Normal count: " . sizeof($cars)."<br>";
 echo "Recursive count: " . sizeof($cars,1);
 print_r($cars);
 
+echo "unique: ";
+print_r ( count(array_unique($cars)) );
 
+
+echo "<br/><br/> ";
 $zipcode = "1000";
 $zipcodeInt = (int)$zipcode + 2000;
  
