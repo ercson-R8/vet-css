@@ -101,6 +101,12 @@ function createTimetables($timetableID){
                 else{ // slot already constains subjectClass/es 
                     // echo "Non-empty slot $l: ";
                     // print_r( $slot[$l]);
+                    
+
+                    $schedule [ $schedID ]= new Schedules($schedID, $timetable, $subjectClass[$i],  $l);
+                    $slot[$l][] = $schedule[ $schedID]->GetScheduleID();
+
+
                     $conflicts = [];
                     for($m = 0; $m < sizeof($slot[$l]); $m++){
                         echo"else: ";print_r( $slot[$l][$m]);echo "<br/>";
@@ -126,8 +132,9 @@ function createTimetables($timetableID){
                     print_r ( sizeof($conflicts) - count(array_unique($conflicts)) );
                     echo "<br>------<br/>";
 
-                    $schedule [ $schedID ]= new Schedules($schedID, $timetable, $subjectClass[$i],  $l);
-                    $slot[$l][] = $schedule[ $schedID]->GetScheduleID();
+
+
+
                     $timetable->SetTimetableFitness($timetable->GetTimetableFitness() + ( sizeof($conflicts) - count(array_unique($conflicts)) ));
                     echo "<br/>Non-empty slot: ";print_r ($schedule [ $schedID ]->GetScheduleSlot());
                     echo " day: ".$day[0]." checking for room conflicts<br/> ";
