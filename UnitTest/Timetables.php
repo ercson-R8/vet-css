@@ -35,7 +35,6 @@ class Timetables{
         $this->timetableTerm = $timetableTerm;
         $this->timetableDescription = $timetableDescription;
         $this->timetableFitness = $timetableFitness ;
-        echo "from object tt fitness: ".$this->timetableFitness. "<br/>";
     }
 
     /**

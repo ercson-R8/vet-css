@@ -17,7 +17,7 @@ function cmpSchedule($a, $b){
 // main code 
 function createTimetables($timetableID){
     $timetable  = new Timetables($timetableID, 2016, 1, "test table",0);
-    print_r ($timetable); 
+    if (DEBUG_INFO)print_r ($timetable); 
 
 
     $obj            = createObjects();
@@ -41,7 +41,7 @@ function createTimetables($timetableID){
     // per classID (0-7) per subject class
     for ($i = 0; $i < sizeof($subjectClass); $i++){
         $sC = $subjectClass[$i]->GetSubjectClassID();
-        echo "<br/><br/><br/>-------------------------------------------<b>Subject Class ID: $sC </b>-------------------------------------------<br/>";
+        if (DEBUG_INFO)echo "<br/><br/><br/>-------------------------------------------<b>Subject Class ID: $sC </b>-------------------------------------------<br/>";
 
         // 	select a random room
         $subjectClass[$i]->SetSubjectClassRoomID( $room[(mt_rand(0, sizeof($room)-1))]    );
@@ -75,41 +75,44 @@ function createTimetables($timetableID){
                 if (count(array_unique($day)) == 1){
                     // 	same day, break loop
                     $sameDay = true;
-                    echo "[ Day:$day[0] Period: $classStartingPeriod - $classEndingPeriod]<br/>";
+                    if (DEBUG_INFO)echo "[ Day:$day[0] Period: $classStartingPeriod - $classEndingPeriod]<br/>";
                 }
             }
             
             // 	per period, start random n period up to $k (n+numOfPeriod) period
             for ($l=$classStartingPeriod; $l < $k; $l++){
                 $schedID = intval( (string) ($i) . (string) ($j) . (string) ($l) );
-                echo "<br>period: >> $l ";				
-                     echo "<br>slot $l: ";
-                    print_r( $slot[$l]);
-                    echo "<br/>";
-
+                if (DEBUG_INFO)echo "<br>period: >> $l ";				
+                if (DEBUG_INFO)echo "<br>slot $l: ";
+                if (DEBUG_INFO)print_r( $slot[$l]);
+                if (DEBUG_INFO)echo "<br/>";
 
                 // $l is the first period in the distBlock
                 if (sizeof($slot[$l]) == 0 ){
                     // create a new schedule;
                     $schedule [ $schedID ]= new Schedules($schedID, $timetable, $subjectClass[$i],  $l);
-                    echo "<br/>booked Schedule ID: ";print_r ($schedule [ $schedID ]->GetScheduleID()); echo "";
-                    echo "<br/>booked @ Schedule Slot: ";print_r ($schedule [ $schedID ]->GetScheduleSlot()); echo "<br/>";
+
+
+                    if (DEBUG_INFO){echo "<br/>booked Schedule ID: ";
+                        print_r ($schedule [ $schedID ]->GetScheduleID()); 
+                        echo "";
+                        if (DEBUG_INFO)echo "<br/>booked @ Schedule Slot: ";
+                        print_r ($schedule [ $schedID ]->GetScheduleSlot()); 
+                        echo "<br/>";
+                    }
+
                     $slot[$l][] = $schedule[ $schedID]->GetScheduleID();
-                    print_r( $slot[$l]);
-                    echo "<br>--------------------------------------------------<br/>";
+                    if (DEBUG_INFO)print_r( $slot[$l]);
+                    if (DEBUG_INFO)echo "<br>--------------------------------------------------<br/>";
+                    
                 }
                 else{ // slot already constains subjectClass/es 
-                    // echo "Non-empty slot $l: ";
-                    // print_r( $slot[$l]);
-                    
 
                     $schedule [ $schedID ]= new Schedules($schedID, $timetable, $subjectClass[$i],  $l);
                     $slot[$l][] = $schedule[ $schedID]->GetScheduleID();
 
-
                     $conflicts = [];
                     for($m = 0; $m < sizeof($slot[$l]); $m++){
-                        echo"else: ";print_r( $slot[$l][$m]);echo "<br/>";
                         $tg = ($schedule [ $slot[$l][$m] ]->GetScheduleSubjectClassID()->
                                     GetSubjectClassTraineeGroupID()->GetTraineeGroupName()); 
                         $conflicts[] = $tg;
@@ -120,9 +123,11 @@ function createTimetables($timetableID){
                                     GetSubjectClassRoomID()->GetRoomName()); 
                         $conflicts[] = $rm;
                        
-                        echo "<br/>";
+                        if (DEBUG_INFO)echo "<br/>";
 
                     }
+                    
+                    if (DEBUG_INFO){
                     print_r ($conflicts);
                     echo " unique: ";
                     print_r ( count(array_unique($conflicts)) );
@@ -131,20 +136,25 @@ function createTimetables($timetableID){
                     echo " total conflicts: ";
                     print_r ( sizeof($conflicts) - count(array_unique($conflicts)) );
                     echo "<br>------<br/>";
+                    }
 
 
 
 
-                    $timetable->SetTimetableFitness($timetable->GetTimetableFitness() + ( sizeof($conflicts) - count(array_unique($conflicts)) ));
-                    echo "<br/>Non-empty slot: ";print_r ($schedule [ $schedID ]->GetScheduleSlot());
-                    echo " day: ".$day[0]." checking for room conflicts<br/> ";
+                    $timetable->SetTimetableFitness($timetable->GetTimetableFitness() + 
+                                                    ( sizeof($conflicts) - count(array_unique($conflicts)) ));
+                                                    
+                    if (DEBUG_INFO) {
+                        echo "<br/>Non-empty slot: ";print_r ($schedule [ $schedID ]->GetScheduleSlot());
+                        echo " day: ".$day[0]." checking for room conflicts<br/> ";
 
-                    print_r( $slot[$l]);
+                        print_r( $slot[$l]);
 
-                    echo "<br/>booked Schedule ID: ";print_r ($schedule [ $schedID ]->GetScheduleID()); echo "<br/>";
-                    echo "<br/>booked @ Schedule Slot: ";print_r ($schedule [ $schedID ]->GetScheduleSlot()); echo "<br/>";
-                    echo "fitness: ".$timetable->GetTimetableFitness();
-                    echo "<br>";
+                        echo "<br/>booked Schedule ID: ";print_r ($schedule [ $schedID ]->GetScheduleID()); echo "<br/>";
+                        echo "<br/>booked @ Schedule Slot: ";print_r ($schedule [ $schedID ]->GetScheduleSlot()); echo "<br/>";
+                        echo "fitness: ".$timetable->GetTimetableFitness();
+                        echo "<br>";
+                    } 
 
                 }					
             }
@@ -153,48 +163,62 @@ function createTimetables($timetableID){
         }
             
     }
-    print_r( $slot);
+    if (DEBUG_INFO)print_r( $slot);
 
     return $schedule;
 } // end function createTimetables
 
 
 
+for($x = 0; $x < 2; $x++){
 
+    // $timetable is an array of schedules object(18 schedules)
+    // Table#: 0	GetTimetableFitness: 31	 GetScheduleID: 2
+    // Table#: 1	GetTimetableFitness: 16	 GetScheduleID: 0
+    // Table#: 2	GetTimetableFitness: 18	 GetScheduleID: 3
+    // Array
+    // (
+    //     [0] => 31
+    //     [1] => 16
+    //     [2] => 18
+    // )
+    $timetable[$x] = createTimetables ($x);
+    foreach($timetable[$x] as $key => $value){
+        
+        $timetableFitness[] = ($value->GetScheduleTimetableID()->GetTimetableFitness());
+        echo "<br/>Table#: $x\t";
+        echo "GetTimetableFitness: ";
+        print_r($value->GetScheduleTimetableID()->GetTimetableFitness());
+        echo "\t GetScheduleID: ";
+        print_r($value->GetScheduleID());
+        
+        break;
+    }
 
-
-// $schedule[0] = createTimetables (0);
-
-// echo "<br/><br/>schedule: ";
-// print_r(sizeof($schedule[0]));
-// $i = 0;
-// usort($schedule[0], "cmpSchedule");
-// echo "<br>table fitness: ";
-// print_r($schedule[0][5]->GetScheduleTimetableID()->GetTimetableFitness());
-
-
-
-
-
-for($x = 0; $x < 100; $x++){
-    $schedule[$x] = createTimetables ($x);
-    usort($schedule[$x], "cmpSchedule");
-    echo "<br>table #$x fitness: ";
-    var_dump($schedule[$x][5]->GetScheduleTimetableID()->GetTimetableFitness());
-    $tFitness[] = ($schedule[$x][5]->GetScheduleTimetableID()->GetTimetableFitness());
-    echo "<br/";
 }
 
-sort($tFitness);
-print_r($tFitness);
+// get the index of the table that has the lowest fitness value using the 
+// timetablefitness[] array
+$index = array_search(min($timetableFitness), $timetableFitness);
+echo "<br/><br/>";
+echo "The index of the lowest fitness value: $index <br/>";
+$lowestFValue = $timetableFitness[$index];
+echo "Which is: $lowestFValue<br/>";
+print_r($timetableFitness);
 
 
 
 echo "<br/><br/>";
+// once we have chosen the timetable with the lowest fitness value
+// we can now sort the timetable by using their slot numbers;
+// usort fxn will destryo the old array keys of the timetable array
+// it will create index from 0..n 
+usort($timetable[$index], "cmpSchedule");
+print_r($timetable[$index]);
 
 $i = 0;
 echo "<br/>\ti \tGetScheduleID \tGetScheduleSlot\tGetSubjectClassID<br/>";
-foreach ($schedule[1] as $key => $value){
+foreach ($timetable[$index] as $key => $value){
     $day = (int) ($i / TOTAL_PERIODS);
     echo "<br/>\t$i";
     if (true){
@@ -205,11 +229,15 @@ foreach ($schedule[1] as $key => $value){
     }else{
         echo " <br/>";
     }
-
     $i += 1;
 }
 
 echo "<br/><br/>";
+
+
+
+
+
 
 echo "<table cellpadding=\"0\" cellspacing=\"0\" border=\"3px\" >";
 echo "<tr> ";
@@ -225,7 +253,7 @@ for ($i = 0; $i < TOTAL_PERIODS * 2; $i++){
 
     echo "<td> <table cellpadding=\"0\" cellspacing=\"0\" border=\"1px\">  ";
     
-    foreach ($schedule[99] as $key => $value){
+    foreach ($timetable[0] as $key => $value){
         
         if($value->GetScheduleSlot()== $i){
             echo "<tr> <col width=\"200\"><col width=\"200\"> ";
