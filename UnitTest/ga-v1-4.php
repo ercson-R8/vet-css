@@ -163,14 +163,30 @@ function createTimetables($timetableID){
 
 
 
-$schedule[0] = createTimetables (0);
-echo "<br/><br/>schedule: ";
-print_r(sizeof($schedule[0]));
-$i = 0;
-usort($schedule[0], "cmpSchedule");
-echo "<br>table fitness: ";
-print_r($schedule[0][5]->GetScheduleTimetableID()->GetTimetableFitness());
+// $schedule[0] = createTimetables (0);
 
+// echo "<br/><br/>schedule: ";
+// print_r(sizeof($schedule[0]));
+// $i = 0;
+// usort($schedule[0], "cmpSchedule");
+// echo "<br>table fitness: ";
+// print_r($schedule[0][5]->GetScheduleTimetableID()->GetTimetableFitness());
+
+
+
+
+
+for($x = 0; $x < 100; $x++){
+    $schedule[$x] = createTimetables ($x);
+    usort($schedule[$x], "cmpSchedule");
+    echo "<br>table #$x fitness: ";
+    var_dump($schedule[$x][5]->GetScheduleTimetableID()->GetTimetableFitness());
+    $tFitness[] = ($schedule[$x][5]->GetScheduleTimetableID()->GetTimetableFitness());
+    echo "<br/";
+}
+
+sort($tFitness);
+print_r($tFitness);
 
 
 
@@ -178,7 +194,7 @@ echo "<br/><br/>";
 
 $i = 0;
 echo "<br/>\ti \tGetScheduleID \tGetScheduleSlot\tGetSubjectClassID<br/>";
-foreach ($schedule[0] as $key => $value){
+foreach ($schedule[1] as $key => $value){
     $day = (int) ($i / TOTAL_PERIODS);
     echo "<br/>\t$i";
     if (true){
@@ -209,7 +225,7 @@ for ($i = 0; $i < TOTAL_PERIODS * 2; $i++){
 
     echo "<td> <table cellpadding=\"0\" cellspacing=\"0\" border=\"1px\">  ";
     
-    foreach ($schedule[0] as $key => $value){
+    foreach ($schedule[99] as $key => $value){
         
         if($value->GetScheduleSlot()== $i){
             echo "<tr> <col width=\"200\"><col width=\"200\"> ";
@@ -271,6 +287,5 @@ for ($i = 0; $i < TOTAL_PERIODS * 2; $i++){
 
 }
 echo "</table>";
-
 
 // print_r($schedule[0][0]->GetScheduleTimetable()->GetTimetableFitness());
