@@ -40,7 +40,7 @@ function createTimetables($timetableID){
     // per classID (0-7) per subject class
     for ($i = 0; $i < sizeof($subjectClass); $i++){
         $sC = $subjectClass[$i]->GetSubjectClassID();
-        if (true)echo "<br/><br/><br/>-------------------------------------------<b>Subject Class ID: $sC </b>-------------------------------------------<br/>";
+        if (DEBUG_INFO)echo "<br/><br/><br/>-------------------------------------------<b>Subject Class ID: $sC </b>-------------------------------------------<br/>";
 
         // 	select a random room
         $subjectClass[$i]->SetSubjectClassRoomID( $room[(mt_rand(0, sizeof($room)-1))]    );
@@ -74,14 +74,14 @@ function createTimetables($timetableID){
                 if (count(array_unique($day)) == 1){
                     // 	same day, break loop
                     $sameDay = true;
-                    if (true)echo "[ Day:$day[0] Period: $classStartingPeriod - $classEndingPeriod]<br/>";
+                    if (DEBUG_INFO)echo "[ Day:$day[0] Period: $classStartingPeriod - $classEndingPeriod]<br/>";
                 }
             }
             
             // 	per period, start random n period up to $k (n+numOfPeriod) period
             for ($l=$classStartingPeriod; $l < $k; $l++){
                 $schedID = intval( (string) ($i) . (string) ($j) . (string) ($l) );
-                if (true){
+                if (DEBUG_INFO){
                     echo "<br>period: >> $l ";				
                     echo "<br>slot $l: ";
                     print_r( $slot[$l]);
@@ -94,7 +94,7 @@ function createTimetables($timetableID){
                     $schedule [ $schedID ]= new Schedules($schedID, $timetable, $subjectClass[$i],  $l);
 
 
-                    if (true){echo "<br/>booked Schedule ID: ";
+                    if (DEBUG_INFO){echo "<br/>booked Schedule ID: ";
                         print_r ($schedule [ $schedID ]->GetScheduleID()); 
                         echo " ";
                         echo "<br/>booked @ Schedule Slot: ";
@@ -103,13 +103,15 @@ function createTimetables($timetableID){
                     }
 
                     $slot[$l][] = $schedule[ $schedID]->GetScheduleID();
-                    if (true)print_r( $slot[$l]);
-                    if (true)echo "<br>--------------------------------------------------<br/>";
+                    if (DEBUG_INFO)print_r( $slot[$l]);
+                    if (DEBUG_INFO)echo "<br>--------------------------------------------------<br/>";
                     
                 }
                 else{ // slot already constains subjectClass/es 
-                    echo "Non-empty slot $l: ";
-                    print_r( $slot[$l]);
+                    if(DEBUG_INFO) {
+                        echo "Non-empty slot $l: ";
+                        print_r( $slot[$l]);
+                    }
                     $schedule [ $schedID ]= new Schedules($schedID, $timetable, $subjectClass[$i],  $l);
                     
                     // add to the temp asso array $slot. this will hold schedule in the appropriate slot number
@@ -130,19 +132,18 @@ function createTimetables($timetableID){
                                     GetSubjectClassRoomID()->GetRoomName()); 
                         $conflicts[] = $rm;
                        
-                        if (true)echo "<br/>";
 
                     }
                     
-                    if (true){
-                    print_r ($conflicts);
-                    echo " unique: ";
-                    print_r ( count(array_unique($conflicts)) );
-                    echo " conflict size: ";
-                    print_r (  sizeof($conflicts) );
-                    echo " total conflicts: ";
-                    print_r ( sizeof($conflicts) - count(array_unique($conflicts)) );
-                    echo "<br>------<br/>";
+                    if (DEBUG_INFO){
+                        print_r ($conflicts);
+                        echo " unique: ";
+                        print_r ( count(array_unique($conflicts)) );
+                        echo " conflict size: ";
+                        print_r (  sizeof($conflicts) );
+                        echo " total conflicts: ";
+                        print_r ( sizeof($conflicts) - count(array_unique($conflicts)) );
+                        echo "<br>------<br/>";
                     }
 
 
@@ -151,7 +152,7 @@ function createTimetables($timetableID){
                     $timetable->SetTimetableFitness($timetable->GetTimetableFitness() + 
                                                     ( sizeof($conflicts) - count(array_unique($conflicts)) ));
                                                     
-                    if (true) {
+                    if (DEBUG_INFO) {
                         echo "<br/>Non-empty slot: ";print_r ($schedule [ $schedID ]->GetScheduleSlot());
                         echo " day: ".$day[0]." checking for room conflicts<br/> ";
 
@@ -251,7 +252,10 @@ echo "<br/><br/>";
 // usort fxn will destryo the old array keys of the timetable array
 // it will create index from 0..n 
 usort($timetable[$index], "cmpSchedule");
-// print_r($timetable[$index]);
+
+print_r($timetable[$index]);
+
+
 
 $i = 0;
 echo "<br/>\ti \tGetScheduleID \tGetScheduleSlot\tGetSubjectClassID<br/>";
@@ -273,9 +277,6 @@ echo "<br/><br/>";
 
 
 
-
-
-
 echo "<table cellpadding=\"0\" cellspacing=\"0\" border=\"3px\" >";
 echo "<tr> ";
 echo "<th>Slot \t Day \t Period</th>"; echo "<th> Details</th>";
@@ -293,7 +294,7 @@ for ($i = 0; $i < TOTAL_PERIODS * 2; $i++){
     foreach ($timetable[0] as $key => $value){
         
         if($value->GetScheduleSlot()== $i){
-            echo "<tr> <col width=\"200\"><col width=\"200\"> ";
+            echo "<tr> <col width=\"300\"><col width=\"300\"> ";
             if ($value->GetScheduleSubjectClassID()->GetSubjectClassRoomID()->GetRoomID() == 401){
                 echo "<td style=\"text-align:center;\">";
                 print_r($value->GetScheduleSlot()); 
