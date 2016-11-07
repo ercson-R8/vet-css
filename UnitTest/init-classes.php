@@ -9,8 +9,12 @@
         require "Timetables.php";
         require "SubjectClasses.php";
         define("DEBUG_INFO", false);
-        define("TOTAL_SLOTS", 10);
-        define("TOTAL_PERIODS", 5);
+        define("TOTAL_SLOTS", 10);          // per week
+        define("TOTAL_PERIODS", 5);         // per day
+        define("TOTAL_DAYS", 2);            // number of days per week
+        define("POP_SIZE", 5);             // population size to be generated
+        define("MAX_GEN", 2);               // max number of generations 
+
 
 
     // *********************************************************************

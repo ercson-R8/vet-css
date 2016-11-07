@@ -118,3 +118,11 @@ $y = '0';
 
  $x = intval($i.$y) + 1;
  echo $x;
+
+
+echo "<br/><br/>";
+define("TOTAL_SLOTS", 25);
+
+$x =TOTAL_SLOTS + 100;
+
+print_r($x);
