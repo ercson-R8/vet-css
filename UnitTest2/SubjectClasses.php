@@ -51,7 +51,7 @@ class SubjectClasses{
 
     }
 
-
+    // Setters
 
 
     /**
@@ -110,7 +110,11 @@ class SubjectClasses{
     }
 
 
+
+
     // Getter methods
+
+
 
     /**
      * GetSubjectClassDistributionBlock method 
@@ -203,6 +207,11 @@ class SubjectClasses{
         return $this->isPossibleToDistribute ;
     }
 
+    
+    // Getters Group 
+
+
+
     private function DistributeBlockPeriods(){
         /**
         * 
@@ -212,8 +221,10 @@ class SubjectClasses{
         */                   
 
 
-        $_subjectId = $this->GetSubjectClassSubjectID()->GetSubjectID();
-        $_subjectName = $this->GetSubjectClassSubjectID()->GetSubjectName();
+        $_subjectId = $this->GetSubjectClassSubjectID();
+        //print_r($_subjectId);
+        $_subjectName = $_subjectId->GetSubjectName();
+        //print_r($_subjectName);
         $_totalPeriodsPerWeek = $this->GetSubjectClassSubjectID()->GetSubjectRequiredPeriod();
 
 
@@ -222,7 +233,7 @@ class SubjectClasses{
         $_numberDaysPerWeek = $this->GetSubjectClassPreferenceID()->GetPreferencePreferredNumberDays();          
         $_numberPeriodsPerDay = $this->GetSubjectClassPreferenceID()->GetPreferencePreferredNumberPeriodsDay();
         if(DEBUG_INFO){
-            echo "===========<br/><br/>Testing possibilities for Subject :<b>$_subjectName $_subjectId </b><br/>";
+            echo "===========<br/><br/>Testing possibilities for Subject :<b>". $_subjectName."</b><br/>";
             echo "===========<br/><br/>Class ID : $_clID</b><br/>";
             echo "Total required number of periods: <b>$_totalPeriodsPerWeek</b><br/>";
             echo "Preferred number of days/week: <b>$_numberDaysPerWeek</b> <br/>";
@@ -281,7 +292,7 @@ class SubjectClasses{
             shuffle ($dist);
             foreach ($dist as $key => $value){
                 $k = $key + 1;
-                if(DEBUG_INFO)echo "Day$k : <b>$value </b>| ";
+                if(DEBUG_INFO)echo "Day$k : <b>$value </b> ";
             }
             if(DEBUG_INFO)echo"<br/>";
         }
@@ -308,6 +319,6 @@ class SubjectClasses{
                 ];
     }
 
+
+
 }
-
-

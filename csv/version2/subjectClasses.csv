@@ -1,0 +1,7 @@
+subjectClassID,subjectID,traineeGroupID,teacherID,roomID,Preference ID
+0,101,201,301,,0
+1,103,201,303,,1
+2,102,201,302,,2
+3,103,202,303,,3
+4,101,202,301,,4
+5,102,202,302,,5

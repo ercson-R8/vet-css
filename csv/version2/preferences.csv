@@ -1,0 +1,7 @@
+Preference ID,preference_room_type,subjectClassesPreferredStartPeriod,subjectClassesPreferredEndPeriod,subjectClassesPreferredNumberDays,preferencePreferredNumberPeriodsDay
+0,Classroom,1,5,1,2
+1,Classroom,1,5,2,2
+2,Classroom,1,5,1,2
+3,Classroom,1,5,2,2
+4,Classroom,1,5,1,2
+5,Classroom,1,5,1,2

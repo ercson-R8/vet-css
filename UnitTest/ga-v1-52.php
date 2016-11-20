@@ -132,15 +132,14 @@ function createTimetables($timetableID){
                                     GetSubjectClassRoomID()->GetRoomName()); 
                         $conflicts[] = $rm;
                        
-<<<<<<< HEAD
-=======
+
                         if (DEBUG_INFO)echo "<br/>";
->>>>>>> master
+
 
                     }
                     
                     if (DEBUG_INFO){
-<<<<<<< HEAD
+
                         print_r ($conflicts);
                         echo " unique: ";
                         print_r ( count(array_unique($conflicts)) );
@@ -149,7 +148,6 @@ function createTimetables($timetableID){
                         echo " total conflicts: ";
                         print_r ( sizeof($conflicts) - count(array_unique($conflicts)) );
                         echo "<br>------<br/>";
-=======
                     print_r ($conflicts);
                     echo " unique: ";
                     print_r ( count(array_unique($conflicts)) );
@@ -158,7 +156,7 @@ function createTimetables($timetableID){
                     echo " total conflicts: ";
                     print_r ( sizeof($conflicts) - count(array_unique($conflicts)) );
                     echo "<br>------<br/>";
->>>>>>> master
+
                     }
 
 
