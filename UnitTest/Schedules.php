@@ -22,11 +22,11 @@ class Schedules{
     /**
      * Constructor method 
      *
-     * @param   $scheduleID         int: schedule id number
-     *          $timetableID        Object: the timetable which this schedule belongs to
-     *          $SchedulesSubjectClassID     SubjectClasses object: descriptive name for the subject
-     *          $scheduleSlot       int: the required number of periods per week
-     *          $scheduleConflicts  int: number of slot in conflict
+     * @param   $scheduleID                 int: schedule id number
+     *          $timetableID                Object: the timetable which this schedule belongs to
+     *          $SchedulesSubjectClassID    SubjectClasses object: descriptive name for the subject
+     *          $scheduleSlot               int: the required number of periods per week
+     *          $scheduleConflicts          int: number of slot in conflict
      * @return  none;
      */
 
