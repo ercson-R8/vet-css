@@ -18,8 +18,9 @@ function createTimetables($timetableID){
     $timetable  = new Timetables($timetableID, 2016, 1, "test table",0);
     if (DEBUG_INFO)print_r ($timetable); 
 
-
-    $obj            = createObjects();
+    
+    //returns [$subject, $traineeGroup, $teacher, $room, $preference, $subjectClass];
+    $obj            = createObjects();  
     $subject        = $obj[0];
     $traineeGroup   = $obj[1];
     $teacher        = $obj[2];
