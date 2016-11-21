@@ -99,7 +99,7 @@ class Rooms{
      * @return	$roomID int room id
      */
     public function GetRoomType (){
-        return [$this->roomType];
+        return $this->roomType;
     }
 
     /**

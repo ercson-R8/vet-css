@@ -95,12 +95,12 @@ class Preferences{
     }
 
     /**
-     * GetPreferencesPreferenceRoomType method 
+     * GetPreferencesRoomType method 
      *
      * @param 	
      * @return	 $preferencesID
      */
-    public function GetPreferencePreferenceRoomType (){
+    public function GetPreferenceRoomType (){
         
         return $this->preferenceRoomType ;
     }

@@ -267,7 +267,7 @@ class SubjectClasses{
                             $blockPeriod = $isPossibleToDistribute; 
                             // distribute the remaining periods to the remaining days
                             for ($i = 0; $i < $remainingDays; $i++){
-                                array_push($dist, $blockPeriod);
+                                array_push($dist, (int)($blockPeriod));
                             }
                             $done = true;
                             break;
@@ -279,12 +279,12 @@ class SubjectClasses{
                             return false;
                         }
                     }else { // since this is the last day, push the remaining periods
-                        array_push($dist, $remainingPeriods);
+                        array_push($dist, (int)( $remainingPeriods));
                         $done = true;
                         break;
                     }
                 }
-                array_push($dist, $blockPeriod);
+                array_push($dist, (int)($blockPeriod));
                 $remainingDays -= 1;
                 $remainingPeriods -= $blockPeriod;
             }

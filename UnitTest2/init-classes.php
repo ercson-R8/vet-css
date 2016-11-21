@@ -8,10 +8,10 @@
         require "Schedules.php";
         require "Timetables.php";
         require "SubjectClasses.php";
-        define("DEBUG_INFO", true);
-        define("TOTAL_SLOTS", 10);          // per week
+        define("DEBUG_INFO", false);
         define("TOTAL_PERIODS", 5);         // per day
         define("TOTAL_DAYS", 2);            // number of days per week
+        define("TOTAL_SLOTS", TOTAL_PERIODS * TOTAL_DAYS );          // per week
         define("POP_SIZE", 5);             // population size to be generated
         define("MAX_GEN", 2);               // max number of generations 
 
@@ -20,7 +20,7 @@
     // *********************************************************************
     function createSubjects(){   // Fetch Subjects
         
-         $fileSubjects = file('../csv/version2/Subjects.csv');
+        $fileSubjects = file('../csv/version2/Subjects.csv');
         $line = 0; // exclude the header. set to 1 to include headers
         foreach ($fileSubjects as $subject){
             // fetch all the data including the worksheet header;
@@ -105,12 +105,12 @@
             }
             $line += 1;
         }
-        $room = [];
+        $rooms = [];
         for ( $i=0; $i < $line-1; $i++){
-            $room[$i] = new Rooms ( $roomID[$i], $roomName[$i], $roomType[$i], $roomLocation[$i]  );
+            $rooms[$i] = new Rooms( $roomID[$i], $roomName[$i], $roomType[$i], $roomLocation[$i]  );
         }
-        if (DEBUG_INFO) echo print_r($room);
-        return $room;
+        if (DEBUG_INFO) echo print_r($rooms);
+        return $rooms;
     }
 
 
@@ -160,7 +160,7 @@
         $rooms = createRooms();
         $preferences = createPreferences ();
         
-        // get corresponding IDs of objects 
+        // get corresponding IDs of objects and store in asso array 
         $tg = getObjectID ($traineeGroups, 'GetTraineeGroupID');
         $sb = getObjectID ($subjects, 'GetSubjectID' );
         $tr = getObjectID ($teachers, 'GetTeacherID');
@@ -179,26 +179,30 @@
         }
 
         // print_r ( array_search (  $subjectID[0], $sb, true   )     );
-
         // print_r ($subjects [array_search (  $subjectID[0], $sb, true   )]); 
-
         //echo "size of preferences ". (sizeof($preferences));
 
         // compose subject classess based on the above objects;
         //  array_search(value,array,strict)
+
         $SubjectClass = [];
         for ($i = 0; $i < sizeof($preferences); $i++){
-                $SubjectClass[$i] = new SubjectClasses ($i,
-                                    $subjects[array_search($subjectID[$i], $sb,true) ],
-                                    $traineeGroups[array_search($traineeGroupID[$i],$tg,true)],
-                                    $teachers[array_search($teacherID[$i],$tr,true)],
-                                    null,
-                                    $preferences [$i]
-                                    );
+
+            // search the array (subjectID, traineeGroupID, teacherID) 
+            // and match the key to array of objects (subjects,traineeGroups,teachers )
+            // to get the appropriate object
+            $SubjectClass[$i] = new SubjectClasses ($i,
+                                $subjects[array_search($subjectID[$i], $sb,true) ],
+                                $traineeGroups[array_search($traineeGroupID[$i],$tg,true)],
+                                $teachers[array_search($teacherID[$i],$tr,true)],
+                                null,
+                                $preferences [$i]
+                                );
         }
         if (DEBUG_INFO) echo print_r($SubjectClass);
-    
+        return $SubjectClass;
+
     }
     
 
-createObjects();
+//createObjects();
