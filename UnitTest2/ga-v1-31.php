@@ -6,9 +6,9 @@ require "init-classes.php";
 /**
 * getRoom  
 *
-* @param 	$rooms                  object  Rooms class conataining room info 
-*           $preferenceRoomType     string, the room type
-* @return   $roomNumber	            int     the selected room number
+* @param 	object  $rooms,  conataining room info 
+*           string  $preferenceRoomType, the room type
+* @return   int     $roomNumber, the selected room number
 */
 function getRoom($rooms , $preferenceRoomType){
     $roomSeleted = false;
@@ -27,8 +27,8 @@ function getRoom($rooms , $preferenceRoomType){
 /**
 * getSlot  
 *
-* @param 	$distBlock  array   from class Preferences 
-* @return   $slot       array   the selected slot per day for the subject
+* @param 	array   $distBlock, from class Preferences 
+* @return   array   $slot, the selected slot per day for the subject
 */
 function getSlot($distBlock){
     // subject-classes are taught in "d" number days with "n" number of periods per day
@@ -69,19 +69,7 @@ function getSlot($distBlock){
                     $slot[$j] = [$classStartingPeriod , $classEndingPeriod];
                     if (0)echo "[ Day:$day[0] Period: $classStartingPeriod - $classEndingPeriod]<br/>";
                     $sameDay = true;
-                }
-
-                // check if it was previously booked on that day
-                // if (in_array(   (int) ($classStartingPeriod / TOTAL_PERIODS)       ,  $day  )){
-                //     $sameDay = false;
-                // }else{
-                //     // 	same day, break the loop
-                //     $daysTaken[] = ( (int) ($classStartingPeriod / TOTAL_PERIODS) );
-                //     $slot[$j] = [$classStartingPeriod , $classEndingPeriod];
-                //     if (0)echo "[ Day:$day[0] Period: $classStartingPeriod - $classEndingPeriod]<br/>";
-                //     $sameDay = true;
-
-                // } // else
+                } // else 
             } // if 
         } // while
     } // for
