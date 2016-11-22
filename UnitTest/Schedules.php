@@ -17,7 +17,7 @@ class Schedules{
     private $scheduleTimetableID;
     private $scheduleSubjectClassID;
     private $scheduleSlot;
-    // private $scheduleConflicts; 
+    private $scheduleConflicts; 
 
     /**
      * Constructor method 
@@ -36,7 +36,7 @@ class Schedules{
         $this->scheduleTimetableID = $scheduleTimetableID;
         $this->scheduleSubjectClassID = $scheduleSubjectClassID;
         $this->scheduleSlot = $scheduleSlot;
-        // $this->scheduleConflicts = 0;
+        $this->scheduleConflicts = 0;
 
     }
 

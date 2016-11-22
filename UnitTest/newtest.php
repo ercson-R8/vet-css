@@ -126,3 +126,21 @@ define("TOTAL_SLOTS", 25);
 $x =TOTAL_SLOTS + 100;
 
 print_r($x);
+
+
+for ($i=0; $i < 10; $i++){
+    $d[$i] = $i*5;
+
+}
+
+echo "<br/>";
+var_dump($d);
+
+if (in_array(15, $d))
+  {
+  echo "Match found<br>";
+  }
+else
+  {
+  echo "Match not found<br>";
+  } 

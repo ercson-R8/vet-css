@@ -221,7 +221,7 @@ function createTimetables($timetableID){
 // ----------------------------------------------------------------------------------------------------
 // main code
 
-for($x = 0; $x < 50; $x++){
+for($x = 0; $x < 5000; $x++){
 
     // $timetable is an array of schedules object(18 schedules)
     // Table#: 0	GetTimetableFitness: 31	 GetScheduleID: 2
@@ -264,19 +264,18 @@ echo "<br/><br/>";
 // we can now sort the timetable by using their slot numbers;
 // usort fxn will destryo the old array keys of the timetable array
 // it will create index from 0..n 
-<<<<<<< HEAD
+
 usort($timetable[$index], "cmpSchedule");
 
 print_r($timetable[$index]);
 
 
-=======
+
 
 // usort($timetable[$index], "cmpSchedule");
 
 
 // print_r($timetable[$index]);
->>>>>>> master
 
 $i = 0;
 echo "<br/>\ti \tGetScheduleID \tGetScheduleSlot\tGetSubjectClassID<br/>";
@@ -299,10 +298,6 @@ echo "<br/><br/>";
 
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 echo "<table cellpadding=\"0\" cellspacing=\"0\" border=\"3px\" >";
 echo "<tr> "; echo "<th>Slot \t Day \t Period</th>"; echo "<th> Details</th>"; echo "</tr>";
 
