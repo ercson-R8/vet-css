@@ -99,7 +99,7 @@ function createTimetable($timetableID, $ay, $term, $desc){
     for ($i = 0 ; $i < sizeof($subjectClass) ; $i++){
         if ($subjectClass[$i]->GetIsPossibleToDistribute ()){
             if (1){
-                echo "<br/>=================================================================";
+                echo "<br/>======================== <<".$subjectClass[$i]->GetSubjectClassID() .">> =======================================";
                 echo"<br/>Subject:<b>\t";print_r($subjectClass[$i]->GetSubjectClassSubjectID()->GetSubjectName()  );
                 echo"<br/>Req. Period:<b>\t";print_r($subjectClass[$i]->GetSubjectClassSubjectID()->GetSubjectRequiredPeriod()  );
                 echo"</b><br/></b>Group:\t\t<b>";print_r($subjectClass[$i]->GetSubjectClassTraineeGroupID()->GetTraineeGroupName()  );
@@ -151,14 +151,14 @@ function createTimetable($timetableID, $ay, $term, $desc){
                     // check if the current slot is empty
                     // if it is then reserve the slot 
                     if (sizeof($scheduleSlot[$p]) == 0 ){
-                        
-                        //$schedule [ $schedID ]= new Schedules($schedID, $timetable, $subjectClass[$i],  $l);
                         echo "free<br/>";
+                        $schedule [ $schedID ]= new Schedules($schedID, $timetable, $subjectClass[$i],  $p);
                         $scheduleSlot[$p][] = $subjectClass[$i]->GetSubjectClassID();
 
                     }else{ // slot is not empty 
 
                         echo "not free<br/>";
+                        $schedule [ $schedID ]= new Schedules($schedID, $timetable, $subjectClass[$i],  $p);
                         $scheduleSlot[$p][] = $subjectClass[$i]->GetSubjectClassID();
                     }// else 
                     $schedID += 1;
@@ -180,6 +180,7 @@ function createTimetable($timetableID, $ay, $term, $desc){
     } // for 
     print_r("<br/>Schedule array: ");
     print_r($scheduleSlot);
+    print_r($schedule);
 
 } // function
 

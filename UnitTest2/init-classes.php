@@ -114,7 +114,6 @@
     }
 
 
-
     // *********************************************************************
     function createPreferences(){   // Fetch Preferences 
         
@@ -140,7 +139,6 @@
     }
 
 
-
     function getObjectID( $obj, $getter ){
         
         for ($j=0; $j < sizeof($obj); $j++){
@@ -151,8 +149,9 @@
 
 
      // *********************************************************************
-    function createObjects(){       // create objects required by timetable
-        // initial objects
+    function createSubjecClasses(){       // create objects required by timetable
+        // initialize objects
+        // the create functions will return an array of objects 
 
         $subjects = createSubjects();
         $traineeGroups = createTraineeGroups();
@@ -160,7 +159,7 @@
         $rooms = createRooms();
         $preferences = createPreferences ();
         
-        // get corresponding IDs of objects and store in asso array 
+        // get corresponding IDs of objects and store in a.array 
         $tg = getObjectID ($traineeGroups, 'GetTraineeGroupID');
         $sb = getObjectID ($subjects, 'GetSubjectID' );
         $tr = getObjectID ($teachers, 'GetTeacherID');
@@ -189,7 +188,7 @@
         for ($i = 0; $i < sizeof($preferences); $i++){
 
             // search the array (subjectID, traineeGroupID, teacherID) 
-            // and match the key to array of objects (subjects,traineeGroups,teachers )
+            // and match the key to the array of objects (subjects,traineeGroups,teachers )
             // to get the appropriate object
             $SubjectClass[$i] = new SubjectClasses ($i,
                                 $subjects[array_search($subjectID[$i], $sb,true) ],

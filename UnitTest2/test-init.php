@@ -5,7 +5,7 @@ $timetable  = new Timetables(1, 2016, 1, "blah",0);
     print_r ($timetable); 
 
 
-    $obj            = createObjects();
+    $obj            = createSubjecClasses();
     $subject        = $obj[0];
     $traineeGroup   = $obj[1];
     $teacher        = $obj[2];
