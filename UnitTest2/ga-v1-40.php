@@ -155,7 +155,7 @@ function createTimetable($timetableID, $ay, $term, $desc){
                         $schedule [ $schedID ]= new Schedules($schedID, $timetable, $subjectClass[$i],  $p);
                         $scheduleSlot[$p][] = $subjectClass[$i]->GetSubjectClassID();
 
-                    }else{ // slot is not empty 
+                    }else{ // slot is not empty  
 
                         echo "not free<br/>";
                         $schedule [ $schedID ]= new Schedules($schedID, $timetable, $subjectClass[$i],  $p);
