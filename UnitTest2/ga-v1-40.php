@@ -186,3 +186,4 @@ function createTimetable($timetableID, $ay, $term, $desc){
 
 
 createTimetable (1, 2016, 1, "test table");
+
