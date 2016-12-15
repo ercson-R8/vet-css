@@ -190,11 +190,15 @@
             // search the array (subjectID, traineeGroupID, teacherID) 
             // and match the key to the array of objects (subjects,traineeGroups,teachers )
             // to get the appropriate object
+            if ($roomID[$i]== ""){
+                // echo "<br>room not specified<br/>";
+                $roomID[$i] = null;
+            }
             $SubjectClass[$i] = new SubjectClasses ($i,
                                 $subjects[array_search($subjectID[$i], $sb,true) ],
                                 $traineeGroups[array_search($traineeGroupID[$i],$tg,true)],
                                 $teachers[array_search($teacherID[$i],$tr,true)],
-                                null,
+                                $roomID[$i],
                                 $preferences [$i]
                                 );
         }

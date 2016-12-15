@@ -84,20 +84,42 @@ function getSlot($distBlock){
 // ---------------------------
 // main code
 function createTimetable($timetableID, $ay, $term, $desc){
-    $timetable  = new Timetables($timetableID, $ay, $term, $desc, 0);
+    //$timetable  = new Timetables($timetableID, $ay, $term, $desc, 0);
+    $timetable = $timetableID;
     $rooms = createRooms();
+    // creates an array of all the room IDs
+    // will be used for search of room when a specific room was specified 
+    // during the creation of time table 
+    foreach ($rooms as $room){
+        $roomID[]=$room->GetRoomID();
+    }
+    // print_r ($roomID);
     if (DEBUG_INFO)print_r ($timetable); 
 
     // 
     $subjectClass = createSubjecClasses();
     for ($i = 0 ; $i < TOTAL_SLOTS; $i++){
-        $scheduleSlot[$i] = null;        
+        $scheduleSlot[$i] = null;   
+        $schedule[$i] = null;     
     }
     $totalConflicts = 0;
     $schedID = 0;
     
     for ($i = 0 ; $i < sizeof($subjectClass) ; $i++){
         if ($subjectClass[$i]->GetIsPossibleToDistribute ()){
+
+             // verify first if room was already specified/booked, if not then get a room
+             if ( $subjectClass[$i]->GetSubjectClassRoomID() == null ){
+                $roomNumber = getRoom($rooms, $subjectClass[$i]->GetSubjectClassPreferenceID()->GetPreferenceRoomType());
+                $subjectClass[$i]->SetSubjectClassRoomID ($rooms[$roomNumber]);
+            
+             }else{ // room was prebooked, get the ID specified and search the list of ID to get the room "key"
+            
+                 $roomNumber = $subjectClass[$i]->GetSubjectClassRoomID(); // contains the room ID int from csv
+                 $subjectClass[$i]->SetSubjectClassRoomID ($rooms[array_search($roomNumber, $roomID,true)]);
+             }
+             
+
             if (1){
                 echo "<br/>======================== <<".$subjectClass[$i]->GetSubjectClassID() .">> =======================================";
                 echo"<br/>Subject:<b>\t";print_r($subjectClass[$i]->GetSubjectClassSubjectID()->GetSubjectName()  );
@@ -108,9 +130,7 @@ function createTimetable($timetableID, $ay, $term, $desc){
                 echo "<br></b>Pref. duration:\t<b>";print_r($subjectClass[$i]->GetSubjectClassPreferenceID()->GetPreferencePreferredNumberDays());
                 echo " day/s<br></b>";
 
-                // we can also verify first if room was already specified/booked, if not then get a room
-                $roomNumber = getRoom($rooms, $subjectClass[$i]->GetSubjectClassPreferenceID()->GetPreferenceRoomType());
-                echo "Room selected:  ".$rooms[$roomNumber]->GetRoomName();
+                echo "Room selected:  ".$subjectClass[$i]->GetSubjectClassRoomID()->GetRoomName();
                 echo "<br></b>Dist block:\t<br/>[day] => [no. of per]<b><br/> ";print_r($subjectClass[$i]->GetSubjectClassDistributionBlock());
                 echo "<br></b>";
             }
@@ -150,17 +170,9 @@ function createTimetable($timetableID, $ay, $term, $desc){
                     print_r ($p." * ");
                     // check if the current slot is empty
                     // if it is then reserve the slot 
-                    if (sizeof($scheduleSlot[$p]) == 0 ){
-                        echo "free<br/>";
-                        $schedule [ $schedID ]= new Schedules($schedID, $timetable, $subjectClass[$i],  $p);
-                        $scheduleSlot[$p][] = $subjectClass[$i]->GetSubjectClassID();
-
-                    }else{ // slot is not empty  
-
-                        echo "not free<br/>";
-                        $schedule [ $schedID ]= new Schedules($schedID, $timetable, $subjectClass[$i],  $p);
-                        $scheduleSlot[$p][] = $subjectClass[$i]->GetSubjectClassID();
-                    }// else 
+                    $schedule [$p][]= new Schedules($schedID, $timetable, $subjectClass[$i],  $p);
+                    // echo("$p===>".$p."<br/>");
+                    $scheduleSlot[$p][] = $subjectClass[$i]->GetSubjectClassID();
                     $schedID += 1;
                 } // for 
 
@@ -180,9 +192,12 @@ function createTimetable($timetableID, $ay, $term, $desc){
     } // for 
     print_r("<br/>Schedule array: ");
     print_r($scheduleSlot);
-    print_r($schedule);
+    // print_r($schedule);
+
+    return $schedule;
 
 } // function
 
 
-createTimetable (1, 2016, 1, "test table");
+$timetable[0] = createTimetable (0, 2016, 1, "test table");
+print_r($timetable);

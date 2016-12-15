@@ -136,11 +136,18 @@ for ($i=0; $i < 10; $i++){
 echo "<br/>";
 var_dump($d);
 
-if (in_array(15, $d))
+if (in_array(2, $d))
   {
-  echo "Match found<br>";
+  echo "Match found ".in_array(15, $d, true). "<br>";
   }
 else
   {
-  echo "Match not found<br>";
-  } 
+  echo "Match not found ".in_array(2, $d, true). "<br>";;
+  }
+
+
+$n = null;
+if ($n == null)
+    echo "n is null";
+
+echo null;
