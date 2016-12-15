@@ -199,10 +199,9 @@ function createTimetable($timetableID, $ay, $term, $desc){
 } // function
 
 
-<<<<<<< HEAD
+
 $timetable[0] = createTimetable (0, 2016, 1, "test table");
 print_r($timetable);
-=======
 createTimetable (1, 2016, 1, "test table");
 
->>>>>>> 58c61cf280870f7e3ba812578834f9a18131329c
+ 
