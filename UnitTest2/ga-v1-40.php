@@ -88,7 +88,7 @@ function createTimetable($timetableID, $ay, $term, $desc){
     $timetable = $timetableID;
     $rooms = createRooms();
     // creates an array of all the room IDs
-    // will be used for search of room when a specific room was specified 
+    // will be used for searching a room when a specific room was specified 
     // during the creation of time table 
     foreach ($rooms as $room){
         $roomID[]=$room->GetRoomID();
@@ -97,7 +97,7 @@ function createTimetable($timetableID, $ay, $term, $desc){
     if (DEBUG_INFO)print_r ($timetable); 
 
     // 
-    $subjectClass = createSubjecClasses();
+    $subjectClass = createSubjecClasses(); // from init-classes.php
     for ($i = 0 ; $i < TOTAL_SLOTS; $i++){
         $scheduleSlot[$i] = null;   
         $schedule[$i] = null;     
@@ -201,7 +201,7 @@ function createTimetable($timetableID, $ay, $term, $desc){
 
 
 $timetable[0] = createTimetable (0, 2016, 1, "test table");
-print_r($timetable);
-createTimetable (1, 2016, 1, "test table");
+//print_r($timetable);
+//createTimetable (1, 2016, 1, "test table");
 
  
