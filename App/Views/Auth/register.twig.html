@@ -1,0 +1,19 @@
+
+
+{% block body %}
+
+    <h1>Register</h1>
+	<span>or <a href="/auth/LoginController/index">login here</a></span>
+	<br /><br />
+	<form action="/auth/RegisterController/register" method="POST">
+		
+		<input type="text" placeholder="Enter your email" name="email">
+        <br/>
+		<input type="password" placeholder="and password" name="password">
+        <br/>
+		<input type="submit">
+
+	</form>
+
+
+{% endblock %}
