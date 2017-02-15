@@ -1,9 +1,0 @@
-Preference ID,subjectID,traineeGroupID,teacherID,preference_room_type,subjectClassesPreferredStartPeriod,subjectClassesPreferredEndPeriod,subjectClassesPreferredNumberDays,preferencePreferredNumberPeriodsDay
-0,101,201,301,Classroom,1,5,1,2
-1,102,201,302,Classroom,1,5,1,2
-2,103,201,303,Classroom,1,5,1,3
-3,104,201,304,Classroom,1,5,1,2
-4,101,202,301,Classroom,1,5,1,2
-5,102,202,302,Classroom,1,5,1,2
-6,103,202,303,Classroom,1,5,1,3
-7,104,202,304,Classroom,1,5,1,2
