@@ -4,23 +4,7 @@ namespace App\Controllers\Timetable;
 
 use \Core\View;
 use App\Models\DB;
-
-
-
-// namespace App\Controllers\Auth;
-
-// use \Core\View;
-// use App\Models\Auth;
-
-// /**
-//  * LoginController auth controller
-//  *
-//  * PHP version 5.4
-//  */
-// class LoginController extends \Core\Controller
-
-
-
+use App\Controllers\Timetable\TraineeGroup;
 
 
 
@@ -36,16 +20,26 @@ class TestTimetable extends \Core\Controller {
  | 
  | 
  */
+ public function __construct(){
 
-    /**
-    * indexAction method 
-    *
-    * @param		
-    * @return	 	
-    */
+ }
+    // /**
+    // * indexAction method 
+    // *
+    // * @param		
+    // * @return	 	
+    // */
+    
+    
     public function indexAction (){
         echo "greetings from testTimetable index";
-        return true ;
+        $tg = new TraineeGroup();
+        // return true;
+
+
+
+
+
     }
 
 

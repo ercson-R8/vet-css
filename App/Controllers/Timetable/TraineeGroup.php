@@ -27,8 +27,8 @@ class TraineeGroup {
      * @param		
      * @return	    none; 	
      */
-    public function __constructor ($traineeGroupID = null, $traineeGroupName = null, $traineeGroupSection = null,
-                                    $traineeGroupSection = null, $traineeGroupRemarks = null){
+    public function __construct ($traineeGroupID = null, $traineeGroupName = null, $traineeGroupSection = null,
+                                    $traineeGroupLevel = null, $traineeGroupRemarks = null){
 
         $this->traineeGroupID = $traineeGroupID;
         $this->traineeGroupName = $traineeGroupName;
