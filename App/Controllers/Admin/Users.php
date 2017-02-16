@@ -2,8 +2,8 @@
 
 namespace App\Controllers\Admin;
 
-use \Core\View;
-
+// use \Core\View;
+use App\Controllers\Auth\Demo;
 /**
  * User admin controller
  *
@@ -29,8 +29,13 @@ class Users extends \Core\Controller
      * @return void
      */
     public function indexAction()
-    {
+    {   
+        $d = new Demo();
         //echo 'User admin index';
-        View::renderTemplate('Admin/index.twig.html');
+        \Core\View::renderTemplate('Admin/index.twig.html');
+        $d->indexAction();
+        $r = new \Core\Router();
+        print_r($r);
+
     }
 }
