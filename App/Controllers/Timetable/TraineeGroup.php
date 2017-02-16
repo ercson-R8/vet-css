@@ -21,7 +21,7 @@ class TraineeGroup {
     private $traineeGroupLevel = null;
     private $traineeGroupRemarks = null;
     
-    /**
+    /*
      * __constructor  method 
      *
      * @param		
@@ -48,7 +48,7 @@ class TraineeGroup {
         return $this->traineeGroupID;
     }
 
-    /**
+    /*
      * GetTraineeGroupName method 
      *
      * @param 	 none
@@ -60,7 +60,7 @@ class TraineeGroup {
         
     }
 
-    /**
+    /*
      * GetTraineeGroupSection method 
      *
      * @param 	 none
@@ -72,7 +72,7 @@ class TraineeGroup {
         
     }
 
-    /**
+    /*
      * GetTraineeGroupLevel method 
      *
      * @param 	 none
@@ -84,7 +84,7 @@ class TraineeGroup {
         
     }
 
-    /**
+    /*
      * GetTraineeGroupRemarks method 
      *
      * @param 	 none
@@ -96,7 +96,7 @@ class TraineeGroup {
         
     }
 
-    /**
+    /*
      * GetTraineeGroupInformation method 
      *
      * @param 	

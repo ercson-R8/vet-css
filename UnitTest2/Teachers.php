@@ -16,7 +16,7 @@ class Teachers{
         private $teacherDescription = null;
 
 
-       /**
+       /*
          * Constructor method 
          *
          * @param   $teacherID an interger ID number
@@ -30,7 +30,7 @@ class Teachers{
         }
         
 
-        /**
+        /*
          * SetTeacherID method 
          *
          * @param $teacherID an interger ID number
@@ -41,7 +41,7 @@ class Teachers{
             $this->teacherID = $teacherID;
         }
 
-        /**
+        /*
          * SetTeacherName method 
          *
          * @param $teacherName string name of the teacher
@@ -52,7 +52,7 @@ class Teachers{
             $this->teacherName = $teacherName;
         }
 
-        /**
+        /*
          * SetTeacherDescription method 
          *
          * @param $teacherDescription string description of the teacher
@@ -62,7 +62,7 @@ class Teachers{
 
             $this->teacherDescription = $teacherDescription;
         }
-        /**
+        /*
          * GetTeacherID method 
          *
          * @param none;
@@ -73,7 +73,7 @@ class Teachers{
             return $this->teacherID;
         }
 
-        /**
+        /*
          * GetTeacherName method 
          *
          * @param none

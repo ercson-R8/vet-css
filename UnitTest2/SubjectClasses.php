@@ -23,7 +23,7 @@ class SubjectClasses{
     private $isPossibleToDistribute = false;
 
 
-    /**
+    /*
      * Constructor method 
      *
      * @param   $subjectClassID             int: subject class id number
@@ -54,7 +54,7 @@ class SubjectClasses{
     // Setters
 
 
-    /**
+    /*
      * SetSubjectClassID method 
      *
      * @param 	$subjectClassID
@@ -65,7 +65,7 @@ class SubjectClasses{
         $this->subjectClassID = $subjectClassID ;
     }
 
-    /**
+    /*
      * SetSubjectClassSubjectID method 
      *
      * @param 	$subjectClassSubjectID
@@ -76,7 +76,7 @@ class SubjectClasses{
         $this->subjectClassSubjectID = $subjectClassSubjectID ;
     }
 
-    /**
+    /*
      * SetSubjectClassTraineeGroupID method 
      *
      * @param 	$subjectClassTraineeGroupID
@@ -87,7 +87,7 @@ class SubjectClasses{
         $this->subjectClassTraineeGroupID = $subjectClassTraineeGroupID ;
     }
 
-    /**
+    /*
      * SetSubjectClassTeacherID method 
      *
      * @param 	$subjectClassTeacherID
@@ -98,7 +98,7 @@ class SubjectClasses{
         $this->subjectClassTeacherID = $subjectClassTeacherID ;
     }
 
-    /**
+    /*
      * SetSubjectClassRoomID method 
      *
      * @param 	$subjectClassRoomID
@@ -116,7 +116,7 @@ class SubjectClasses{
 
 
 
-    /**
+    /*
      * GetSubjectClassDistributionBlock method 
      *
      * @param 	
@@ -128,7 +128,7 @@ class SubjectClasses{
     }
 
 
-    /**
+    /*
      * GetSubjectClassID method 
      *
      * @param 	
@@ -139,7 +139,7 @@ class SubjectClasses{
         return $this->subjectClassID ;
     }
 
-    /**
+    /*
      * GetSubjectClassSubjectID method 
      *
      * @param 	
@@ -150,7 +150,7 @@ class SubjectClasses{
         return $this->subjectClassSubjectID ;
     }
 
-    /**
+    /*
      * GetSubjectClassTraineeGroupID method 
      *
      * @param 	
@@ -161,7 +161,7 @@ class SubjectClasses{
         return $this->subjectClassTraineeGroupID;
     }
 
-    /**
+    /*
      * GetSubjectClassTeacherID method 
      *
      * @param 	
@@ -172,7 +172,7 @@ class SubjectClasses{
         return $this->subjectClassTeacherID;
     }
 
-    /**
+    /*
      * GetSubjectClassRoomID method 
      *
      * @param 	
@@ -184,7 +184,7 @@ class SubjectClasses{
     }
 
 
-    /**
+    /*
      * GetSubjectClassPreferenceID method 
      *
      * @param 	
@@ -196,7 +196,7 @@ class SubjectClasses{
     }
 
 
-    /**
+    /*
      * GetIsPossibleToDistribute method 
      *
      * @param 	
@@ -301,7 +301,7 @@ class SubjectClasses{
     }
 
 
-    /**
+    /*
      * GetSubjectClassInformation method 
      *
      * @param 	none

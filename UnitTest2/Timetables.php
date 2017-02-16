@@ -17,7 +17,7 @@ class Timetables{
     private $timetableTerm;
     private $timetableDescription;
     private $timetableFitness; // number of conflicts
-    /**
+    /*
      * Constructor method 
      *
      * @param   $timetableID int: timetable ID number
@@ -37,7 +37,7 @@ class Timetables{
         $this->timetableFitness = $timetableFitness ;
     }
 
-    /**
+    /*
      * SetTimetableID method 
      *
      * @param 	$timetableID int: timetable ID number
@@ -48,7 +48,7 @@ class Timetables{
         $this->timetableID = $timetableID;
     }
 
-    /**
+    /*
      * SetTimetableAcademicYear method 
      *
      * @param 	timetableAcademicYear string: current academic year
@@ -59,7 +59,7 @@ class Timetables{
         $this->timetableAcademicYear = $timetableAcademicYear;
     }
 
-    /**
+    /*
      * SetTimetableTerm method 
      *
      * @param 	$timetableTerm string: current academic year term
@@ -70,7 +70,7 @@ class Timetables{
         $this->timetableTerm = $timetableTerm;
     }
 
-    /**
+    /*
      * SetTimetableDescription method 
      *
      * @param 	$timetableDescription int: remarks for this term/timetable
@@ -81,7 +81,7 @@ class Timetables{
         $this->timetableDescription = $timetableDescription;
     }
 
-    /**
+    /*
      * SetTimetableFitness method 
      *
      * @param 	$timetableFitness int: pertains to conflicts;
@@ -95,7 +95,7 @@ class Timetables{
 
 
 
-    /**
+    /*
      * GetTimetableID method 
      *
      * @param 	none
@@ -106,7 +106,7 @@ class Timetables{
         return $this->timetableID ;
     }
 
-    /**
+    /*
      * GetTimetableAcademicYear method 
      *
      * @param 	none
@@ -117,7 +117,7 @@ class Timetables{
         return $this->timetableAcademicYear ;
     }
 
-    /**
+    /*
      * GetTimetableTerm method 
      *
      * @param 	none
@@ -128,7 +128,7 @@ class Timetables{
         return $this->timetableTerm ;
     }
 
-    /**
+    /*
      * GetTimetable method 
      *
      * @param 	none
@@ -139,7 +139,7 @@ class Timetables{
         return $this->timetableDescription ;
     }
 
-    /**
+    /*
      * GetTimetableFitness method 
      *
      * @param 	none
@@ -149,7 +149,7 @@ class Timetables{
         return $this->timetableFitness;
     }
 
-    /**
+    /*
      * GetTimetableInformation method 
      *
      * @param 	

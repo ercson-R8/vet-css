@@ -14,10 +14,8 @@ $timetable  = new Timetables(1, 2016, 1, "blah",0);
     $subjectClass   = $obj[5];
 
 
+/* 
 
-
-
-    /*
     Schedule array: Array
 (
     [0] => Array
@@ -1184,3 +1182,6 @@ Array
         )
 
 )
+
+
+*/

@@ -13,7 +13,7 @@ use App\Models\DB;
 class testDBController extends \Core\Controller{
 
 
-    /**
+    /*
      * indexAction method 
      *
      * @param 	

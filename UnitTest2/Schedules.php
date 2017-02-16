@@ -19,7 +19,7 @@ class Schedules{
     private $scheduleSlot;
     // private $scheduleConflicts; 
 
-    /**
+    /*
      * Constructor method 
      *
      * @param   $scheduleID                 int: schedule id number
@@ -41,7 +41,7 @@ class Schedules{
     }
 
 
-    /**
+    /*
      * SetScheduleID method 
      *
      * @param 	$subjectID int: subject id number
@@ -52,7 +52,7 @@ class Schedules{
         $this->scheduleID =  $scheduleID;
     }
 
-    /**
+    /*
      * SetScheduleTimetableID method 
      *
      * @param 	$timetableID int: timetable id number
@@ -63,7 +63,7 @@ class Schedules{
         $this->scheduleTimetableID =  $scheduleTimetableID;
     }
 
-    /**
+    /*
      * SetSchedulesSubjectClassID method 
      *
      * @param 	$SchedulesSubjectClassID
@@ -74,7 +74,7 @@ class Schedules{
         $this->SchedulesSubjectClassID = $SchedulesSubjectClassID;
     }
 
-    /**
+    /*
      * SetScheduleSlot method 
      *
      * @param 	$scheduleSlot
@@ -89,7 +89,7 @@ class Schedules{
 
 
     // Getters
-    /**
+    /*
      * GetScheduleID method 
      *
      * @param 	none;
@@ -100,7 +100,7 @@ class Schedules{
         return $this->scheduleID;
     }
 
-    /**
+    /*
      * GetScheduleTimetable method 
      *
      * @param 	none;
@@ -111,7 +111,7 @@ class Schedules{
         return $this->scheduleTimetableID;
     }
 
-    /**
+    /*
      * GetSchedulesSubjectClassID method 
      *
      * @param 	none;
@@ -123,7 +123,7 @@ class Schedules{
     }
 
 
-    /**
+    /*
      * GetScheduleSlot method 
      *
      * @param 	none;

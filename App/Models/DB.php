@@ -123,7 +123,7 @@ class DB extends \Core\Model{
         return $this->_count;
     }   
 
-    /**
+    /*
      * action method 
      *
      * @param 	
@@ -274,7 +274,7 @@ class DB extends \Core\Model{
         return false;
     }
 
-    /**
+    /*
      * select method 
      *
      * @param		

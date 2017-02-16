@@ -17,7 +17,7 @@ class Rooms{
     private $roomType = null;
     private $roomLocation = null;
 
-    /**
+    /*
      * Constructor method 
      *
      * @param   $teacherID an interger ID number
@@ -72,7 +72,7 @@ class Rooms{
         $this->roomLocation = $roomLocation;
     }
 
-    /**
+    /*
      * GetRoomID method 
      *
      * @param 	none
@@ -92,7 +92,7 @@ class Rooms{
         return $this->roomName;
     }
 
-    /**
+    /*
      * GetRoomType method 
      *
      * @param 	none
@@ -102,7 +102,7 @@ class Rooms{
         return $this->roomType;
     }
 
-    /**
+    /*
      * GetRoomLocation method 
      *
      * @param 	none

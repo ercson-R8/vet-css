@@ -18,7 +18,7 @@ class Subjects{
     private $subjectRequiredPeriod;
     private $subjectDescription;
 
-    /**
+    /*
      * Constructor method 
      *
      * @param   $subjectID int: subject id number
@@ -99,7 +99,7 @@ class Subjects{
 
     }
 
-    /**
+    /*
      * GetSubjectID method 
      *
      * @param    none
@@ -110,7 +110,7 @@ class Subjects{
         return $this->subjectID;
     }
 
-    /**
+    /*
      * GetSubjectCode method 
      *
      * @param 	 none
@@ -121,7 +121,7 @@ class Subjects{
         return $this->subjectCode;
     }
 
-    /**
+    /*
      * GetSubjectName method 
      *
      * @param 	
@@ -132,7 +132,7 @@ class Subjects{
         return $this->subjectName;
     }
 
-    /**
+    /*
      * GetSubjectRequiredPeriod method 
      *
      * @param 	 none
@@ -143,7 +143,7 @@ class Subjects{
         return $this->subjectRequiredPeriod;
     }
 
-    /**
+    /*
      * GetSubjectDescription method 
      *
      * @param 	
@@ -154,7 +154,7 @@ class Subjects{
         return $this->subjectDescription;
     }
 
-    /**
+    /*
      * GetSubjectInformation method 
      *
      * @param 	

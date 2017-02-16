@@ -57,13 +57,14 @@ class LoginController extends \Core\Controller
     }
 
 
-    /**
+    /*
      * Authenticate check user credentials 
      *
      * @param 	 
      *          
      * @return	void
      */
+
     public function authenticateAction (){
         
         echo"email: ".($_POST['email']) ;

@@ -32,12 +32,26 @@ class TestTimetable extends \Core\Controller {
     
     
     public function indexAction (){
-        echo "greetings from testTimetable index";
-        $tg = new TraineeGroup();
+        echo "<pre> greetings from testTimetable index";
+        $subjectClass = [];
         // return true;
 
+        $db = DB::getInstance();
+        // SELECT * FROM `subject_class` WHERE subject_class.timetable_id = 1
+        $db->query('SELECT * FROM subject_class WHERE subject_class.timetable_id = 1');
+        echo "<br/>Result count: {$db->count()}<br/>";
+        if ($db->count()){
+            print_r ( $db->getResults());
+            // var_dump($db->first());
 
-
+            foreach ($db->getResults() as $result){
+                echo "id: {$result->timetable_id}<br/>";
+                // $subjectClass += [[$result->id]];
+            }
+        }
+        echo "<br/>subject class: <br/> ";
+        var_dump ($subjectClass);
+ 
 
 
     }

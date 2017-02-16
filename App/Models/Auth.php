@@ -13,7 +13,7 @@ class Auth extends \Core\Model
 {
 
 
-    /**
+    /*
      * openConn Connect to the database 
      *
      * @param 	

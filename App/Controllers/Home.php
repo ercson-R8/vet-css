@@ -58,7 +58,7 @@ class Home extends \Core\Controller
 
 
 
-    /**
+    /*
      * logoutAction method 
      *
      * @param 	

@@ -25,7 +25,7 @@ class Preferences{
 
 
 
-    /**
+    /*
      * Constructor method 
      *
      * @param   $preferencesID                       int: id 
@@ -60,7 +60,7 @@ class Preferences{
 
     }
 
-    /**
+    /*
      * SetPreferencesID method 
      *
      * @param 	$preferencesID
@@ -71,7 +71,7 @@ class Preferences{
         $this->preferencesID = $preferencesID ;
     }
 
-    /**
+    /*
      * SetPreferenceRoomType method 
      *
      * @param 	
@@ -83,7 +83,7 @@ class Preferences{
     }
 
     // Getter methods
-    /**
+    /*
      * GetPreferencesID method 
      *
      * @param 	
@@ -94,7 +94,7 @@ class Preferences{
         return $this->preferencesID ;
     }
 
-    /**
+    /*
      * GetPreferencesRoomType method 
      *
      * @param 	
@@ -108,7 +108,7 @@ class Preferences{
 
 //------------------
 
-    /**
+    /*
      * GetPreferencesPreferredStartPeriod method 
      *
      * @param 	
@@ -120,7 +120,7 @@ class Preferences{
     }
 
 
-    /**
+    /*
      * GetPreferencesPreferredEndPeriod method 
      *
      * @param 	
@@ -131,7 +131,7 @@ class Preferences{
         return $this->preferencePreferredEndPeriod;
     }
 
-    /**
+    /*
      * GetPreferencesPreferredNumberDays method 
      *
      * @param 	
@@ -143,7 +143,7 @@ class Preferences{
     }
 
 
-    /**
+    /*
      * GetPreferencesPreferredNumberPeriodsDay method 
      *
      * @param 	
