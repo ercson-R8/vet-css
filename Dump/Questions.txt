@@ -1,0 +1,725 @@
+
+
+Views
+Aaron · 10 days ago
+Good day Sir,
+{
+    In the view section example login folder i have 2 files index.html which is the login form and forget-password.html which is another page that allows you to enter information to reset password.
+
+    When the login folder only contained the index.html you could access it using the following  public/login 
+
+    When the forget-password.html  was put into the folder I could no longer access the index, the public/login skipped the index and goes to the forget-password.html
+
+    It is the same for all view folders.............is this normal or am I doing something wrong.
+
+    --------------------------------------------------------------------------------------------------------------------------------------------------
+
+    class Login extends \Core\Controller
+    {
+        /**
+        * Before filter 
+        *
+        */
+        protected function before()
+        {
+
+        }
+        /**
+        * After filter 
+        *
+        */
+        protected function after()
+        {
+            //echo "(after)";
+        }    
+        
+        
+        /**
+        *
+        * Show index page
+        *
+        */
+        public function indexAction()
+        {
+
+            View::renderTemplate('Login/index.html', [
+
+                ]);
+        }
+            /**
+        *
+        * login
+        *
+        */
+        public function loginAction()
+        {
+
+        }
+
+        public function logoutAction()
+        {
+
+        }
+
+        public function forgetPasswordAction()
+        {
+
+            View::renderTemplate('Login/forget-password.html', [
+
+            ]);
+
+        }
+        public function resetPasswordAction()
+        {
+
+        }    
+
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------    
+    }//end of class
+
+    One other thing,
+
+    In the PDO fetchObject('Login') function I keep getting class 'Login' not found even thou I am within the Login class I have tried many different ways to solve this issue but is probably some simple that I am not aware of. What usually causes this type of error.
+
+    Thanks,
+
+    Aaron
+
+
+
+    Follow Responses
+
+
+    Dave — Instructor · 10 days ago 
+    Hi Aaron,
+
+    that's very strange! Your code looks ok. You shouldn't need "public" as part of the URL though, you should be able to access your actions with just /login/index and /login/forgetPassword. Could that be the problem?
+
+    The PDO fetchObject method takes the name of a class, including its full namespace. Objects from the database will be models, not controllers. So for example, if you have a User object, you might call it like this:
+
+    $stmt->fetchObject("\App\Models\User.php"); 
+
+    Does that help?
+
+    Cheers,
+
+    Dave
+
+    Mark as helpful
+
+
+    Aaron · 10 days ago 
+    Good day Sir,
+
+    Without public it goes to index of page.
+
+    Mark as helpful
+
+
+    Dave — Instructor · 10 days ago 
+    Hi Aaron,
+
+    so without public, does it work then?
+
+    Mark as helpful
+
+
+    Aaron · 10 days ago 
+    Good day Sir,
+
+    No it does not it goes to 404 object not found
+
+    but the main localhost/is goes to index of which is the pages the shows all the files in the folder
+
+    Mark as helpful
+
+
+    Dave — Instructor · 10 days ago 
+    Ah ok - is it not possible for you to configure the web server so that the public folder is the root?
+
+    Also, please can you send me your list of routes from the front controller public/index.php? I'm wondering if that might have something to do with the problem.
+
+    Thanks,
+    Dave
+
+    Mark as helpful
+
+
+    Aaron · 10 days ago 
+    Good day Sir,
+
+    --------------------------------------------------------------------------------------------
+
+    <?php 
+
+    /** front controller */
+
+    /**
+    * composer
+    */
+    require '../vendor/autoload.php';
+
+    /**
+    *
+    *Twig
+    *
+    */
+    Twig_Autoloader::register();
+    /**
+    *Error and Exception handling
+    *
+    */
+    error_reporting(E_ALL);
+    set_error_handler('Core\Error::errorHandler');
+    set_exception_handler('Core\Error::exceptionHandler');
+
+    require '../Core/Router.php';
+
+    $router = new Core\Router();
+
+    //echo get_class($router);
+
+    //Add the routes
+    $router->add('', ['controller' => 'Home', 'action' => 'index']);
+    $router->add('posts', ['controller' => 'Posts', 'action' => 'index']);
+    $router->add('login', ['controller' => 'Login', 'action' => 'index']);
+    $router->add('register', ['controller' => 'Register', 'action' => 'index']);
+    $router->add('account', ['controller' => 'Account', 'action' => 'index']);
+    $router->add('residential', ['controller' => 'Residential', 'action' => 'index']);
+    $router->add('commercial', ['controller' => 'Commercial', 'action' => 'index']);
+    $router->add('land', ['controller' => 'Land', 'action' => 'index']);
+    $router->add('venue', ['controller' => 'Venue', 'action' => 'index']);
+    $router->add('settings', ['controller' => 'Settings', 'action' => 'index']);
+    $router->add('residential', ['controller' => 'Residential', 'action' => 'add-property']);
+    $router->add('login', ['controller' => 'Login', 'action' => 'forget-password']);
+    $router->add('{controller}/{action}');
+    $router->add('{controller}/{id:\d+}/{action}');
+    //$router->add('admin/{controller}/{action}', ['namespace' => 'Admin']);
+
+    $router->dispatch($_SERVER['QUERY_STRING']);
+
+    ----------------------------------------------------------------------------------------------------------
+
+    Mark as helpful
+
+
+    Dave — Instructor · 10 days ago 
+    Hi Aaron,
+
+    you've got the same route repeated twice:
+
+    $router->add('login', ['controller' => 'Login', 'action' => 'index']);
+    $router->add('login', ['controller' => 'Login', 'action' => 'forget-password']);
+    I think your second route should be
+
+    $router->add('forget-password', ['controller' => 'Login', 'action' => 'forget-password']); 
+
+    Does that fix the problem?
+
+    Mark as helpful
+
+
+    Aaron · 10 days ago 
+    Works perfectly!!
+
+    the fetchObject was also fixed.
+
+    Great thank you very much :)
+
+    Mark as helpful
+}
+##########################################################################3
+Ajax
+Aaron · 21 hours ago
+Good day Sir,
+
+{
+
+
+    I have an ajax call which switches the status on a field I have in the database which is being looped out on a page
+
+    The first item in the loop works perfectly but the second item just does not respond. I figured that it is because ajax cannot identify which row is which 
+
+    i am having trouble passing the id on to jquery................. it gets the id from the first row in the loop but not the others.
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
+        $("#status_change").click(function(){
+
+        var id = $('#status_change').val();
+    
+
+    $.ajax({
+    url: "switch-residential-status",
+    type: "POST",
+    data: {id : id},
+    success:function(data){
+    if(data == 'on'){
+    $('.switch').prop('data-on', data);
+    }else if(data == 'off'){
+    $('.switch').prop('data-off', data);
+    }
+
+    }
+    })
+
+    });
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    Regards 
+
+    Aaron
+
+    Follow Responses
+
+
+    Dave — Instructor · 18 hours ago 
+    Hi Aaron,
+
+    please can you send me the whole HTML page so I can try it myself?
+
+    Thanks,
+
+    Dave
+
+    Mark as helpful
+
+
+    Aaron · 17 hours ago 
+    html
+
+    /////////////////////////////////////////////////////////
+
+    {% extends "base.html" %}
+
+    {% block topbar %}
+
+        {% include "topbar.html" %}
+
+    {% endblock %}
+
+    {% block body %}
+
+                <!-- -->
+                <section>
+                    <div class="container">
+                        
+
+                    {% include "settings_sidebar.html" %}
+
+                        <!-- RIGHT -->
+                        <div class="col-lg-9 col-md-9 col-sm-8">
+
+                        <h4> Residential property list</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-vertical-middle">
+                                <thead>
+                                    <tr>
+                                        <th class="width-30">#</th>
+                                        <th>Address</th>
+                                        <th>Views</th>
+                                        <th>Status</th>
+                                        <th>Image</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for residential in residentials %}
+                                        <tr>
+                                            <td class="text-center">
+                                                {‌{ loop.index }}
+                                            </td>
+                                            <td>{‌{ residential.address }}</td>
+                                            <td>3000</td>
+                                            <td>
+                                                    <label class="switch switch-info" >
+                                                        <input id="status_change" type="checkbox" {% if residential.status == 1 %} checked {% endif %}" value="{‌{ residential.id }}">
+                                                        <span id="switch" class="switch-label" data-on="ON"  data-off="OFF"  ></span>
+                                                    </label>
+                                            </td>
+                                            <td>
+                                            {% set photos = residential.images|split(',') %}        
+                                                <div class="thumbnail">
+                                                    <img class="img-responsive" src="/is/public/residential_images/{‌{ photos[0] }}" alt="" width="100"/>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a id="res-id" href="view-residential?id={‌{ residential.id }}" class="btn btn-default btn-xs"><i class="fa fa-eye white"></i> View </a>
+                                                <a href="edit-residential?id={‌{ residential.id }}" class="btn btn-default btn-xs"><i class="fa fa-edit white"></i> Edit </a>
+                                                <a href="delete-residential?id={‌{ residential.id }}" class="btn btn-default btn-xs"><i class="fa fa-times white"></i> Delete </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        </div>
+                        
+                    </div>
+                </section>
+                <!-- / -->
+
+    {% endblock %}
+
+
+
+    Mark as helpful
+
+}
+###########################################################
+
+
+Posting form data
+Aaron · 18 days ago
+GoodDay Sir,
+
+{
+
+
+
+    How would I go about posting a form to add information to the database, what route would I use in for the action and where would i actually get the submitted information, is this also done in the view or somewhere else?
+
+    Regards
+
+    Aaron
+
+    Follow Responses
+
+
+    Dave — Instructor · 17 days ago 
+    Hi Aaron,
+
+    first you need a view containing a form to collect your data. For example:
+
+    {% extends "base.html" %}
+    {% block title %}New item{% endblock %}
+    {% block body %}
+        
+        <h1>New item</h1>
+        
+        <form method="post" action="/items/create">
+        
+            <div>
+                <label for="inputName">Name</label>
+                <input id="inputName" name="name">
+            </div>
+            <div>
+                <label for="inputContent">Content</label>
+                <textarea id="inputContent" name="content"></textarea>
+            </div>
+    
+            <button type="submit">Save</button>
+        </form>
+    
+    {% endblock %}
+    Let's say this is saved in App/Views/Items/new.html.
+
+    Then, in a Items controller, you would display this view like this:
+
+    namespace App\Controllers;
+    
+    use \Core\View;
+    
+    class Items extends \Core\Controller
+    {
+        public function newAction()
+        {
+            View::render('Items/new.html');
+        }
+    }
+    If you had a route like this in your front controller:
+
+    $router->add('{controller}/{action}'); 
+
+    Then you could access this page at http://localhost/items/new.
+
+    Then we can add an action to the controller to process the form when it's submitted. Note the action  attribute of the form  tag in the view above is "/items/create" . This corresponds to this action in the controller:
+
+    public function createAction()
+    {
+        
+    }
+    In this action, the data coming from the form is in the $_POST  array. In MVC though, all data is handled by a model. So I would have a model like this:
+
+    namespace App\Models;
+    
+    use PDO;
+    
+    class Item extends \Core\Model
+    {
+        
+        public function save($data)
+        {
+            $this->name = $data['name'];
+            $this->content = $data['content'];
+    
+            // Validate data here
+            // ...        
+    
+            $sql = 'INSERT INTO items (name, content)
+                    VALUES (:name, :content)';
+        
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+                                        
+            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+            $stmt->bindValue(':content', $this->content, PDO::PARAM_STR);
+        
+            return $stmt->execute();
+        }
+    }
+    with a save function that uses PDO to insert a record into the database. Then in your controller method, you could call it like this:
+
+    public function createAction()
+    {
+        $item = new Item();
+        $item->save($_POST);
+    
+        // Display errors, or redirect to another page or whatever
+        // ...
+    }
+    That's the general idea anyway.
+
+    Does that help?
+
+    Cheers,
+
+    Dave
+
+    Mark as helpful
+
+
+    Aaron · 17 days ago 
+    Great, Thank you very much.
+
+    Mark as helpful
+}
+===============================================
+
+css folder <Bootstrap JQuery via CDN />
+Amaran · a month ago
+Hi dave
+{
+
+
+    Where to put my bootstrap css folder and render it to all template? I'm using twig template.
+
+    Amaran
+
+
+
+    Follow Responses
+
+
+    Dave — Instructor · a month ago 
+    Hi Amaran,
+
+    css needs to go in the public directory. Then you can reference it like this in your template:
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet"> 
+
+    If you're using Twig I would recommend having a base template like this:
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <link href="/css/bootstrap.min.css" rel="stylesheet"> 
+        </head>
+        <body>
+            <div id="content">{% block content %}{% endblock %}</div>
+        </body>
+    </html>
+    and then each of your other templates can extend this one, like this:
+
+    {% extends "base.html" %}
+    
+    {% block content %}
+    
+    Content goes here
+    
+    {% endblock %}
+    That way Bootstrap will be included in every template.
+
+    I hope that helps!
+
+    Cheers,
+
+    Dave
+
+    Mark as helpful (1)
+
+
+    Amaran · a month ago 
+    Yes it works.
+
+    Thanks.
+
+    Mark as helpful
+
+
+    Andy · 8 days ago 
+    Thank for the question Amaran and thank you for the response Dave I was stuck on this 
+
+    Mark as helpful
+
+}
+======================================
+
+
+How can I create an ajax request using the MVC?
+William · 2 months ago
+Lets suppose that I have a View that need to push a simple text and put inside a div.
+
+
+{
+
+
+
+    $.ajax({
+        type: "POST",
+        url: "requests/show-simple-text/show",
+        data: {
+            me: me
+        },
+        success: function (data) {
+            $('#myDIV').text(data);
+    
+        }
+    });
+
+
+    I don´t know if this code will work (I not tested and I not finish your course). I have a folder called requests where I will put all the controllers that will be called by an ajax request. As you can see I have a class called ShowSimpleText (for example) and a method called 'show()' that will display my simple text.
+
+
+
+    This is the best way to do it?
+
+    Follow Responses
+
+
+    Dave — Instructor · 2 months ago  Answer 
+    Hi William,
+
+    an Ajax request is just like any other - it needs a controller and an action to respond to it, and a route that matches the controller and action. For example, if you have a folder called Requests where you're putting your controllers, your controller might look like this:
+
+    namespace App\Controllers\Requests;
+    
+    /**
+    * Example controller
+    *
+    * PHP version 7.0
+    */
+    class ShowSimpleText extends \Core\Controller
+    {
+    
+        /** 
+        * Show some data
+        *
+        * @return void
+        */
+        public function showAction()
+        {   
+        
+            $data = "here is the data";
+            
+            header('Content-Type: application/json');
+            echo json_encode($data);
+        }   
+    }
+    Then you need a route in the front controller that matches this controller and action, for example:
+
+    $router->add('requests/{controller}/{action}', ['namespace' => 'Requests']); 
+
+    With your Ajax code this should work.
+
+    Does that help?
+
+    Cheers,
+
+    Dave
+
+    Mark as helpful (1)
+
+
+    William · 2 months ago 
+    Thanks so much, it worked and now I know how to do ajax request in MVC :D
+
+    Mark as helpful
+
+
+    Mohamad · 2 months ago 
+    Hello Dave,
+
+    How are you?
+
+    Can you please post a complete HTML example code? I did all in the post but i was not able to work.
+
+    Thank you in advance.
+
+    Best regards,
+
+    The still padawan.
+
+    Mark as helpful
+
+
+    Dave — Instructor · 2 months ago 
+    Hi Mohamad,
+
+    fine thanks, you?
+
+    No problem. Try this template:
+
+    {% extends "base.html" %}
+    
+    {% block title %}Home{% endblock %}
+    
+    {% block body %}
+    
+        <h1>Example</h1>
+    
+        <div id="myDIV"></div>
+    
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    
+        <script>
+            $(document).ready(function() {
+    
+                $.ajax({
+                    type: "POST",
+                    url: "/requests/show-simple-text/show",
+                    success: function (data) {
+                        $('#myDIV').text(data);
+                    }
+                });
+    
+            });
+        </script>
+    {% endblock %}
+    This works with the example controller I put above. When you load the page, the contents of the myDIV  div are set to what comes back from the Ajax request.
+
+    Does that help? If you have any questions, please let me know.
+
+    Cheers,
+
+    Dave
+
+    Mark as helpful (1)
+
+
+    Mohamad · 2 months ago 
+    Hello Master,
+
+    Yes it work. Thank you for the help and the continous support.
+
+    Best regards,
+
+    The padawan.
+
+    Mark as helpful
+}
+==============================

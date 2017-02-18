@@ -49,48 +49,48 @@ class TraineeGroup {
     }
 
     /*
-     * GetTraineeGroupName method 
+     * getTraineeGroupName method 
      *
      * @param 	 none
      * @return	 $traineeGroupName
      */
-    public function GetTraineeGroupName (){
+    public function getTraineeGroupName (){
         
         return $this->traineeGroupName;
         
     }
 
     /*
-     * GetTraineeGroupSection method 
+     * getTraineeGroupSection method 
      *
      * @param 	 none
-     * @return	 $GetTraineeGroupSection
+     * @return	 $getTraineeGroupSection
      */
-    public function GetTraineeGroupSection (){
+    public function getTraineeGroupSection (){
         
         return $this->traineeGroupSection;
         
     }
 
     /*
-     * GetTraineeGroupLevel method 
+     * getTraineeGroupLevel method 
      *
      * @param 	 none
      * @return	 $traineeGroupLevel
      */
-    public function GetTraineeGroupLevel (){
+    public function getTraineeGroupLevel (){
         
         return $this->traineeGroupLevel ;
         
     }
 
     /*
-     * GetTraineeGroupRemarks method 
+     * getTraineeGroupRemarks method 
      *
      * @param 	 none
      * @return	 $traineeGroupRemarks
      */
-    public function GetTraineeGroupRemarks (){
+    public function getTraineeGroupRemarks (){
         
         return $this->traineeGroupRemarks;
         
@@ -100,9 +100,9 @@ class TraineeGroup {
      * GetTraineeGroupInformation method 
      *
      * @param 	
-     * @return	asso array GetTraineeGroupInformation
+     * @return	asso array getTraineeGroupInformation
      */
-    public function GetTraineeGroupInformation (){
+    public function getTraineeGroupInfo (){
         
         return [$this->traineeGroupID, $this->traineeGroupName,
                 $this->traineeGroupSection,

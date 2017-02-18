@@ -55,7 +55,7 @@ class DB extends \Core\Model{
     public function query ($sql, $params = array()){
         $this->_error = false;
         
-        echo "<br/><br/><b>From query method :</b><br/>".$sql."<br/>";
+        // echo "<br/><br/><b>From query method :</b><br/>".$sql."<br/>";
         if($this->_query = $this->_pdo->prepare($sql)){
             // Prepare statement successful
             $x = 1;
@@ -72,7 +72,7 @@ class DB extends \Core\Model{
 
                 // if sql statement is SELECT, fetch the result otherwise do nothing
                 $sqlStatement = explode(' ',trim($sql))[0];
-                echo "<br/>statement is: {$sqlStatement}<br/>";
+                // echo "<br/>statement is: {$sqlStatement}<br/>";
                 if (strcasecmp($sqlStatement, 'SELECT') == 0){
                 
                     $this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);

@@ -225,7 +225,8 @@ class testDBController extends \Core\Controller{
 
 
 
-
+        //INSERT INTO 'main_table' ('field_1', 'field_2', 'color_id') 
+        //VALUES ('foo', 'bar', (SELECT color.color_id FROM color WHERE color.color_name = 'red'))
  
         
     }
