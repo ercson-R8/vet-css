@@ -31,7 +31,7 @@ class TestTimetable {
      * @param		int         timetable id, from the table 'timetable'
      * @return	 	object      timetable object 
      */
-    public function CreateTimetable ($timeTableID){
+    public function CreateSubjectClasses ($timeTableID){
         $i = 0;
         $subjectClass = [];
         $db = DB::getInstance();
@@ -68,18 +68,53 @@ class TestTimetable {
         return $subjectClass;
     }
 
+
+    public function CreateTimetable($subjectClasses){
+        $timeTable = [];
+        foreach ($subjectClasses as $subjectClass){
+            echo "<br/>required period: ";print_r($subjectClass->getSubject()->getRequiredPeriod());
+            echo "<br/>getPreferredNumberOfDays: ";print_r($subjectClass->getPreferredNumberOfDays());
+            $distBlock = $this->getDistBlock($subjectClass->getSubject()->getRequiredPeriod(),
+                                $subjectClass->getPreferredNumberOfDays() 
+            );
+            for($i=0; $i < count($distBlock); $i++ ){
+                
+            }
+        }
+
+    }
+
    
     public function indexAction (){
         echo"<pre>";
-        $x = $this->CreateTimetable(1);
+        $x = $this->CreateSubjectClasses(1);
         
         for($i=0; $i < count($x); $i++){
             // echo"{$i}===<br/> ";print_r($x[$i]->getRoom());
             
         }
-        // echo"===<br/> ";print_r($x);
-        
+        echo"===<br/> ";print_r($x);
 
+        $requiredNumberOfPeriods = 5;
+        $preferredNumberOfDays = 4;
+        echo "<br/>requiredNumberOfPeriods: {$requiredNumberOfPeriods} preferredNumberOfDays: {$preferredNumberOfDays}";
+        echo "<br/>dist block: ";print_r($this->getDistBlock($requiredNumberOfPeriods, $preferredNumberOfDays));
+
+        $this->CreateTimetable($x);
+    }
+
+
+    public function getDistBlock($requiredNumberOfPeriods, $preferredNumberOfDays){
+        $total = 0;
+        $block = [];
+        for ($i = 0; $i < ($preferredNumberOfDays - 1); $i++){
+            $period = (int)( $requiredNumberOfPeriods / $preferredNumberOfDays);
+            array_push($block, $period);
+            $total += $period;
+        }
+        array_push($block, ($requiredNumberOfPeriods-$total));
+        shuffle($block);
+        return $block;
     }
 
     public function getTraineeGroup($ID){
