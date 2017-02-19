@@ -71,14 +71,21 @@ class TestTimetable {
 
     public function CreateTimetable($subjectClasses){
         $timeTable = [];
+        echo "SubjectID \t TGroup \t\t Subj Name \t\t Inst \t\t Room";
         foreach ($subjectClasses as $subjectClass){
-            echo "<br/>required period: ";print_r($subjectClass->getSubject()->getRequiredPeriod());
-            echo "<br/>getPreferredNumberOfDays: ";print_r($subjectClass->getPreferredNumberOfDays());
+            echo "<br/>\t"; print_r($subjectClass->getID());
+            echo "\t"; print_r($subjectClass->getTraineeGroup()->getTraineeGroupName());
+            echo "\t\t"; print_r($subjectClass->getSubject()->getSubjectName());
+            echo "\t\t"; print_r($subjectClass->getInstructor()->getInstructorName());
+            echo "\t\t"; print_r($subjectClass->getRoom()->getRoomName());
+            //echo " ==== ";
+            // echo "<br/>required period: ";print_r($subjectClass->getSubject()->getRequiredPeriod());
+            // echo "<br/>getPreferredNumberOfDays: ";print_r($subjectClass->getPreferredNumberOfDays());
             $distBlock = $this->getDistBlock($subjectClass->getSubject()->getRequiredPeriod(),
-                                $subjectClass->getPreferredNumberOfDays() 
+                                                $subjectClass->getPreferredNumberOfDays() 
             );
             for($i=0; $i < count($distBlock); $i++ ){
-                
+                echo "<br/>--".$distBlock[$i];
             }
         }
 
