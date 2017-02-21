@@ -92,10 +92,10 @@ class TestTimetable {
                 // echo "no of periods: ".$distBlock[$i];
                 $timeslot = $this->getSlot($distBlock[$i]);
 
-                tba: need to include the 2 parameters below. 
-                                // $result->preferred_start_period,
-                                // $result->preferred_end_period,
-                tba: break/recess 
+                // tba: need to include the 2 parameters below. 
+                //                 // $result->preferred_start_period,
+                //                 // $result->preferred_end_period,
+                // tba: break/recess 
 
                 for($j=0; $j<sizeof($timeslot); $j++){
                     // array_push($timetable,[[$subjectClass][$timeslot[$j]]);
