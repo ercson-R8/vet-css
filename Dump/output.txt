@@ -1,0 +1,158 @@
+
+initSlot: 0
+room_id specified: 3 
+room ID chosen-------------:2
+room ID chosen-------------:1
+room ID chosen-------------:3
+room ID chosen-------------:2
+room_id specified: 1 ===
+ ===
+ SubjectID 	 TGroup 		 Subj Name 		 Inst 		 Room
+
+	1	Electronics		Basic Math		Wall		ComLab 1 
+ 
+count: 1 Array
+(
+    [0] => 2
+)
+no of periods: 2
+
+*******************************
+TOTAL_TIME_SLOTS: 15
+numberOfPeriods= 2
+
+
+initSlot: 6
+j=0 6
+day: 1
+j=1 7
+day: 1
+true
+timeslot: Array
+(
+    [0] => 6
+    [1] => 7
+)
+
+
+timeTable now: Array
+(
+    [0] => Array
+        (
+            [0] => App\Controllers\Timetable\SubjectClass Object
+                (
+                    [id:App\Controllers\Timetable\SubjectClass:private] => 1
+                    [timeTableID:App\Controllers\Timetable\SubjectClass:private] => 1
+                    [subject:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Subject Object
+                        (
+                            [subjectID:App\Controllers\Timetable\Subject:private] => 1
+                            [subjectCode:App\Controllers\Timetable\Subject:private] => MATH101
+                            [subjectName:App\Controllers\Timetable\Subject:private] => Basic Math
+                            [requiredPeriod:App\Controllers\Timetable\Subject:private] => 2
+                            [description:App\Controllers\Timetable\Subject:private] => Basic Math taught in level 1
+                        )
+
+                    [traineeGroup:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\TraineeGroup Object
+                        (
+                            [traineeGroupID:App\Controllers\Timetable\TraineeGroup:private] => 1
+                            [traineeGroupName:App\Controllers\Timetable\TraineeGroup:private] => Electronics
+                            [traineeGroupSection:App\Controllers\Timetable\TraineeGroup:private] => Group A
+                            [traineeGroupLevel:App\Controllers\Timetable\TraineeGroup:private] => 1
+                            [traineeGroupRemarks:App\Controllers\Timetable\TraineeGroup:private] => 
+                        )
+
+                    [instructor:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Instructor Object
+                        (
+                            [instructorID:App\Controllers\Timetable\Instructor:private] => 1
+                            [instructorCode:App\Controllers\Timetable\Instructor:private] => John
+                            [instructorName:App\Controllers\Timetable\Instructor:private] => Wall
+                            [remark:App\Controllers\Timetable\Instructor:private] => 
+                            [description:App\Controllers\Timetable\Instructor:private] => 
+                            [requiredPeriod] => Math instructor
+                        )
+
+                    [room:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Room Object
+                        (
+                            [roomID:App\Controllers\Timetable\Room:private] => 3
+                            [roomName:App\Controllers\Timetable\Room:private] => ComLab 1
+                            [roomType:App\Controllers\Timetable\Room:private] => 2
+                            [roomLocation:App\Controllers\Timetable\Room:private] => Bldg 1
+                            [roomDescription:App\Controllers\Timetable\Room:private] => IT computer laboratory
+                        )
+
+                    [roomType:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\RoomType Object
+                        (
+                            [roomTypeID:App\Controllers\Timetable\RoomType:private] => 2
+                            [roomTypeName:App\Controllers\Timetable\RoomType:private] => Computer LAB
+                            [roomTypeDescription:App\Controllers\Timetable\RoomType:private] => Used for IT classes
+                        )
+
+                    [preferredStart:App\Controllers\Timetable\SubjectClass:private] => 1
+                    [preferredEnd:App\Controllers\Timetable\SubjectClass:private] => 5
+                    [preferredNumberOfDays:App\Controllers\Timetable\SubjectClass:private] => 1
+                    [isRoomFixed:App\Controllers\Timetable\SubjectClass:private] => 1
+                )
+
+            [1] => 6
+        )
+
+    [1] => Array
+        (
+            [0] => App\Controllers\Timetable\SubjectClass Object
+                (
+                    [id:App\Controllers\Timetable\SubjectClass:private] => 1
+                    [timeTableID:App\Controllers\Timetable\SubjectClass:private] => 1
+                    [subject:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Subject Object
+                        (
+                            [subjectID:App\Controllers\Timetable\Subject:private] => 1
+                            [subjectCode:App\Controllers\Timetable\Subject:private] => MATH101
+                            [subjectName:App\Controllers\Timetable\Subject:private] => Basic Math
+                            [requiredPeriod:App\Controllers\Timetable\Subject:private] => 2
+                            [description:App\Controllers\Timetable\Subject:private] => Basic Math taught in level 1
+                        )
+
+                    [traineeGroup:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\TraineeGroup Object
+                        (
+                            [traineeGroupID:App\Controllers\Timetable\TraineeGroup:private] => 1
+                            [traineeGroupName:App\Controllers\Timetable\TraineeGroup:private] => Electronics
+                            [traineeGroupSection:App\Controllers\Timetable\TraineeGroup:private] => Group A
+                            [traineeGroupLevel:App\Controllers\Timetable\TraineeGroup:private] => 1
+                            [traineeGroupRemarks:App\Controllers\Timetable\TraineeGroup:private] => 
+                        )
+
+                    [instructor:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Instructor Object
+                        (
+                            [instructorID:App\Controllers\Timetable\Instructor:private] => 1
+                            [instructorCode:App\Controllers\Timetable\Instructor:private] => John
+                            [instructorName:App\Controllers\Timetable\Instructor:private] => Wall
+                            [remark:App\Controllers\Timetable\Instructor:private] => 
+                            [description:App\Controllers\Timetable\Instructor:private] => 
+                            [requiredPeriod] => Math instructor
+                        )
+
+                    [room:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Room Object
+                        (
+                            [roomID:App\Controllers\Timetable\Room:private] => 3
+                            [roomName:App\Controllers\Timetable\Room:private] => ComLab 1
+                            [roomType:App\Controllers\Timetable\Room:private] => 2
+                            [roomLocation:App\Controllers\Timetable\Room:private] => Bldg 1
+                            [roomDescription:App\Controllers\Timetable\Room:private] => IT computer laboratory
+                        )
+
+                    [roomType:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\RoomType Object
+                        (
+                            [roomTypeID:App\Controllers\Timetable\RoomType:private] => 2
+                            [roomTypeName:App\Controllers\Timetable\RoomType:private] => Computer LAB
+                            [roomTypeDescription:App\Controllers\Timetable\RoomType:private] => Used for IT classes
+                        )
+
+                    [preferredStart:App\Controllers\Timetable\SubjectClass:private] => 1
+                    [preferredEnd:App\Controllers\Timetable\SubjectClass:private] => 5
+                    [preferredNumberOfDays:App\Controllers\Timetable\SubjectClass:private] => 1
+                    [isRoomFixed:App\Controllers\Timetable\SubjectClass:private] => 1
+                )
+
+            [1] => 7
+        )
+
+)

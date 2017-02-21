@@ -15,11 +15,10 @@ class Instructor {
  | 
  */
 
-    private $instructorID = null;
-    private $instructorCode = null;
-    private $instructorName = null;
+    private $ID = null;
+    private $first_name = null;
+    private $last_name = null;
     private $remark = null;
-    private $description = null;
     
     /*
      * __constructor  method 
@@ -27,50 +26,40 @@ class Instructor {
      * @param		
      * @return	    none; 	
      */
-    public function __construct ($instructorID = null, $instructorCode = null, $instructorName = null,
-                                    $requiredPeriod = null, $description = null){
-        $this->instructorID = $instructorID;
-        $this->instructorCode = $instructorCode; 
-        $this->instructorName = $instructorName;
-        $this->requiredPeriod = $requiredPeriod;
-        $this->description  = $description;
+    public function __construct ($ID = null, $first_name = null,
+                                    $last_name = null, $remark = null){
+        $this->ID = $ID;
+        $this->first_name = $first_name;
+        $this->last_name = $last_name;
+        $this->remark  = $remark;
 
     }
 
     /**
-     * getinstructorID method 
+     * getID method 
      *
      * @param		none
      * @return	 	int     this ID
      */
-    public function getinstructorID (){
-        return $this->instructorID;
+    public function getID (){
+        return $this->ID;
     }
 
     /*
-     * getinstructorCode
+     * getfirst_name
      */
-    public function getinstructorCode (){
+    public function getFirst_name (){
         
-        return $this->instructorCode;
-        
-    }
-
-    /*
-     * getinstructorName
-     */
-    public function getinstructorName (){
-        
-        return $this->instructorName;
+        return $this->first_name;
         
     }
 
     /*
-     * getrequiredPeriod
+     * getlast_name
      */
-    public function getRequiredPeriod (){
+    public function getLast_name (){
         
-        return $this->requiredPeriod ;
+        return $this->last_name ;
         
     }
 
@@ -88,10 +77,10 @@ class Instructor {
      */
     public function getinstructorInfo (){
         
-        return [$this->instructorID, 
-                $this->instructorCode, 
-                $this->instructorName,
-                $this->description
+        return [$this->ID, 
+                $this->first_name,
+                $this->last_name,
+                $this->remark
         ];
     }
 

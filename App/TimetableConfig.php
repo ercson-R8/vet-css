@@ -30,7 +30,7 @@ class TimetableConfig {
      * Total number of training days per week
      * @var int 
      */
-    const TOTAL_TIME_SLOTS = TimetableConfig::TOTAL_PERIODS * TimetableConfig::TOTAL_DAYS - 1;  
+    const TOTAL_TIME_SLOTS = TimetableConfig::TOTAL_PERIODS * TimetableConfig::TOTAL_DAYS;  
 
 
     /**  
