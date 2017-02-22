@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
--- https://www.phpmyadmin.net/
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 21, 2017 at 08:04 AM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 7.1.1
+-- Generation Time: Feb 22, 2017 at 02:54 AM
+-- Server version: 10.1.9-MariaDB
+-- PHP Version: 5.6.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -42,7 +42,7 @@ INSERT INTO `instructor` (`id`, `first_name`, `last_name`, `remark`) VALUES
 (2, 'Peter', 'Parker', 'Bio instructor'),
 (3, 'James', 'LeBron', 'English instructo'),
 (4, 'John', 'Wall', 'Math instructor'),
-(5, '121122', '12212', '1212');
+(5, 'Canteen', 'Canteen', 'Canteen');
 
 -- --------------------------------------------------------
 
@@ -103,9 +103,10 @@ CREATE TABLE `room` (
 --
 
 INSERT INTO `room` (`id`, `name`, `type`, `location`, `description`) VALUES
-(1, 'Room    1', 1, 'Bldg 1', 'Regular classroom'),
-(2, 'Room    2', 1, 'Bldg 1', 'Regular classrom'),
-(3, 'ComLab 1', 2, 'Bldg 1', 'IT computer laboratory');
+(1, 'Room 1', 1, 'Bldg 1', 'Regular classroom'),
+(2, 'Room 2', 1, 'Bldg 1', 'Regular classrom'),
+(3, 'ComLab 1', 2, 'Bldg 1', 'IT computer laboratory'),
+(4, 'Canteen 1', 9, 'Campus', 'Canteen');
 
 -- --------------------------------------------------------
 
@@ -131,7 +132,8 @@ INSERT INTO `room_type` (`id`, `name`, `description`) VALUES
 (5, 'Workshop-RAC', 'RAC Workshop'),
 (6, 'Workshop-ELX', 'Electronics workshop'),
 (7, 'Workshop-ELC', 'Electical workshop'),
-(8, 'Drawing LAB', 'Laboratory for autocad subject');
+(8, 'Drawing LAB', 'Laboratory for autocad subject'),
+(9, 'Canteen', 'Mess hall, lounges, ');
 
 -- --------------------------------------------------------
 
@@ -141,7 +143,7 @@ INSERT INTO `room_type` (`id`, `name`, `description`) VALUES
 
 CREATE TABLE `subject` (
   `id` int(4) NOT NULL,
-  `code` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `code` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `required_period` int(4) NOT NULL COMMENT 'total number of periods required per week',
   `description` varchar(50) COLLATE utf8_unicode_ci NOT NULL
@@ -153,8 +155,9 @@ CREATE TABLE `subject` (
 
 INSERT INTO `subject` (`id`, `code`, `name`, `required_period`, `description`) VALUES
 (1, 'MATH101', 'Basic Math', 2, 'Basic Math taught in level 1'),
-(2, 'POLSCI101', 'Political Sci', 2, 'Political Science taught in blah blah'),
-(3, 'ENGL101', 'Basic English', 4, 'Basic English taught in blah blah');
+(2, 'POLSC101', 'Political Sci', 2, 'Political Science taught in blah blah'),
+(3, 'ENGL101', 'Basic English', 4, 'Basic English taught in blah blah'),
+(4, 'Study Break', 'Study Break', 5, 'Recess, Snack break, Time off');
 
 -- --------------------------------------------------------
 
@@ -167,7 +170,7 @@ CREATE TABLE `subject_class` (
   `timetable_id` int(4) NOT NULL,
   `subject_id` int(4) NOT NULL,
   `trainee_group_id` int(4) NOT NULL,
-  `instructor_id` int(4) NOT NULL,
+  `instructor_id` int(4) DEFAULT NULL,
   `room_id` int(4) DEFAULT NULL,
   `room_type_id` int(4) NOT NULL,
   `meeting_time_id_TBDropped` int(4) DEFAULT NULL,
@@ -181,12 +184,14 @@ CREATE TABLE `subject_class` (
 --
 
 INSERT INTO `subject_class` (`id`, `timetable_id`, `subject_id`, `trainee_group_id`, `instructor_id`, `room_id`, `room_type_id`, `meeting_time_id_TBDropped`, `preferred_start_period`, `preferred_end_period`, `preferred_number_days`) VALUES
-(1, 1, 1, 1, 4, 3, 2, NULL, 1, 5, 1),
+(1, 1, 1, 1, 4, 3, 2, NULL, 4, 5, 1),
 (2, 1, 2, 1, 1, NULL, 1, NULL, NULL, NULL, 1),
 (3, 1, 3, 1, 3, NULL, 1, NULL, NULL, NULL, 3),
 (4, 1, 1, 2, 4, NULL, 2, NULL, NULL, NULL, 1),
 (5, 1, 2, 2, 1, NULL, 1, NULL, NULL, NULL, 1),
-(6, 1, 3, 2, 3, 1, 1, NULL, NULL, NULL, 3);
+(6, 1, 3, 2, 3, NULL, 1, NULL, NULL, NULL, 3),
+(7, 1, 4, 1, 5, 4, 9, NULL, 2, 3, 5),
+(8, 1, 4, 2, 5, 4, 9, NULL, 4, 5, 5);
 
 -- --------------------------------------------------------
 
@@ -348,22 +353,22 @@ ALTER TABLE `meeting`
 -- AUTO_INCREMENT for table `room`
 --
 ALTER TABLE `room`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `room_type`
 --
 ALTER TABLE `room_type`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `subject`
 --
 ALTER TABLE `subject`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `subject_class`
 --
 ALTER TABLE `subject_class`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `timetable`
 --
@@ -379,6 +384,27 @@ ALTER TABLE `trainee_group`
 --
 ALTER TABLE `user`
   MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `room`
+--
+ALTER TABLE `room`
+  ADD CONSTRAINT `type` FOREIGN KEY (`type`) REFERENCES `room_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `subject_class`
+--
+ALTER TABLE `subject_class`
+  ADD CONSTRAINT `instructor` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `room` FOREIGN KEY (`room_id`) REFERENCES `room` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `room_type` FOREIGN KEY (`room_type_id`) REFERENCES `room_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `subject` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `timetable` FOREIGN KEY (`timetable_id`) REFERENCES `timetable` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `trainee_group` FOREIGN KEY (`trainee_group_id`) REFERENCES `trainee_group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

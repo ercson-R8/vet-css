@@ -29,8 +29,9 @@ class Instructor {
     public function __construct ($ID = null, $first_name = null,
                                     $last_name = null, $remark = null){
         $this->ID = $ID;
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
+        // id 5 is designated for canteen 
+        $this->first_name = ($ID == 5 ? null : $first_name);
+        $this->last_name = ($ID == 5 ? null : $last_name);
         $this->remark  = $remark;
 
     }
@@ -59,7 +60,7 @@ class Instructor {
      */
     public function getLast_name (){
         
-        return $this->last_name ;
+        return $this->last_name;
         
     }
 

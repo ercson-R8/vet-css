@@ -39,6 +39,12 @@ class Test extends \Core\Controller {
         }
         echo "<pre>";
         print_r($a);
+
+
+        $var = 5;
+        $ans = (($var==null) ? 'true' : 'false');
+        echo "<br/> {$ans} fmod: "; 
+        print_r(fmod(10, 4));
     }
 
 }

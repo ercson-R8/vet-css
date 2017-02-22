@@ -84,13 +84,16 @@ class TestTimetable {
             $distBlock = $this->getDistBlock($subjectClass->getSubject()->getRequiredPeriod(),
                                                 $subjectClass->getPreferredNumberOfDays() 
             );
-            // echo "<br/>count: ".count($distBlock)." ";
+            // echo "<br/>==================>>>count: ".count($distBlock)." ";
             // print_r($distBlock);
             // $this->getSlot($distBlock);
             //print_r($this->getSlot($distBlock));
             for($i=0; $i < count($distBlock); $i++ ){
                 // echo "no of periods: ".$distBlock[$i];
-                $timeslot = $this->getSlot($distBlock[$i]);
+                $timeslot = $this->getSlot($distBlock[$i], 
+                                            $subjectClass->getPreferredStart(),
+                                            $subjectClass->getPreferredEnd()
+                                            );
 
                 // tba: need to include the 2 parameters below. 
                 //                 // $result->preferred_start_period,
@@ -112,15 +115,13 @@ class TestTimetable {
     public function indexAction (){
         echo"<pre>";
 
-            $initSlot = rand(0, TimetableConfig::TOTAL_TIME_SLOTS-1);
-            echo "<br/>initSlot: {$initSlot}";
         // $a=array("a"=>1,"b"=>1,"c"=>1);
         // print_r(array_unique($a));
 
 
 
-        $x = $this->CreateSubjectClasses(1);
-        
+        $x[0] = $this->CreateSubjectClasses(1);
+        $x[1] = $this->CreateSubjectClasses(1);
         for($i=0; $i < count($x); $i++){
             // echo"{$i}===<br/> ";print_r($x[$i]->getRoom());
             
@@ -133,23 +134,32 @@ class TestTimetable {
         // echo "<br/>requiredNumberOfPeriods: {$requiredNumberOfPeriods} preferredNumberOfDays: {$preferredNumberOfDays}";
         // echo "<br/>dist block: ";print_r($this->getDistBlock($requiredNumberOfPeriods, $preferredNumberOfDays));
 
-        echo "\tSubjectID \t TGroup \t\t Subj Name \t\t Inst \t\t Room<br>";
+        
             
-        $timetable = $this->CreateTimetable($x);
-        for ($i=0; $i<sizeof($timetable); $i++){
-            echo "<br/> {$i} "; 
-            print_r ("\t ".$timetable[$i][0]->getID());
-            print_r ("\t\t ".$timetable[$i][0]->getTraineeGroup()->getTraineeGroupName());
-            print_r ("\t\t ".$timetable[$i][0]->getSubject()->getSubjectName());
-            print_r ("\t\t ".$timetable[$i][0]->getInstructor()->getFirst_name());
-            print_r ("\t\t ".$timetable[$i][0]->getRoom()->getRoomName());
-            print_r ("\t\t\t ".$timetable[$i][1]);
-            echo " <br> ";
-        }
+        $timetable[0] = $this->CreateTimetable($x[0]);
+        $timetable[1] = $this->CreateTimetable($x[1]);
+        $this->displayTimetable($timetable[0]);
+        $this->displayTimetable($timetable[1]);
+
     }
 
 
-
+    public function displayTimetable($timetable){
+        echo "<br/><br/>\tSC-ID \tTimeslot \t TGroup \t Subj Name-Inst \t Room<br>";
+        for ($i=0; $i<sizeof($timetable); $i++){
+            echo "<br/> {$i} "; 
+            
+            print_r ("\t".$timetable[$i][0]->getID());
+            print_r ("\t ".$timetable[$i][1]);
+            print_r ("\t".$timetable[$i][0]->getTraineeGroup()->getTraineeGroupName());
+            print_r ("\t".$timetable[$i][0]->getSubject()->getSubjectCode()." - ".
+                            $timetable[$i][0]->getInstructor()->getFirst_name()
+                    );
+            print_r ("\t\t\t".$timetable[$i][0]->getRoom()->getName());
+            
+            echo "";
+        }
+    }
 
     public function getDistBlock($requiredNumberOfPeriods, $preferredNumberOfDays){
         $total = 0;
@@ -164,7 +174,7 @@ class TestTimetable {
         return $block;
     }
 
-    public function getSlot($numberOfPeriods){
+    public function getSlot($numberOfPeriods, $preferred_start_period, $preferred_end_period){
         // subject-classes are taught in "d" number days with "p" number of periods per day
         // this loop is "per" distribution block
         // count: 3 Array
@@ -176,26 +186,46 @@ class TestTimetable {
         // echo "<br/><br/>*******************************";
         // echo "<br/>TOTAL_TIME_SLOTS: ";print_r (TimetableConfig::TOTAL_TIME_SLOTS);
         // echo"<br/>numberOfPeriods= {$numberOfPeriods}<br/><br/>"; 
- 
-        $sameDay = false;
-        while (!$sameDay){
+        
+        // $ans = (($var==null) ? 'true' : 'false');
+
+        $period_start = (($preferred_start_period==null) ? 0 : $preferred_start_period-1);
+        $period_end = (($preferred_end_period==null) ? TimetableConfig::TOTAL_PERIODS : $preferred_end_period-1);
+        // echo "<br/><br/><b>periods {$period_start}:{$period_end}</b><br/>";
+        $done = false;
+        while (!$done){
             $timeslot = [];
             $day = [];  
             $initSlot = mt_rand(0, TimetableConfig::TOTAL_TIME_SLOTS-1);
-            // echo "<br/>initSlot: {$initSlot}";
+            // echo "<br/>initSlot: {$initSlot}<br/>";
             for ($j=0; $j < $numberOfPeriods; $j++){
                 // echo "<br/>j={$j} "; print_r($initSlot+$j);
                 array_push($timeslot, $initSlot+$j);
+
                 // echo "<br/>day: ";print_r( (int) (($initSlot+$j)/TimetableConfig::TOTAL_PERIODS) );
+                // echo "<br/>";
+                // push the timeslot in $day array 
                 array_push($day, ((int) (($initSlot+$j)/TimetableConfig::TOTAL_PERIODS) ));
             
             }
-            $sameDay = ((count(array_unique($day)) === 1)); // all timeslot belongs to the same day
-            // if ((count(array_unique($day)) === 1)){
-            //     echo "<br/>true";
-            // }else{
-            //     echo "<br/>false";
-            // } 
+            // $sameDay = ((count(array_unique($day)) === 1)); // all timeslot belongs to the same day
+            if ((count(array_unique($day)) === 1)){
+                // print_r($day);
+                // if the selected starting period is from the preferred start onward
+                if( ( fmod($timeslot[0],TimetableConfig::TOTAL_PERIODS) >= $period_start) && 
+                    
+
+                    // and the selected ending period is on or before the preferred ending period
+                    (fmod($timeslot[sizeof($day)-1],TimetableConfig::TOTAL_PERIODS) <= $period_end)){
+
+                    // then the slot selected is a match; 
+                    $done = true;
+                    // echo "<br/>start: ".fmod($timeslot[sizeof($day)-1],TimetableConfig::TOTAL_PERIODS);
+                    // echo " end: ".fmod($timeslot[sizeof($day)-1],TimetableConfig::TOTAL_PERIODS);
+                    // echo "<br/>";
+                }
+                
+            }
         }
         // echo "<br/>timeslot: ";print_r($timeslot);
         // echo "<br/><br/>";

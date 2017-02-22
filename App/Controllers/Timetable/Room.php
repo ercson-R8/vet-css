@@ -15,11 +15,11 @@ class Room {
  | 
  */
 
-    private $roomID = null;
-    private $roomName = null;
-    private $roomType = null;
-    private $roomLocation = null;
-    private $roomDescription = null;
+    private $ID = null;
+    private $name = null;
+    private $type = null;
+    private $location = null;
+    private $description = null;
     
     /*
      * __constructor  method 
@@ -27,61 +27,54 @@ class Room {
      * @param		
      * @return	    none; 	
      */
-    public function __construct ($roomID = null, $roomName = null, $roomType = null,
-                                    $roomLocation = null, $roomDescription = null){
-        $this->roomID = $roomID;
-        $this->roomName = $roomName; 
-        $this->roomType = $roomType;
-        $this->roomLocation = $roomLocation;
-        $this->roomDescription  = $roomDescription;
+    public function __construct ($ID = null, $name = null, $type = null,
+                                    $location = null, $description = null){
+        $this->ID = $ID;
+        // room 4 is designated canteen
+        $this->name = ($ID == 4 ? null : $name); 
+        $this->type = $type;
+        $this->location = $location;
+        $this->description  = $description;
 
     }
 
     /**
-     * getroomID method 
+     * getID method 
      *
      * @param		none
      * @return	 	int     this ID
      */
-    public function getroomID (){
-        return $this->roomID;
+    public function getID (){
+        return $this->ID;
     }
 
     /*
-     * getroomName
+     * getname
      */
-    public function getroomName (){
+    public function getName (){
         
-        return $this->roomName;
-        
-    }
-
-    /*
-     * getroomType
-     */
-    public function getroomType (){
-        
-        return $this->roomType;
+        return $this->name;
         
     }
 
     /*
-     * getroomDescription
+     * gettype
      */
-    public function getroomDescription (){
+    public function getType (){
         
-        return $this->roomDescription ;
+        return $this->type;
         
     }
 
     /*
-     * getroomRemarks
+     * getdescription
      */
-    public function getRoomRemarks (){
+    public function getDescription (){
         
-        return $this->roomRemarks;
+        return $this->description ;
         
     }
+
 
 
     /*
@@ -89,10 +82,10 @@ class Room {
      */
     public function getRoomInfo (){
         
-        return [$this->roomID, 
-                $this->roomName, 
-                $this->roomType,
-                $this->roomDescription
+        return [$this->ID, 
+                $this->name, 
+                $this->type,
+                $this->description
         ];
     }
 
