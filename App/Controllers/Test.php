@@ -43,8 +43,12 @@ class Test extends \Core\Controller {
 
         $var = 5;
         $ans = (($var==null) ? 'true' : 'false');
-        echo "<br/> {$ans} fmod: "; 
+        echo "<br/>{$ans} fmod: "; 
         print_r(fmod(10, 4));
+
+        echo "<br/>size: ";
+        $array = array ("bye", "bye", "bye", "hello", "hello");
+        print_r(sizeof(array_count_values($array)));
     }
 
 }

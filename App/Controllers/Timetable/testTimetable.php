@@ -42,10 +42,10 @@ class TestTimetable {
                 if ($result->room_id){
                     echo "<br/>room_id specified: {$result->room_id} ";//print_r ($result->room_id);
                     $room = $this->getRoom($result->room_id);
-                    $fixedRoom = true;
+                    $isRoomFixed = true;
                 }else{
                     $room = $this->getRandomRoom($result->room_type_id);
-                    $fixedRoom = false;
+                    $isRoomFixed = false;
                 }
                 $subjectClass[$i] =  new SubjectClass (
                                             $result->id,
@@ -58,7 +58,7 @@ class TestTimetable {
                                             $result->preferred_start_period,
                                             $result->preferred_end_period,
                                             $result->preferred_number_days);
-                $subjectClass[$i]->setRoomFixed($fixedRoom);
+                $subjectClass[$i]->setRoomFixed($isRoomFixed);
                 // echo "<br/>required period: ";print_r($subjectClass[$i]->getSubject()->getRequiredPeriod());
                 
                 $i++;
@@ -81,30 +81,47 @@ class TestTimetable {
             // echo " <br> ";
             // echo "<br/>required period: ";print_r($subjectClass->getSubject()->getRequiredPeriod());
             // echo "<br/>getPreferredNumberOfDays: ";print_r($subjectClass->getPreferredNumberOfDays());
+
+
+            // distribute the required period/s with the preferred number of day/s
+            // returns an array. $distBlock = [ [day]=>[no. of periods] ] 
+            //     Array
+            // (
+            //     [0] => 2
+            //     [1] => 1
+            //     [2] => 1
+            // )
+        
             $distBlock = $this->getDistBlock($subjectClass->getSubject()->getRequiredPeriod(),
                                                 $subjectClass->getPreferredNumberOfDays() 
-            );
-            // echo "<br/>==================>>>count: ".count($distBlock)." ";
-            // print_r($distBlock);
-            // $this->getSlot($distBlock);
-            //print_r($this->getSlot($distBlock));
-            for($i=0; $i < count($distBlock); $i++ ){
-                // echo "no of periods: ".$distBlock[$i];
-                $timeslot = $this->getSlot($distBlock[$i], 
-                                            $subjectClass->getPreferredStart(),
-                                            $subjectClass->getPreferredEnd()
                                             );
 
-                // tba: need to include the 2 parameters below. 
-                //                 // $result->preferred_start_period,
-                //                 // $result->preferred_end_period,
-                // tba: break/recess 
+     
+            echo "<br/>==================>>>count: ".count($distBlock)." ";
+            print_r($distBlock);
+            // $this->getSlot($distBlock);
+            //print_r($this->getSlot($distBlock));
+            
+            $done = false;
+            while (!$done){
+                $day = [];
+                for($i=0; $i < count($distBlock); $i++ ){
+                    // echo "<br/>no of periods: ".$distBlock[$i];
 
-                for($j=0; $j<sizeof($timeslot); $j++){
-                    // array_push($timetable,[[$subjectClass][$timeslot[$j]]);
-                    $timetable[] = [$subjectClass, $timeslot[$j]];
+
+                    $timeslot = $this->getSlot($distBlock[$i], 
+                                                $subjectClass->getPreferredStart(),
+                                                $subjectClass->getPreferredEnd()
+                                                );
+
+                    for($j=0; $j<sizeof($timeslot); $j++){
+                        // array_push($timetable,[[$subjectClass][$timeslot[$j]]);
+                        $timetable[] = [$subjectClass, $timeslot[$j]];
+                    }
+                if ((count(array_unique($day)) === count($distBlock)))
                 }
-            }//break;
+            }
+            
 
         }
         // echo"timetable now: ";
@@ -121,7 +138,7 @@ class TestTimetable {
 
 
         $x[0] = $this->CreateSubjectClasses(1);
-        $x[1] = $this->CreateSubjectClasses(1);
+        // $x[1] = $this->CreateSubjectClasses(1);
         for($i=0; $i < count($x); $i++){
             // echo"{$i}===<br/> ";print_r($x[$i]->getRoom());
             
@@ -137,9 +154,9 @@ class TestTimetable {
         
             
         $timetable[0] = $this->CreateTimetable($x[0]);
-        $timetable[1] = $this->CreateTimetable($x[1]);
+        // $timetable[1] = $this->CreateTimetable($x[1]);
         $this->displayTimetable($timetable[0]);
-        $this->displayTimetable($timetable[1]);
+        // $this->displayTimetable($timetable[1]);
 
     }
 
@@ -161,7 +178,22 @@ class TestTimetable {
         }
     }
 
+    
+    /*
+     * getDistBlock method 
+     *
+     * @param		number of periods per day, number of days per week
+     * @return	 	array of size DAY, with number of periods per day
+     *               Array
+     *                   (
+     *                       [0] => 2
+     *                       [1] => 1
+     *                       [2] => 1
+     *                   )
+     */
+
     public function getDistBlock($requiredNumberOfPeriods, $preferredNumberOfDays){
+
         $total = 0;
         $block = [];
         for ($i = 0; $i < ($preferredNumberOfDays - 1); $i++){
@@ -170,7 +202,7 @@ class TestTimetable {
             $total += $period;
         }
         array_push($block, ($requiredNumberOfPeriods-$total));
-        shuffle($block);
+        shuffle($block); // randomize distribution block 
         return $block;
     }
 
@@ -188,27 +220,31 @@ class TestTimetable {
         // echo"<br/>numberOfPeriods= {$numberOfPeriods}<br/><br/>"; 
         
         // $ans = (($var==null) ? 'true' : 'false');
-
+        
+        $s = $preferred_start_period;
+        $e = $preferred_end_period;
+        echo "<br/><br/><h3>periods between {$s}-{$e}</h3>";
+        
         $period_start = (($preferred_start_period==null) ? 0 : $preferred_start_period-1);
         $period_end = (($preferred_end_period==null) ? TimetableConfig::TOTAL_PERIODS : $preferred_end_period-1);
-        // echo "<br/><br/><b>periods {$period_start}:{$period_end}</b><br/>";
+        
         $done = false;
         while (!$done){
             $timeslot = [];
             $day = [];  
             $initSlot = mt_rand(0, TimetableConfig::TOTAL_TIME_SLOTS-1);
-            // echo "<br/>initSlot: {$initSlot}<br/>";
+            echo "initSlot: {$initSlot}<br/>";
             for ($j=0; $j < $numberOfPeriods; $j++){
-                // echo "<br/>j={$j} "; print_r($initSlot+$j);
+                echo "<br/>j={$j} "; print_r($initSlot+$j);
                 array_push($timeslot, $initSlot+$j);
 
-                // echo "<br/>day: ";print_r( (int) (($initSlot+$j)/TimetableConfig::TOTAL_PERIODS) );
-                // echo "<br/>";
+                echo "<br/>day: ";print_r( (int) (($initSlot+$j)/TimetableConfig::TOTAL_PERIODS) );
+                echo "<br/>";
                 // push the timeslot in $day array 
                 array_push($day, ((int) (($initSlot+$j)/TimetableConfig::TOTAL_PERIODS) ));
             
             }
-            // $sameDay = ((count(array_unique($day)) === 1)); // all timeslot belongs to the same day
+            // all timeslot belongs to the same day
             if ((count(array_unique($day)) === 1)){
                 // print_r($day);
                 // if the selected starting period is from the preferred start onward
@@ -220,15 +256,19 @@ class TestTimetable {
 
                     // then the slot selected is a match; 
                     $done = true;
-                    // echo "<br/>start: ".fmod($timeslot[sizeof($day)-1],TimetableConfig::TOTAL_PERIODS);
-                    // echo " end: ".fmod($timeslot[sizeof($day)-1],TimetableConfig::TOTAL_PERIODS);
+                    $s = (fmod($timeslot[0],TimetableConfig::TOTAL_PERIODS))+1;
+                    $e = (fmod($timeslot[sizeof($day)-1],TimetableConfig::TOTAL_PERIODS))+1;
+                    echo "<br/>start: ".$s;
+                    
+                    echo " end: ".$e;
+                    
                     // echo "<br/>";
                 }
                 
             }
         }
-        // echo "<br/>timeslot: ";print_r($timeslot);
-        // echo "<br/><br/>";
+        echo "<br/>timeslot: ";print_r($timeslot);
+        echo "<br/><br/>";
         return $timeslot;
     }
 
@@ -387,14 +427,14 @@ class TestTimetable {
         //         if ($result->room_id){
         //             // echo "<br/>room_id specified: {$result->room_id} ";//print_r ($result->room_id);
         //             $room = $this->getRoom($result->room_id);
-        //             $fixedRoom = true;
+        //             $isRoomFixed = true;
         //             //$result->setRoomFixed($result->room_id);
         //         }else{
         //             // echo "<br/>room_id not specified: {$result->room_id}";//print_r ($result->room_id);
         //             // echo "<br/>room_type_id specified: {$result->room_type_id}";
         //             // echo "<br/>getRandomRoom specified: ";print_r ($this->getRandomRoom($result->room_type_id));
         //             $room = $this->getRandomRoom($result->room_type_id);
-        //             $fixedRoom = false;
+        //             $isRoomFixed = false;
         //         }
         //         // echo "id: {$result->meeting_time}<br/>";
         //         $subjectClass[$result->id] = 
@@ -410,7 +450,7 @@ class TestTimetable {
         //                     $result->preferred_end_period, //$preferredEnd = null,
         //                     $result->preferred_number_days //$preferredNumberOfDays = null
         //         );
-        //         $subjectClass[$result->id]->setRoomFixed($fixedRoom);
+        //         $subjectClass[$result->id]->setRoomFixed($isRoomFixed);
 
         //         // meeting time TBA
 

@@ -66,8 +66,8 @@ class SubjectClass {
      * @param		
      * @return	 	
      */
-    public function setRoomFixed ($fixxed){
-        if($fixxed){
+    public function setRoomFixed ($fixed){
+        if($fixed){
             $this->isRoomFixed = true;
         }else{
             $this->isRoomFixed = false;
