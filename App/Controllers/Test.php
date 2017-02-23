@@ -6,6 +6,7 @@ namespace App\Controllers;
 // use \Core\View;
 // use App\Models\DB;
 use App\Controllers\Timetable\TestTimetable as TClass;
+use App\Controllers\Timetable\Timetable;
 
 
 
@@ -24,7 +25,7 @@ class Test extends \Core\Controller {
 
     public function indexAction(){
         echo "testing from controller test....<br/>";
-        $t = new TClass();
+        $t = new Timetable();
 
         $t->indexAction();
         // TClass::indexAction();
