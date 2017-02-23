@@ -23,7 +23,7 @@ class Test extends \Core\Controller {
  */
 
     public function indexAction(){
-        // echo "testing from controller test<br/>";
+        echo "testing from controller test<br/>";
         $t = new TClass();
 
         $t->indexAction();
