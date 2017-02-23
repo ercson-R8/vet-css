@@ -23,7 +23,7 @@ class MeetingTime {
      * @param		
      * @return	 	
      */
-    public function ___construct ($id=null, $subjectClassID=null, $timeslot=[]){
+    public function ___construct ($id=null, $subjectClassID=null, $timeslot=null){
         $this->id = $id;
         $this->subjectClassID = $subjectClassID;
         $this->timeslot = $timeslot;

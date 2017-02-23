@@ -21,7 +21,6 @@ class SubjectClass {
             $instructor,      // object of Instructor class
             $room,            // object of Room class
             $roomType,          // object of RoomType class
-            // $meetingTime,
             $preferredStart,
             $preferredEnd,
             $preferredNumberOfDays;
@@ -40,7 +39,6 @@ class SubjectClass {
                                     $instructor = null,
                                     $roomType = null,
                                     $room = null,
-                                    // $meetingTime= null,
                                     $preferredStart = null,
                                     $preferredEnd = null,
                                     $preferredNumberOfDays = null){
@@ -52,7 +50,6 @@ class SubjectClass {
         $this->instructor = $instructor;
         $this->room = $room;
         $this->roomType = $roomType;
-        // $this->meetingTime = $meetingTime;
         $this->preferredStart = $preferredStart;
         $this->preferredEnd = $preferredEnd;
         $this->preferredNumberOfDays = $preferredNumberOfDays; 
@@ -73,6 +70,17 @@ class SubjectClass {
             $this->isRoomFixed = false;
         }
         return ;
+    }
+
+    /*
+     * setRoom method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function setRoom ($room){
+        
+        return $this->room = $room;
     }
 
     /*
@@ -138,15 +146,6 @@ class SubjectClass {
         return $this->room;
     }
 
-    /*
-     * getMeetingTime method 
-     *
-     * @param		
-     * @return	 	array   the slot number/s for this class
-     */
-    public function getMeetingTime (){
-        return explode(',' ,$this->meetingTime);
-    }
 
     /*
      * getPreferredStart method 

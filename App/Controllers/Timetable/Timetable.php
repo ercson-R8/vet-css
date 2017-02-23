@@ -29,7 +29,7 @@ class Timetable {
      * [ [mt_id] [sbj] [time slot] ]
      *
      * @param		int         timetable id, from the table 'timetable'
-     * @return	 	object      timetable object 
+     * @return	 	array       SubjectClasses objects; 
      */
     public function CreateSubjectClasses ($timeTableID){
         $i = 0;
@@ -69,7 +69,39 @@ class Timetable {
     }
 
 
-    public function getTimeSlot($subjectClass){
+    /*
+     * createMeetingTime method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function createMeetingTime ($id, $subjectClass){
+        // return new MeetingTime( $id, 
+        //                         $subjectClassID,
+        //                         $this->getTimeslot($subjectClass][0]);
+
+
+        // );
+
+        echo "<br/>Meeting ID: {$id}";print_r("");
+        echo "<br/>subjectClass ID: ";print_r($subjectClass->getID());
+         echo "<br/>subjectClass ID: ";($this->getTimeslot($subjectClass));
+        //echo "<br/>Meeting ID: {id}";print_r();
+    }
+
+
+
+    /*
+     * getTimeslot provides a random timeslot for a given subjectClass. 
+     * This will call getDistBlock() method based on the subject's 
+     * required period and the preferred number of days then provides a
+     * random timeslot/s that should all fall in one same day. 
+     *
+     * @param		object      subjectClass 
+     * @return	 	array       timeslots for this subject class for 1 meeting (day)
+     */
+    public function getTimeslot ($subjectClass){
+
         $timeslot = []; // subjectClass-timeslot
         echo "<br>";
         
@@ -85,7 +117,7 @@ class Timetable {
             //     [2] => 1
             // )
         
-        $distBlock = $this->getDistBlock($subjectClass->getSubject()->getRequiredPeriod(),
+        $distBlock = $this->getDistBlock(   $subjectClass->getSubject()->getRequiredPeriod(),
                                             $subjectClass->getPreferredNumberOfDays() 
                                         );
 
@@ -107,8 +139,8 @@ class Timetable {
                     }
                 }
         }
-
-
+        echo"days selected: ";
+        print_r($day);
 
         // start: 4 end: 5
         // timeslot: Array
@@ -124,25 +156,19 @@ class Timetable {
     public function indexAction (){
         echo"Timetable Class<pre>";
         $timetableID = 1;
-        $subjectClass = [];
-        for($i=0; $i < TimetableConfig::POP_SIZE; $i++){
-            $subjectClass[] = $this->CreateSubjectClasses($timetableID);
-        }
+        $timetable = [];
+        $subjectClass = $this->CreateSubjectClasses($timetableID);
+        $this->createMeetingTime(1, $subjectClass[2], null);
 
-        for($i=0; $i < sizeof($subjectClass); $i++){
-            
-        }
 
-        // echo"===<br/> ";print_r($subjectClass[0]);
-
-        $ts = $this->getTimeslot($subjectClass[0][0]);
-        // echo"===<br/> ";print_r($x);
-        // $timetable[0] = $this->CreateTimetable($x[0]);
-        // $timetable[1] = $this->CreateTimetable($x[1]);
-        // $this->displayTimetable($timetable[0]);
-        // $this->displayTimetable($timetable[1]);
+        // echo"===<br/> ";print_r($subjectClasses);
+        // for($i=0; $i < sizeof($subjectClasses); $i++){
+        //     $this->getTimeslot($subjectClass[$i]);
+        // }      
 
     }
+
+
 
 
     public function displayTimetable($timetable){
