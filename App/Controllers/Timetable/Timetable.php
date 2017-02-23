@@ -95,49 +95,38 @@ class Timetable {
         for($i=0; $i < count($distBlock); $i++ ){
                 $sameDay = true;
                 while ($sameDay){
-                    $temp_slot = $this->getRandomSlot($distBlock[$i], 
+                    $temp_slot = $this->getRandomSlot(
+                                                $distBlock[$i],
                                                 $subjectClass->getPreferredStart(),
-                                                $subjectClass->getPreferredEnd()
-                                                );
+                                                $subjectClass->getPreferredEnd() 
+                                        );
                     $daySelected = ((int) (($temp_slot[0])/TimetableConfig::TOTAL_PERIODS) );
                     if (!in_array($daySelected, $day)){
                         $day[]= $daySelected;
+                        $sameDay = false;
                     }
-
                 }
         }
-        // // $this->getSlot($distBlock);
-        // //print_r($this->getSlot($distBlock));
-        
-        // $done = false;
-        // while (!$done){
-        //     $day = [];
-        //     for($i=0; $i < count($distBlock); $i++ ){
 
-        //         $temp_slot = $this->getSlot($distBlock[$i], 
-        //                                     $subjectClass->getPreferredStart(),
-        //                                     $subjectClass->getPreferredEnd()
-        //                                     );
 
-        //         for($j=0; $j<sizeof($temp_slot); $j++){
-        //             // array_push($timetable,[[$subjectClass][$timeslot[$j]]);
-        //             $timeslot[] = [$subjectClass, $temp_slot[$j]];
-        //         }
-        //     // if ((count(array_unique($day)) === count($distBlock)))
-        //     }
-        // }
-        // // echo"timetable now: ";
+
+        // start: 4 end: 5
+        // timeslot: Array
+        // (
+        //     [0] => 3
+        //     [1] => 4
+        // )
+
         return $timeslot;
     }
 
    
     public function indexAction (){
-        echo"<pre>";
+        echo"Timetable Class<pre>";
         $timetableID = 1;
         $subjectClass = [];
         for($i=0; $i < TimetableConfig::POP_SIZE; $i++){
             $subjectClass[] = $this->CreateSubjectClasses($timetableID);
-            
         }
 
         for($i=0; $i < sizeof($subjectClass); $i++){
@@ -147,10 +136,7 @@ class Timetable {
         // echo"===<br/> ";print_r($subjectClass[0]);
 
         $ts = $this->getTimeslot($subjectClass[0][0]);
-
-
-
-        //echo"===<br/> ";print_r($x);
+        // echo"===<br/> ";print_r($x);
         // $timetable[0] = $this->CreateTimetable($x[0]);
         // $timetable[1] = $this->CreateTimetable($x[1]);
         // $this->displayTimetable($timetable[0]);
@@ -391,7 +377,8 @@ class Timetable {
             return null;
         }        
     }
-}// class end 
+}
+// class end 
 
 
 
