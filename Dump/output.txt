@@ -1,3 +1,4 @@
+// rebuild, reattach
 
 initSlot: 0
 room_id specified: 3 
