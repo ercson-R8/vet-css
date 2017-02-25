@@ -344,7 +344,7 @@ class Timetable {
         $lowest = 20;
         $lowest_i = 0;
         $done = false;
-        while($done){
+        while(!$done){
             $subjectClassSets[] = $this->createSubjectClass($baseSubjectClass);
             $population[] = $this->createTimetable($subjectClassSets[$i]);
             
@@ -355,7 +355,7 @@ class Timetable {
                 $lowest = $x;
                 $lowest_i = $i;
             }
-            if ($i > 5 or $lowest == 0){
+            if ($i > 2 or $lowest == 0){
                 break;
                 $done = true;
             }
