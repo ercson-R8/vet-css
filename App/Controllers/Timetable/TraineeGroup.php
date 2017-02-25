@@ -39,58 +39,58 @@ class TraineeGroup {
     }
 
     /**
-     * getTraineeGroupID method 
+     * getID method 
      *
      * @param		none
      * @return	 	int     this ID
      */
-    public function getTraineeGroupID (){
+    public function getID (){
         return $this->traineeGroupID;
     }
 
     /*
-     * getTraineeGroupName method 
+     * getName method 
      *
      * @param 	 none
      * @return	 $traineeGroupName
      */
-    public function getTraineeGroupName (){
+    public function getName (){
         
         return $this->traineeGroupName;
         
     }
 
     /*
-     * getTraineeGroupSection method 
+     * getSection method 
      *
      * @param 	 none
-     * @return	 $getTraineeGroupSection
+     * @return	 $getSection
      */
-    public function getTraineeGroupSection (){
+    public function getSection (){
         
         return $this->traineeGroupSection;
         
     }
 
     /*
-     * getTraineeGroupLevel method 
+     * getLevel method 
      *
      * @param 	 none
      * @return	 $traineeGroupLevel
      */
-    public function getTraineeGroupLevel (){
+    public function getLevel (){
         
         return $this->traineeGroupLevel ;
         
     }
 
     /*
-     * getTraineeGroupRemarks method 
+     * getRemarks method 
      *
      * @param 	 none
      * @return	 $traineeGroupRemarks
      */
-    public function getTraineeGroupRemarks (){
+    public function getRemarks (){
         
         return $this->traineeGroupRemarks;
         

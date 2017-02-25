@@ -145,7 +145,16 @@ class SubjectClass {
 
         return $this->room;
     }
+    /*
+     * getRoomType method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function getRoomType (){
 
+        return $this->roomType;
+    }
 
     /*
      * getPreferredStart method 

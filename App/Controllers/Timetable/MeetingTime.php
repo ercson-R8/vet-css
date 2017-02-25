@@ -1,4 +1,5 @@
 <?php
+namespace App\Controllers\Timetable;
 
 class MeetingTime {
     /* 
@@ -14,8 +15,9 @@ class MeetingTime {
      */
 
     private $id=null;
-    private $subjectClassID=null;
+    private $subjectClass=null;
     private $timeslot = null;
+    private $roomID = null;
 
     /*
      * ___construct method 
@@ -23,10 +25,11 @@ class MeetingTime {
      * @param		
      * @return	 	
      */
-    public function ___construct ($id=null, $subjectClassID=null, $timeslot=null){
+    public function __construct ($id=null, $subjectClass=null, $timeslot=null, $roomID = null){
         $this->id = $id;
-        $this->subjectClassID = $subjectClassID;
+        $this->subjectClass = $subjectClass;
         $this->timeslot = $timeslot;
+        $this->roomID = $roomID;
         
     }
 
@@ -55,14 +58,14 @@ class MeetingTime {
 
 
     /*
-     * getSubjectClassID method 
+     * getSubjectClass method 
      *
      * @param		
      * @return	 	
      */
-    public function getSubjectClassID (){
+    public function getSubjectClass (){
         
-        return $this->subjectClassID;
+        return $this->subjectClass;
     }
 
     /*
@@ -76,6 +79,15 @@ class MeetingTime {
         return $this->timeslot;
     }
 
+    /*
+     * getRoomID method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function getRoomID (){
+        return $this->roomID;
+    }
 
 
 

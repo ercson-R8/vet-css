@@ -50,6 +50,11 @@ class Test extends \Core\Controller {
         echo "<br/>size: ";
         $array = array ("bye", "bye", "bye", "hello", "hello");
         print_r(sizeof(array_count_values($array)));
+
+
+        $a=array("a"=>"red","b"=>"green","c"=>1);
+        print_r($a);
+echo array_search(1,$a);
     }
 
 }

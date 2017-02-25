@@ -33,46 +33,38 @@ class RoomType {
     }
 
     /**
-     * getroomTypeID method 
+     * getRoomTypeID method 
      *
      * @param		none
      * @return	 	int     this ID
      */
-    public function getroomTypeID (){
+    public function getRoomTypeID (){
         return $this->roomTypeID;
     }
 
     /*
-     * getroomTypeName
+     * getRoomTypeName
      */
-    public function getroomTypeName (){
+    public function getRoomTypeName (){
         
         return $this->roomTypeName;
         
     }
 
-    /*
-     * getroomTypeType
-     */
-    public function getroomTypeType (){
-        
-        return $this->roomTypeType;
-        
-    }
 
     /*
-     * getroomTypeDescription
+     * getRoomTypeDescription
      */
-    public function getroomTypeDescription (){
+    public function getRoomTypeDescription (){
         
         return $this->roomTypeDescription;
         
     }
 
     /*
-     * GetroomTypeInformation
+     * GetRoomTypeInformation
      */
-    public function getroomTypeInfo (){
+    public function getRoomTypeInfo (){
         
         return [$this->roomTypeID, 
                 $this->roomTypeName, 

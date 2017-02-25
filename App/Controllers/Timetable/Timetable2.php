@@ -83,20 +83,19 @@ class Timetable {
         )
      */
     public function createSubjectClass ($baseSubjectClass){
-        // print_r("\nSizeof base: ".sizeof($baseSubjectClass));
+        print_r("\nSizeof base: ".sizeof($baseSubjectClass));
         $subjectClass = [];
 
             for($i=0; $i < sizeof($baseSubjectClass); $i++){
-                // print_r("basesubjectID: ".$baseSubjectClass[$i]["id"]);
                 if ($baseSubjectClass[$i]["room_id"]){ // room_id is provided, cannot be changed. 
-                    // echo "<br/>room_id specified: {$baseSubjectClass[$i]["room_id"]} ";
+                    echo "<br/>room_id specified: {$baseSubjectClass[$i]["room_id"]} ";
                     $room = $this->getRoom($baseSubjectClass[$i]["room_id"]);
                     $isRoomFixed = true;
                 }else{
                     $room = $this->getRandomRoom($baseSubjectClass[$i]["room_type_id"]);
                     $isRoomFixed = false;
                 }
-                $subjectClass[$baseSubjectClass[$i]["id"]] =  new SubjectClass (
+                $subjectClass[] =  new SubjectClass (
                                             $baseSubjectClass[$i]["id"],
                                             $baseSubjectClass[$i]["timetable_id"],
                                             $this->getSubject($baseSubjectClass[$i]["subject_id"]),
@@ -107,7 +106,7 @@ class Timetable {
                                             $baseSubjectClass[$i]["preferred_start_period"],
                                             $baseSubjectClass[$i]["preferred_end_period"],
                                             $baseSubjectClass[$i]["preferred_number_days"]);
-                $subjectClass[$baseSubjectClass[$i]["id"]]->setRoomFixed($isRoomFixed);
+                $subjectClass[$i]->setRoomFixed($isRoomFixed);
             }
         return $subjectClass;
     }
@@ -140,7 +139,7 @@ class Timetable {
      * @param		
      * @return	 	
      */
-    public function createTimetable ($subjectClassSet){
+    public function createTimetable ($subjectClass){
         $timetable = [];
         $mt_id = 0;
 
@@ -148,17 +147,16 @@ class Timetable {
         // timeslots are based on the required perion and preferred number of days
         // timeslots are distribute in ref to the number of days. 
 
-        foreach($subjectClassSet as $key => $subjectClass){
+        for($i=0; $i <sizeof($subjectClass); $i++){
 
-            $timeslot = $this->getTimeslot($subjectClass);
+            $timeslot = $this->getTimeslot($subjectClass[$i]);
 
             for($j=0; $j < sizeof($timeslot); $j++){
 
                 // create a MeetingTime object for each timeslot. 
-                $timetable [] = new MeetingTime ($mt_id, $subjectClass, $timeslot[$j]);
+                $timetable [] = new MeetingTime ($mt_id, $subjectClass[$i]->getID(), $timeslot[$j], $subjectClass[$i]->getRoom()->getID() );
                 $mt_id++;
             }
-
         }
         usort($timetable, function($a, $b){
             // return ((int)$a->getSubjectClassID() > (int)$b->getSubjectClassID());
@@ -185,9 +183,9 @@ class Timetable {
     public function getTimeslot ($subjectClass){
 
         $timeslot = []; // subjectClass-timeslot
-        // echo "<br>";
+        echo "<br>";
         
-        // echo "<br/>Subject ID:\t"; print_r($subjectClass->getID());
+        echo "<br/>Subject ID:\t"; print_r($subjectClass->getID());
 
 
             // distribute the required period/s with the preferred number of day/s
@@ -203,8 +201,8 @@ class Timetable {
                                             $subjectClass->getPreferredNumberOfDays() 
                                         );
 
-        // echo "<br/>==================<br/>count: ".count($distBlock)." ";
-        // print_r($distBlock);
+        echo "<br/>==================<br/>count: ".count($distBlock)." ";
+        print_r($distBlock);
         $day = [];
         for($i=0; $i < count($distBlock); $i++ ){
                 $sameDay = true;
@@ -225,10 +223,10 @@ class Timetable {
                     }
                 }
         }
-        // echo"days selected: ";
-        // print_r($day);
-        // echo"timeslots: ";
-        // print_r($timeslot);
+        echo"days selected: ";
+        print_r($day);
+        echo"timeslots: ";
+        print_r($timeslot);
         return $timeslot;
     }
 
@@ -238,83 +236,19 @@ class Timetable {
      * @param		array       of meetingTime object 
      * @return	 	array       the number of conflicts and the fitness value.        
      */
-    public function calcFitness ($timetable){
-        // print_r($subjectClass);
-        $timeslots = [];
-        $totalConflicts = 0;
-
-        for($i=0; $i < sizeof($timetable); $i++){
-            array_push($timeslots, $timetable[$i]->getTimeslot());
-        }
-        $timeslots = (array_unique($timeslots));
-
-        
-        foreach($timeslots as $timeslot){
-            print_r("\ntimeslot:".$timeslot." ");
-            $subjectClassID =[];
-            $roomID = [];
-            $traineeGroupID = [];
-            $instructorID = [];
-            $subjectID = [];
-
-            for($i=0; $i < sizeof($timetable); $i++){
-                if($timeslot == $timetable[$i]->getTimeslot()){
-                    // print_r (" ". $timetable[$i]->getTimeslot());
-                    $subjectClassID[] = $timetable[$i]->getSubjectClass()->getID();
-                    $roomID[] = $timetable[$i]->getSubjectClass()->getRoom()->getID();
-                    $traineeGroupID[] = $timetable[$i]->getSubjectClass()->getTraineeGroup()->getID();
-                    $instructorID[] = $timetable[$i]->getSubjectClass()->getInstructor()->getID();
-                    $subjectID[]= $timetable[$i]->getSubjectClass()->getSubject()->getID();
-                }
-            }
-            echo "\t";
-
-            // print_r($subjectClass);
-            print_r("subjectClass: ");
-            print_r(sizeof($subjectClassID)-sizeof(array_unique($subjectClassID)));
-            print_r(" room: ");
-            print_r(sizeof($roomID)-sizeof(array_unique($roomID)));
-            print_r(" traineeGroupID: ");
-            print_r(sizeof($traineeGroupID)-sizeof(array_unique($traineeGroupID)));
-            print_r(" instructorID: ");
-            print_r(sizeof($instructorID)-sizeof(array_unique($instructorID)));
-            print_r(" subjectID: ");
-            print_r(sizeof($subjectID)-sizeof(array_unique($subjectID)));
-            $totalConflicts +=  (sizeof($subjectClassID)-sizeof(array_unique($subjectClassID))) +
-                                (sizeof($roomID)-sizeof(array_unique($roomID))) +
-                                (sizeof($traineeGroupID)-sizeof(array_unique($traineeGroupID))) + 
-                                (sizeof($instructorID)-sizeof(array_unique($instructorID))) + 
-                                (sizeof($subjectID)-sizeof(array_unique($subjectID))) 
-                                ;
-                        
-        }
-
-
-        // print_r("\n\nmeeting \tsubject \tTimeslot \tRoom \tTrainee \tInstructor \tSubject");
-        // print_r("\ntime \t\tClassID \tts \t\tID \tGroup \t\tID \t\tID CODE");
+    public function calcFitness ($timetable, $subjectClassSet){
+        // print_r($timetable);
+        // print_r("\n\nmeeting \tsubjectClass \tTimeslot \tRoom ");
+        // print_r("\ntime \t\tID \t\tts \t\tID ");
         // print_r("\n**** \t\t**** \t\t**** \t\t**** ");
         // for($i=0; $i < sizeof($timetable); $i++){
-        //     // array_push($timeslots,  [   ["Timeslot" =>$timetable[$i]->getTimeslot()],
-        //     //                             ["SubjectClassID" =>$timetable[$i]->getSubjectClass()->getID()],
-        //     //                             ["RoomID" =>$timetable[$i]->getSubjectClass()->getRoom()->getID()]
-                                            
-        //     //                         ]);
-            
-
-        //     // }
-        //     if (0){
-        //         print_r("<br/>{$i} ".$timetable[$i]->getID());
-        //         print_r("\t\t". $timetable[$i]->getSubjectClass()->getID());
-        //         print_r("\t\t". $timetable[$i]->getTimeslot());
-        //         print_r("\t\t". $timetable[$i]->getSubjectClass()->getRoom()->getID());
-        //         print_r("\t".   $timetable[$i]->getSubjectClass()->getTraineeGroup()->getID());
-        //         print_r("\t\t". $timetable[$i]->getSubjectClass()->getInstructor()->getID());
-        //         print_r("\t\t". $timetable[$i]->getSubjectClass()->getSubject()->getID());
-        //         print_r("\t".   $timetable[$i]->getSubjectClass()->getSubject()->getCode());
-        //     }
+        //     print_r("<br/>".$timetable[$i]->getID());
+        //     print_r("\t\t".$timetable[$i]->getSubjectClassID());
+        //     print_r("\t\t".$timetable[$i]->getTimeslot());
+        //     print_r("\t\t".$timetable[$i]->getRoomID());
         // }
+        // print_r($timetable);
 
-        return $totalConflicts;
 
         //return ; // fitness value = 1 / (total conflicts + 1)
     }
@@ -323,59 +257,33 @@ class Timetable {
         echo"Timetable Class<pre>";
         $timetableID = 1;
         $population = [];
-        $subjectClassSets = [];
+        $subjectClassSet = [];
 
         // base subjectClass is created once, to fetch data from mySQL tables
         // an N subjectClasses will be created from the base with 
         // random rooms if the property isRoomFixed = false. 
   
         $baseSubjectClass = $this->fetchBaseSubjectClass($timetableID); 
-        // print_r("\nbase SC:\n");
-        // print_r($baseSubjectClass);
+        print_r("\nbase SC:\n");
+        print_r($baseSubjectClass);
 
         // create an N size subjectClass sets. 
-        // for($i=0; $i < TimetableConfig::POP_SIZE; $i++){
-        //     $subjectClassSets[] = $this->createSubjectClass($baseSubjectClass);
-        //     $population[] = $this->createTimetable($subjectClassSets[$i]);
-        //     print_r("\n<h3>TOTAL CONFLICTS: ".$this->calcFitness($population[$i])." </h3>");
-        // }
-
-        $i = 0;
-        $lowest = 20;
-        $lowest_i = 0;
-        while(true){
-            $subjectClassSets[] = $this->createSubjectClass($baseSubjectClass);
-            $population[] = $this->createTimetable($subjectClassSets[$i]);
-            
-            $x = $this->calcFitness($population[$i]);
-            print_r("\nx ".$x.":".$lowest." lowest");
-            print_r("\n<h3>{$i} | TOTAL CONFLICTS: ".$x." </h3>".($x/($x+1)));
-            if ($x < $lowest ){
-                $lowest = $x;
-                $lowest_i = $i;
-            }
-            if ($i > 1999 or $lowest == 0){
-                break;
-            }
-            $i++;
+        for($i=0; $i < TimetableConfig::POP_SIZE; $i++){
+            $subjectClassSet[] = $this->createSubjectClass($baseSubjectClass);
+            $population[] = $this->createTimetable($subjectClassSet[$i]);
         }
 
-        print_r("\n<h3>{$lowest_i} | TOTAL CONFLICTS: ".$lowest." </h3>".($lowest/($lowest+1)));
-        $x = $lowest_i;
 
-        // foreach($subjectClassSets as $key => $subjectClassSet){ 
-        //     print_r("\n===============================================================================================");
-        //     foreach($subjectClassSet as $ID => $subjectClass ){
-        //         // print_r($subjectClass);
-        //         print_r("\n[{$key},{$ID}]: getID: ".$subjectClass->getID());           
-        //         print_r("\t\troomType: ".$subjectClass->getRoomType()->getRoomTypeID());
-        //         print_r("\t\tRoomID: ".$subjectClass->getRoom()->getID());
-        //         print_r("\t\tRoom: ".$subjectClass->getRoom()->getName());
-            
-        //     }
-            
-
-        // }      
+        for($i=0; $i < sizeof($subjectClassSet); $i++){
+            // print_r($subjectClass[$i]);
+            print_r("\n=======================================================");
+            for ($j=0; $j < sizeof($subjectClassSet[$i]); $j++){
+                print_r("\n[{$i},{$j}]: getID: ".$subjectClassSet[$i][$j]->getID());           
+                print_r("\t\troomType: ".$subjectClassSet[$i][$j]->getRoomType()->getRoomTypeID());
+                print_r("\t\tRoomID: ".$subjectClassSet[$i][$j]->getRoom()->getID());
+                print_r("\t\tRoom: ".$subjectClassSet[$i][$j]->getRoom()->getName());
+            }
+        }      
         // how to mutate
         // $roomTypeID = $subjectClass[0][1]->getRoomType()->getroomTypeID();  
         // $room = $this->getRandomRoom($roomTypeID);
@@ -390,25 +298,41 @@ class Timetable {
         //     print_r("\t\tRoom: ".$subjectClass[0][$j]->getRoom()->getName());
         // }
 
-        // $this->calcFitness($population[3], $subjectClassSet[3]);
-        // $this->calcFitness($population[3]);
+
+        // $population[] = $this->createTimetable($subjectClass[0]);
+
+        // print_r("size: ".sizeof($population[0]));
+        // print_r($population[0]);
         
+        // for($i=0; $i < TimetableConfig::POP_SIZE; $i++){
+        //     print_r("\n\n=======================================================");
+        //     print_r("\n\tgetID \tgetSubjectClassID \tgetTimeslot");
+        //     for($j=0; $j < sizeof($population[$i]); $j++){
+        //         print_r("\n\t".$population[$i][$j]->getID());
+        //         print_r("\t".$population[$i][$j]->getSubjectClassID());
+        //         print_r("\t\t\t".$population[$i][$j]->getTimeslot());
+        //     }
+        // }
+
+
+
+        $this->calcFitness($population[3], $subjectClassSet[3]);
         // print_r("\nsize: ".sizeof($population[0]));
 
         print_r("\n\nmeeting \tsubject \tTimeslot \tRoom \tTrainee \tInstructor \tSubject");
         print_r("\ntime \t\tClassID \tts \t\tID \tGroup \t\tID \t\tID CODE");
         print_r("\n**** \t\t**** \t\t**** \t\t**** ");
-        for($i=0; $i < sizeof($population[$x]); $i++){
-            print_r("<br/>".$population[$x][$i]->getID());
-            print_r("\t\t".$population[$x][$i]->getSubjectClass()->getID());
-            print_r("\t\t".$population[$x][$i]->getTimeslot());
-            print_r("\t\t".$population[$x][$i]->getSubjectClass()->getRoom()->getID());
-            // print_r("\t\t".$subjectClassSets[3][$population[3][$i]->getSubjectClass()->getID()]->getRoom()->getID());
+        for($i=0; $i < sizeof($population[3]); $i++){
+            print_r("<br/>".$population[3][$i]->getID());
+            print_r("\t\t".$population[3][$i]->getSubjectClassID());
+            print_r("\t\t".$population[3][$i]->getTimeslot());
+            print_r("\t\t".$population[3][$i]->getRoomID());
+            // print_r("\t\t".$subjectClassSet[3][$i]->getSubject()->getID());
             
-            print_r("\t".   $subjectClassSets[3][$population[$x][$i]->getSubjectClass()->getID()]->getTraineeGroup()->getID());
-            print_r("\t\t". $subjectClassSets[3][$population[$x][$i]->getSubjectClass()->getID()]->getInstructor()->getID());
-            print_r("\t\t". $subjectClassSets[3][$population[$x][$i]->getSubjectClass()->getID()]->getSubject()->getID());
-            print_r("\t".   $subjectClassSets[3][$population[$x][$i]->getSubjectClass()->getID()]->getSubject()->getCode());
+            print_r("\t".$subjectClassSet[3][$population[3][$i]->getSubjectClassID()-1]->getTraineeGroup()->getID());
+            print_r("\t\t".$subjectClassSet[3][$population[3][$i]->getSubjectClassID()-1]->getInstructor()->getID());
+            print_r("\t\t".$subjectClassSet[3][$population[3][$i]->getSubjectClassID()-1]->getSubject()->getID());
+            print_r("\t".$subjectClassSet[3][$population[3][$i]->getSubjectClassID()-1]->getSubject()->getCode());
         }
   
 
@@ -474,7 +398,7 @@ class Timetable {
         
         $s = $preferred_start_period;
         $e = $preferred_end_period;
-        // echo "<br/><br/><h3>periods between {$s}-{$e}</h3>";
+        echo "<br/><br/><h3>periods between {$s}-{$e}</h3>";
         
         $period_start = (($preferred_start_period==null) ? 0 : $preferred_start_period-1);
         $period_end = (($preferred_end_period==null) ? TimetableConfig::TOTAL_PERIODS : $preferred_end_period-1);
@@ -484,12 +408,12 @@ class Timetable {
             $timeslot = [];
             $day = [];  
             $initSlot = mt_rand(0, TimetableConfig::TOTAL_TIME_SLOTS-1);
-            // echo "\ninitSlot: {$initSlot}<br/>";
+            echo "\ninitSlot: {$initSlot}<br/>";
             for ($j=0; $j < $numberOfPeriods; $j++){
-                // echo "\tj={$j} "; print_r($initSlot+$j);
+                echo "\tj={$j} "; print_r($initSlot+$j);
                 array_push($timeslot, $initSlot+$j);
 
-                // echo "\tday: ";print_r( (int) (($initSlot+$j)/TimetableConfig::TOTAL_PERIODS) );
+                echo "\tday: ";print_r( (int) (($initSlot+$j)/TimetableConfig::TOTAL_PERIODS) );
 
                 // push the timeslot in $day array 
                 array_push($day, ((int) (($initSlot+$j)/TimetableConfig::TOTAL_PERIODS) ));
@@ -509,17 +433,17 @@ class Timetable {
                     $done = true;
                     $s = (fmod($timeslot[0],TimetableConfig::TOTAL_PERIODS))+1;
                     $e = (fmod($timeslot[sizeof($day)-1],TimetableConfig::TOTAL_PERIODS))+1;
-                    // echo "\nstart: ".$s;
+                    echo "\nstart: ".$s;
                     
-                    // echo "\t end: ".$e;
+                    echo "\t end: ".$e;
                     
                     // echo "<br/>";
                 }
                 
             }
         }
-        // echo "<br/>timeslot: ";print_r($timeslot);
-        // echo "<br/><br/>";
+        echo "<br/>timeslot: ";print_r($timeslot);
+        echo "<br/><br/>";
         return $timeslot;
     }
 

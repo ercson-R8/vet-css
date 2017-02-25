@@ -1,0 +1,524 @@
+testing from controller test....
+Timetable Class
+
+room_id specified: 3 
+room ID chosen-------------:1
+room ID chosen-------------:2
+room ID chosen-------------:3
+room ID chosen-------------:2
+room ID chosen-------------:2
+room_id specified: 4 
+room_id specified: 4 
+base SC:
+Array
+(
+    [0] => App\Controllers\Timetable\SubjectClass Object
+        (
+            [id:App\Controllers\Timetable\SubjectClass:private] => 1
+            [timeTableID:App\Controllers\Timetable\SubjectClass:private] => 1
+            [subject:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Subject Object
+                (
+                    [subjectID:App\Controllers\Timetable\Subject:private] => 1
+                    [subjectCode:App\Controllers\Timetable\Subject:private] => MATH101
+                    [subjectName:App\Controllers\Timetable\Subject:private] => Basic Math
+                    [requiredPeriod:App\Controllers\Timetable\Subject:private] => 2
+                    [description:App\Controllers\Timetable\Subject:private] => Basic Math taught in level 1
+                )
+
+            [traineeGroup:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\TraineeGroup Object
+                (
+                    [traineeGroupID:App\Controllers\Timetable\TraineeGroup:private] => 1
+                    [traineeGroupName:App\Controllers\Timetable\TraineeGroup:private] => Electronics
+                    [traineeGroupSection:App\Controllers\Timetable\TraineeGroup:private] => Group A
+                    [traineeGroupLevel:App\Controllers\Timetable\TraineeGroup:private] => 1
+                    [traineeGroupRemarks:App\Controllers\Timetable\TraineeGroup:private] => 
+                )
+
+            [instructor:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Instructor Object
+                (
+                    [ID:App\Controllers\Timetable\Instructor:private] => 4
+                    [first_name:App\Controllers\Timetable\Instructor:private] => John
+                    [last_name:App\Controllers\Timetable\Instructor:private] => Wall
+                    [remark:App\Controllers\Timetable\Instructor:private] => Math instructor
+                )
+
+            [room:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Room Object
+                (
+                    [ID:App\Controllers\Timetable\Room:private] => 3
+                    [name:App\Controllers\Timetable\Room:private] => ComLab 1
+                    [type:App\Controllers\Timetable\Room:private] => 2
+                    [location:App\Controllers\Timetable\Room:private] => Bldg 1
+                    [description:App\Controllers\Timetable\Room:private] => IT computer laboratory
+                )
+
+            [roomType:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\RoomType Object
+                (
+                    [roomTypeID:App\Controllers\Timetable\RoomType:private] => 2
+                    [roomTypeName:App\Controllers\Timetable\RoomType:private] => Computer LAB
+                    [roomTypeDescription:App\Controllers\Timetable\RoomType:private] => Used for IT classes
+                )
+
+            [preferredStart:App\Controllers\Timetable\SubjectClass:private] => 4
+            [preferredEnd:App\Controllers\Timetable\SubjectClass:private] => 5
+            [preferredNumberOfDays:App\Controllers\Timetable\SubjectClass:private] => 1
+            [isRoomFixed:App\Controllers\Timetable\SubjectClass:private] => 1
+        )
+
+    [1] => App\Controllers\Timetable\SubjectClass Object
+        (
+            [id:App\Controllers\Timetable\SubjectClass:private] => 2
+            [timeTableID:App\Controllers\Timetable\SubjectClass:private] => 1
+            [subject:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Subject Object
+                (
+                    [subjectID:App\Controllers\Timetable\Subject:private] => 2
+                    [subjectCode:App\Controllers\Timetable\Subject:private] => POLSC101
+                    [subjectName:App\Controllers\Timetable\Subject:private] => Political Sci
+                    [requiredPeriod:App\Controllers\Timetable\Subject:private] => 2
+                    [description:App\Controllers\Timetable\Subject:private] => Political Science taught in blah blah
+                )
+
+            [traineeGroup:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\TraineeGroup Object
+                (
+                    [traineeGroupID:App\Controllers\Timetable\TraineeGroup:private] => 1
+                    [traineeGroupName:App\Controllers\Timetable\TraineeGroup:private] => Electronics
+                    [traineeGroupSection:App\Controllers\Timetable\TraineeGroup:private] => Group A
+                    [traineeGroupLevel:App\Controllers\Timetable\TraineeGroup:private] => 1
+                    [traineeGroupRemarks:App\Controllers\Timetable\TraineeGroup:private] => 
+                )
+
+            [instructor:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Instructor Object
+                (
+                    [ID:App\Controllers\Timetable\Instructor:private] => 1
+                    [first_name:App\Controllers\Timetable\Instructor:private] => Paul
+                    [last_name:App\Controllers\Timetable\Instructor:private] => George
+                    [remark:App\Controllers\Timetable\Instructor:private] => PolSci instructor
+                )
+
+            [room:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Room Object
+                (
+                    [ID:App\Controllers\Timetable\Room:private] => 1
+                    [name:App\Controllers\Timetable\Room:private] => Room 1
+                    [type:App\Controllers\Timetable\Room:private] => 1
+                    [location:App\Controllers\Timetable\Room:private] => Bldg 1
+                    [description:App\Controllers\Timetable\Room:private] => Regular classroom
+                )
+
+            [roomType:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\RoomType Object
+                (
+                    [roomTypeID:App\Controllers\Timetable\RoomType:private] => 1
+                    [roomTypeName:App\Controllers\Timetable\RoomType:private] => Classroom
+                    [roomTypeDescription:App\Controllers\Timetable\RoomType:private] => Default room type
+                )
+
+            [preferredStart:App\Controllers\Timetable\SubjectClass:private] => 
+            [preferredEnd:App\Controllers\Timetable\SubjectClass:private] => 
+            [preferredNumberOfDays:App\Controllers\Timetable\SubjectClass:private] => 1
+            [isRoomFixed:App\Controllers\Timetable\SubjectClass:private] => 
+        )
+
+    [2] => App\Controllers\Timetable\SubjectClass Object
+        (
+            [id:App\Controllers\Timetable\SubjectClass:private] => 3
+            [timeTableID:App\Controllers\Timetable\SubjectClass:private] => 1
+            [subject:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Subject Object
+                (
+                    [subjectID:App\Controllers\Timetable\Subject:private] => 3
+                    [subjectCode:App\Controllers\Timetable\Subject:private] => ENGL101
+                    [subjectName:App\Controllers\Timetable\Subject:private] => Basic English
+                    [requiredPeriod:App\Controllers\Timetable\Subject:private] => 4
+                    [description:App\Controllers\Timetable\Subject:private] => Basic English taught in blah blah
+                )
+
+            [traineeGroup:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\TraineeGroup Object
+                (
+                    [traineeGroupID:App\Controllers\Timetable\TraineeGroup:private] => 1
+                    [traineeGroupName:App\Controllers\Timetable\TraineeGroup:private] => Electronics
+                    [traineeGroupSection:App\Controllers\Timetable\TraineeGroup:private] => Group A
+                    [traineeGroupLevel:App\Controllers\Timetable\TraineeGroup:private] => 1
+                    [traineeGroupRemarks:App\Controllers\Timetable\TraineeGroup:private] => 
+                )
+
+            [instructor:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Instructor Object
+                (
+                    [ID:App\Controllers\Timetable\Instructor:private] => 3
+                    [first_name:App\Controllers\Timetable\Instructor:private] => James
+                    [last_name:App\Controllers\Timetable\Instructor:private] => LeBron
+                    [remark:App\Controllers\Timetable\Instructor:private] => English instructo
+                )
+
+            [room:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Room Object
+                (
+                    [ID:App\Controllers\Timetable\Room:private] => 2
+                    [name:App\Controllers\Timetable\Room:private] => Room 2
+                    [type:App\Controllers\Timetable\Room:private] => 1
+                    [location:App\Controllers\Timetable\Room:private] => Bldg 1
+                    [description:App\Controllers\Timetable\Room:private] => Regular classrom
+                )
+
+            [roomType:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\RoomType Object
+                (
+                    [roomTypeID:App\Controllers\Timetable\RoomType:private] => 1
+                    [roomTypeName:App\Controllers\Timetable\RoomType:private] => Classroom
+                    [roomTypeDescription:App\Controllers\Timetable\RoomType:private] => Default room type
+                )
+
+            [preferredStart:App\Controllers\Timetable\SubjectClass:private] => 
+            [preferredEnd:App\Controllers\Timetable\SubjectClass:private] => 
+            [preferredNumberOfDays:App\Controllers\Timetable\SubjectClass:private] => 3
+            [isRoomFixed:App\Controllers\Timetable\SubjectClass:private] => 
+        )
+
+    [3] => App\Controllers\Timetable\SubjectClass Object
+        (
+            [id:App\Controllers\Timetable\SubjectClass:private] => 4
+            [timeTableID:App\Controllers\Timetable\SubjectClass:private] => 1
+            [subject:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Subject Object
+                (
+                    [subjectID:App\Controllers\Timetable\Subject:private] => 1
+                    [subjectCode:App\Controllers\Timetable\Subject:private] => MATH101
+                    [subjectName:App\Controllers\Timetable\Subject:private] => Basic Math
+                    [requiredPeriod:App\Controllers\Timetable\Subject:private] => 2
+                    [description:App\Controllers\Timetable\Subject:private] => Basic Math taught in level 1
+                )
+
+            [traineeGroup:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\TraineeGroup Object
+                (
+                    [traineeGroupID:App\Controllers\Timetable\TraineeGroup:private] => 2
+                    [traineeGroupName:App\Controllers\Timetable\TraineeGroup:private] => Mechtronics
+                    [traineeGroupSection:App\Controllers\Timetable\TraineeGroup:private] => Group A
+                    [traineeGroupLevel:App\Controllers\Timetable\TraineeGroup:private] => 1
+                    [traineeGroupRemarks:App\Controllers\Timetable\TraineeGroup:private] => 
+                )
+
+            [instructor:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Instructor Object
+                (
+                    [ID:App\Controllers\Timetable\Instructor:private] => 4
+                    [first_name:App\Controllers\Timetable\Instructor:private] => John
+                    [last_name:App\Controllers\Timetable\Instructor:private] => Wall
+                    [remark:App\Controllers\Timetable\Instructor:private] => Math instructor
+                )
+
+            [room:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Room Object
+                (
+                    [ID:App\Controllers\Timetable\Room:private] => 3
+                    [name:App\Controllers\Timetable\Room:private] => ComLab 1
+                    [type:App\Controllers\Timetable\Room:private] => 2
+                    [location:App\Controllers\Timetable\Room:private] => Bldg 1
+                    [description:App\Controllers\Timetable\Room:private] => IT computer laboratory
+                )
+
+            [roomType:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\RoomType Object
+                (
+                    [roomTypeID:App\Controllers\Timetable\RoomType:private] => 2
+                    [roomTypeName:App\Controllers\Timetable\RoomType:private] => Computer LAB
+                    [roomTypeDescription:App\Controllers\Timetable\RoomType:private] => Used for IT classes
+                )
+
+            [preferredStart:App\Controllers\Timetable\SubjectClass:private] => 
+            [preferredEnd:App\Controllers\Timetable\SubjectClass:private] => 
+            [preferredNumberOfDays:App\Controllers\Timetable\SubjectClass:private] => 1
+            [isRoomFixed:App\Controllers\Timetable\SubjectClass:private] => 
+        )
+
+    [4] => App\Controllers\Timetable\SubjectClass Object
+        (
+            [id:App\Controllers\Timetable\SubjectClass:private] => 5
+            [timeTableID:App\Controllers\Timetable\SubjectClass:private] => 1
+            [subject:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Subject Object
+                (
+                    [subjectID:App\Controllers\Timetable\Subject:private] => 2
+                    [subjectCode:App\Controllers\Timetable\Subject:private] => POLSC101
+                    [subjectName:App\Controllers\Timetable\Subject:private] => Political Sci
+                    [requiredPeriod:App\Controllers\Timetable\Subject:private] => 2
+                    [description:App\Controllers\Timetable\Subject:private] => Political Science taught in blah blah
+                )
+
+            [traineeGroup:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\TraineeGroup Object
+                (
+                    [traineeGroupID:App\Controllers\Timetable\TraineeGroup:private] => 2
+                    [traineeGroupName:App\Controllers\Timetable\TraineeGroup:private] => Mechtronics
+                    [traineeGroupSection:App\Controllers\Timetable\TraineeGroup:private] => Group A
+                    [traineeGroupLevel:App\Controllers\Timetable\TraineeGroup:private] => 1
+                    [traineeGroupRemarks:App\Controllers\Timetable\TraineeGroup:private] => 
+                )
+
+            [instructor:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Instructor Object
+                (
+                    [ID:App\Controllers\Timetable\Instructor:private] => 1
+                    [first_name:App\Controllers\Timetable\Instructor:private] => Paul
+                    [last_name:App\Controllers\Timetable\Instructor:private] => George
+                    [remark:App\Controllers\Timetable\Instructor:private] => PolSci instructor
+                )
+
+            [room:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Room Object
+                (
+                    [ID:App\Controllers\Timetable\Room:private] => 2
+                    [name:App\Controllers\Timetable\Room:private] => Room 2
+                    [type:App\Controllers\Timetable\Room:private] => 1
+                    [location:App\Controllers\Timetable\Room:private] => Bldg 1
+                    [description:App\Controllers\Timetable\Room:private] => Regular classrom
+                )
+
+            [roomType:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\RoomType Object
+                (
+                    [roomTypeID:App\Controllers\Timetable\RoomType:private] => 1
+                    [roomTypeName:App\Controllers\Timetable\RoomType:private] => Classroom
+                    [roomTypeDescription:App\Controllers\Timetable\RoomType:private] => Default room type
+                )
+
+            [preferredStart:App\Controllers\Timetable\SubjectClass:private] => 
+            [preferredEnd:App\Controllers\Timetable\SubjectClass:private] => 
+            [preferredNumberOfDays:App\Controllers\Timetable\SubjectClass:private] => 1
+            [isRoomFixed:App\Controllers\Timetable\SubjectClass:private] => 
+        )
+
+    [5] => App\Controllers\Timetable\SubjectClass Object
+        (
+            [id:App\Controllers\Timetable\SubjectClass:private] => 6
+            [timeTableID:App\Controllers\Timetable\SubjectClass:private] => 1
+            [subject:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Subject Object
+                (
+                    [subjectID:App\Controllers\Timetable\Subject:private] => 3
+                    [subjectCode:App\Controllers\Timetable\Subject:private] => ENGL101
+                    [subjectName:App\Controllers\Timetable\Subject:private] => Basic English
+                    [requiredPeriod:App\Controllers\Timetable\Subject:private] => 4
+                    [description:App\Controllers\Timetable\Subject:private] => Basic English taught in blah blah
+                )
+
+            [traineeGroup:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\TraineeGroup Object
+                (
+                    [traineeGroupID:App\Controllers\Timetable\TraineeGroup:private] => 2
+                    [traineeGroupName:App\Controllers\Timetable\TraineeGroup:private] => Mechtronics
+                    [traineeGroupSection:App\Controllers\Timetable\TraineeGroup:private] => Group A
+                    [traineeGroupLevel:App\Controllers\Timetable\TraineeGroup:private] => 1
+                    [traineeGroupRemarks:App\Controllers\Timetable\TraineeGroup:private] => 
+                )
+
+            [instructor:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Instructor Object
+                (
+                    [ID:App\Controllers\Timetable\Instructor:private] => 3
+                    [first_name:App\Controllers\Timetable\Instructor:private] => James
+                    [last_name:App\Controllers\Timetable\Instructor:private] => LeBron
+                    [remark:App\Controllers\Timetable\Instructor:private] => English instructo
+                )
+
+            [room:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Room Object
+                (
+                    [ID:App\Controllers\Timetable\Room:private] => 2
+                    [name:App\Controllers\Timetable\Room:private] => Room 2
+                    [type:App\Controllers\Timetable\Room:private] => 1
+                    [location:App\Controllers\Timetable\Room:private] => Bldg 1
+                    [description:App\Controllers\Timetable\Room:private] => Regular classrom
+                )
+
+            [roomType:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\RoomType Object
+                (
+                    [roomTypeID:App\Controllers\Timetable\RoomType:private] => 1
+                    [roomTypeName:App\Controllers\Timetable\RoomType:private] => Classroom
+                    [roomTypeDescription:App\Controllers\Timetable\RoomType:private] => Default room type
+                )
+
+            [preferredStart:App\Controllers\Timetable\SubjectClass:private] => 
+            [preferredEnd:App\Controllers\Timetable\SubjectClass:private] => 
+            [preferredNumberOfDays:App\Controllers\Timetable\SubjectClass:private] => 3
+            [isRoomFixed:App\Controllers\Timetable\SubjectClass:private] => 
+        )
+
+    [6] => App\Controllers\Timetable\SubjectClass Object
+        (
+            [id:App\Controllers\Timetable\SubjectClass:private] => 7
+            [timeTableID:App\Controllers\Timetable\SubjectClass:private] => 1
+            [subject:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Subject Object
+                (
+                    [subjectID:App\Controllers\Timetable\Subject:private] => 4
+                    [subjectCode:App\Controllers\Timetable\Subject:private] => Study Break
+                    [subjectName:App\Controllers\Timetable\Subject:private] => Study Break
+                    [requiredPeriod:App\Controllers\Timetable\Subject:private] => 3
+                    [description:App\Controllers\Timetable\Subject:private] => Recess, Snack break, Time off
+                )
+
+            [traineeGroup:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\TraineeGroup Object
+                (
+                    [traineeGroupID:App\Controllers\Timetable\TraineeGroup:private] => 1
+                    [traineeGroupName:App\Controllers\Timetable\TraineeGroup:private] => Electronics
+                    [traineeGroupSection:App\Controllers\Timetable\TraineeGroup:private] => Group A
+                    [traineeGroupLevel:App\Controllers\Timetable\TraineeGroup:private] => 1
+                    [traineeGroupRemarks:App\Controllers\Timetable\TraineeGroup:private] => 
+                )
+
+            [instructor:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Instructor Object
+                (
+                    [ID:App\Controllers\Timetable\Instructor:private] => 5
+                    [first_name:App\Controllers\Timetable\Instructor:private] => 
+                    [last_name:App\Controllers\Timetable\Instructor:private] => 
+                    [remark:App\Controllers\Timetable\Instructor:private] => Canteen
+                )
+
+            [room:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Room Object
+                (
+                    [ID:App\Controllers\Timetable\Room:private] => 4
+                    [name:App\Controllers\Timetable\Room:private] => 
+                    [type:App\Controllers\Timetable\Room:private] => 9
+                    [location:App\Controllers\Timetable\Room:private] => Campus
+                    [description:App\Controllers\Timetable\Room:private] => Canteen
+                )
+
+            [roomType:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\RoomType Object
+                (
+                    [roomTypeID:App\Controllers\Timetable\RoomType:private] => 9
+                    [roomTypeName:App\Controllers\Timetable\RoomType:private] => Canteen
+                    [roomTypeDescription:App\Controllers\Timetable\RoomType:private] => Mess hall, lounges, 
+                )
+
+            [preferredStart:App\Controllers\Timetable\SubjectClass:private] => 2
+            [preferredEnd:App\Controllers\Timetable\SubjectClass:private] => 3
+            [preferredNumberOfDays:App\Controllers\Timetable\SubjectClass:private] => 3
+            [isRoomFixed:App\Controllers\Timetable\SubjectClass:private] => 1
+        )
+
+    [7] => App\Controllers\Timetable\SubjectClass Object
+        (
+            [id:App\Controllers\Timetable\SubjectClass:private] => 8
+            [timeTableID:App\Controllers\Timetable\SubjectClass:private] => 1
+            [subject:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Subject Object
+                (
+                    [subjectID:App\Controllers\Timetable\Subject:private] => 4
+                    [subjectCode:App\Controllers\Timetable\Subject:private] => Study Break
+                    [subjectName:App\Controllers\Timetable\Subject:private] => Study Break
+                    [requiredPeriod:App\Controllers\Timetable\Subject:private] => 3
+                    [description:App\Controllers\Timetable\Subject:private] => Recess, Snack break, Time off
+                )
+
+            [traineeGroup:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\TraineeGroup Object
+                (
+                    [traineeGroupID:App\Controllers\Timetable\TraineeGroup:private] => 2
+                    [traineeGroupName:App\Controllers\Timetable\TraineeGroup:private] => Mechtronics
+                    [traineeGroupSection:App\Controllers\Timetable\TraineeGroup:private] => Group A
+                    [traineeGroupLevel:App\Controllers\Timetable\TraineeGroup:private] => 1
+                    [traineeGroupRemarks:App\Controllers\Timetable\TraineeGroup:private] => 
+                )
+
+            [instructor:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Instructor Object
+                (
+                    [ID:App\Controllers\Timetable\Instructor:private] => 5
+                    [first_name:App\Controllers\Timetable\Instructor:private] => 
+                    [last_name:App\Controllers\Timetable\Instructor:private] => 
+                    [remark:App\Controllers\Timetable\Instructor:private] => Canteen
+                )
+
+            [room:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Room Object
+                (
+                    [ID:App\Controllers\Timetable\Room:private] => 4
+                    [name:App\Controllers\Timetable\Room:private] => 
+                    [type:App\Controllers\Timetable\Room:private] => 9
+                    [location:App\Controllers\Timetable\Room:private] => Campus
+                    [description:App\Controllers\Timetable\Room:private] => Canteen
+                )
+
+            [roomType:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\RoomType Object
+                (
+                    [roomTypeID:App\Controllers\Timetable\RoomType:private] => 9
+                    [roomTypeName:App\Controllers\Timetable\RoomType:private] => Canteen
+                    [roomTypeDescription:App\Controllers\Timetable\RoomType:private] => Mess hall, lounges, 
+                )
+
+            [preferredStart:App\Controllers\Timetable\SubjectClass:private] => 4
+            [preferredEnd:App\Controllers\Timetable\SubjectClass:private] => 5
+            [preferredNumberOfDays:App\Controllers\Timetable\SubjectClass:private] => 3
+            [isRoomFixed:App\Controllers\Timetable\SubjectClass:private] => 1
+        )
+
+)
+
+
+testing from controller test....
+Timetable Class
+===============================================================================================
+[0,1]: getID: 1		roomType: 2		RoomID: 3		Room: ComLab 1
+[0,2]: getID: 2		roomType: 1		RoomID: 1		Room: Room 1
+[0,3]: getID: 3		roomType: 1		RoomID: 2		Room: Room 2
+[0,4]: getID: 4		roomType: 2		RoomID: 3		Room: ComLab 1
+[0,5]: getID: 5		roomType: 1		RoomID: 2		Room: Room 2
+[0,6]: getID: 6		roomType: 1		RoomID: 2		Room: Room 2
+[0,7]: getID: 7		roomType: 9		RoomID: 4		Room: 
+[0,8]: getID: 8		roomType: 9		RoomID: 4		Room: 
+===============================================================================================
+[1,1]: getID: 1		roomType: 2		RoomID: 3		Room: ComLab 1
+[1,2]: getID: 2		roomType: 1		RoomID: 2		Room: Room 2
+[1,3]: getID: 3		roomType: 1		RoomID: 1		Room: Room 1
+[1,4]: getID: 4		roomType: 2		RoomID: 3		Room: ComLab 1
+[1,5]: getID: 5		roomType: 1		RoomID: 2		Room: Room 2
+[1,6]: getID: 6		roomType: 1		RoomID: 2		Room: Room 2
+[1,7]: getID: 7		roomType: 9		RoomID: 4		Room: 
+[1,8]: getID: 8		roomType: 9		RoomID: 4		Room: 
+===============================================================================================
+[2,1]: getID: 1		roomType: 2		RoomID: 3		Room: ComLab 1
+[2,2]: getID: 2		roomType: 1		RoomID: 2		Room: Room 2
+[2,3]: getID: 3		roomType: 1		RoomID: 2		Room: Room 2
+[2,4]: getID: 4		roomType: 2		RoomID: 3		Room: ComLab 1
+[2,5]: getID: 5		roomType: 1		RoomID: 2		Room: Room 2
+[2,6]: getID: 6		roomType: 1		RoomID: 2		Room: Room 2
+[2,7]: getID: 7		roomType: 9		RoomID: 4		Room: 
+[2,8]: getID: 8		roomType: 9		RoomID: 4		Room: 
+===============================================================================================
+[3,1]: getID: 1		roomType: 2		RoomID: 3		Room: ComLab 1
+[3,2]: getID: 2		roomType: 1		RoomID: 2		Room: Room 2
+[3,3]: getID: 3		roomType: 1		RoomID: 2		Room: Room 2
+[3,4]: getID: 4		roomType: 2		RoomID: 3		Room: ComLab 1
+[3,5]: getID: 5		roomType: 1		RoomID: 2		Room: Room 2
+[3,6]: getID: 6		roomType: 1		RoomID: 2		Room: Room 2
+[3,7]: getID: 7		roomType: 9		RoomID: 4		Room: 
+[3,8]: getID: 8		roomType: 9		RoomID: 4		Room: 
+
+meeting 	subject 	Timeslot 	Room 	Trainee 	Instructor 	Subject
+time 		ClassID 	ts 		ID 	Group 		ID 		ID CODE
+**** 		**** 		**** 		**** 
+18		7		1		4	1		5		4	Study Break
+13		6		2		2	2		3		3	ENGL101
+10		5		2		2	2		1		2	POLSC101
+11		5		3		2	2		1		2	POLSC101
+19		8		3		4	2		5		4	Study Break
+4		3		3		2	1		3		3	ENGL101
+8		4		5		3	2		4		1	MATH101
+2		2		6		2	1		1		2	POLSC101
+9		4		6		3	2		4		1	MATH101
+6		3		7		2	1		3		3	ENGL101
+17		7		7		4	1		5		4	Study Break
+3		2		7		2	1		1		2	POLSC101
+7		3		8		2	1		3		3	ENGL101
+0		1		8		3	1		4		1	MATH101
+1		1		9		3	1		4		1	MATH101
+21		8		9		4	2		5		4	Study Break
+12		6		9		2	2		3		3	ENGL101
+16		7		11		4	1		5		4	Study Break
+14		6		12		2	2		3		3	ENGL101
+5		3		13		2	1		3		3	ENGL101
+20		8		13		4	2		5		4	Study Break
+15		6		13		2	2		3		3	ENGL101
+size: 22
+
+meeting 	subject 	Timeslot 	Room 	Trainee 	Instructor 	Subject
+time 		ClassID 	ts 		ID 	Group 		ID 		ID CODE
+**** 		**** 		**** 		**** 
+18		7		1		4	1		5		4	Study Break
+13		6		2		2	2		3		3	ENGL101
+10		5		2		2	2		1		2	POLSC101
+11		5		3		2	2		1		2	POLSC101
+19		8		3		4	2		5		4	Study Break
+4		3		3		2	1		3		3	ENGL101
+8		4		5		3	2		4		1	MATH101
+2		2		6		2	1		1		2	POLSC101
+9		4		6		3	2		4		1	MATH101
+6		3		7		2	1		3		3	ENGL101
+17		7		7		4	1		5		4	Study Break
+3		2		7		2	1		1		2	POLSC101
+7		3		8		2	1		3		3	ENGL101
+0		1		8		3	1		4		1	MATH101
+1		1		9		3	1		4		1	MATH101
+21		8		9		4	2		5		4	Study Break
+12		6		9		2	2		3		3	ENGL101
+16		7		11		4	1		5		4	Study Break
+14		6		12		2	2		3		3	ENGL101
+5		3		13		2	1		3		3	ENGL101
+20		8		13		4	2		5		4	Study Break
+15		6		13		2	2		3		3	ENGL101

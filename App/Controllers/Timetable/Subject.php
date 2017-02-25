@@ -38,28 +38,28 @@ class Subject {
     }
 
     /**
-     * getsubjectID method 
+     * getID method 
      *
      * @param		none
      * @return	 	int     this ID
      */
-    public function getSubjectID (){
+    public function getID (){
         return $this->subjectID;
     }
 
     /*
-     * getsubjectCode
+     * getCode
      */
-    public function getSubjectCode (){
+    public function getCode (){
         
         return $this->subjectCode;
         
     }
 
     /*
-     * getsubjectName
+     * getName
      */
-    public function getSubjectName (){
+    public function getName (){
         
         return $this->subjectName;
         
@@ -75,18 +75,18 @@ class Subject {
     }
 
     /*
-     * getSubjectRemarks
+     * getRemarks
      */
-    public function getSubjectRemarks (){
+    public function getRemarks (){
         
         return $this->SubjectRemarks;
         
     }
 
     /*
-     * GetSubjectInformation
+     * GetInformation
      */
-    public function getSubjectInfo (){
+    public function getInfo (){
         
         return [$this->subjectID, 
                 $this->subjectCode, 
