@@ -354,7 +354,7 @@ class Timetable {
                 $lowest = $x;
                 $lowest_i = $i;
             }
-            if ($i > 50 or $lowest == 0){
+            if ($i > 10 or $lowest == 0){
                 break;
             }
             $i++;
