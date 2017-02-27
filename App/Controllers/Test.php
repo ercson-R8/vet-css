@@ -55,6 +55,26 @@ class Test extends \Core\Controller {
         $a=array("a"=>"red","b"=>"green","c"=>1);
         print_r($a);
 echo array_search(1,$a);
+
+echo "<br/>============================\n";
+// $startMemory = memory_get_usage();
+// $array = range(1, 100000);
+// echo memory_get_usage() - $startMemory, ' bytes<br/>';
+
+
+// $startMemory = memory_get_usage();
+// $array = new \SplFixedArray(1000000);
+// for ($i = 0; $i < 10000; ++$i) {
+//     $array[$i] = $i;
+// }
+// echo memory_get_usage() - $startMemory, ' bytes';
+
+
+    $i = 1;
+    $factor = round( (1 / ($i+1)* 100));
+
+    print_r("\nFactor: ".$factor);
+
     }
 
 }

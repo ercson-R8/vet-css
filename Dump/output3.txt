@@ -2615,30 +2615,30 @@ room_id specified: 4
 0
 
 meeting 	subject 	Timeslot 	Room 	Trainee 	Instructor 	Subject
-time 		ClassID 	ts 		ID 	Group 		ID 		ID CODE
+time 		ClassID 	ts 		    ID 	    Group 		ID 		    ID CODE
 **** 		**** 		**** 		**** 
-12		6		0		2	2		3		3	ENGL101
-13		6		1		2	2		3		3	ENGL101
-18		7		1		4	1		5		4	Study Break
-6		3		3		2	1		3		3	ENGL101
-21		8		3		4	2		5		4	Study Break
-2		2		5		2	1		1		2	POLSC101
-8		4		5		3	2		4		1	MATH101
-9		4		6		3	2		4		1	MATH101
-3		2		6		2	1		1		2	POLSC101
-15		6		7		2	2		3		3	ENGL101
-16		7		7		4	1		5		4	Study Break
-4		3		8		2	1		3		3	ENGL101
-20		8		8		4	2		5		4	Study Break
-5		3		9		2	1		3		3	ENGL101
-10		5		10		2	2		1		2	POLSC101
-17		7		11		4	1		5		4	Study Break
-11		5		11		2	2		1		2	POLSC101
-7		3		12		2	1		3		3	ENGL101
-19		8		13		4	2		5		4	Study Break
-0		1		13		3	1		4		1	MATH101
-1		1		14		3	1		4		1	MATH101
-14		6		14		2	2		3		3	ENGL101
+12		    6		    0		    2   	2   		3   		3	ENGL101
+13		    6		    1		    2   	2   		3   		3	ENGL101
+18		    7		    1		    4   	1   		5   		4	Study Break
+6		    3		    3		    2   	1   		3   		3	ENGL101
+21		    8		    3		    4   	2   		5   		4	Study Break
+2		    2		    5		    2   	1   		1   		2	POLSC101
+8		    4		    5		    3   	2   		4   		1	MATH101
+9		    4		    6   		3   	2   		4   		1	MATH101
+3		    2		    6	    	2   	1   		1   		2	POLSC101
+15		    6		    7		    2    	2   		3		    3	ENGL101
+16		    7		    7   		4	    1   		5   		4	Study Break
+4		    3		    8	    	2   	1	    	3	    	3	ENGL101
+20		    8		    8	    	4   	2   		5	    	4	Study Break
+5		    3		    9	    	2   	1	    	3   		3	ENGL101
+10		    5		    10	    	2   	2		    1   		2	POLSC101
+17		    7		    11	    	4   	1   		5   		4	Study Break
+11		    5		    11		    2   	2   		1   		2	POLSC101
+7		    3		    12	    	2   	1   		3   		3	ENGL101
+19		    8		    13	    	4   	2   		5   		4	Study Break
+0		    1		    13	    	3   	1   		4   		1	MATH101
+1		    1		    14	    	3   	1   		4	    	1	MATH101
+14		    6		    14	    	2   	2   		3	    	3	ENGL101
 
 
 timeslot:0 	subjectClass: 0 room: 0 traineeGroupID: 0 instructorID: 0 subjectID: 0
@@ -2658,3 +2658,74 @@ x 0:2 lowest
 721 | TOTAL CONFLICTS: 0 
 
 0
+
+
+
+
+Array
+(
+    [0] => 11
+    [1] => 18
+    [2] => 9
+    [3] => 9
+    [4] => 11
+    [5] => 8
+    [6] => 8
+    [7] => 8
+    [8] => 14
+    [9] => 12
+    [10] => 16
+    [11] => 6
+    [12] => 19
+    [13] => 8
+    [14] => 15
+    [15] => 2
+    [16] => 10
+    [17] => 13
+    [18] => 11
+    [19] => 14
+)
+
+Size: 20Array
+(
+    [0] => 11
+    [1] => 18
+    [2] => 9
+    [5] => 8
+    [8] => 14
+    [9] => 12
+    [10] => 16
+    [11] => 6
+    [12] => 19
+    [14] => 15
+    [15] => 2
+    [16] => 10
+    [17] => 13
+)
+
+Size: 13Array
+(
+    [0] => Array
+        (
+            [15] => 2
+        )
+
+    [1] => Array
+        (
+            [12] => 19
+        )
+
+)
+
+
+
+This will return the first index that has the minimum value in the array. 
+It is useful if you only need one index when the array has multiple instances of the minimum value:
+
+$index = array_search(min($my_array), $my_array);
+
+
+This will return an array of all the indexes that have the minimum value in the array. 
+It is useful if you need all the instances of the minimum value but may be slightly less efficient than the solution above:
+
+$index = array_keys($my_array, min($my_array));

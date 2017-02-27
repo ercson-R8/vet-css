@@ -37,7 +37,7 @@ class TimetableConfig {
      * The number of timetables in a population
      * @var int 
      */
-    const POP_SIZE = 100;
+    const POP_SIZE = 20;
 
 
 
@@ -45,14 +45,14 @@ class TimetableConfig {
      * Total number of generation 
      * @var int 
      */
-    const MAX_GEN = 50;
+    const MAX_GEN = 1000;
 
 
     /**  
      * The rate of mutation for a child timetable.
      * @var float 
      */
-    const MUTATION_RATE = 0.5;   
+    const MUTATION_RATE = 0.01;   
 
 
 }
