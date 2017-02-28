@@ -70,11 +70,41 @@ echo "<br/>============================\n";
 // echo memory_get_usage() - $startMemory, ' bytes';
 
 
-    $i = 1;
+    $i = 8;
     $factor = round( (1 / ($i+1)* 100));
 
     print_r("\nFactor: ".$factor);
+    echo "\n";
+    $a = ["id" => 12, "age" => 55, "dist" => 5];
+        print_r($a);
+asort( $a);
+        print_r($a);
+
+        print_r($a["id"]);
+
+
+
+
+
+
+
+
+var_dump(memory_get_usage() );
+
+
 
     }
+
+
+    private function getSystemMemInfo() 
+{       
+    $data = explode("\n", file_get_contents("/proc/meminfo"));
+    $meminfo = array();
+    foreach ($data as $line) {
+        list($key, $val) = explode(":", $line);
+        $meminfo[$key] = trim($val);
+    }
+    return $meminfo;
+}
 
 }
