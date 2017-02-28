@@ -185,26 +185,19 @@ class Timetable {
      */
     public function getTimeslot ($subjectClass){
         $timeslot = []; // subjectClass-timeslot
-        // echo "<br>";
-        
-        // echo "<br/>Subject ID:\t"; print_r($subjectClass->getID());
+        // distribute the required period/s with the preferred number of day/s
+        // returns an array. $distBlock = [ [day]=>[no. of periods] ] 
+        //     Array
+        // (
+        //     [0] => 2
+        //     [1] => 1
+        //     [2] => 1
+        // )
 
-
-            // distribute the required period/s with the preferred number of day/s
-            // returns an array. $distBlock = [ [day]=>[no. of periods] ] 
-            //     Array
-            // (
-            //     [0] => 2
-            //     [1] => 1
-            //     [2] => 1
-            // )
-        
         $distBlock = $this->getDistBlock(   $subjectClass->getSubject()->getRequiredPeriod(),
                                             $subjectClass->getPreferredNumberOfDays() 
                                         );
 
-        // echo "<br/>==================<br/>count: ".count($distBlock)." ";
-        // print_r($distBlock);
         $day = [];
         for($i=0; $i < count($distBlock); $i++ ){
                 $sameDay = true;
@@ -216,8 +209,11 @@ class Timetable {
                                         );
                     $daySelected = ((int) (($temp_slot[0])/TimetableConfig::TOTAL_PERIODS) );
                     if (!in_array($daySelected, $day)){
+
                         $day[]= $daySelected;
+
                         for($j=0; $j < count($temp_slot); $j++){
+
                             $timeslot[] =  $temp_slot[$j];
                         }
                         
@@ -302,7 +298,8 @@ class Timetable {
         $population = [];
         $timetableFitness = [];
         $subjectClassSets = [];
-        $fitness = [];
+        $fitnessHighest = null;
+        $fitnessLowest = null;
         $fitTimetableFound = false;
         // base subjectClass is created once, to fetch data from mySQL tables
         // an N subjectClasses will be created from the base with 
@@ -333,35 +330,72 @@ class Timetable {
         
         print_r("\nSize uniqueFitnessValues:  ".sizeof($uniqueFitnessValues)."\n");print_r($uniqueFitnessValues);
         array_pop($uniqueFitnessValues);
-        print_r("\nSize uniqueFitnessValues:  ".sizeof($uniqueFitnessValues)."\n");print_r($uniqueFitnessValues);
+        print_r("\nSize POP uniqueFitnessValues:  ".sizeof($uniqueFitnessValues)."\n");print_r($uniqueFitnessValues);
         // $fitness = min($timetableFitness);
         // $index = array_search($fitness, $timetableFitness);
         // print_r("\nfitness index ".$index." => ".$fitness." fitness value");
 
-        $fitness[] = [array_search(min($timetableFitness), $timetableFitness) => min($timetableFitness)];
-        $fitness[] = [array_search(max($timetableFitness), $timetableFitness) => max($timetableFitness)];
-        print_r($fitness);
-
+        $fitnessHighest = [array_search(min($timetableFitness), $timetableFitness) => min($timetableFitness)];
+        $fitnessLowest = [array_search(max($timetableFitness), $timetableFitness) => max($timetableFitness)];
+        print_r($fitnessHighest);
+        print_r($fitnessLowest);
         // draw()
         //  # Step 1: Selection 
         //    # Create an empty mating pool (an empty ArrayList)
         $matingPool = [];
+        $selectionPool = [];
         //    # For every member of the population, evaluate its fitness based on some criteria / function, 
         //      and add it to the mating pool in a manner consistant with its fitness, i.e. the more fit it 
         //      is the more times it appears in the mating pool, in order to be more likely picked for reproduction.
-
+        $x = 0;
         foreach($uniqueFitnessValues as $key => $fitnessValue){
             $matingPoolFrequency = round( (1 / ($fitnessValue+1)* 100));
-            print_r("\nkey: ".$key." matingPoolFrequency: ".$matingPoolFrequency);
+            print_r("\nx= ".$x." key: ".$key." matingPoolFrequency: ".$matingPoolFrequency);
             for($i=0; $i < $matingPoolFrequency; $i++){
                 $matingPool [] = $key;
             }
+            $selectionPool[$key] = $population[$key];
+            $x++;
         }
         print_r("\nSize matingPool :  ".sizeof($matingPool)."\n");print_r($matingPool);
+        print_r("\nSize selectionPool :  ".sizeof($selectionPool)."\n");//print_r($selectionPool);
+        print_r("\n*********************** :  ");
+        for($i=0; $i < sizeof($matingPool); $i++){
+            $pick = rand(0, sizeof($matingPool)-1);
+            print_r("\n".$pick);
+        }
+
 
         //  # Step 2: Reproduction Create a new empty population
+        $population = [];
+
         //    # Fill the new population by executing the following steps:
         //       1. Pick two "parent" objects from the mating pool.
+        $parentA = rand(0, sizeof($matingPool)-1);
+        $parentB = rand(0, sizeof($matingPool)-1);
+        /*
+                Size matingPool :  17
+                Array
+                (
+                    [0] => 1
+                    [1] => 1
+                    [2] => 1
+                    [3] => 1
+                    [4] => 1
+                    [5] => 1
+                    [6] => 1
+                    [7] => 1
+                    [8] => 1
+                    [9] => 1
+                    [10] => 2
+                    [11] => 2
+                    [12] => 2
+                    [13] => 2
+                    [14] => 2
+                    [15] => 2
+                    [16] => 2
+                )
+        */
         //       2. Crossover -- create a "child" object by mating these two parents.
         //       3. Mutation -- mutate the child's DNA based on a given probability.
         //       4. Add the child object to the new population.
