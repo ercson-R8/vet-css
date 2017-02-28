@@ -82,6 +82,8 @@ asort( $a);
 
         print_r($a["id"]);
 
+        print_r("\nrand: ".(rand(0,100)/100)."\n");
+
 
 
 

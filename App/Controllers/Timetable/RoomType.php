@@ -33,12 +33,12 @@ class RoomType {
     }
 
     /**
-     * getRoomTypeID method 
+     * getID method 
      *
      * @param		none
      * @return	 	int     this ID
      */
-    public function getRoomTypeID (){
+    public function getID (){
         return $this->roomTypeID;
     }
 
