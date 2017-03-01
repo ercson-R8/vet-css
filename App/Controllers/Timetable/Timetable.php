@@ -232,18 +232,23 @@ class Timetable {
      * @return	 	array       the number of conflicts and the fitness value.        
      */
     public function calcFitness ($timetable){
-        // print_r($subjectClass);
         $timeslots = [];
         $totalConflicts = 0;
 
         for($i=0; $i < sizeof($timetable); $i++){
+            print_r("\n\ttimeslots:".$timetable[$i]->getTimeslot().
+                    "\tscID ".$timetable[$i]->getSubjectClass()->getID(). 
+                    "\troomID" .$timetable[$i]->getSubjectClass()->getRoom()->getID());
+            // fetch timeslot that is associated with a subjectClassID
             array_push($timeslots, $timetable[$i]->getTimeslot());
+            
         }
-        $timeslots = (array_unique($timeslots));
 
-        
+        // remove duplicate timeslot from the list of timeslot that is associated with a subjectClassID
+        $timeslots = (array_unique($timeslots)); 
+
         foreach($timeslots as $timeslot){
-            // print_r("\ntimeslot:".$timeslot." ");
+            print_r("\ntimeslot:".$timeslot." ");
             $subjectClassID =[];
             $roomID = [];
             $traineeGroupID = [];
@@ -251,8 +256,9 @@ class Timetable {
             $subjectID = [];
 
             for($i=0; $i < sizeof($timetable); $i++){
+                
+                // gather all IDs belonging to this timeslot. 
                 if($timeslot == $timetable[$i]->getTimeslot()){
-                    // print_r (" ". $timetable[$i]->getTimeslot());
                     $subjectClassID[] = $timetable[$i]->getSubjectClass()->getID();
                     $roomID[] = $timetable[$i]->getSubjectClass()->getRoom()->getID();
                     $traineeGroupID[] = $timetable[$i]->getSubjectClass()->getTraineeGroup()->getID();
@@ -262,17 +268,20 @@ class Timetable {
             }
             echo "\t";
 
-            // // print_r($subjectClass);
-            // print_r("subjectClass: ");
-            // print_r(sizeof($subjectClassID)-sizeof(array_unique($subjectClassID)));
-            // print_r(" room: ");
-            // print_r(sizeof($roomID)-sizeof(array_unique($roomID)));
-            // print_r(" traineeGroupID: ");
-            // print_r(sizeof($traineeGroupID)-sizeof(array_unique($traineeGroupID)));
-            // print_r(" instructorID: ");
-            // print_r(sizeof($instructorID)-sizeof(array_unique($instructorID)));
-            // print_r(" subjectID: ");
-            // print_r(sizeof($subjectID)-sizeof(array_unique($subjectID)));
+            // 
+            print_r("subjectClass: ");
+            print_r(sizeof($subjectClassID)-sizeof(array_unique($subjectClassID)));
+            print_r(" room: ");
+            print_r(sizeof($roomID)-sizeof(array_unique($roomID)));
+            print_r(" traineeGroupID: ");
+            print_r(sizeof($traineeGroupID)-sizeof(array_unique($traineeGroupID)));
+            print_r(" instructorID: ");
+            print_r(sizeof($instructorID)-sizeof(array_unique($instructorID)));
+            print_r(" subjectID: ");
+            print_r(sizeof($subjectID)-sizeof(array_unique($subjectID)));
+            
+            // the difference between size of the arrayID and the number of UNIQUE items in that
+            // array is 0 then there is no conflict.  
             $totalConflicts +=  (sizeof($subjectClassID)-sizeof(array_unique($subjectClassID))) +
                                 (sizeof($roomID)-sizeof(array_unique($roomID))) +
                                 (sizeof($traineeGroupID)-sizeof(array_unique($traineeGroupID))) + 
@@ -295,44 +304,130 @@ class Timetable {
      * @param		
      * @return	 	
      */
-    public function crossover ($timetableA, $timetableB){
-        print_r("\n"."timetableA"."\n");
-        print_r($timetableA[0]->getSubjectClass()->getID());
-        print_r("\n"."timetableB"."\n");
-        print_r($timetableB[0]->getSubjectClass()->getTraineeGroup()->getID());
-        print_r("\n"."name"."\n");
+    public function crossover ($parentA, $parentB){
+        $timetableA = $parentA;
+        $timetableB = $parentB;
 
-
-        for($i=0; $i < sizeof($timetableA); $i++){
-            // print_r("\n".rand(0,1)."\n");
-            if (rand(0,1) == 0 ){
+        if (rand(0,1) == 0 ){ // initialize the child
                 $child = $timetableA;
             }else{
                 $child = $timetableB;
-            }
-            $rand = (rand(0,100)/100);
-            // print_r("\nrand: ".$rand."\t".TimetableConfig::CROSSOVER_RATE." CROSSOVER_RATE");
-            if ($rand < TimetableConfig::CROSSOVER_RATE ){
-                $child[$i]->setTimeslot($timetableA[$i]->getTimeslot());
-            }else{
-                $child[$i]->setTimeslot($timetableB[$i]->getTimeslot());
-            }
-
-            print_r("\n"."parentA"."\t");
-            print_r($timetableA[$i]->getTimeslot()."\t");
-
-            print_r(" "."child"."\t");
-            print_r("".$child[$i]->getTimeslot()."\t");
-            
-
-            print_r(" "."parentB"."\t");
-            print_r("".$timetableB[$i]->getTimeslot()."\t");
-            // print_r("\ntimetableA:     \t".$timetableA[$i]->getSubjectClass()->getID()." ");print_r("timetableB:     \t".$timetableB[$i]->getSubjectClass()->getID()." ");
-            // print_r("\ntimetableA slot:\t".$timetableA[$i]->getTimeslot()." ");             print_r("timetableB slot:\t".$timetableB[$i]->getTimeslot()."\n");
-            
-        
-        
         }
+        
+        // print_r("\n"."timetableA"."\n");
+        // print_r($timetableA[0]->getSubjectClass()->getID());
+        // print_r("\n"."timetableB"."\n");
+        // print_r($timetableB[0]->getSubjectClass()->getTraineeGroup()->getID());
+        print_r("\n"." "."\n");
+
+        usort($timetableA, function($a, $b){
+            return ((int)$a->getSubjectClass()->getID() > (int)$b->getSubjectClass()->getID());
+        });
+
+        usort($timetableB, function($a, $b){
+            return ((int)$a->getSubjectClass()->getID() > (int)$b->getSubjectClass()->getID());
+        });
+
+        // takes all the timeslot for a subjecClassID, with the same index 
+        // as with the subjectClassID
+        /*
+                Array C
+                (
+                    [1 subjecClassID] => Array 
+                        (
+                            [0] => 14 timeslot
+                            [1] => 13 timeslot
+                        )
+
+                    [2 subjecClassID] => Array
+                        (
+                            [0] => 13 timeslot
+                            [1] => 12 timeslot
+                        )
+        */
+        $timeslotA = [];
+        foreach ($timetableA as $key => $value){
+            $timeslotA [$value->getSubjectClass()->getID()][] = $value->getTimeslot();
+        }
+        print_r($timeslotA);
+        $timeslotB = [];
+        foreach ($timetableB as $key => $value){
+            $timeslotB [$value->getSubjectClass()->getID()][] = $value->getTimeslot();
+        }
+
+        print_r($timeslotB);
+
+        $timeslotC = [];
+        foreach ($timeslotA as $key => $value){
+            $rand = (rand(0,100)/100);
+            // copy either the timeslotSET of a subjectClassID of parentA or parentB 
+            if ($rand < TimetableConfig::CROSSOVER_RATE ){
+                $timeslotC [$key]  = $timeslotA[$key];
+            }else{
+                $timeslotC [$key] = $timeslotB[$key];
+            }
+            
+        }
+
+        print_r($timeslotC);
+        foreach ($child as $key => $value){
+            print_r("\nkey: ".$key." of child value scID: ". ($value->getSubjectClass()->getID())  );
+            // $value->setTimeslot(array_pop());
+            // print_r($timeslotC[$value->getSubjectClass()->getID()]);
+            $value->setTimeslot(
+            array_pop( // returns the last timeslot in the timeslotSET for this subjectClassID
+                $timeslotC[$value->getSubjectClass()->getID()]
+            ));
+           
+        }
+
+        usort($child, function($a, $b){
+            return ((int)$a->getID() > (int)$b->getID());
+        });
+        foreach($child as $key => $value){
+            print_r("\n".$value->getID()."\t");
+            print_r($value->getTimeslot()."\t");
+            print_r($value->getSubjectClass()->getID());
+
+        }
+
+        print_r("\n"." "."\n");
+        foreach($parentA as $key => $value){
+            print_r("\n".$value->getID()."\t");
+            print_r($value->getTimeslot()."\t");
+            print_r($value->getSubjectClass()->getID());
+
+        }
+        print_r("\n"." "."\n");
+        foreach($parentB as $key => $value){
+            print_r("\n".$value->getID()."\t");
+            print_r($value->getTimeslot()."\t");
+            print_r($value->getSubjectClass()->getID());
+
+        }
+
+        // for($i=0; $i < sizeof($timetableA); $i++){ // maybe loop with n scIDs
+
+        //     print_r("\nscID timetableA: ".$parentA[$i]->getSubjectClass()->getID()." ");
+        //     print_r("child: ".$child[$i]->getSubjectClass()->getID()." ");
+        //     print_r("timetableB: ".$parentB[$i]->getSubjectClass()->getID()." ");
+
+
+        //     print_r("   timetableA slot: ".$parentA[$i]->getTimeslot()." ");             
+        //     print_r("child slot: ".$child[$i]->getTimeslot()." ");
+        //     print_r("timetableB slot: ".$parentB[$i]->getTimeslot()."");
+            
+        
+        
+        // }
+
+
+
+        usort($child, function($a, $b){
+            return ((int)$a->getTimeslot() > (int)$b->getTimeslot());
+        });
+
+        print_r("\n"." "."\n");
 
         return $child;
     }
@@ -541,7 +636,7 @@ class Timetable {
         //       2. Crossover -- create a "child" object by mating these two parents.
         for($i=0; $i < 10; $i++){  
             $parentA = $matingPool[rand(0, sizeof($matingPool)-1)]; // re
-        $parentB = $matingPool[rand(0, sizeof($matingPool)-1)];
+            $parentB = $matingPool[rand(0, sizeof($matingPool)-1)];
             print_r("\n".$parentA." ");
             print_r("\t".$parentB." ");
             print_r("\t Max pool size: ");

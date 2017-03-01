@@ -76,14 +76,20 @@ echo "<br/>============================\n";
     print_r("\nFactor: ".$factor);
     echo "\n";
     $a = ["id" => 12, "age" => 55, "dist" => 5];
+        
+        asort( $a);
         print_r($a);
-asort( $a);
-        print_r($a);
-
-        print_r($a["id"]);
+        print_r("\nsizeof a: ".sizeof($a));
+        print_r("\n");
+        print_r(array_pop($a));
+       
+        print_r("\n");
 
         print_r("\nrand: ".(rand(0,100)/100)."\n");
-
+        for($i=0; $i < sizeof($a); $i++){
+            // print_r($a[sizeof($a)]." ");
+            // array_pop($a);
+        }
 
 
 
