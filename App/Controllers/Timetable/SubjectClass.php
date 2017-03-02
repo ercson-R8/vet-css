@@ -25,6 +25,11 @@ class SubjectClass {
             $preferredEnd,
             $preferredNumberOfDays;
     private $isRoomFixed = false;
+    private $subjectObject,
+            $traineeGroupObject,
+            $instructorObject,
+            $roomTypeObject,
+            $roomObject;
 
     /*
      * ___construct method 
@@ -42,6 +47,12 @@ class SubjectClass {
                                     $preferredStart = null,
                                     $preferredEnd = null,
                                     $preferredNumberOfDays = null){
+
+        $this->subjectObject = new Subject();
+        $this->traineeGroupObject = new TraineeGroup();
+        $this->instructorObject = new Instructor();
+        $this->roomTypeObject = new Roomtype();
+        $this->roomObject = new Room();
         
         $this->id = $id; 
         $this->timeTableID =$timeTableID;
@@ -56,6 +67,17 @@ class SubjectClass {
 
 
     }
+
+    public function __clone() {
+        $this->subjectObject = clone $this->subjectObject;
+        $this->traineeGroupObject = clone $this->traineeGroupObject;
+        $this->instructorObject = clone $this->instructorObject;
+        $this->roomTypeObject = clone $this->roomTypeObject;
+        $this->roomObject = clone $this->roomObject;
+    
+    }
+
+        
 
     /*
      * setRoomFixed method 
