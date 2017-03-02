@@ -309,6 +309,78 @@ class Timetable {
      * @return	 	
      */
     public function crossover ($parentA, $parentB){
+        $timetableA = $parentA;
+        $timetableB = $parentB;
+        $timeslotsA = [];
+        $timeslotsB = [];
+        $timetableSize = sizeof($timetableA);
+        for($i=0; $i < ($timetableSize); $i++){
+             print_r("\n------------------------------------------------\ntimetableA mtID: ".$timetableA[$i]->getID(). 
+                    "\tscID: ".$timetableA[$i]->getSubjectClass()->getID(). 
+                    "\t\tts: ".$timetableA[$i]->getTimeslot()
+                    );
+             print_r("\ntimetableB mtID: ".$timetableB[$i]->getID(). 
+                    "\tscID: ".$timetableB[$i]->getSubjectClass()->getID(). 
+                    "\t\tts: ".$timetableB[$i]->getTimeslot()
+                    );
+            $timeslotsA[$timetableA[$i]->getSubjectClass()->getID()][] = $timetableA[$i]->getTimeslot();
+            $timeslotsB[$timetableB[$i]->getSubjectClass()->getID()][]= $timetableB[$i]->getTimeslot();
+
+        }
+
+        // print_r("\nTimeslotsA: ");
+        // print_r($timeslotsA);
+        // print_r("\nTimeslotsB: ");
+        // print_r($timeslotsB);
+
+        // choose base timeslots for the child;
+        $timeslotsC = (rand(0,1)) ?  $timeslotsA :  $timeslotsB;
+
+        // crossver the timeslot set in $timeslotsA and $timeslotsB into 
+        // the child timetable. 
+        foreach($timeslotsA as $key => $value){
+            if(rand(0,1)){
+                $timeslotsC[$key] = $value;
+            }
+        }
+        foreach($timeslotsB as $key => $value){
+            if(rand(0,1)){
+                $timeslotsC[$key] = $value;
+            }
+        }
+
+        // print_r("\nchild: ");
+        // print_r($timetableC);
+        for($i=0; $i < ($timetableSize); $i++){
+            for($j=0; $j < sizeof($timetableA); $j++){
+                print_r("\n A: ".$timetableA[$i][$j]);
+                print_r("\n C: ".$timetableC[$i][$j]);
+                print_r("\n B: ".$timetableB[$i][$j]);
+            }
+
+        }
+        
+
+
+
+        
+        // choose base timeslots for the child;
+        $child = (rand(0,1)) ?  $timetableA :  $timetableB;
+
+        // insert the $timetableC timeslots into the child
+        for($i=0; $i < ($timetableSize); $i++){
+             print_r("\n------------------------------------------------\ntimetableA mtID: ".$child[$i]->getID(). 
+                    "\tscID: ".$child[$i]->getSubjectClass()->getID(). 
+                    "\t\tts: ".$child[$i]->getTimeslot()
+                    );
+            foreach($timetableC[$child[$i]->getSubjectClass()->getID()] as $key => $value){
+                print_r("\t".$key. ":".$value);
+            }
+            
+            
+
+        }
+
         return $parentA;
     }
 
@@ -355,7 +427,9 @@ class Timetable {
         ini_set('max_execution_time', 300); //300 seconds = 5 minutes
         $startMemory = memory_get_usage();
         echo"Timetable Class<pre>";
-        $timetableID = 1;
+
+
+        $timetableID = 1;  // will be replaced by the actual database table id later
         $population = [];
         $timetableFitness = [];
         $subjectClassSets = [];
@@ -384,7 +458,7 @@ class Timetable {
                 }
         }
 
-        /* error checking for length of the population index $timetable. 
+        /* error checking for the length of the population index $timetable. 
            no fit timetable is found, the lenght of the population is equal to 
            ($timetable-1)
         */ 
@@ -395,18 +469,18 @@ class Timetable {
         print_r("\nSize timetableFitness: ".sizeof($timetableFitness)."\n");print_r($timetableFitness);
         
         $uniqueFitnessValues = array_unique ($timetableFitness);
+        
         asort($uniqueFitnessValues);
         
         print_r("\nSize uniqueFitnessValues:  ".sizeof($uniqueFitnessValues)."\n");print_r($uniqueFitnessValues);
         // if 100% just pop the last one
+        
         array_pop($uniqueFitnessValues);
         // else, retain the n%. smaller selection pool. 
 
         print_r("\nSize POP uniqueFitnessValues:  ".sizeof($uniqueFitnessValues)."\n");print_r($uniqueFitnessValues);
-        // $fitness = min($timetableFitness);
-        // $index = array_search($fitness, $timetableFitness);
-        // print_r("\nfitness index ".$index." => ".$fitness." fitness value");
 
+        // find the min/max fitness values from the assoc timetableFitness
         $fitnessHighest = [array_search(min($timetableFitness), $timetableFitness) => min($timetableFitness)];
         $fitnessLowest = [array_search(max($timetableFitness), $timetableFitness) => max($timetableFitness)];
         print_r($fitnessHighest);
@@ -468,23 +542,23 @@ class Timetable {
         //      and add it to the mating pool in a manner consistant with its fitness, i.e. the more fit it 
         //      is the more times it appears in the mating pool, in order to be more likely picked for reproduction.
         $x = 0;
-        $matingPoolSize = 0;
+        $totalFitnessValues = 0;
         foreach($uniqueFitnessValues as $key => $fitnessValue){
             $matingPoolFrequency = round( (1 / ($fitnessValue+1)* 100));
             print_r("\nx= ".$x." key: ".$key." matingPoolFrequency: ".$matingPoolFrequency);
-            $matingPoolSize += $matingPoolFrequency;
+            $totalFitnessValues += $matingPoolFrequency;
             $x++;
         }
-        print_r("\nSize matingPool :  ".($matingPoolSize)."\n");print_r($matingPool);
-        print_r("\nSize selectionPool :  ".sizeof($selectionPool)."\n");//print_r($selectionPool);
+        print_r("\nSize matingPool :  ".($totalFitnessValues)."\n"); //print_r($matingPool);
+       
         print_r("\n*********************** :  ");
         
         foreach($uniqueFitnessValues as $key => $fitnessValue){
             $x =   (round( (1 / ($fitnessValue+1)* 100)));
 
-            // normalize the fitnessValue / matingPoolSize then * 100 then round it up. 
-            $matingPoolFrequency = round(((round( (1 / ($fitnessValue+1)* 100))) / $matingPoolSize) * 100);
-            print_r("\n\t matingPoolSize ".$matingPoolSize." ");
+            // normalize the fitnessValue / totalFitnessValues then * 100 then round it up. 
+            $matingPoolFrequency = round(((round( (1 / ($fitnessValue+1)* 100))) / $totalFitnessValues) * 100);
+            print_r("\n\t totalFitnessValues ".$totalFitnessValues." ");
             print_r("\t matingPoolFrequency ".$matingPoolFrequency." ");
             print_r("\t\t x ".$x ." ");
             print_r("\t key".$key." ");
@@ -497,13 +571,14 @@ class Timetable {
             $selectionPool[$key] = $population[$key];
 
         }
-        print_r("\nSize matingPool :  ".($matingPoolSize)."\n");print_r($matingPool);
-        print_r(sizeof($selectionPool));
+        print_r("\nSize matingPool :  ".sizeof($matingPool)."\n");//print_r($matingPool);
+         print_r("\nSize selectionPool :  ".sizeof($selectionPool)."\n");//print_r($selectionPool);
+
 
 
         // //  # Step 2: Reproduction Create a new empty population
         $population = [];
-        
+        print_r("\nElistim: ".TimetableConfig::ELITISM);
         // elitism, ensure top fit timetable/s are kept
         /*
             $i = 1;
@@ -516,45 +591,53 @@ class Timetable {
             }
 
         */
+        $i = 0;
+        foreach($selectionPool as $key=>$value){
+            $populatio[$i] = $value;
+            if ($i >= TimetableConfig::ELITISM - 1 ){
+                break;
+            }
+            $i++;
+        }
+       
+        /*
+                Size matingPool :  17
+                Array
+                (
+                    [0] => 1
+                    [1] => 1
+                    [2] => 1
+                    [3] => 1
+                    [4] => 1
+                    [5] => 1
+                    [6] => 1
+                    [7] => 1
+                    [8] => 1
+                    [9] => 1
+                    [10] => 2
+                    [11] => 2
+                    [12] => 2
+                    [13] => 2
+                    [14] => 2
+                    [15] => 2
+                    [16] => 2
+                )
+        */
+        //    # Fill the new population by executing the following steps:
+        //       1. Pick two "parent" objects from the mating pool.
+        //       2. Crossover -- create a "child" object by mating these two parents.
+        for($i=0; $i < sizeof($selectionPool); $i++){  
 
-        // //    # Fill the new population by executing the following steps:
-        // //       1. Pick two "parent" objects from the mating pool.
-        // $parentA = $matingPool[rand(0, sizeof($matingPool)-1)]; // from this index, it returns the value corresponding to 
-        // $parentB = $matingPool[rand(0, sizeof($matingPool)-1)]; // the index from the selection pool. 
-        // /*
-        //         Size matingPool :  17
-        //         Array
-        //         (
-        //             [0] => 1
-        //             [1] => 1
-        //             [2] => 1
-        //             [3] => 1
-        //             [4] => 1
-        //             [5] => 1
-        //             [6] => 1
-        //             [7] => 1
-        //             [8] => 1
-        //             [9] => 1
-        //             [10] => 2
-        //             [11] => 2
-        //             [12] => 2
-        //             [13] => 2
-        //             [14] => 2
-        //             [15] => 2
-        //             [16] => 2
-        //         )
-        // */
-        // //       2. Crossover -- create a "child" object by mating these two parents.
-        // for($i=0; $i < 10; $i++){  
-        //     $parentA = $matingPool[rand(0, sizeof($matingPool)-1)]; // re
-        //     $parentB = $matingPool[rand(0, sizeof($matingPool)-1)];
-        //     print_r("\n".$parentA." ");
-        //     print_r("\t".$parentB." ");
-        //     print_r("\t Max pool size: ");
-        //     $x=(sizeof($matingPool));
-        //     print_r($x);
-        // }
-        // $child = $this->crossover($selectionPool[$parentA], $selectionPool[$parentB]);
+            $parentA = $matingPool[rand(0, sizeof($matingPool)-1)]; // from this index, it returns the value corresponding to 
+            $parentB = $matingPool[rand(0, sizeof($matingPool)-1)]; // the index($key) from the selection pool. 
+            
+            print_r("\n".$i." parentA ".$parentA." ");
+            print_r("\tparentA ".$parentB." ");
+            print_r("\t Max pool size: ");
+            $x=(sizeof($matingPool));
+            print_r($x);
+        }
+        $child = $this->crossover($selectionPool[$parentA], $selectionPool[$parentB]);
         // // print_r($child);
         // for ($i=0; $i < sizeof($child); $i++){
 
