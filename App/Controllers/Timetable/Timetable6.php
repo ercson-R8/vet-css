@@ -160,15 +160,15 @@ class Timetable {
             }
 
         }
-        // usort($timetable, function($a, $b){
-        //     // return ((int)$a->getSubjectClassID() > (int)$b->getSubjectClassID());
+        usort($timetable, function($a, $b){
+            // return ((int)$a->getSubjectClassID() > (int)$b->getSubjectClassID());
 
-        //     return ((int)$a->getTimeslot() > (int)$b->getTimeslot());
+            return ((int)$a->getTimeslot() > (int)$b->getTimeslot());
 
-        //     // if ((int)$a->getTimeslot() == (int)$b->getTimeslot()) return 0;
-        //     // return (int)$a->getTimeslot() < (int)$b->getTimeslot() ? -1 : 1;
+            // if ((int)$a->getTimeslot() == (int)$b->getTimeslot()) return 0;
+            // return (int)$a->getTimeslot() < (int)$b->getTimeslot() ? -1 : 1;
 
-        // });
+        });
         // print_r("\n=========================");
         // print_r($timetable);
         return $timetable;
@@ -238,21 +238,17 @@ class Timetable {
         for($i=0; $i < sizeof($timetable); $i++){
             // print_r("\n\ttimeslots:".$timetable[$i]->getTimeslot().
             //         "\tscID ".$timetable[$i]->getSubjectClass()->getID(). 
-            //         "\troomID: " .$timetable[$i]->getSubjectClass()->getRoom()->getID().
-            //         "\tmtID: " .$timetable[$i]->getID()
-            //         );
+            //         "\troomID" .$timetable[$i]->getSubjectClass()->getRoom()->getID());
             // fetch timeslot that is associated with a subjectClassID
             array_push($timeslots, $timetable[$i]->getTimeslot());
             
         }
-        // print_r("\nsizeof(timeslots): ".sizeof($timeslots)."\n");
 
         // remove duplicate timeslot from the list of timeslot that is associated with a subjectClassID
         $timeslots = (array_unique($timeslots)); 
 
         foreach($timeslots as $timeslot){
-            // print_r("\mtID:".$timeslot->getID()." ");
-            
+            // print_r("\ntimeslot:".$timeslot." ");
             $subjectClassID =[];
             $roomID = [];
             $traineeGroupID = [];
@@ -272,16 +268,16 @@ class Timetable {
             }
             echo "\t";
 
-            // print_r("\ntimeslot:".$timeslot." "); 
-            // print_r("\tsubjectClass: ");
+            // 
+            // print_r("subjectClass: ");
             // print_r(sizeof($subjectClassID)-sizeof(array_unique($subjectClassID)));
-            // print_r("\t\troom: ");
+            // print_r(" room: ");
             // print_r(sizeof($roomID)-sizeof(array_unique($roomID)));
-            // print_r("\t\ttraineeGroupID: ");
+            // print_r(" traineeGroupID: ");
             // print_r(sizeof($traineeGroupID)-sizeof(array_unique($traineeGroupID)));
-            // print_r("\tinstructorID: ");
+            // print_r(" instructorID: ");
             // print_r(sizeof($instructorID)-sizeof(array_unique($instructorID)));
-            // print_r("\tsubjectID: ");
+            // print_r(" subjectID: ");
             // print_r(sizeof($subjectID)-sizeof(array_unique($subjectID)));
             
             // the difference between size of the arrayID and the number of UNIQUE items in that
@@ -309,7 +305,166 @@ class Timetable {
      * @return	 	
      */
     public function crossover ($parentA, $parentB){
-        return $parentA;
+        $timetableA = $parentA;
+        $timetableB = $parentB;
+
+        if (rand(0,1) == 0 ){ // initialize the child
+                $child = $timetableA;
+            }else{
+                $child = $timetableB;
+        }
+
+        
+
+        usort($timetableA, function($a, $b){
+            return ((int)$a->getSubjectClass()->getID() > (int)$b->getSubjectClass()->getID());
+        });
+
+        usort($timetableB, function($a, $b){
+            return ((int)$a->getSubjectClass()->getID() > (int)$b->getSubjectClass()->getID());
+        });
+
+        // takes all the timeslot for a subjecClassID, with the same index 
+        // as with the subjectClassID
+        /*
+                Array C
+                (
+                    [1 subjecClassID] => Array 
+                        (
+                            [0] => 14 timeslot
+                            [1] => 13 timeslot
+                        )
+
+                    [2 subjecClassID] => Array
+                        (
+                            [0] => 13 timeslot
+                            [1] => 12 timeslot
+                        )
+        */
+        $timeslotA = [];
+        foreach ($timetableA as $key => $value){
+            $timeslotA [$value->getSubjectClass()->getID()][] = $value->getTimeslot();
+        }
+        print_r($timeslotA);
+        $timeslotB = [];
+        foreach ($timetableB as $key => $value){
+            $timeslotB [$value->getSubjectClass()->getID()][] = $value->getTimeslot();
+        }
+
+        print_r($timeslotB);
+
+        print_r("\nBEFORE..."." "."\n");
+        foreach($timetableA as $key => $value){
+            print_r("\n".$value->getID()."\t");
+            print_r($value->getTimeslot()."\t");
+            print_r($value->getSubjectClass()->getID());
+
+        }
+
+        print_r("\n"." "."\n");
+        foreach($timetableB as $key => $value){
+            print_r("\n".$value->getID()."\t");
+            print_r($value->getTimeslot()."\t");
+            print_r($value->getSubjectClass()->getID());
+
+        }
+
+        $timeslotC = [];
+        foreach ($timeslotA as $key => $value){
+            $rand = rand(0,1); // (rand(0,100)/100);
+
+            print_r("rand: ".$rand." ");
+            
+            // copy either the timeslotSET of a subjectClassID of parentA or parentB 
+            if ($rand == 0){ //($rand < TimetableConfig::CROSSOVER_RATE ){
+
+                $timeslotC [$key] = $timeslotA[$key];
+
+            }else{
+
+                $timeslotC [$key] = $timeslotB[$key];
+            }
+            
+        }
+        print_r("\ntimeslotC"." "."\n");
+        print_r($timeslotC);
+        print_r("\nsizeof(child) ".sizeof($child)." "."\n");
+        // print_r($child);
+        print_r("\n"." "."\n");print_r("\n"." "."\n");
+
+        usort($child, function($a, $b){
+            return ((int)$a->getID() > (int)$b->getID());
+        });
+        usort($timetableA, function($a, $b){
+            return ((int)$a->getID() > (int)$b->getID());
+        });
+        usort($timetableB, function($a, $b){
+            return ((int)$a->getID() > (int)$b->getID());
+        });
+        for($i=0; $i < sizeof($child); $i++){
+            print_r("\nchildkey: \t".$child[$i]->getID().
+                    " of child value     scID: \t". ($child[$i]->getSubjectClass()->getID()) .
+                    "           timeslot : \t".$child[$i]->getTimeslot().
+                    " ");
+            print_r("\ntimetableAkey: \t".$timetableA[$i]->getID().
+                    " of timetableA value scID: \t". ($timetableA[$i]->getSubjectClass()->getID()) .
+                    " timetableAtimeslot : \t".$timetableA[$i]->getTimeslot().
+                    " ");
+            print_r("\ntimetableBkey: \t".$timetableB[$i]->getID().
+                    " of timetableB value scID: \t". ($timetableB[$i]->getSubjectClass()->getID()) .
+                    " timetableBtimeslot : \t".$timetableB[$i]->getTimeslot().
+                    "\n");
+            // $value->setTimeslot(array_pop());
+            // print_r($timeslotC[$child[$i]->getSubjectClass()->getID()]);
+        }
+        
+        // foreach ($child as $key => $value){
+        //     print_r("\nkey: ".$key." of child value scID: ". ($value->getSubjectClass()->getID())  );
+        //     // $value->setTimeslot(array_pop());
+        //     print_r($timeslotC[$value->getSubjectClass()->getID()]);
+        //     // $value->setTimeslot(
+        //     // array_pop( // returns the last timeslot in the timeslotSET for this subjectClassID
+        //     //     $timeslotC[$value->getSubjectClass()->getID()]
+        //     // ));
+           
+        // }
+
+        // usort($child, function($a, $b){
+        //     return ((int)$a->getSubjectClass()->getID() > (int)$b->getSubjectClass()->getID());
+        // });
+
+        print_r("\AFTER..."." "."\n");
+        print_r("\n"." "."\n");
+        foreach($timetableA as $key => $value){
+            print_r("\n".$value->getID()."\t");
+            print_r($value->getTimeslot()."\t");
+            print_r($value->getSubjectClass()->getID());
+
+        }
+        // print_r("\n"." "."\n");
+        // foreach($child as $key => $value){
+        //     print_r("\n".$value->getID()."\t");
+        //     print_r($value->getTimeslot()."\t");
+        //     print_r($value->getSubjectClass()->getID());
+
+        // }
+
+        print_r("\n"." "."\n");
+        foreach($timetableB as $key => $value){
+            print_r("\n".$value->getID()."\t");
+            print_r($value->getTimeslot()."\t");
+            print_r($value->getSubjectClass()->getID());
+
+        }
+
+
+        usort($child, function($a, $b){
+            return ((int)$a->getTimeslot() > (int)$b->getTimeslot());
+        });
+
+        print_r("\n"." "."\n");
+
+        return $child;
     }
 
     /*
@@ -372,26 +527,18 @@ class Timetable {
         //  # Step 1: The Population 
         //    # Create an empty population (an array or ArrayList)
         //    # Fill it with DNA encoded objects (pick random values to start)
+
         for($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++){
-                print_r("\n\n=======================timetable: ".$timetable."======================================\n");
-                $subjectClassSets[$timetable] = $this->createSubjectClass($baseSubjectClass);
-                $population[$timetable] = $this->createTimetable($subjectClassSets[$timetable]);
-                $timetableFitness[$timetable] = $this->calcFitness($population[$timetable]);
-                print_r("\n<h3>TOTAL CONFLICTS: ".$timetableFitness[$timetable]." </h3>");
-                if(($timetableFitness[$timetable] == 0)){
-                    $fitTimetableFound = true;
-                    break;
-                }
+            print_r("\n\n=======================timetable: ".$timetable."======================================\n");
+            $subjectClassSets[$timetable] = $this->createSubjectClass($baseSubjectClass);
+            $population[$timetable] = $this->createTimetable($subjectClassSets[$timetable]);
+            $timetableFitness[$timetable] = $this->calcFitness($population[$timetable]);
+            print_r("\n<h3>TOTAL CONFLICTS: ".$this->calcFitness($population[$timetable])." </h3>");
+            if(($timetableFitness[$timetable] == 0)){
+                $fitTimetableFound = true;
+                break;
+            }
         }
-
-        /* error checking for length of the population index $timetable. 
-           no fit timetable is found, the lenght of the population is equal to 
-           ($timetable-1)
-        */ 
-        if (!$fitTimetableFound){
-            $timetable--;
-        }
-
         print_r("\nSize timetableFitness: ".sizeof($timetableFitness)."\n");print_r($timetableFitness);
         
         $uniqueFitnessValues = array_unique ($timetableFitness);
@@ -468,106 +615,83 @@ class Timetable {
         //      and add it to the mating pool in a manner consistant with its fitness, i.e. the more fit it 
         //      is the more times it appears in the mating pool, in order to be more likely picked for reproduction.
         $x = 0;
-        $matingPoolSize = 0;
         foreach($uniqueFitnessValues as $key => $fitnessValue){
             $matingPoolFrequency = round( (1 / ($fitnessValue+1)* 100));
             print_r("\nx= ".$x." key: ".$key." matingPoolFrequency: ".$matingPoolFrequency);
-            $matingPoolSize += $matingPoolFrequency;
-            $x++;
-        }
-        print_r("\nSize matingPool :  ".($matingPoolSize)."\n");print_r($matingPool);
-        print_r("\nSize selectionPool :  ".sizeof($selectionPool)."\n");//print_r($selectionPool);
-        print_r("\n*********************** :  ");
-        
-        foreach($uniqueFitnessValues as $key => $fitnessValue){
-            $x =   (round( (1 / ($fitnessValue+1)* 100)));
-
-            // normalize the fitnessValue / matingPoolSize then * 100 then round it up. 
-            $matingPoolFrequency = round(((round( (1 / ($fitnessValue+1)* 100))) / $matingPoolSize) * 100);
-            print_r("\n\t matingPoolSize ".$matingPoolSize." ");
-            print_r("\t matingPoolFrequency ".$matingPoolFrequency." ");
-            print_r("\t\t x ".$x ." ");
-            print_r("\t key".$key." ");
-            print_r("\t fitnessValue".$fitnessValue."\n");
-            
             for($i=0; $i < $matingPoolFrequency; $i++){
                 $matingPool [] = $key;
             }
-
             $selectionPool[$key] = $population[$key];
-
+            $x++;
         }
-        print_r("\nSize matingPool :  ".($matingPoolSize)."\n");print_r($matingPool);
-        print_r(sizeof($selectionPool));
-
-
-        // //  # Step 2: Reproduction Create a new empty population
-        $population = [];
-        
-        // elitism, ensure top fit timetable/s are kept
-        /*
-            $i = 1;
-            foreach $selectionPool as $key => $value {
-                $population[] = $value;
-                if ($i == elites){
-                    break;
-                }
-                $i++; 
-            }
-
-        */
-
-        // //    # Fill the new population by executing the following steps:
-        // //       1. Pick two "parent" objects from the mating pool.
-        // $parentA = $matingPool[rand(0, sizeof($matingPool)-1)]; // from this index, it returns the value corresponding to 
-        // $parentB = $matingPool[rand(0, sizeof($matingPool)-1)]; // the index from the selection pool. 
-        // /*
-        //         Size matingPool :  17
-        //         Array
-        //         (
-        //             [0] => 1
-        //             [1] => 1
-        //             [2] => 1
-        //             [3] => 1
-        //             [4] => 1
-        //             [5] => 1
-        //             [6] => 1
-        //             [7] => 1
-        //             [8] => 1
-        //             [9] => 1
-        //             [10] => 2
-        //             [11] => 2
-        //             [12] => 2
-        //             [13] => 2
-        //             [14] => 2
-        //             [15] => 2
-        //             [16] => 2
-        //         )
-        // */
-        // //       2. Crossover -- create a "child" object by mating these two parents.
-        // for($i=0; $i < 10; $i++){  
-        //     $parentA = $matingPool[rand(0, sizeof($matingPool)-1)]; // re
-        //     $parentB = $matingPool[rand(0, sizeof($matingPool)-1)];
-        //     print_r("\n".$parentA." ");
-        //     print_r("\t".$parentB." ");
-        //     print_r("\t Max pool size: ");
-        //     $x=(sizeof($matingPool));
-        //     print_r($x);
+        print_r("\nSize matingPool :  ".sizeof($matingPool)."\n");print_r($matingPool);
+        print_r("\nSize selectionPool :  ".sizeof($selectionPool)."\n");//print_r($selectionPool);
+        print_r("\n*********************** :  ");
+        // for($i=0; $i < sizeof($matingPool); $i++){
+        //     $pick = rand(0, sizeof($matingPool)-1);
+        //     print_r("\n".$pick);
         // }
-        // $child = $this->crossover($selectionPool[$parentA], $selectionPool[$parentB]);
-        // // print_r($child);
-        // for ($i=0; $i < sizeof($child); $i++){
 
-        //     // print_r("\n"."parentA"."\t");
-        //     // print_r($selectionPool[$parentA][$i]->getTimeslot()."\t");
+        // foreach($selectionPool as $key => $values){
+        //     print_r("\nselectionPool key ".$key. "\n");
+        // }
 
-        //     // print_r(" "."child"."\t");
-        //     // print_r("".$child[$i]->getTimeslot()."\t");
+
+
+        //  # Step 2: Reproduction Create a new empty population
+        $population = [];
+
+        //    # Fill the new population by executing the following steps:
+        //       1. Pick two "parent" objects from the mating pool.
+        $parentA = $matingPool[rand(0, sizeof($matingPool)-1)]; // from this index, it returns the value corresponding to 
+        $parentB = $matingPool[rand(0, sizeof($matingPool)-1)]; // the index from the selection pool. 
+        /*
+                Size matingPool :  17
+                Array
+                (
+                    [0] => 1
+                    [1] => 1
+                    [2] => 1
+                    [3] => 1
+                    [4] => 1
+                    [5] => 1
+                    [6] => 1
+                    [7] => 1
+                    [8] => 1
+                    [9] => 1
+                    [10] => 2
+                    [11] => 2
+                    [12] => 2
+                    [13] => 2
+                    [14] => 2
+                    [15] => 2
+                    [16] => 2
+                )
+        */
+        //       2. Crossover -- create a "child" object by mating these two parents.
+        for($i=0; $i < 10; $i++){  
+            $parentA = $matingPool[rand(0, sizeof($matingPool)-1)]; // re
+            $parentB = $matingPool[rand(0, sizeof($matingPool)-1)];
+            print_r("\n".$parentA." ");
+            print_r("\t".$parentB." ");
+            print_r("\t Max pool size: ");
+            $x=(sizeof($matingPool));
+            print_r($x);
+        }
+        $child = $this->crossover($selectionPool[$parentA], $selectionPool[$parentB]);
+        // print_r($child);
+        for ($i=0; $i < sizeof($child); $i++){
+
+            // print_r("\n"."parentA"."\t");
+            // print_r($selectionPool[$parentA][$i]->getTimeslot()."\t");
+
+            // print_r(" "."child"."\t");
+            // print_r("".$child[$i]->getTimeslot()."\t");
             
 
-        //     // print_r(" "."parentB"."\t");
-        //     // print_r("".$selectionPool[$parentB][$i]->getTimeslot()."\t");
-        // }
+            // print_r(" "."parentB"."\t");
+            // print_r("".$selectionPool[$parentB][$i]->getTimeslot()."\t");
+        }
         
         // print_r("\n---------".$parentA."-------------\n");
         // print_r($selectionPool[$parentA]);
@@ -575,10 +699,10 @@ class Timetable {
 
 
         //       3. Mutation -- mutate the child's DNA based on a given probability.
-        // $child = $this->mutate($child);
+        $child = $this->mutate($child);
 
         //       4. Add the child object to the new population.
-        // $population [] = $child;
+        $population [] = $child;
         //    # Replace the old population with the new population
         //  
         //   # Rinse and repeat
@@ -844,3 +968,201 @@ class Timetable {
 }
 // class end 
 
+
+
+
+   // public function CreateTimetable($subjectClasses){
+    //     $timetable = []; // subjectClass-timeslot
+    //     // echo "SubjectID \t TGroup \t\t Subj Name \t\t Inst \t\t Room<br>";
+    //     foreach ($subjectClasses as $subjectClass){
+    //         // echo "<br/>\t"; print_r($subjectClass->getID());
+    //         // echo "\t"; print_r($subjectClass->getTraineeGroup()->getTraineeGroupName());
+    //         // echo "\t\t"; print_r($subjectClass->getSubject()->getSubjectName());
+    //         // echo "\t\t"; print_r($subjectClass->getInstructor()->getFirst_name());
+    //         // echo "\t\t"; print_r($subjectClass->getRoom()->getRoomName());
+    //         // echo " <br> ";
+    //         // echo "<br/>required period: ";print_r($subjectClass->getSubject()->getRequiredPeriod());
+    //         // echo "<br/>getPreferredNumberOfDays: ";print_r($subjectClass->getPreferredNumberOfDays());
+
+
+    //         // distribute the required period/s with the preferred number of day/s
+    //         // returns an array. $distBlock = [ [day]=>[no. of periods] ] 
+    //         //     Array
+    //         // (
+    //         //     [0] => 2
+    //         //     [1] => 1
+    //         //     [2] => 1
+    //         // )
+        
+    //         $distBlock = $this->getDistBlock($subjectClass->getSubject()->getRequiredPeriod(),
+    //                                             $subjectClass->getPreferredNumberOfDays() 
+    //                                         );
+
+     
+    //         echo "<br/>==================>>>count: ".count($distBlock)." ";
+    //         print_r($distBlock);
+    //         // $this->getSlot($distBlock);
+    //         //print_r($this->getSlot($distBlock));
+            
+    //         $done = false;
+    //         while (!$done){
+    //             $day = [];
+    //             for($i=0; $i < count($distBlock); $i++ ){
+    //                 // echo "<br/>no of periods: ".$distBlock[$i];
+
+
+    //                 $timeslot = $this->getSlot($distBlock[$i], 
+    //                                             $subjectClass->getPreferredStart(),
+    //                                             $subjectClass->getPreferredEnd()
+    //                                             );
+
+    //                 for($j=0; $j<sizeof($timeslot); $j++){
+    //                     // array_push($timetable,[[$subjectClass][$timeslot[$j]]);
+    //                     $timetable[] = [$subjectClass, $timeslot[$j]];
+    //                 }
+    //             // if ((count(array_unique($day)) === count($distBlock)))
+    //             }
+    //         }
+            
+
+    //     }
+    //     // echo"timetable now: ";
+    //     return $timetable;
+    // }
+
+
+
+
+    // public function indexAction (){
+    //     //place this before any script you want to calculate time
+    //     $time_start = microtime(true); 
+    //     ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+    //     $startMemory = memory_get_usage();
+    //     echo"Timetable Class<pre>";
+    //     $timetableID = 1;
+    //     $population = [];
+    //     $timetableFitness = [];
+    //     $subjectClassSets = [];
+    //     $fitness = [];
+    //     // base subjectClass is created once, to fetch data from mySQL tables
+    //     // an N subjectClasses will be created from the base with 
+    //     // random rooms if the property isRoomFixed = false. 
+  
+    //     $baseSubjectClass = $this->fetchBaseSubjectClass($timetableID); 
+
+
+
+    //     //  # Step 1: The Population 
+    //     //    # Create an empty population (an array or ArrayList)
+    //     //    # Fill it with DNA encoded objects (pick random values to start)
+    //     // $i = 0;
+    //     // $done = false;
+    //     // while (!$done){
+    //     //     // create an N size subjectClass sets. 
+    //     //     print_r("iteration: ".$i);
+    //     //     for($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++){
+    //     //         print_r("\n\n=======================timetable: ".$timetable."======================================\n");
+    //     //         $subjectClassSets[$timetable] = $this->createSubjectClass($baseSubjectClass);
+    //     //         $population[$timetable] = $this->createTimetable($subjectClassSets[$timetable]);
+    //     //         $timetableFitness[$timetable] = $this->calcFitness($population[$timetable]);
+    //     //         print_r("\n<h3>TOTAL CONFLICTS: ".$this->calcFitness($population[$timetable])." </h3>");
+    //     //         if(($i === 500) or ($timetableFitness[$timetable] == 0)){
+    //     //             $done = true;
+    //     //             break;
+    //     //         }
+                
+    //     //     }
+
+    //     //     $i++;
+    //     // }
+
+
+    //         for($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++){
+    //             print_r("\n\n=======================timetable: ".$timetable."======================================\n");
+    //             $subjectClassSets[$timetable] = $this->createSubjectClass($baseSubjectClass);
+    //             $population[$timetable] = $this->createTimetable($subjectClassSets[$timetable]);
+    //             $timetableFitness[$timetable] = $this->calcFitness($population[$timetable]);
+    //             print_r("\n<h3>TOTAL CONFLICTS: ".$this->calcFitness($population[$timetable])." </h3>");
+    //             if(($timetableFitness[$timetable] == 0)){
+    //                 break;
+    //             }
+    //         }
+    //     // print_r($timetableFitness);
+    //     // print_r("\nSize: ".sizeof($timetableFitness));
+    //     $uniqueFitnessValues = array_unique ($timetableFitness);
+    //     print_r($uniqueFitnessValues);
+    //     print_r("\nSize: ".sizeof($uniqueFitnessValues));
+    //     // $fitness = min($timetableFitness);
+    //     // $index = array_search($fitness, $timetableFitness);
+    //     // print_r("\nfitness index ".$index." => ".$fitness." fitness value");
+
+    //     $fitness[] = [array_search(min($timetableFitness), $timetableFitness) => min($timetableFitness)];
+    //     $fitness[] = [array_search(max($timetableFitness), $timetableFitness) => max($timetableFitness)];
+    //     print_r($fitness);
+
+    //     // draw()
+    //     //  # Step 1: Selection 
+    //     //    # Create an empty mating pool (an empty ArrayList)
+    //     //    # For every member of the population, evaluate its fitness based on some criteria / function, 
+    //     //      and add it to the mating pool in a manner consistant with its fitness, i.e. the more fit it 
+    //     //      is the more times it appears in the mating pool, in order to be more likely picked for reproduction.
+
+
+    //     //  # Step 2: Reproduction Create a new empty population
+    //     //    # Fill the new population by executing the following steps:
+    //     //       1. Pick two "parent" objects from the mating pool.
+    //     //       2. Crossover -- create a "child" object by mating these two parents.
+    //     //       3. Mutation -- mutate the child's DNA based on a given probability.
+    //     //       4. Add the child object to the new population.
+    //     //    # Replace the old population with the new population
+    //     //  
+    //     //   # Rinse and repeat
+
+    //     // }      
+    //     // how to mutate
+    //     // $roomTypeID = $subjectClass[0][1]->getRoomType()->getroomTypeID();  
+    //     // $room = $this->getRandomRoom($roomTypeID);
+    //     // $subjectClass[0][1]->setRoom($room);
+    //     // $room = $this->getRandomRoom($roomTypeID);
+    //     // $subjectClass[0][2]->setRoom($room);
+
+    //     // print_r("\n\n=======================================================");
+    //     // for ($j=0; $j < sizeof($subjectClass[0]); $j++){
+    //     //     print_r("\n[0,{$j}]: getID: ".$subjectClass[0][$j]->getID());           
+    //     //     print_r("\t\troomType: ".$subjectClass[0][$j]->getRoomType()->getRoomTypeID());
+    //     //     print_r("\t\tRoom: ".$subjectClass[0][$j]->getRoom()->getName());
+    //     // }
+
+    //     // $this->calcFitness($population[3], $subjectClassSet[3]);
+    //     // $this->calcFitness($population[3]);
+        
+    //     // print_r("\nsize: ".sizeof($population[0]));
+
+    //     // print_r("\n\nmeeting \tsubject \tTimeslot \tRoom \tTrainee \tInstructor \tSubject");
+    //     // print_r("\ntime \t\tClassID \tts \t\tID \tGroup \t\tID \t\tID CODE");
+    //     // print_r("\n**** \t\t**** \t\t**** \t\t**** ");
+    //     // for($i=0; $i < sizeof($population[$x]); $i++){
+    //     //     print_r("<br/>".$population[$x][$i]->getID());
+    //     //     print_r("\t\t".$population[$x][$i]->getSubjectClass()->getID());
+    //     //     print_r("\t\t".$population[$x][$i]->getTimeslot());
+    //     //     print_r("\t\t".$population[$x][$i]->getSubjectClass()->getRoom()->getID());
+    //     //     // print_r("\t\t".$subjectClassSets[3][$population[3][$i]->getSubjectClass()->getID()]->getRoom()->getID());
+            
+    //     //     print_r("\t".   $subjectClassSets[3][$population[$x][$i]->getSubjectClass()->getID()]->getTraineeGroup()->getID());
+    //     //     print_r("\t\t". $subjectClassSets[3][$population[$x][$i]->getSubjectClass()->getID()]->getInstructor()->getID());
+    //     //     print_r("\t\t". $subjectClassSets[3][$population[$x][$i]->getSubjectClass()->getID()]->getSubject()->getID());
+    //     //     print_r("\t".   $subjectClassSets[3][$population[$x][$i]->getSubjectClass()->getID()]->getSubject()->getCode());
+    //     // }
+  
+    //     echo memory_get_usage() - $startMemory, ' bytes';
+    //     var_dump( ini_get('memory_limit') );
+    //     var_dump(memory_get_usage() );
+        
+    //     $time_end = microtime(true);
+
+    //     //dividing with 60 will give the execution time in minutes other wise seconds
+    //     $execution_time = ($time_end - $time_start);
+
+    //     //execution time of the script
+    //     echo '<b>Total Execution Time:</b> '.$execution_time.'sec';
+    // }

@@ -2755,3 +2755,114 @@ This will return an array of all the indexes that have the minimum value in the 
 It is useful if you need all the instances of the minimum value but may be slightly less efficient than the solution above:
 
 $index = array_keys($my_array, min($my_array));
+
+=======================timetable: 751======================================
+														
+TOTAL CONFLICTS: 0 
+
+
+	timeslots:8	    scID 1	roomID: 3	TraineeGroup: 1	Instructor: 4	mtID: 0
+	timeslots:9	    scID 1	roomID: 3	TraineeGroup: 1	Instructor: 4	mtID: 1
+	timeslots:2	    scID 2	roomID: 1	TraineeGroup: 1	Instructor: 1	mtID: 2
+	timeslots:3	    scID 2	roomID: 1	TraineeGroup: 1	Instructor: 1	mtID: 3
+	timeslots:5	    scID 3	roomID: 1	TraineeGroup: 1	Instructor: 3	mtID: 4
+	timeslots:6	    scID 3	roomID: 1	TraineeGroup: 1	Instructor: 3	mtID: 5
+	timeslots:13	scID 3	roomID: 1	TraineeGroup: 1	Instructor: 3	mtID: 6
+	timeslots:4	    scID 3	roomID: 1	TraineeGroup: 1	Instructor: 3	mtID: 7
+	timeslots:5	    scID 4	roomID: 3	TraineeGroup: 2	Instructor: 4	mtID: 8
+	timeslots:6	    scID 4	roomID: 3	TraineeGroup: 2	Instructor: 4	mtID: 9
+	timeslots:10	scID 5	roomID: 1	TraineeGroup: 2	Instructor: 1	mtID: 10
+	timeslots:11	scID 5	roomID: 1	TraineeGroup: 2	Instructor: 1	mtID: 11
+	timeslots:2	    scID 6	roomID: 2	TraineeGroup: 2	Instructor: 3	mtID: 12
+	timeslots:14	scID 6	roomID: 2	TraineeGroup: 2	Instructor: 3	mtID: 13
+	timeslots:7	    scID 6	roomID: 2	TraineeGroup: 2	Instructor: 3	mtID: 14
+	timeslots:8	    scID 6	roomID: 2	TraineeGroup: 2	Instructor: 3	mtID: 15
+	timeslots:7	    scID 7	roomID: 4	TraineeGroup: 1	Instructor: 5	mtID: 16
+	timeslots:12	scID 7	roomID: 4	TraineeGroup: 1	Instructor: 5	mtID: 17
+	timeslots:1	    scID 7	roomID: 4	TraineeGroup: 1	Instructor: 5	mtID: 18
+	timeslots:9	    scID 8	roomID: 4	TraineeGroup: 2	Instructor: 5	mtID: 19
+	timeslots:13	scID 8	roomID: 4	TraineeGroup: 2	Instructor: 5	mtID: 20
+	timeslots:3	    scID 8	roomID: 4	TraineeGroup: 2	Instructor: 5	mtID: 21
+
+    Size uniqueFitnessValues:  24
+Array
+(
+    [751] => 0
+    [173] => 1
+    [502] => 2
+    [255] => 3
+    [37] => 4
+    [9] => 5
+    [2] => 6
+    [0] => 7
+    [1] => 8
+    [13] => 9
+    [20] => 10
+    [12] => 11
+    [8] => 12
+    [10] => 13
+    [3] => 14
+    [24] => 15
+    [34] => 16
+    [28] => 17
+    [4] => 18
+    [17] => 19
+    [6] => 20
+    [5] => 21
+    [376] => 24
+    [129] => 29
+)
+
+Size POP uniqueFitnessValues:  23
+Array
+(
+    [751] => 0
+    [173] => 1
+    [502] => 2
+    [255] => 3
+    [37] => 4
+    [9] => 5
+    [2] => 6
+    [0] => 7
+    [1] => 8
+    [13] => 9
+    [20] => 10
+    [12] => 11
+    [8] => 12
+    [10] => 13
+    [3] => 14
+    [24] => 15
+    [34] => 16
+    [28] => 17
+    [4] => 18
+    [17] => 19
+    [6] => 20
+    [5] => 21
+    [376] => 24
+)
+Array
+(
+    [751] => 0
+)
+Array
+(
+    [129] => 29
+)
+
+Size selectionPool :  23
+
+*********************** :  
+255 	173 	    Max pool size: 374
+255 	37 	        Max pool size: 374
+255 	751 	    Max pool size: 374
+502 	9 	        Max pool size: 374
+751 	751 	    Max pool size: 374
+255 	13 	        Max pool size: 374
+13 	    751 	    Max pool size: 374
+502 	2 	        Max pool size: 374
+751 	502 	    Max pool size: 374
+751 	9 	        Max pool size: 374
+
+15,070,608 bytes string(4) "128M"
+int(15,432,232)
+Total Execution Time: 171.2062060833sec
