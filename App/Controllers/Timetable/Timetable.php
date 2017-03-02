@@ -311,9 +311,12 @@ class Timetable {
     public function crossover ($parentA, $parentB){
         $timetableA = $parentA;
         $timetableB = $parentB;
+
         $timeslotsA = [];
         $timeslotsB = [];
+
         $timetableSize = sizeof($timetableA);
+
         for($i=0; $i < ($timetableSize); $i++){
              print_r("\n------------------------------------------------\ntimetableA mtID: ".$timetableA[$i]->getID(). 
                     "\tscID: ".$timetableA[$i]->getSubjectClass()->getID(). 
@@ -328,18 +331,19 @@ class Timetable {
 
         }
 
-        // print_r("\nTimeslotsA: ");
-        // print_r($timeslotsA);
-        // print_r("\nTimeslotsB: ");
-        // print_r($timeslotsB);
+        print_r("\nTimeslotsA: ");
+        print_r($timeslotsA);
+        print_r("\nTimeslotsB: ");
+        print_r($timeslotsB);
 
         // choose base timeslots for the child;
         $timeslotsC = (rand(0,1)) ?  $timeslotsA :  $timeslotsB;
 
         // crossver the timeslot set in $timeslotsA and $timeslotsB into 
         // the child timetable. 
+        $luckyPick = rand(0,1);
         foreach($timeslotsA as $key => $value){
-            if(rand(0,1)){
+            if($luckyPick){
                 $timeslotsC[$key] = $value;
             }
         }
@@ -349,37 +353,82 @@ class Timetable {
             }
         }
 
-        // print_r("\nchild: ");
-        // print_r($timetableC);
-        for($i=0; $i < ($timetableSize); $i++){
-            for($j=0; $j < sizeof($timetableA); $j++){
-                print_r("\n A: ".$timetableA[$i][$j]);
-                print_r("\n C: ".$timetableC[$i][$j]);
-                print_r("\n B: ".$timetableB[$i][$j]);
-            }
+        print_r("\nchild: ");
+        print_r($timeslotsC);
 
+
+        foreach($timeslotsC as $key => $values){
+            print_r("\nkey: ".$key);
+            foreach($values as $key => $timeslot )
+                print_r(" ,".$timeslot);
         }
-        
-
-
 
         
         // choose base timeslots for the child;
-        $child = (rand(0,1)) ?  $timetableA :  $timetableB;
-
+        $child = ($luckyPick) ?  $parentB :  $parentA;
+        print_r("\nLUCKPICK: ".$luckyPick);
         // insert the $timetableC timeslots into the child
         for($i=0; $i < ($timetableSize); $i++){
-             print_r("\n------------------------------------------------\ntimetableA mtID: ".$child[$i]->getID(). 
+            print_r("\n------------------------------------------------\nchild mtID: ".$child[$i]->getID(). 
                     "\tscID: ".$child[$i]->getSubjectClass()->getID(). 
                     "\t\tts: ".$child[$i]->getTimeslot()
                     );
-            foreach($timetableC[$child[$i]->getSubjectClass()->getID()] as $key => $value){
-                print_r("\t".$key. ":".$value);
-            }
-            
-            
+            print_r($timeslotsC[$child[$i]->getSubjectClass()->getID()]);
+            $timeslot_pop = array_pop($timeslotsC[$child[$i]->getSubjectClass()->getID()]);
+            print_r($timeslot_pop);
+            $child[$i]->setTimeslot($timeslot_pop);
+        }
+
+        for($i=0; $i < ($timetableSize); $i++){
+            print_r("\n------------------------------------------------\nparentA mtID: ".$parentA[$i]->getID(). 
+                    "\tscID: ".$parentA[$i]->getSubjectClass()->getID(). 
+                    "\t\tts: ".$parentA[$i]->getTimeslot()
+                    );
 
         }
+        $child[0]->setTimeslot(111);
+        $child[1]->setTimeslot(222);
+
+        for($i=0; $i < ($timetableSize); $i++){
+            print_r("\n------------------------------------------------\nchild mtID: ".$child[$i]->getID(). 
+                    "\tscID: ".$child[$i]->getSubjectClass()->getID(). 
+                    "\t\tts: ".$child[$i]->getTimeslot()
+                    );
+
+        }
+
+        for($i=0; $i < ($timetableSize); $i++){
+            print_r("\n------------------------------------------------\nparentB mtID: ".$parentB[$i]->getID(). 
+                    "\tscID: ".$parentB[$i]->getSubjectClass()->getID(). 
+                    "\t\tts: ".$parentB[$i]->getTimeslot()
+                    );
+
+        }
+
+        $child[2]->setTimeslot(000);
+        $child[3]->setTimeslot(555);
+
+        for($i=0; $i < ($timetableSize); $i++){
+             print_r("\n------------------------------------------------\nparentA mtID: ".$parentA[$i]->getID(). 
+                    "\tscID: ".$parentA[$i]->getSubjectClass()->getID(). 
+                    "\t\tts: ".$parentA[$i]->getTimeslot()
+                    );
+
+            print_r("\nchild   mtID: ".$child[$i]->getID(). 
+                    "\tscID: ".$child[$i]->getSubjectClass()->getID(). 
+                    "\t\tts: ".$child[$i]->getTimeslot()
+                    );
+             print_r("\nparentB mtID: ".$parentB[$i]->getID(). 
+                    "\tscID: ".$parentB[$i]->getSubjectClass()->getID(). 
+                    "\t\tts: ".$parentB[$i]->getTimeslot()
+                    );
+            
+            // $timeslotsA[$timetableA[$i]->getSubjectClass()->getID()][] = $timetableA[$i]->getTimeslot();
+            // $timeslotsB[$timetableB[$i]->getSubjectClass()->getID()][]= $timetableB[$i]->getTimeslot();
+
+        }
+
+        
 
         return $parentA;
     }
