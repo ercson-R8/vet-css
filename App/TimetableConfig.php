@@ -37,7 +37,7 @@ class TimetableConfig {
      * The number of timetables in a population
      * @var int 
      */
-    const POP_SIZE = 100;
+    const POP_SIZE = 30;
 
 
     /**  
@@ -51,7 +51,7 @@ class TimetableConfig {
      * The rate of mutation for a child timetable.
      * @var float 
      */
-    const MUTATION_RATE = 0.05;   
+    const MUTATION_RATE = 0.03;   
 
     /**  
      * The rate of crossover for a set of timetables. 
