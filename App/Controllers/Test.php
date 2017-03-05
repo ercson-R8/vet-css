@@ -32,6 +32,43 @@ class Test extends \Core\Controller {
     }
 
 
+
+    public function cloneAction(){
+        echo "<pre>";
+        $a = new TClass(1, 5);
+        $b = new TClass(10, 15);
+        print_r($a);
+        print_r($b);
+
+        $setObj1 = [];
+        $setObj1[] = $a;
+        $setObj1[] = $b;
+        
+        print_r($setObj1);
+        // $setObj2 = clone $setObj1[0];
+        // $setObj2 = clone $setObj1[1];
+
+
+        // for ($x=0; $x < sizeof($setObj1);$x++){
+        //     $setObj2[] = clone $setObj1[$x];
+        // }
+
+        foreach($setObj1 as $key => $value){
+            $setObj2[] = clone $value;
+        }
+
+        $a->setX(100);
+        $setObj1[1]->setY (5000);
+        print_r("\na->setX(100)=================\n");
+        
+        print_r("setObj1: "); print_r($setObj1);
+        
+        print_r("setObj2: ");print_r($setObj2);
+
+
+    }
+
+
         public function testAction(){
         // echo "testing from controller test<br/>";
         $a = [];

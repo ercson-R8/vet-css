@@ -523,6 +523,14 @@ class Timetable {
   
         $baseSubjectClass = $this->fetchBaseSubjectClass($timetableID); 
   
+
+
+
+
+
+
+
+
         // setup()
         //  # Step 1: The Population 
         //    # Create an empty population (an array or ArrayList)
@@ -533,12 +541,65 @@ class Timetable {
             $subjectClassSets[$timetable] = $this->createSubjectClass($baseSubjectClass);
             $population[$timetable] = $this->createTimetable($subjectClassSets[$timetable]);
             $timetableFitness[$timetable] = $this->calcFitness($population[$timetable]);
-            print_r("\n<h3>TOTAL CONFLICTS: ".$this->calcFitness($population[$timetable])." </h3>");
+            print_r("\n<h3>TOTAL CONFLICTS: ".$timetableFitness[$timetable]." </h3>");
             if(($timetableFitness[$timetable] == 0)){
                 $fitTimetableFound = true;
                 break;
             }
         }
+
+        // HIGHLY UNLIKE but it is still possible
+        if ($fitTimetableFound ){ 
+            // jump to pass the Timetable to TimetableView to display it 
+            print_r("\n\n=======================timetable: ".$timetable."======================================\n");
+            print_r("\n<h1>FOUND CONFLICTS: ".$timetableFitness[$timetable]." Generation: ".$generation."</h1>");
+            // 
+        }
+
+
+
+
+        /*
+            while no fitTimetableFound {
+                1. evaluate fitness of timetables (population)
+                    
+                2. Process fitness values. 
+                    2.0 eliminate the least fit timetable.
+                    2.1 Find the best timetable so far
+                    2.2 Find the total fitness values 
+                    2.3 Normalize each fitness values: (fitnessVale/TotalFitness) * 100
+                3. Prepare matingPool indexes and the selection Pool
+                    3.1 Populate the matingPool
+                    3.2 Populate the selectionPool
+                4. ELITISM find the elite/s 
+                    4.1 Clear the population
+                    4.2 Save the top N timetables
+                    4.3 Add the best timetable so far to population[i] 
+                     
+                4. SELECTION parentA and parentB.
+                5. CROSSOVER parentA and parentB. 
+                6. MUTATE child
+                7. Add to the population //starting @ pop[i]  
+
+            }
+
+        */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         print_r("\nSize timetableFitness: ".sizeof($timetableFitness)."\n");print_r($timetableFitness);
         
         $uniqueFitnessValues = array_unique ($timetableFitness);
