@@ -37,14 +37,14 @@ class TimetableConfig {
      * The number of timetables in a population
      * @var int 
      */
-    const POP_SIZE = 150;
+    const POP_SIZE = 300;
 
 
     /**  
      * Total number of generation 
      * @var int 
      */
-    const MAX_GEN = 100;
+    const MAX_GEN = 2000;
 
 
     /**  
