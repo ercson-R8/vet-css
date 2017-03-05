@@ -392,10 +392,10 @@ class Timetable {
         //  # Step 1: The Population 
         //    # Create an empty population (an array or ArrayList)
         //    # Fill it with DNA encoded objects (pick random values to start)
-        print_r("\nGenerating base timetable:");
+        // print_r("\nGenerating base timetable:");
         for($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++){
-                fmod($timetable+1, 50) ? print_r("") : print_r("\n");
-                print_r("".$timetable."|");
+                // fmod($timetable+1, 50) ? print_r("") : print_r("\n");
+                // print_r("".$timetable."|");
                 $subjectClassSets[$timetable] = $this->createSubjectClass($baseSubjectClass);
                 $population[$timetable] = $this->createTimetable($subjectClassSets[$timetable]);
 
@@ -447,7 +447,7 @@ class Timetable {
             $totalFitnessValues = 0;
             $parentA = 0;
             $parentA = 0;
-            print_r("\n<h2>=======================generation: ".$generation."======================================</h2>");
+            // print_r("\n<h2>=======================generation: ".$generation."======================================</h2>");
             
             
             
@@ -461,6 +461,7 @@ class Timetable {
 
                 if(($timetableFitness[$timetable] == 0 )){
                     $fitTimetableFound = true;
+                    print_r("\n<h2>=======================generation: ".$generation."======================================</h2>");
                     print_r("\n<h1>FOUND!!! CONFLICTS: ".$timetableFitness[$timetable]." </h1>");
                     // display pop. 
                     
@@ -502,15 +503,15 @@ class Timetable {
                 $timetableID = 1;  // will be replaced by the actual database table id later
                 $population = [];
                 $timetableFitness = [];
-                $subjectClassSets = [];
+                //$subjectClassSets = [];
                 $fitnessHighest = null;
                 $fitnessLowest = null;
                 $fitTimetableFound = false;
-                print_r("\nGenerating timetable:");
+                // print_r("\nGenerating timetable:");
                 for($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++){
-                    fmod($timetable, 25) ? print_r("") : print_r("\n");
-                    print_r($timetable.", ");
-                    $subjectClassSets[$timetable] = $this->createSubjectClass($baseSubjectClass);
+                    // fmod($timetable, 25) ? print_r("") : print_r("\n");
+                    // print_r($timetable.", ");
+                    //$subjectClassSets[$timetable] = $this->createSubjectClass($baseSubjectClass);
                     $population[$timetable] = $this->createTimetable($subjectClassSets[$timetable]);
                     $timetableFitness[$timetable] = $this->calcFitness($population[$timetable]);
                 }
@@ -527,9 +528,9 @@ class Timetable {
             
             // 2.0 eliminate the least fit timetable.
             array_pop($uniqueFitnessValues); // remove the least fit from selection pool
-            print_r("\nuniqueFitnessValues: ");
+            // print_r("\nuniqueFitnessValues: ");
             foreach($uniqueFitnessValues as $key => $value){
-                print_r("[".$key."]=><b>".$value."</b> ");
+                // print_r("[".$key."]=><b>".$value."</b> ");
             }
 
 
@@ -624,8 +625,9 @@ class Timetable {
             //     }
             // }
 
-            print_r("\n(population): ".sizeof($population)."");
-            for($timetable=TimetableConfig::ELITISM; $timetable < TimetableConfig::POP_SIZE; $timetable++){
+            // print_r("\n(population): ".sizeof($population)."");
+            $crossRate = (int)(TimetableConfig::POP_SIZE * TimetableConfig::CROSSOVER_RATE ) ;
+            for( $timetable=TimetableConfig::ELITISM ; $timetable < $crossRate ; $timetable++ ){
                    
                
                 // 4. SELECTION parentA and parentB.

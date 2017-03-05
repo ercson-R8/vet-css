@@ -91,20 +91,20 @@ class Test extends \Core\Controller {
 
         $a=array("a"=>"red","b"=>"green","c"=>1);
         print_r($a);
-echo array_search(1,$a);
+    echo array_search(1,$a);
 
-echo "<br/>============================\n";
-// $startMemory = memory_get_usage();
-// $array = range(1, 100000);
-// echo memory_get_usage() - $startMemory, ' bytes<br/>';
+    echo "<br/>============================\n";
+    // $startMemory = memory_get_usage();
+    // $array = range(1, 100000);
+    // echo memory_get_usage() - $startMemory, ' bytes<br/>';
 
 
-// $startMemory = memory_get_usage();
-// $array = new \SplFixedArray(1000000);
-// for ($i = 0; $i < 10000; ++$i) {
-//     $array[$i] = $i;
-// }
-// echo memory_get_usage() - $startMemory, ' bytes';
+    // $startMemory = memory_get_usage();
+    // $array = new \SplFixedArray(1000000);
+    // for ($i = 0; $i < 10000; ++$i) {
+    //     $array[$i] = $i;
+    // }
+    // echo memory_get_usage() - $startMemory, ' bytes';
 
 
     $i = 8;
@@ -134,7 +134,11 @@ echo "<br/>============================\n";
 
 
 
-var_dump(memory_get_usage() );
+        var_dump(memory_get_usage() );
+
+        print_r("\n");
+        $x =(int) 300 * 0.8;
+        print_r("\nx=".$x."\n");
 
 
 
