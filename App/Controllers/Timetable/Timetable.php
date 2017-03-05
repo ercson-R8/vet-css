@@ -551,6 +551,11 @@ class Timetable {
 
         $generation = 0;
         while((!$fitTimetableFound) and ($generation < TimetableConfig::MAX_GEN)){
+                        $matingPool = []; // just the index of timetable, conserver memory, increase efficiency. 
+            $selectionPool = [];
+            $totalFitnessValues = 0;
+            $parentA = 0;
+            $parentA = 0;
             print_r("\n<h2>=======================generation: ".$generation."======================================</h2>");
             
             
@@ -587,11 +592,7 @@ class Timetable {
             // 2.1 Find the best timetable so far
             $fitnessHighest = [array_search(min($timetableFitness), $timetableFitness) => min($timetableFitness)];
             $fitnessLowest = [array_search(max($timetableFitness), $timetableFitness) => max($timetableFitness)];
-            $matingPool = []; // just the index of timetable, conserver memory, increase efficiency. 
-            $selectionPool = [];
-            $totalFitnessValues = 0;
-            $parentA = 0;
-            $parentA = 0;
+
 
             // 2.2 Find the total fitness values
             foreach($uniqueFitnessValues as $key => $fitnessValue){
@@ -681,17 +682,17 @@ class Timetable {
                 // 4. SELECTION parentA and parentB.
                 $parentA = $matingPool[rand(0, sizeof($matingPool)-1)]; // from this index, it returns the value corresponding to 
                 $parentB = $matingPool[rand(0, sizeof($matingPool)-1)]; // the index($key) from the selection pool.
-                print_r($matingPool);
+                // print_r($matingPool);
                 // print_r($selectionPool);
                 print_r("(selectionPool): ".sizeof($selectionPool)."");
-                print_r("\nselection pool index: ");
+                print_r("\t\tselection pool index: ");
                 foreach($selectionPool as $key => $value){
                     print_r($key." ");
                 }
                 print_r("\n\n(matingPool): ".sizeof($matingPool)."");
                 
-                print_r("\nparentA index: ".$parentA." ");print_r("value: ".$matingPool[$parentA]." ");
-                print_r("\nparentB index: ".$parentB." ");print_r("value: ".$matingPool[$parentB]." ");
+                print_r("\tparentA index: ".$parentA." ");//print_r("value: ".$matingPool[$parentA]." ");
+                print_r("\tnparentB index: ".$parentB." ");//print_r("value: ".$matingPool[$parentB]." ");
 
                 // print_r("\n\ntimetable=>".$timetable." \n\n");
                 // print_r("\n\nCROSSOVER parentA and parentB. \nSizeof/var_dump child: "." ");
