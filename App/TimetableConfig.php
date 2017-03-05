@@ -37,14 +37,14 @@ class TimetableConfig {
      * The number of timetables in a population
      * @var int 
      */
-    const POP_SIZE = 30;
+    const POP_SIZE = 150;
 
 
     /**  
      * Total number of generation 
      * @var int 
      */
-    const MAX_GEN = 100;
+    const MAX_GEN = 1000;
 
 
     /**  
@@ -63,7 +63,7 @@ class TimetableConfig {
      * The number of elites to be kept in the population. 
      * @var float 
      */
-    const ELITISM = 2;
+    const ELITISM = 1;
 
 
 }
