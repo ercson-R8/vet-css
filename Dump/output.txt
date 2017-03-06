@@ -1,3 +1,13 @@
+IP	Hostname	MAC Address	In	Out	Total	Last seen
+10.153.146.119	(none)	d0:fc:cc:69:22:b7	1,325,429,397	70,763,179	1,396,192,576	4 hrs, 22 mins, 56 secs
+10.153.146.104	(none)	14:32:d1:bb:7d:82	743,117,139	11,541,213	754,658,352	4 hrs, 16 mins, 21 secs
+10.153.146.115	(none)	10:4a:7d:dd:7b:1f	686,685,818	20,448,102	707,133,920	5 hrs, 57 mins, 24 secs
+10.153.146.235	(none)	dc:cf:96:03:85:3a	626,364,739	20,075,837	646,440,576	3 hrs, 43 mins, 49 secs
+10.153.146.254	(none)	00:0b:86:42:8b:60	599,814,290	0	599,814,290	(never)
+10.153.146.96	(none)	10:4a:7d:dd:7a:fc	427,097,131	17,069,689	444,166,820	6 hrs, 5 mins, 9 secs
+31.13.75.53	instagram-p3-shv-01-mrs1.fbcdn.net	00:1a:a0:3a:1a:3d	399,848,546	22,601,681	422,450,227	24 mins, 22 secs
+
+
 // rebuild, reattach
 
 initSlot: 0
