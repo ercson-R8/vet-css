@@ -442,11 +442,7 @@ class Timetable {
 
         $generation = 0;
         while((!$fitTimetableFound) and ($generation < TimetableConfig::MAX_GEN)){
-            $matingPool = []; // just the index of timetable, conserver memory, increase efficiency. 
-            $selectionPool = [];
-            $totalFitnessValues = 0;
-            $parentA = 0;
-            $parentA = 0;
+
             
             
             
@@ -466,14 +462,18 @@ class Timetable {
                     // display pop. 
                     
                     $tempTable = $population[$timetable];
+                    usort($tempTable, function($a, $b){
+                        return ((int)$a->getTimeslot() > (int)$b->getTimeslot());
+                    });
                     for($i=0; $i < sizeof($tempTable); $i++){
                         
                         print_r("\nmtID:    ".$tempTable[$i]->getID(). 
-                                "\tscID: ".$tempTable[$i]->getSubjectClass()->getID(). 
-                                "\t\tts: ".$tempTable[$i]->getTimeslot(). 
-                                "\t\trmID: ".$tempTable[$i]->getSubjectClass()->getRoom()->getID().
-                                "\t\ttgID: ".$tempTable[$i]->getSubjectClass()->getTraineeGroup()->getID(). 
-                                "\t\tinID: ".$tempTable[$i]->getSubjectClass()->getInstructor()->getID()
+                                "\tts: ".$tempTable[$i]->getTimeslot(). 
+                                "\t\tscID: ".$tempTable[$i]->getSubjectClass()->getID().
+                                "\t[Room:".$tempTable[$i]->getSubjectClass()->getRoom()->getID().
+                                "]\tGRP: ".$tempTable[$i]->getSubjectClass()->getTraineeGroup()->getID(). 
+                                "\t\tSB: ".$tempTable[$i]->getSubjectClass()->getSubject()->getID().
+                                "\t\tInts: ".$tempTable[$i]->getSubjectClass()->getInstructor()->getID()
                                 );
                     }
                    
@@ -490,7 +490,7 @@ class Timetable {
 
                     //execution time of the script
                     echo '<b>Total Execution Time:</b> '.$execution_time.'sec';
-                    exit();
+                    return;
                 }
             }
 
@@ -502,15 +502,20 @@ class Timetable {
              */
 
             if(!$fitTimetableFound){
-                $timetableID = 1;  // will be replaced by the actual database table id later
-                $population = [];
-                $timetableFitness = [];
+                
+                //$population = [];
+                //$timetableFitness = [];
                 //$subjectClassSets = [];
                 $fitnessHighest = null;
                 $fitnessLowest = null;
                 $fitTimetableFound = false;
+                $matingPool = []; // just the index of timetable, conserver memory, increase efficiency. 
+                $selectionPool = [];
+                $totalFitnessValues = 0;
+                $parentA = 0;
+                $parentA = 0;
 
-                for($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++){
+                for($timetable=TimetableConfig::ELITISM; $timetable < TimetableConfig::POP_SIZE; $timetable++){
                     //$subjectClassSets[$timetable] = $this->createSubjectClass($baseSubjectClass);
                     $population[$timetable] = $this->createTimetable($subjectClassSets[$timetable]);
                     $timetableFitness[$timetable] = $this->calcFitness($population[$timetable]);

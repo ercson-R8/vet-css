@@ -26,8 +26,15 @@ class Test extends \Core\Controller {
     public function indexAction(){
         echo "testing from controller test....<br/>";
         $t = new Timetable();
+        $u = new Timetable();
+        $v = new Timetable();
+        $w = new Timetable();
 
         $t->indexAction();
+        $u->indexAction();
+        $v->indexAction();
+        $w->indexAction();
+        $w->indexAction();
         // TClass::indexAction();
     }
 

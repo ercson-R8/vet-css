@@ -63,7 +63,7 @@ class TimetableConfig {
      * The number of elites to be kept in the population. 
      * @var float 
      */
-    const ELITISM = 2;
+    const ELITISM = 5;
 
 
 }
