@@ -447,7 +447,7 @@ class Timetable {
             $totalFitnessValues = 0;
             $parentA = 0;
             $parentA = 0;
-            // print_r("\n<h2>=======================generation: ".$generation."======================================</h2>");
+            
             
             
             
@@ -494,6 +494,8 @@ class Timetable {
                 }
             }
 
+            print_r("\n<h2>Generation: ".$generation."</h2>");
+
             /* if there were no fit timetable found, restart from scratch
              * generation a new population
              *
@@ -528,9 +530,9 @@ class Timetable {
             
             // 2.0 eliminate the least fit timetable.
             array_pop($uniqueFitnessValues); // remove the least fit from selection pool
-            // print_r("\nuniqueFitnessValues: ");
+            print_r("\nuniqueFitnessValues: ");
             foreach($uniqueFitnessValues as $key => $value){
-                // print_r("[".$key."]=><b>".$value."</b> ");
+                print_r("[".$key."]=><b>".$value."</b> ");
             }
 
 
@@ -540,8 +542,8 @@ class Timetable {
             // 2.1 Find the best timetable so far
             $fitnessHighest = [array_search(min($timetableFitness), $timetableFitness) => min($timetableFitness)];
             $fitnessLowest = [array_search(max($timetableFitness), $timetableFitness) => max($timetableFitness)];
-            // print_r("\nfitnessHighest CONFLICTS: \t<b>".$uniqueFitnessValues[$fitnessHighest]."</b>");
-            // print_r("\nfitnessLowest CONFLICTS: \t<b>".$uniqueFitnessValues[$fitnessLowest]."</b>");
+            // print_r("\tHighest fitness CONFLICTS: \t<b>".$uniqueFitnessValues[$fitnessHighest]."</b>");
+            // print_r("\tLowest fitness CONFLICTS: \t<b>".$uniqueFitnessValues[$fitnessLowest]."</b>");
 
 
             // 2.2 Find the total fitness values
@@ -625,8 +627,18 @@ class Timetable {
             //     }
             // }
 
-            // print_r("\n(population): ".sizeof($population)."");
+            print_r("\n(population): ".sizeof($population)."");
+            print_r("\n(matingPool): ".sizeof($matingPool)."");
             $crossRate = (int)(TimetableConfig::POP_SIZE * TimetableConfig::CROSSOVER_RATE ) ;
+            // print_r($matingPool);
+            // print_r($selectionPool);
+            print_r("\nselectionPool: ".sizeof($selectionPool)."");
+            print_r("\nselection pool index: [");
+            foreach($selectionPool as $key => $value){
+                print_r($key.", ");
+            }
+            print_r("]");
+                
             for( $timetable=TimetableConfig::ELITISM ; $timetable < $crossRate ; $timetable++ ){
                    
                
@@ -634,15 +646,7 @@ class Timetable {
                 $parentA = $matingPool[rand(0, sizeof($matingPool)-1)]; // from this index, it returns the value corresponding to 
                 $parentB = $matingPool[rand(0, sizeof($matingPool)-1)]; // the index($key) from the selection pool.
                 
-                // print_r($matingPool);
-                // print_r($selectionPool);
-                // print_r("\nselectionPool: ".sizeof($selectionPool)."");
-                // print_r("\tselection pool index: [");
-                // foreach($selectionPool as $key => $value){
-                //     print_r($key.", ");
-                // }
-                // print_r("]\t(matingPool): ".sizeof($matingPool)."");
-                
+                // 
                 // print_r("\tparentA index: ".$parentA." ");//print_r("value: ".$matingPool[$parentA]." ");
                 // print_r("\tparentB index: ".$parentB." ");//print_r("value: ".$matingPool[$parentB]." ");
 
