@@ -21,7 +21,7 @@ class Timetable {
  | 
  | 
  */
-
+    private $subjects, $traineeGroups, $rooms, $roomTypes, $instructors = null;
 
     /*
      * fetchBaseSubjectClass method creates a timetable object containing an array of 
@@ -502,10 +502,6 @@ class Timetable {
              */
 
             if(!$fitTimetableFound){
-                
-                //$population = [];
-                //$timetableFitness = [];
-                //$subjectClassSets = [];
                 $fitnessHighest = null;
                 $fitnessLowest = null;
                 $fitTimetableFound = false;
@@ -772,125 +768,150 @@ class Timetable {
     }
 
     public function getTraineeGroup($ID){
-        if($ID){
+        // if data have been downloaded, return the data
+        if (isset($this->traineeGroups)){ 
+            // find the tg based on the ID and return the object;
+            return $this->traineeGroups[$ID];
+
+        }else { // otherwise, fetch all the data from the table subject. 
             $db = DB::getInstance();
-            $db->query("SELECT * FROM trainee_group WHERE id = {$ID}");
-            // echo "<br/>Result count: {$db->count()}<br/>";
-            if ($db->count()){
-                    // echo "<br/><br/>";print_r ($db->getResults()[0]);
-                    // echo "<br/><br/>";print_r ($db->first()->name);
-                    return new TraineeGroup(
-                        $db->first()->id,
-                        $db->first()->name,
-                        $db->first()->section,
-                        $db->first()->level,
-                        $db->first()->remarks
-                    );
+            $db->query("SELECT * FROM trainee_group");
+            for ($i=0; $i < $db->count(); $i++){
+                $traineeGroupID = $db->getResults()[$i]->id;
+                $this->traineeGroups[$traineeGroupID] = new TraineeGroup(
+                                                                $db->getResults()[$i]->id,
+                                                                $db->getResults()[$i]->name,
+                                                                $db->getResults()[$i]->section,
+                                                                $db->getResults()[$i]->level,
+                                                                $db->getResults()[$i]->remarks
+                                                            );
             }
-        }else{
-            return null;
-        }
-        
+            // return the data 
+            return $this->traineeGroups[$ID];
+        }      
     }
 
     public function getSubject($ID){
-        if($ID){
+ 
+        if (isset($this->subjects)){
+            // find the tg based on the ID and return the object;
+            return $this->subjects[$ID];
+
+        }else {
             $db = DB::getInstance();
-            $db->query("SELECT * FROM subject WHERE id = {$ID}");
-            if ($db->count()){
-                    return new Subject(
-                        $db->first()->id,
-                        $db->first()->code,
-                        $db->first()->name,
-                        $db->first()->required_period,
-                        $db->first()->description
-                    );
-            }
-        }else{
-            return null;
-        }
+            $db->query("SELECT * FROM subject");
+            for ($i=0; $i < $db->count(); $i++){
+                $subjectID = $db->getResults()[$i]->id;
+                $this->subjects[$subjectID] = new Subject(
+                                                            $db->getResults()[$i]->id,
+                                                            $db->getResults()[$i]->code,
+                                                            $db->getResults()[$i]->name,
+                                                            $db->getResults()[$i]->required_period,
+                                                            $db->getResults()[$i]->description
+                                                        );
+            }//for 
+            return $this->subjects[$ID];
+            
+        }//else 
+
+        
+
+
+
         
     }
 
     public function getRoom($ID){
 
-        if ($ID){
+        // if data have been downloaded, return the data
+        if (isset($this->rooms)){ 
+            // find the tg based on the ID and return the object;
+            return $this->rooms[$ID];
+
+        }else { // otherwise, fetch all the data from the table subject. 
             $db = DB::getInstance();
-            $db->query("SELECT * FROM room WHERE id = {$ID}");
-            // echo "<br/>getRoom Result count: {$db->count()}<br/>";
-            if ($db->count()){
-                    return new Room(
-                        $db->first()->id,
-                        $db->first()->name,
-                        $db->first()->type,
-                        $db->first()->location,
-                        $db->first()->description
-                    );
+            $db->query("SELECT * FROM room");
+            for ($i=0; $i < $db->count(); $i++){
+                $roomsID = $db->getResults()[$i]->id;
+                $this->rooms[$roomsID] = new Room(
+                                                    $db->getResults()[$i]->id,
+                                                    $db->getResults()[$i]->name,
+                                                    $db->getResults()[$i]->type,
+                                                    $db->getResults()[$i]->location,
+                                                    $db->getResults()[$i]->description
+                                                );
             }
-        }else{
-            // return null;
-        }        
+            // return the data 
+            return $this->rooms[$ID];
+        }     
     }
 
-    public function getRandomRoom($roomType){
+    private function getRandomRoom($roomType){
 
-        if ($roomType){
-            $db = DB::getInstance();
-            $db->query("SELECT * FROM room WHERE type = {$roomType}");
+        // for each room in rooms, search for the req room type 
+        // store the object/s in an assoc chosenRoom;
+        $chosenRoom = [];
 
-            // echo "<br/>getRandomRoom Result count: {$db->count()}<br/>";
-            if ($db->count()){
-                    $randomRoom = rand(0, $db->count()-1);
-                    // echo "<br/>room ID chosen-------------:";print_r ($db->getResults()[$randomRoom]->id);
-                    return new Room(
-                            $db->getResults()[$randomRoom]->id,
-                            $db->getResults()[$randomRoom]->name,
-                            $db->getResults()[$randomRoom]->type,
-                            $db->getResults()[$randomRoom]->location,
-                            $db->getResults()[$randomRoom]->description
-                    );
-            }else{
-                return null;
+        foreach ($this->rooms as $room){
+            if($room->getType() == $roomType){
+                $chosenRoom[]= $room;
             }
-        }        
+        }
+        // randomly choose from 0 to sizeof(tempArray)-1;
+        $randomRoom = rand(0, sizeof($chosenRoom)-1);
+
+        // return the result. 
+        return $chosenRoom [$randomRoom];
+
+
     }
 
 
     public function getRoomType($ID){
+        
+        // if data have been downloaded, return the data
+        if (isset($this->roomTypes)){ 
+            // find the roomType based on the ID and return the object;
+            return $this->roomTypes[$ID];
 
-        if ($ID){
+        }else { // otherwise, fetch all the data from the table roomType. 
             $db = DB::getInstance();
-            $db->query("SELECT * FROM room_type WHERE id = {$ID}");
-            // echo "<br/>getRoom Result count: {$db->count()}<br/>";
-            if ($db->count()){
-                    return new RoomType(
-                        $db->first()->id,
-                        $db->first()->name,
-                        $db->first()->description
-                    );
+            $db->query("SELECT * FROM room_type");
+            for ($i=0; $i < $db->count(); $i++){
+                $roomTypesID = $db->getResults()[$i]->id;
+                $this->roomTypes[$roomTypesID] = new RoomType(
+                                                                $db->getResults()[$i]->id,
+                                                                $db->getResults()[$i]->name,
+                                                                $db->getResults()[$i]->description
+                                                            );
             }
-        }else{
-            return null;
-        }        
+            // return the data 
+            return $this->roomTypes[$ID];
+        }     
     }
 
     public function getInstructor($ID){
 
-        if ($ID){
+        // if data have been downloaded, return the data
+        if (isset($this->instructors)){ 
+            // find the instructor based on the ID and return the object;
+            return $this->instructors[$ID];
+
+        }else { // otherwise, fetch all the data from the table instructor. 
             $db = DB::getInstance();
-            $db->query("SELECT * FROM instructor WHERE id = {$ID}");
-            // echo "<br/>getRoom Result count: {$db->count()}<br/>";
-            if ($db->count()){
-                    return new Instructor(
-                        $db->first()->id,
-                        $db->first()->first_name,
-                        $db->first()->last_name,
-                        $db->first()->remark
-                    );
+            $db->query("SELECT * FROM instructor");
+            for ($i=0; $i < $db->count(); $i++){
+                $instructorsID = $db->getResults()[$i]->id;
+                $this->instructors[$instructorsID] = new Instructor(
+                                                                $db->getResults()[$i]->id,
+                                                                $db->getResults()[$i]->first_name,
+                                                                $db->getResults()[$i]->last_name,
+                                                                $db->getResults()[$i]->remark
+                                                            );
             }
-        }else{
-            return null;
-        }        
+            // return the data 
+            return $this->instructors[$ID];
+        }       
     }
 }
 // class end 

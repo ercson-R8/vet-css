@@ -7,7 +7,7 @@ namespace App\Controllers;
 // use App\Models\DB;
 use App\Controllers\Timetable\TestTimetable as TClass;
 use App\Controllers\Timetable\Timetable;
-
+use App\Models\DB;
 
 
 class Test extends \Core\Controller {
@@ -78,9 +78,16 @@ class Test extends \Core\Controller {
 
         public function testAction(){
         // echo "testing from controller test<br/>";
-        $a = [];
-        for ($i=0; $i < 10; $i++){
-            $a[] = [$i, $i*10];
+        $a = null;
+        if (isset ($a)){
+            echo "isset a";
+        }else{
+            echo "!isset a";
+        }
+
+
+        for ($i=0; $i < 5; $i++){
+            $a[] = [$i, $i*5];
         }
         echo "<pre>";
         print_r($a);
@@ -152,15 +159,21 @@ class Test extends \Core\Controller {
     }
 
 
-    private function getSystemMemInfo() 
-{       
-    $data = explode("\n", file_get_contents("/proc/meminfo"));
-    $meminfo = array();
-    foreach ($data as $line) {
-        list($key, $val) = explode(":", $line);
-        $meminfo[$key] = trim($val);
+
+    public function testDBAction(){
+        $db = DB::getInstance();
+        // $db->query("SELECT * FROM trainee_group WHERE id = {$ID}");
+        $id = "1";
+        echo "<pre>";
+        $db->query("SELECT * FROM room ");
+        foreach ($db->getResults() as $result){
+            print_r($result);
+        }
+
+ 
+
+
+
     }
-    return $meminfo;
-}
 
 }
