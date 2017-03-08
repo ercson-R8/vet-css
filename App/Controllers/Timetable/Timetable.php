@@ -467,13 +467,13 @@ class Timetable {
                     });
                     for($i=0; $i < sizeof($tempTable); $i++){
                         
-                        print_r("\nmtID:    ".$tempTable[$i]->getID(). 
-                                "\tts: ".$tempTable[$i]->getTimeslot(). 
-                                "\t\tscID: ".$tempTable[$i]->getSubjectClass()->getID().
-                                "\t[Room:".$tempTable[$i]->getSubjectClass()->getRoom()->getID().
-                                "]\tGRP: ".$tempTable[$i]->getSubjectClass()->getTraineeGroup()->getID(). 
-                                "\t\tSB: ".$tempTable[$i]->getSubjectClass()->getSubject()->getID().
-                                "\t\tInts: ".$tempTable[$i]->getSubjectClass()->getInstructor()->getID()
+                        print_r("\nmID:    ".$tempTable[$i]->getID(). 
+                                "\ttimeslot: ".$tempTable[$i]->getTimeslot(). 
+                                "\t\tClass: ".$tempTable[$i]->getSubjectClass()->getID().
+                                "\t(Room:".$tempTable[$i]->getSubjectClass()->getRoom()->getID().
+                                ")\tGrp: ".$tempTable[$i]->getSubjectClass()->getTraineeGroup()->getID(). 
+                                "\t\tSbj: ".$tempTable[$i]->getSubjectClass()->getSubject()->getID().
+                                "\t\tInst: ".$tempTable[$i]->getSubjectClass()->getInstructor()->getID()
                                 );
                     }
                    
