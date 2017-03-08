@@ -19,7 +19,7 @@ class Home extends \Core\Controller
      */
     protected function before()
     {
-        echo "(before) 1 ";
+        // echo "(before) 1 ";
         // if (!session_start()){
 		//     session_start();
 	    // }
@@ -53,6 +53,11 @@ class Home extends \Core\Controller
         //     'name'    => 'Ericson',
         //     'colours' => ['red', 'green', 'blue']
         // ]);
+
+    }
+
+    public function demoAction(){
+        View::renderTemplate ('Home/demo.twig.html');
 
     }
 

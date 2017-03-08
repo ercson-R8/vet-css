@@ -1,0 +1,16 @@
+[07-Mar-2017 14:58:04 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\vet-css\public\index.php(42): Core\Router->dispatch('home/login.html')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\vet-css\Core\Router.php' on line 130
+[07-Mar-2017 14:58:19 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\vet-css\public\index.php(42): Core\Router->dispatch('vendor/bootstra...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\vet-css\Core\Router.php' on line 130
+[07-Mar-2017 14:58:32 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\vet-css\public\index.php(42): Core\Router->dispatch('home/login.html')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\vet-css\Core\Router.php' on line 130
+[07-Mar-2017 15:11:52 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\vet-css\public\index.php(42): Core\Router->dispatch('lp')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\vet-css\Core\Router.php' on line 130
