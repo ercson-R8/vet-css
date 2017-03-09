@@ -455,14 +455,11 @@ class Timetable {
                 $timetableFitness[$timetable] = $this->calcFitness($population[$timetable]);
 
 
-                if(($timetableFitness[$timetable] == 0 )){
+                if(($timetableFitness[$timetable] < 1 )){
                     $fitTimetableFound = true;
-                    print_r($population[$timetable]);
+                    // print_r($population[$timetable]);
                     print_r("\n<h2>=======================generation: ".$generation."======================================</h2>");
-                    print_r("\nuniqueFitnessValues: ");
-                    foreach($uniqueFitnessValues as $key => $value){
-                        print_r("[".$key."]=><b>".$value."</b> ");
-                    }
+
                     print_r("\n<h1>FOUND!!! CONFLICTS: ".$timetableFitness[$timetable]." </h1>");
                     // display pop. 
                     

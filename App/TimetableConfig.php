@@ -57,13 +57,13 @@ class TimetableConfig {
      * The rate of crossover for a set of timetables. 
      * @var float 
      */
-    const CROSSOVER_RATE = 0.9; // 1=100% 
+    const CROSSOVER_RATE = 1; // 1=100% 
 
     /**  
      * The number of elites to be kept in the population. 
      * @var float 
      */
-    const ELITISM = 5;
+    const ELITISM = 3;
 
 
 }
