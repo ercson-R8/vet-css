@@ -188,6 +188,25 @@ class Test extends \Core\Controller {
     // }
     // echo memory_get_usage() - $startMemory, ' bytes';
 
+    $requiredNumberOfPeriods = 7;
+
+    $preferredNumberOfDays = 4;
+    print_r("\nxxxxxxxxxxxxxxxxxxxxxxxxxxxx"."=================================================\n");
+    print_r("\nDAYS: ".$preferredNumberOfDays."\nPeriods: ".$requiredNumberOfPeriods);
+    $total = 0;
+    $block = [];
+    for ($i = 0; $i < ($preferredNumberOfDays - 1); $i++){
+        $period = (int)( $requiredNumberOfPeriods / $preferredNumberOfDays);
+        array_push($block, $period);
+        $total += $period;
+    }
+    array_push($block, ($requiredNumberOfPeriods-$total));
+    shuffle($block); // randomize distribution block 
+    print_r("\nblock: "."\n");
+    print_r($block);
+
+
+
 
     $i = 8;
     $factor = round( (1 / ($i+1)* 100));
@@ -223,6 +242,8 @@ class Test extends \Core\Controller {
         print_r("\nx=".$x."\n");
 
 
+
+        
 
     }
 

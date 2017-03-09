@@ -392,10 +392,8 @@ class Timetable {
         //  # Step 1: The Population 
         //    # Create an empty population (an array or ArrayList)
         //    # Fill it with DNA encoded objects (pick random values to start)
-        // print_r("\nGenerating base timetable:");
+
         for($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++){
-                // fmod($timetable+1, 50) ? print_r("") : print_r("\n");
-                // print_r("".$timetable."|");
                 $subjectClassSets[$timetable] = $this->createSubjectClass($baseSubjectClass);
                 $population[$timetable] = $this->createTimetable($subjectClassSets[$timetable]);
 
