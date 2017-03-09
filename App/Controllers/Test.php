@@ -235,46 +235,8 @@ class Test extends \Core\Controller {
 
 
 
-        var_dump(memory_get_usage() );
 
-        print_r("\n");
-        $x =(int) 300 * 0.8;
-        print_r("\nx=".$x."\n");
-
-
-
-        
-
-    }
-
-
-
-    public function testDBAction(){
-        $db = DB::getInstance();
-        // $db->query("SELECT * FROM trainee_group WHERE id = {$ID}");
-        $id = "1";
-        echo "<pre>";
-        $db->query("SELECT * FROM room ");
-        foreach ($db->getResults() as $result){
-            print_r($result);
-        }
-
- 
-
-
-
-    }
-
-
-
-    /*
-     * sysInfoAction method 
-     *
-     * @param		
-     * @return	 	
-     */
-    public function sysInfoAction (){
-         //cpu stat
+//cpu stat
         $prevVal = shell_exec("cat /proc/stat");
         $prevArr = explode(' ',trim($prevVal));
         $prevTotal = $prevArr[2] + $prevArr[3] + $prevArr[4] + $prevArr[5];
@@ -314,6 +276,67 @@ class Test extends \Core\Controller {
         ", \"hdd_free\":" . $stat['hdd_free'] . ", \"hdd_total\":" . $stat['hdd_total'] . ", \"hdd_used\":" . $stat['hdd_used'] . ", \"hdd_percent\":" . $stat['hdd_percent'] . ", " . //hdd stats
         "\"network_rx\":" . $stat['network_rx'] . ", \"network_tx\":" . $stat['network_tx'] . //network stats
         "}";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        var_dump(memory_get_usage() );
+
+        print_r("\n");
+        $x =(int) 300 * 0.8;
+        print_r("\nx=".$x."\n");
+
+
+
+        
+
+    }
+
+
+
+    public function testDBAction(){
+        $db = DB::getInstance();
+        // $db->query("SELECT * FROM trainee_group WHERE id = {$ID}");
+        $id = "1";
+        echo "<pre>";
+        $db->query("SELECT * FROM room ");
+        foreach ($db->getResults() as $result){
+            print_r($result);
+        }
+
+ 
+
+
+
+    }
+
+
+
+    /*
+     * sysInfoAction method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function sysInfoAction (){
+         
         return ;
     }
 
