@@ -500,7 +500,7 @@ class Timetable {
             print_r("\n<h2>Generation: ".$generation."</h2>");
 
             /* if there were no fit timetable found, restart from scratch
-             * generation a new population
+             * generation a new population with the ELITES kept. 
              *
              */
 
@@ -572,7 +572,7 @@ class Timetable {
 
 
             $n=0;
-            // ELITISM find the elite/s 
+            // ELITISM, find the elite/s 
             // 4.2 save the top n timetables
             foreach($selectionPool as $key=>$value){
                 // 4.3 Add the best timetable so far to population[i]
