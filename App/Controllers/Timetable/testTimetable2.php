@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Timetable;
 
+use App\Controllers\Timetable\TestTimetable as TClass;
 // use \Core\View;
 use App\Models\DB;
 use App\TimetableConfig;
@@ -9,7 +10,7 @@ use App\Controllers\Timetable\TraineeGroup;
 use App\Controllers\Timetable\SubjectClass;
 
 
-class TestTimetable {
+class TestTimetable2 {
 /* 
  |--------------------------------------------------------------------------
  | TimeTable   
@@ -22,19 +23,19 @@ class TestTimetable {
  | 
  */
 
- private $x, $y = null;
+ private $x, $y, $tc = null;
 
- public function __construct($x = null, $y = null ){
-
+ public function __construct($x = null, $y = null, $tc = null){
     $this->x = $x;
     $this->y = $y;
-
+    $this->tc = $tc;
  }
 
- public function setXY($x, $y){
-     $this->x = $x;
-    $this->y = $y;
- }
+
+public function getTC(){
+    return $this->tc;
+
+} 
 
 public function getX(){
     return $this->x;

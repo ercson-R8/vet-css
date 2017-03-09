@@ -6,6 +6,7 @@ namespace App\Controllers;
 // use \Core\View;
 // use App\Models\DB;
 use App\Controllers\Timetable\TestTimetable as TClass;
+use App\Controllers\Timetable\TestTimetable2 as TClass2;
 use App\Controllers\Timetable\Timetable;
 use App\Models\DB;
 
@@ -31,46 +32,101 @@ class Test extends \Core\Controller {
         $w = new Timetable();
 
         $t->indexAction();
-        $u->indexAction();
-        $v->indexAction();
-        $w->indexAction();
-        $w->indexAction();
+        // $u->indexAction();
+        // $v->indexAction();
+        // $w->indexAction();
+        // $w->indexAction();
         // TClass::indexAction();
     }
 
 
 
     public function cloneAction(){
+
+
         echo "<pre>";
-        $a = new TClass(1, 5);
-        $b = new TClass(10, 15);
-        print_r($a);
-        print_r($b);
-
-        $setObj1 = [];
-        $setObj1[] = $a;
-        $setObj1[] = $b;
         
-        print_r($setObj1);
-        // $setObj2 = clone $setObj1[0];
-        // $setObj2 = clone $setObj1[1];
+        // $a = new TClass(1, 5);
+        // $b = new TClass(10, 15);
 
+        // $x = new TClass2(500, 1000, $a);
 
-        // for ($x=0; $x < sizeof($setObj1);$x++){
-        //     $setObj2[] = clone $setObj1[$x];
-        // }
+        // print_r("\nAAAAAAAAAAAAAAAAAa:\n");
+        // print_r($a);
+        
+        // print_r("\nBBBBBBBBBBBBBBBBb:\n");
+        // print_r($b);
+        // print_r("\nXxxxxxxxxxxxxxx:\n");
+        // print_r($x);
 
-        foreach($setObj1 as $key => $value){
-            $setObj2[] = clone $value;
+        for($i=0; $i < 3; $i++){
+            $setA[]= new TClass ($i+1, $i+11);
         }
 
-        $a->setX(100);
-        $setObj1[1]->setY (5000);
-        print_r("\na->setX(100)=================\n");
+
+
+        $setX = [];
+        for($i=0; $i < 3; $i++){
+            $setX [] = new TClass2($i*150, $i*200, $setA[$i]);
+        }
+
         
-        print_r("setObj1: "); print_r($setObj1);
+        print_r("\nsetX------------\n");
+        print_r($setX);
+
+
+        print_r("\nsetA------------\n");
+        print_r($setA);
+
+    $cloneX = unserialize(serialize($setX[2]));
+    // $cloneX = clone ($setX[0]);
+    $setA[2]->setXY(8, 8);
+    print_r("\ncloneX------------\n");
+    print_r ($cloneX);
+
+print_r("\nsetA------------\n");
+        print_r($setA[2]);
+
+
         
-        print_r("setObj2: ");print_r($setObj2);
+
+
+
+    $cloneX1 = unserialize(serialize($cloneX));
+    $setA[2]->setXY(8, 8);
+    $cloneX->getTC()->setXY(69, 88);
+
+
+    print_r("\ncloneX1------------\n");
+     print_r ($cloneX1);
+
+
+
+        print_r("\n\n\n\n\n=======================================\n");
+        //         $setObj1 = [];
+        // $setObj1[] = $a;
+        // $setObj1[] = $b;
+        
+        // print_r($setObj1);
+        // // $setObj2 = clone $setObj1[0];
+        // // $setObj2 = clone $setObj1[1];
+
+
+        // // for ($x=0; $x < sizeof($setObj1);$x++){
+        // //     $setObj2[] = clone $setObj1[$x];
+        // // }
+
+        // foreach($setObj1 as $key => $value){
+        //     $setObj2[] = clone $value;
+        // }
+
+        // $a->setX(100);
+        // $setObj1[1]->setY (5000);
+        // print_r("\na->setX(100)=================\n");
+        
+        // print_r("setObj1: "); print_r($setObj1);
+        
+        // print_r("setObj2: ");print_r($setObj2);
 
 
     }

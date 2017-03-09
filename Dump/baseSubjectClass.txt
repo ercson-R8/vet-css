@@ -1,0 +1,124 @@
+baseSubjectClass
+Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [timetable_id] => 1
+            [subject_id] => 1
+            [trainee_group_id] => 1
+            [instructor_id] => 4
+            [room_id] => 3
+            [room_type_id] => 2
+            [meeting_time_id_TBDropped] => 
+            [preferred_start_period] => 4
+            [preferred_end_period] => 5
+            [preferred_number_days] => 1
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [timetable_id] => 1
+            [subject_id] => 2
+            [trainee_group_id] => 1
+            [instructor_id] => 1
+            [room_id] => 
+            [room_type_id] => 1
+            [meeting_time_id_TBDropped] => 
+            [preferred_start_period] => 
+            [preferred_end_period] => 
+            [preferred_number_days] => 1
+        )
+
+    [2] => Array
+        (
+            [id] => 3
+            [timetable_id] => 1
+            [subject_id] => 3
+            [trainee_group_id] => 1
+            [instructor_id] => 3
+            [room_id] => 
+            [room_type_id] => 1
+            [meeting_time_id_TBDropped] => 
+            [preferred_start_period] => 
+            [preferred_end_period] => 
+            [preferred_number_days] => 3
+        )
+
+    [3] => Array
+        (
+            [id] => 4
+            [timetable_id] => 1
+            [subject_id] => 1
+            [trainee_group_id] => 2
+            [instructor_id] => 4
+            [room_id] => 
+            [room_type_id] => 2
+            [meeting_time_id_TBDropped] => 
+            [preferred_start_period] => 
+            [preferred_end_period] => 
+            [preferred_number_days] => 1
+        )
+
+    [4] => Array
+        (
+            [id] => 5
+            [timetable_id] => 1
+            [subject_id] => 2
+            [trainee_group_id] => 2
+            [instructor_id] => 1
+            [room_id] => 
+            [room_type_id] => 1
+            [meeting_time_id_TBDropped] => 
+            [preferred_start_period] => 
+            [preferred_end_period] => 
+            [preferred_number_days] => 1
+        )
+
+    [5] => Array
+        (
+            [id] => 6
+            [timetable_id] => 1
+            [subject_id] => 3
+            [trainee_group_id] => 2
+            [instructor_id] => 3
+            [room_id] => 
+            [room_type_id] => 1
+            [meeting_time_id_TBDropped] => 
+            [preferred_start_period] => 
+            [preferred_end_period] => 
+            [preferred_number_days] => 3
+        )
+
+    [6] => Array
+        (
+            [id] => 7
+            [timetable_id] => 1
+            [subject_id] => 4
+            [trainee_group_id] => 1
+            [instructor_id] => 5
+            [room_id] => 4
+            [room_type_id] => 9
+            [meeting_time_id_TBDropped] => 
+            [preferred_start_period] => 2
+            [preferred_end_period] => 3
+            [preferred_number_days] => 3
+        )
+
+    [7] => Array
+        (
+            [id] => 8
+            [timetable_id] => 1
+            [subject_id] => 4
+            [trainee_group_id] => 2
+            [instructor_id] => 5
+            [room_id] => 4
+            [room_type_id] => 9
+            [meeting_time_id_TBDropped] => 
+            [preferred_start_period] => 3
+            [preferred_end_period] => 4
+            [preferred_number_days] => 3
+        )
+
+)

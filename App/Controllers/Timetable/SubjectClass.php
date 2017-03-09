@@ -48,11 +48,11 @@ class SubjectClass {
                                     $preferredEnd = null,
                                     $preferredNumberOfDays = null){
 
-        $this->subjectObject = new Subject();
-        $this->traineeGroupObject = new TraineeGroup();
-        $this->instructorObject = new Instructor();
-        $this->roomTypeObject = new Roomtype();
-        $this->roomObject = new Room();
+        // $this->subjectObject = new Subject();
+        // $this->traineeGroupObject = new TraineeGroup();
+        // $this->instructorObject = new Instructor();
+        // $this->roomTypeObject = new Roomtype();
+        // $this->roomObject = new Room();
         
         $this->id = $id; 
         $this->timeTableID =$timeTableID;
@@ -68,14 +68,15 @@ class SubjectClass {
 
     }
 
-    public function __clone() {
-        $this->subjectObject = clone $this->subjectObject;
-        $this->traineeGroupObject = clone $this->traineeGroupObject;
-        $this->instructorObject = clone $this->instructorObject;
-        $this->roomTypeObject = clone $this->roomTypeObject;
-        $this->roomObject = clone $this->roomObject;
+    // public function __clone() {
+
+    //     // $this->subjectObject = clone $this->subjectObject;
+    //     // $this->traineeGroupObject = clone $this->traineeGroupObject;
+    //     // $this->instructorObject = clone $this->instructorObject;
+    //     // $this->roomTypeObject = clone $this->roomTypeObject;
+    //     // $this->roomObject = clone $this->roomObject;
     
-    }
+    // }
 
         
 
