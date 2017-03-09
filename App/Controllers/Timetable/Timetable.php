@@ -513,7 +513,7 @@ class Timetable {
                 $fitnessHighest = null;
                 $fitnessLowest = null;
                 $fitTimetableFound = false;
-                $matingPool = []; // just the index of timetable, conserver memory, increase efficiency. 
+                $matingPool = []; // just use the index of the timetable, conserve memory, increase efficiency. 
                 $selectionPool = [];
                 $totalFitnessValues = 0;
                 $parentA = 0;

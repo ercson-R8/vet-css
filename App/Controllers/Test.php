@@ -63,11 +63,9 @@ class Test extends \Core\Controller {
             $setA[]= new TClass ($i+1, $i+11);
         }
 
-
-
         $setX = [];
         for($i=0; $i < 3; $i++){
-            $setX [] = new TClass2($i*150, $i*200, $setA[$i]);
+            $setX [] = new TClass2($i*150, $i*200,clone $setA[$i]);
         }
 
         
@@ -78,27 +76,41 @@ class Test extends \Core\Controller {
         print_r("\nsetA------------\n");
         print_r($setA);
 
-    $cloneX = unserialize(serialize($setX[2]));
-    // $cloneX = clone ($setX[0]);
-    $setA[2]->setXY(8, 8);
-    print_r("\ncloneX------------\n");
-    print_r ($cloneX);
+        $cloneX = clone ($setX[2]);
+        // $cloneX = unserialize(serialize($setX[2]));
+        // $cloneX = clone ($setX[0]);
+        $setA[2]->setXY(8, 8);
+        print_r("\n------cloneX---------\ncloneX = clone (setX[2]);\nsetA[2]->setXY(8, 8);\n");
+        print_r ($cloneX);
 
-print_r("\nsetA------------\n");
-        print_r($setA[2]);
+        print_r("\nsetX------------\n");
+        print_r($setX);
+
+
+        print_r("\nsetA------------\n");
+        print_r($setA);
+
+        // $cloneX = unserialize(serialize($setX[2]));
+        // // $cloneX = clone ($setX[0]);
+        // $setA[2]->setXY(8, 8);
+        // print_r("\ncloneX------------\n");
+        // print_r ($cloneX);
+
+        // print_r("\nsetA------------\n");
+        // print_r($setA[2]);
 
 
         
 
 
 
-    $cloneX1 = unserialize(serialize($cloneX));
-    $setA[2]->setXY(8, 8);
-    $cloneX->getTC()->setXY(69, 88);
+        // $cloneX1 = unserialize(serialize($cloneX));
+        // $setA[2]->setXY(8, 8);
+        // $cloneX->getTC()->setXY(69, 88);
 
 
-    print_r("\ncloneX1------------\n");
-     print_r ($cloneX1);
+        // print_r("\ncloneX1------------\n");
+        // print_r ($cloneX1);
 
 
 

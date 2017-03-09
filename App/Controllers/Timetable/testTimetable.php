@@ -31,6 +31,9 @@ class TestTimetable {
 
  }
 
+    //  public function __clone() {
+    //  }
+
  public function setXY($x, $y){
      $this->x = $x;
     $this->y = $y;

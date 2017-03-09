@@ -30,7 +30,8 @@ class TestTimetable2 {
     $this->y = $y;
     $this->tc = $tc;
  }
-
+//  public function __clone() {
+// }
 
 public function getTC(){
     return $this->tc;
