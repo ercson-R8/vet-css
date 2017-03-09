@@ -25,11 +25,11 @@ class SubjectClass {
             $preferredEnd,
             $preferredNumberOfDays;
     private $isRoomFixed = false;
-    private $subjectObject,
-            $traineeGroupObject,
-            $instructorObject,
-            $roomTypeObject,
-            $roomObject;
+    // private $subjectObject,
+    //         $traineeGroupObject,
+    //         $instructorObject,
+    //         $roomTypeObject,
+    //         $roomObject;
 
     /*
      * ___construct method 
@@ -68,15 +68,14 @@ class SubjectClass {
 
     }
 
-    // public function __clone() {
-
-    //     // $this->subjectObject = clone $this->subjectObject;
-    //     // $this->traineeGroupObject = clone $this->traineeGroupObject;
-    //     // $this->instructorObject = clone $this->instructorObject;
-    //     // $this->roomTypeObject = clone $this->roomTypeObject;
-    //     // $this->roomObject = clone $this->roomObject;
+    public function __clone() {
+        // $this->subjectObject = clone $this->subjectObject;
+        // $this->traineeGroupObject = clone $this->traineeGroupObject;
+        // $this->instructorObject = clone $this->instructorObject;
+        // $this->roomTypeObject = clone $this->roomTypeObject;
+        // $this->roomObject = clone $this->roomObject;
     
-    // }
+    }
 
         
 

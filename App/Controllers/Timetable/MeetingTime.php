@@ -18,6 +18,7 @@ class MeetingTime {
     private $subjectClass=null;
     private $timeslot = null;
     private $roomID = null;
+    // private $subjectClassObject;
     /*
      * ___construct method 
      *
@@ -25,6 +26,7 @@ class MeetingTime {
      * @return	 	
      */
     public function __construct ($id=null, $subjectClass=null, $timeslot=null, $roomID = null){
+        // $this->subjectClassObject = new SubjectClass();
         $this->id = $id;
         $this->subjectClass = $subjectClass;
         $this->timeslot = $timeslot;
@@ -32,6 +34,9 @@ class MeetingTime {
         
     }
 
+    public function __clone() {
+        // $this->subjectClassObject = clone $this->subjectClassObject;
+    }
 
     /*
      * setTimeslot method 

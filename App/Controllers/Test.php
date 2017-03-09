@@ -32,10 +32,10 @@ class Test extends \Core\Controller {
         $w = new Timetable();
 
         $t->indexAction();
-        // $u->indexAction();
-        // $v->indexAction();
-        // $w->indexAction();
-        // $w->indexAction();
+        $u->indexAction();
+        $v->indexAction();
+        $w->indexAction();
+        $w->indexAction();
         // TClass::indexAction();
     }
 
