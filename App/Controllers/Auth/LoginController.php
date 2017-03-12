@@ -21,16 +21,16 @@ class LoginController extends \Core\Controller
     {
         // Make sure an admin user is logged in for example
         // return false;
-        echo "before====";
-        $sessionData = Session::getInstance();
+        // echo "before====";
+        // $sessionData = Session::getInstance();
 
        
-        // session_start();
-        print_r($_SESSION);
+        // // session_start();
+        // print_r($_SESSION);
 
-        if( isset($_SESSION['user_id']) ){
-            header("Location: /home/landing");
-        }
+        // if( isset($_SESSION['user_id']) ){
+        //     header("Location: /home/landing");
+        // }
 
     }
 
@@ -80,8 +80,8 @@ class LoginController extends \Core\Controller
             )
         );
         $user = ($db->getResults());
-        print_r($user);
-        print_r("\n".$_POST['password']."\n");
+        // print_r($user);
+        // print_r("\n".$_POST['password']."\n");
         if($db->count() > 0 && password_verify(($_POST['password']), $user[0]->password) ){
             print_r("\nYou are logged in.."."\n");
             $sessionData->email = $user[0]->email;
