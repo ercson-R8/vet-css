@@ -9,7 +9,7 @@ use App\Controllers\Auth\Session;
  *
  * PHP version 5.4
  */
-class Resource extends \Core\Controller
+class ResourceController extends \Core\Controller
 {
 
     /**
