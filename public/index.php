@@ -39,6 +39,6 @@ $router->add('{controller}/{action}');
 $router->add('{controller}/{id:\d+}/{action}');
 $router->add('admin/{controller}/{action}', ['namespace' => 'Admin']);
 $router->add('Auth/{controller}/{action}', ['namespace' => 'Auth']);
-$router->add('resource/{controller}/{action}', ['namespace' => 'Resource']);
+$router->add('Resource/{controller}/{action}', ['namespace' => 'Resource']);
 $router->dispatch($_SERVER['QUERY_STRING']);
 
