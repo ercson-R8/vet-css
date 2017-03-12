@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use \Core\View;
-
+use App\Controllers\Auth\Session;
 /**
  * Home controller
  *
@@ -19,15 +19,8 @@ class Home extends \Core\Controller
      */
     protected function before()
     {
-        // echo "(before) 1 ";
-        // if (!session_start()){
-		//     session_start();
-	    // }
+        $sessionData = Session::getInstance();
 
-        // if( isset($_SESSION['user_id']) ){
-        //     return true;
-        // }
-        // header("Location: /auth/LoginController/index");
     }
 
     /**
@@ -45,22 +38,25 @@ class Home extends \Core\Controller
      *
      * @return void
      */
-    public function indexAction()
-    {
-        View::renderTemplate ('Home/index.twig.html');
+    public function indexAction(){
+        $sessionData = Session::getInstance();
+        if ($sessionData->inSession) {
+            View::renderTemplate ('Home/index.twig.html', [
+                                        'firstName' => $sessionData->firstName,
+                                        'lastName' => $sessionData->lastName,
+                                        'pageHeading' => 'Current Timetable'
+                                    ]);
+        }else {
+            View::renderTemplate('Auth/login.twig.html');
 
-        // View::renderTemplate('Auth/login.twig.php', [
-        //     'name'    => 'Ericson',
-        //     'colours' => ['red', 'green', 'blue']
-        // ]);
-
+        }
+                                            
     }
 
     public function demoAction(){
         View::renderTemplate ('Home/demo.twig.html');
 
     }
-
 
 
     /*
@@ -71,13 +67,8 @@ class Home extends \Core\Controller
      */
     public function logoutAction (){
                 
-        if (!session_start()){
-		    session_start();
-	    }
-
-        session_unset();
-
-        session_destroy();
+        $sessionData = Session::getInstance();
+        $sessionData->destroy();
 
         header("Location: /auth/LoginController/index");   
 

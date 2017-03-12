@@ -61,7 +61,7 @@ class DB extends \Core\Model{
             $x = 1;
             if(count($params)){
                 foreach($params as $param){
-                    echo "Param: ".$param."<br/>";
+                    // echo "Param: ".$param."<br/>";
                     $this->_query->bindValue($x, $param);
                     $x++;
                 }

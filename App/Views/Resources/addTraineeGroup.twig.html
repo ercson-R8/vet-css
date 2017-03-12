@@ -1,0 +1,109 @@
+
+{% extends "base_level_1.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <div class="row"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3" >
+            
+            </div>
+
+
+
+            <div class="col-lg-6 col-md-6 col-sm-6" >
+                <div class="well"> 
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3>Add A New Trainee Group</h3>
+                        </div>
+                        <div class="panel-body">
+                            
+                            <form class="form   center-block" name="addTraineeGroup" action="/resource/resource/createTraineeGroup" method="post">
+                                <div class="form-group form-group-lg">
+                                    
+                                    <select class="form-control" name="traineeGroup">
+                                        <option value="">Select group name</option>
+                                        <option value="Electrical">Electrical</option>
+                                        <option value="Electronics">Electronics</option>
+                                        <option value="Mechatronics">Mechatronics</option>
+                                        <option value="Welding">Welding</option>
+                                        <option value="RAC">R A C</option>
+                                        <option value="Business">Business</option>
+                                        <option value="Foundation">Foundation Program</option>
+                                    </select>
+                                    {{errorTraineeGroup | raw}}
+                                </div>
+                                <div class="form-group form-group-lg">
+                                    <select class="form-control" name="level">
+                                        <option value="">Select level</option>
+                                        <option value="1">Level 1</option>
+                                        <option value="2">Level 2</option>
+                                        <option value="3">Level 3</option>
+                                        <option value="4">Level 4</option>
+                                        <option value="5">Level 5</option>
+                                        <option value="6">Level 6</option>
+                                        <option value="7">Level 7</option>
+                                        <option value="8">Level 8</option>
+                                        <option value="9">Level 9</option>                         
+                                    </select>
+                                </div>
+                                <div class="form-group form-group-lg">
+                                    <select class="form-control" name="section">
+                                        <option value="">Select section</option>
+                                        <option value="A">Section A</option>
+                                        <option value="B">Section B</option>
+                                        <option value="C">Section C</option>
+                                        <option value="D">Section D</option>
+                                        <option value="E">Section E</option>
+                       
+                                    </select>
+                                </div>
+
+
+                                <div class="form-group form-group-lg" >
+                                    <input type="text" class="form-control" name="description" onblur="return x()" placeholder="Description">
+                                </div>       
+
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit">
+                                        Save New Group
+                                    </button>                                    
+                                </div>
+                            </form>
+                        
+                        
+                        
+                        
+                        </div>
+                        <!-- class="panel-body" -->
+                        <div class="panel-footer">
+                            <span><a href="index.php">Cancel and go back home</a></span>
+                        </div>
+                        <!-- class="panel-footer" -->
+                    </div>
+                    <!-- class="panel panel-primary" -->
+
+                </div>
+                <!-- class="well" -->
+            </div>
+            <!-- class="col-lg-6 col-md-6 col-sm-6" -->
+
+            <div class="col-lg-3 col-md-3 col-sm-3" >
+            
+            </div>
+            <!-- class="col-lg-3 col-md-3 col-sm-3" -->
+        </div>
+        <!-- class="row" -->
+    </div> 
+    <!-- class="container-fluid" -->
+
+
+
+
+   
+    
+{% endblock %}

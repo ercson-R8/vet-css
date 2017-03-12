@@ -21,11 +21,14 @@ class Posts extends \Core\Controller
     public function indexAction()
     {
         $posts = Post::getAll(); // Request data from Post Model
-        var_dump($posts);
+        echo"/n/n<h1>HHH</h1>/n/n";
+        print_r($posts);
         View::renderTemplate('Posts/index.html', [
             'posts' => $posts
         ]);
     }
+
+
 
     /**
      * Show the add new page
