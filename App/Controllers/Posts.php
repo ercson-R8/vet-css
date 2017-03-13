@@ -21,8 +21,9 @@ class Posts extends \Core\Controller
     public function indexAction()
     {
         $posts = Post::getAll(); // Request data from Post Model
-        echo"/n/n<h1>HHH</h1>/n/n";
+        echo"\n\n<h1>HHH</h1>\n\n<pre>";
         print_r($posts);
+        echo "</pre>";
         View::renderTemplate('Posts/index.html', [
             'posts' => $posts
         ]);

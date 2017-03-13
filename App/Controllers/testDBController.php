@@ -107,11 +107,11 @@ class testDBController extends \Core\Controller{
         }
         // SELECT id, title FROM posts WHERE id = 1 and title LIKE 'F%'
 
-        // SELECT posts.id, posts.title, users.id, users.email 
+        // SELECT posts.id, posts.title, user.id, user.email 
         // FROM posts, users 
-        // WHERE posts.id = 1 AND users.id = 1
+        // WHERE posts.id = 1 AND user.id = 1
         $cols = array(
-                'posts.id', 'posts.title', 'users.id', 'users.email'
+                'posts.id', 'posts.title', 'user.id', 'user.email'
             );
         $tables = array ('posts', 'users'
         );
@@ -133,7 +133,7 @@ class testDBController extends \Core\Controller{
 
         $whereClause = array(
                 ['posts.id', '=', '1'],
-                ['users.id', '=', '1']
+                ['user.id', '=', '1']
             );
 
         
@@ -176,11 +176,11 @@ class testDBController extends \Core\Controller{
         // print_r($whereFields);
 
         $db->select(
-            array('posts.id', 'posts.title', 'users.id', 'users.email'),
-            array('posts', 'users'),
+            array('posts.id', 'posts.title', 'user.id', 'user.email'),
+            array('posts', 'user'),
             array(
                 ['posts.id', '=', '1'],
-                ['users.id', '=', '1']
+                ['user.id', '=', '1']
             )
         );
         echo "<br/>Result count: {$db->count()}<br/> ";

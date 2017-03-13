@@ -95,7 +95,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li data-toggle="tooltip" data-placement="bottom" title="Add a new trainee group.">
-                            <a href="/Resource/ResourceController/addTraineeGroupForm" data-toggle="modal" >
+                            <a href="/Resource/ResourceController/addTraineeGroup" data-toggle="modal" >
                                 
                                 <i class="fa fa-group fa-2x"></i> Add Trainee Groups</a>
 
@@ -241,9 +241,8 @@
         $(document).ready(function() {
             $('#dataTables-example').DataTable({
                 responsive: true,
-                "ordering": false,
-                scrollY:        '100vh',
-                "lengthMenu": [[-1, 10, 25, 50], ["All", 10, 25, 50]]
+                "ordering": false
+                
             });
         });
         </script>
