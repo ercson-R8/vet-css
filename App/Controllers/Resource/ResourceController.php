@@ -41,14 +41,35 @@ class ResourceController extends \Core\Controller{
         $sessionData = Session::getInstance();
         if ($sessionData->inSession) {
             $db = DB::getInstance();
-            $db->select(
-                array('*'),
-                array('trainee_group'),
-                array(
-                    ['name','LIKE', '%' ]
-                )
-            );
+            $db->query('SELECT * FROM trainee_group');
             $this->traineeGroupTable = ($db->getResults());
+            // $db->query('SELECT * FROM posts');
+
+            
+            // $db->select(
+            //     array(  'subject_class.id',
+            //             'trainee_group.name', 
+            //             'trainee_group.level', 
+            //             'trainee_group.section', 
+            //             'subject.name', 
+            //             'subject.code',
+            //             'instructor.first_name',
+            //             'instructor.last_name',
+            //             'room.name'),
+            //     array('subject_class', 'trainee_group', 'subject', 'instructor', 'room'),
+            //     array(
+            //         ['subject_class.id', '=', '3'], 
+            //         ['trainee_group.id', '=', '1'],
+            //         ['subject.id', '=', '3'], 
+            //         ['instructor.id', '=', '3'],
+            //         ['room.id', '=', '1']
+            //         )
+            //     );
+
+            // print_r("<pre>");
+            // print_r($db);
+
+            
             View::renderTemplate ('Resources/addTraineeGroupForm.twig.html', [
                                         'traineeGroupTable' => $this->traineeGroupTable,
                                         'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],

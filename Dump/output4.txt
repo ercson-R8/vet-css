@@ -1,0 +1,369 @@
+
+App\Models\DB Object
+(
+    [_pdo:App\Models\DB:private] => PDO Object
+        (
+        )
+
+    [_query:App\Models\DB:private] => 
+    [_error:App\Models\DB:private] => 
+    [_results:App\Models\DB:private] => 
+    [_count:App\Models\DB:private] => 0
+)
+Array
+(
+    [0] => stdClass Object
+        (
+            [id] => 1
+            [title] => First post
+            [content] => This is a really interesting post.
+            [created_at] => 2017-01-04 16:50:45
+        )
+
+    [1] => stdClass Object
+        (
+            [id] => 2
+            [title] => Second post
+            [content] => This is a fascinating post!
+            [created_at] => 2017-01-04 16:50:45
+        )
+
+    [2] => stdClass Object
+        (
+            [id] => 3
+            [title] => Third post
+            [content] => This is a very informative post.
+            [created_at] => 2017-01-04 16:50:45
+        )
+
+    [3] => stdClass Object
+        (
+            [id] => 4
+            [title] => جديدTest Post
+            [content] => 2016-17 NBA season Full Game Highlights NBATV HD Live Stream Streaming 720p Youtube Official ChannelÑñ
+            [created_at] => 2017-01-30 16:40:21
+        )
+
+    [4] => stdClass Object
+        (
+            [id] => 63
+            [title] => update
+            [content] => update 63 63 63 
+            [created_at] => 2017-02-11 15:30:49
+        )
+
+    [5] => stdClass Object
+        (
+            [id] => 64
+            [title] => update
+            [content] => updateupdate 646464 
+            [created_at] => 2017-02-11 15:43:48
+        )
+
+)
+
+6
+no errors...
+array(6) {
+  [0]=>
+  object(stdClass)#7 (4) {
+    ["id"]=>
+    string(1) "1"
+    ["title"]=>
+    string(10) "First post"
+    ["content"]=>
+    string(34) "This is a really interesting post."
+    ["created_at"]=>
+    string(19) "2017-01-04 16:50:45"
+  }
+  [1]=>
+  object(stdClass)#8 (4) {
+    ["id"]=>
+    string(1) "2"
+    ["title"]=>
+    string(11) "Second post"
+    ["content"]=>
+    string(27) "This is a fascinating post!"
+    ["created_at"]=>
+    string(19) "2017-01-04 16:50:45"
+  }
+  [2]=>
+  object(stdClass)#9 (4) {
+    ["id"]=>
+    string(1) "3"
+    ["title"]=>
+    string(10) "Third post"
+    ["content"]=>
+    string(32) "This is a very informative post."
+    ["created_at"]=>
+    string(19) "2017-01-04 16:50:45"
+  }
+  [3]=>
+  object(stdClass)#10 (4) {
+    ["id"]=>
+    string(1) "4"
+    ["title"]=>
+    string(17) "جديدTest Post"
+    ["content"]=>
+    string(104) "2016-17 NBA season Full Game Highlights NBATV HD Live Stream Streaming 720p Youtube Official ChannelÑñ"
+    ["created_at"]=>
+    string(19) "2017-01-30 16:40:21"
+  }
+  [4]=>
+  object(stdClass)#11 (4) {
+    ["id"]=>
+    string(2) "63"
+    ["title"]=>
+    string(6) "update"
+    ["content"]=>
+    string(16) "update 63 63 63 "
+    ["created_at"]=>
+    string(19) "2017-02-11 15:30:49"
+  }
+  [5]=>
+  object(stdClass)#12 (4) {
+    ["id"]=>
+    string(2) "64"
+    ["title"]=>
+    string(6) "update"
+    ["content"]=>
+    string(20) "updateupdate 646464 "
+    ["created_at"]=>
+    string(19) "2017-02-11 15:43:48"
+  }
+}
+First post
+Second post
+Third post
+جديدTest Post
+update
+update
+
+Using first() method:
+stdClass Object
+(
+    [id] => 1
+    [title] => First post
+    [content] => This is a really interesting post.
+    [created_at] => 2017-01-04 16:50:45
+)
+
+Using getResults() method:
+This is a really interesting post.Fields: Array
+(
+    [title] => update
+    [content] => updateupdate 646464 
+    [id] => 64
+)
+
+Result count: 1
+ Array
+(
+    [0] => stdClass Object
+        (
+            [id] => 1
+            [title] => First post
+            [email] => admin@admin.com
+        )
+
+)
+object(stdClass)#12 (3) {
+  ["id"]=>
+  string(1) "1"
+  ["title"]=>
+  string(10) "First post"
+  ["email"]=>
+  string(15) "admin@admin.com"
+}
+admin@admin.com
+1 First post
+Result count: 0
+ 
+
+
+
+
+
+
+
+ 
+App\Models\DB Object
+(
+    [_pdo:App\Models\DB:private] => PDO Object
+        (
+        )
+
+    [_query:App\Models\DB:private] => 
+    [_error:App\Models\DB:private] => 
+    [_results:App\Models\DB:private] => 
+    [_count:App\Models\DB:private] => 0
+)
+Array
+(
+    [0] => stdClass Object
+        (
+            [id] => 1
+            [title] => First post
+            [content] => This is a really interesting post.
+            [created_at] => 2017-01-04 16:50:45
+        )
+
+    [1] => stdClass Object
+        (
+            [id] => 2
+            [title] => Second post
+            [content] => This is a fascinating post!
+            [created_at] => 2017-01-04 16:50:45
+        )
+
+    [2] => stdClass Object
+        (
+            [id] => 3
+            [title] => Third post
+            [content] => This is a very informative post.
+            [created_at] => 2017-01-04 16:50:45
+        )
+
+    [3] => stdClass Object
+        (
+            [id] => 4
+            [title] => جديدTest Post
+            [content] => 2016-17 NBA season Full Game Highlights NBATV HD Live Stream Streaming 720p Youtube Official ChannelÑñ
+            [created_at] => 2017-01-30 16:40:21
+        )
+
+    [4] => stdClass Object
+        (
+            [id] => 63
+            [title] => update
+            [content] => update 63 63 63 
+            [created_at] => 2017-02-11 15:30:49
+        )
+
+    [5] => stdClass Object
+        (
+            [id] => 64
+            [title] => update
+            [content] => updateupdate 646464 
+            [created_at] => 2017-02-11 15:43:48
+        )
+
+)
+
+6
+no errors...
+array(6) {
+  [0]=>
+  object(stdClass)#7 (4) {
+    ["id"]=>
+    string(1) "1"
+    ["title"]=>
+    string(10) "First post"
+    ["content"]=>
+    string(34) "This is a really interesting post."
+    ["created_at"]=>
+    string(19) "2017-01-04 16:50:45"
+  }
+  [1]=>
+  object(stdClass)#8 (4) {
+    ["id"]=>
+    string(1) "2"
+    ["title"]=>
+    string(11) "Second post"
+    ["content"]=>
+    string(27) "This is a fascinating post!"
+    ["created_at"]=>
+    string(19) "2017-01-04 16:50:45"
+  }
+  [2]=>
+  object(stdClass)#9 (4) {
+    ["id"]=>
+    string(1) "3"
+    ["title"]=>
+    string(10) "Third post"
+    ["content"]=>
+    string(32) "This is a very informative post."
+    ["created_at"]=>
+    string(19) "2017-01-04 16:50:45"
+  }
+  [3]=>
+  object(stdClass)#10 (4) {
+    ["id"]=>
+    string(1) "4"
+    ["title"]=>
+    string(17) "جديدTest Post"
+    ["content"]=>
+    string(104) "2016-17 NBA season Full Game Highlights NBATV HD Live Stream Streaming 720p Youtube Official ChannelÑñ"
+    ["created_at"]=>
+    string(19) "2017-01-30 16:40:21"
+  }
+  [4]=>
+  object(stdClass)#11 (4) {
+    ["id"]=>
+    string(2) "63"
+    ["title"]=>
+    string(6) "update"
+    ["content"]=>
+    string(16) "update 63 63 63 "
+    ["created_at"]=>
+    string(19) "2017-02-11 15:30:49"
+  }
+  [5]=>
+  object(stdClass)#12 (4) {
+    ["id"]=>
+    string(2) "64"
+    ["title"]=>
+    string(6) "update"
+    ["content"]=>
+    string(20) "updateupdate 646464 "
+    ["created_at"]=>
+    string(19) "2017-02-11 15:43:48"
+  }
+}
+First post
+Second post
+Third post
+جديدTest Post
+update
+update
+
+Using first() method:
+stdClass Object
+(
+    [id] => 1
+    [title] => First post
+    [content] => This is a really interesting post.
+    [created_at] => 2017-01-04 16:50:45
+)
+
+Using getResults() method:
+This is a really interesting post.Fields: Array
+(
+    [title] => update
+    [content] => updateupdate 646464 
+    [id] => 64
+)
+
+Result count: 1
+ Array
+(
+    [0] => stdClass Object
+        (
+            [id] => 1
+            [title] => First post
+            [email] => admin@admin.com
+        )
+
+)
+object(stdClass)#12 (3) {
+  ["id"]=>
+  string(1) "1"
+  ["title"]=>
+  string(10) "First post"
+  ["email"]=>
+  string(15) "admin@admin.com"
+}
+admin@admin.com
+1 First post
+Result count: 0
+ 

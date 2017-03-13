@@ -33,8 +33,9 @@ class testDBController extends \Core\Controller{
 
 
         // SELECT * FROM `posts` WHERE title LIKE '%'
-        $db->query('SELECT * FROM posts WHERE title = ? ', array ('First Post'));
-        // $db->query('SELECT * FROM posts');
+        //$db->query('SELECT * FROM posts WHERE title = ? ', array ('First Post'));
+        $db->query('SELECT * FROM posts');
+        print_r($db->getResults());
     
         echo "<br/>";
         if ($db->count()){
@@ -81,10 +82,10 @@ class testDBController extends \Core\Controller{
         $db->update ('posts', 
                     array (
                         ['title','=','update'],
-                        ['content','=','updateupdate 63 63 63 ']
+                        ['content','=','updateupdate 646464 ']
                     ),
                     array(
-                        ['id','=','65']
+                        ['id','=','64']
                     )
         );
         $a = array (

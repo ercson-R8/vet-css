@@ -75,7 +75,7 @@ class DB extends \Core\Model{
                 // echo "<br/>statement is: {$sqlStatement}<br/>";
                 if (strcasecmp($sqlStatement, 'SELECT') == 0){
                 
-                    $this->_results = $this->_query->fetchAll(PDO::FETCH_ASSOC); 
+                    $this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ); 
                 
                 } 
                 
