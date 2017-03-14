@@ -1,7 +1,7 @@
 
 {% extends "base_level_1.html" %}
 
-{% block title %}Resouce{% endblock %}
+{% block title %}{{title}}{% endblock %}
 
 {% block body %}
 
@@ -15,7 +15,7 @@
 
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h3>Add A New Trainee Group</h3>
+                            <h3>{{title}}</h3>
                         </div>
                         <div class="panel-body">
                             
@@ -30,7 +30,7 @@
                                         <option value="Welding">Welding</option>
                                         <option value="RAC">R A C</option>
                                         <option value="Business">Business</option>
-                                        <option value="Post">Post Foundation Program</option>
+                                        <option value="Post Foundation">Post Foundation Program</option>
                                         <option value="Foundation">Foundation Program</option>
                                     </select>
                                     

@@ -12,8 +12,6 @@ use App\Models\DB;
  */
 class ResourceController extends \Core\Controller{
 
-    private $traineeGroupTable = null;
-
 
     /**
      * Before filter
@@ -42,7 +40,7 @@ class ResourceController extends \Core\Controller{
         if ($sessionData->inSession) {
             $db = DB::getInstance();
             $db->query('SELECT * FROM trainee_group');
-            $this->traineeGroupTable = ($db->getResults());
+            $traineeGroupTable = ($db->getResults());
             // $db->query('SELECT * FROM posts');
 
             $x = 1;
@@ -58,9 +56,9 @@ class ResourceController extends \Core\Controller{
                         'room.name'),
                 array('subject_class', 'trainee_group', 'subject', 'instructor', 'room'),
                 array(
-                    ['subject_class.id', '=', $x], 
-                    ['trainee_group.id', '=', '1'],
-                    ['subject.id', '=', $x], 
+                    ['subject_class.id', '=', 2], 
+                    ['trainee_group.id', '=', '2'],
+                    ['subject.id', '=', '3'], 
                     ['instructor.id', '=', '3'],
                     ['room.id', '=', '1']
                     )
@@ -71,8 +69,9 @@ class ResourceController extends \Core\Controller{
             $timeslots = $db->getResults();
             
             View::renderTemplate ('Resources/addTraineeGroupForm.twig.html', [
-                                        'traineeGroupTable' => $this->traineeGroupTable,
+                                        'traineeGroupTable' => $traineeGroupTable,
                                         'timeslots' => $timeslots,
+                                        'title' => 'Add New Trainee Group',
                                         'tableHeadings' => ['Name', 'Level', 'Section', 'Description']
 
                                     ]);
@@ -91,44 +90,94 @@ class ResourceController extends \Core\Controller{
         $sessionData = Session::getInstance();
         $db = DB::getInstance();
         if ($sessionData->inSession) {
-            
-            $db->query('SELECT * FROM trainee_group');
-            $this->traineeGroupTable = ($db->getResults());
-
-
-                      
 
             $traineeGroup = $_POST["traineeGroup"] ? $_POST["traineeGroup"] : null;
             $level = $_POST["level"] ? $_POST["level"] : null;
             $section = $_POST["section"] ? $_POST["section"] : null;
             $description = $_POST["description"];
 
-            // save the data 
-            $db->insert('trainee_group', 
-                        array(  'name' => $traineeGroup,
-                                'level' =>  $level,
-                                'section' => $section,
-                                'remarks' => $description
+            $db->select(
+                    array('*'),
+                    array('trainee_group'),
+                    array(
+                        ['trainee_group.name',    '=', $_POST['traineeGroup'] ],
+                        ['trainee_group.level',    '=', $_POST['level'] ],
+                        ['trainee_group.section',    '=', $_POST['section'] ],
+                    )
+                );
 
-                        ));
+    
+            // it alread exist
+            if($db->count() > 0){
+                
+                // retrieve the data from the table
+                $db->query('SELECT * FROM trainee_group');
+                $traineeGroupTable = ($db->getResults());
+                
+                // render the page 
+                View::renderTemplate ('Resources/addTraineeGroupForm.twig.html', [
+                                        'status' => '<div class="alert alert-danger alert-dismissable">
+                                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                            <h4 class="text-center">Trainee Group already exist!</h4>
+                                                    </div>',
+                                        'title' => 'Add New Trainee Group',
+                                        'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
+                                        'traineeGroupTable' => $traineeGroupTable
+                                    ]);
 
+            }else { // process the data
 
+                //create digest of the form submission:
 
+                $messageIdent = md5($_POST['traineeGroup'] . $_POST['level'] . $_POST['section'] . $_POST['description']);
 
+                //and check it against the stored value: $sessionData->email
 
-            View::renderTemplate ('Resources/addTraineeGroupForm.twig.html', [
-                                    'status' => '<div class="alert alert-success alert-dismissable">
-                                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                                        <h4 class="text-center">A new course has been added!</h4>
-                                                </div>',
-                                    'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
-                                    'traineeGroupTable' => $this->traineeGroupTable
-                                ]);
+                $sessionMessageIdent = isset($sessionData->messageIdent) ? $sessionData->messageIdent: '';
 
+                if($messageIdent!=$sessionMessageIdent){//if its different:          
+                        //save the session var:
+                        $sessionData->messageIdent = $messageIdent;
+                        
+                        // save the data 
+                        $db->insert('trainee_group', 
+                                    array(  'name' => $traineeGroup,
+                                            'level' =>  $level,
+                                            'section' => $section,
+                                            'remarks' => $description
+                                    ));
 
+                        $db->query('SELECT * FROM trainee_group');
+                        $traineeGroupTable = ($db->getResults());
+                        
+                        View::renderTemplate ('Resources/addTraineeGroupForm.twig.html', [
+                                                'status' => '<div class="alert alert-success alert-dismissable">
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                    <h4 class="text-center">A new Trainee Group has been added!</h4>
+                                                            </div>',
+                                                'title' => 'Add New Trainee Group',
+                                                'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
+                                                'traineeGroupTable' => $traineeGroupTable
+                                            ]);
 
+                } else {
+                    //you've sent this already!
+                    $db->query('SELECT * FROM trainee_group');
+                    $traineeGroupTable = ($db->getResults());
+                    View::renderTemplate ('Resources/addTraineeGroupForm.twig.html', [
+                                                'status' => '<div class="alert alert-danger alert-dismissable">
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                    <h4 class="text-center">Previous data already save.</h4>
+                                                            </div>',
+                                                'title' => 'Add New Trainee Group',
+                                                'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
+                                                'traineeGroupTable' => $traineeGroupTable
+                                            ]);
+                    
+                }
+            }
             
-        }else {
+        }else { // have not logged in yet
             View::renderTemplate('Auth/login.twig.html');
 
         }
@@ -144,7 +193,7 @@ class ResourceController extends \Core\Controller{
      * @return      none	 	
      */
     public function addCourseAction (){
-         $sessionData = Session::getInstance();
+        $sessionData = Session::getInstance();
         if ($sessionData->inSession) {
             $db = DB::getInstance();
             $db->query('SELECT * FROM subject');
@@ -154,6 +203,7 @@ class ResourceController extends \Core\Controller{
             
             View::renderTemplate ('Resources/addCourseForm.twig.html', [
                                         'traineeGroupTable' => $subject,
+                                        'title' => 'Add New Course',
                                         'tableHeadings' => ['Name', 'Code', 'Req. Period', 'Description']
 
                                     ]);
@@ -182,41 +232,95 @@ class ResourceController extends \Core\Controller{
         $db = DB::getInstance();
         if ($sessionData->inSession) {
             
+
+
+
             $db->query('SELECT * FROM subject');
             $subject = ($db->getResults());
-
-            // print_r($_POST);
-                      
-
             $name = $_POST["name"];
             $code = $_POST["code"];
             $required_period = $_POST["required_period"];
             $description = $_POST["description"];
             // check first if code already exist
-            /*
-             code here... 
-            */
-            // save the data 
-            $db->insert('subject', 
-                        array(  'name' => $name,
-                                'code' =>  $code,
-                                'required_period' => $required_period,
-                                'description' => $description
+            $db->select(
+                    array('*'),
+                    array('subject'),
+                    array(
+                       
+                        ['subject.code',    '=', $_POST['code'] ],
+                    )
+                );
+            
+             // it alread exist
+            if($db->count() > 0){
+                // print_r("<pre> count: ".$db->count());
+                $db->query('SELECT * FROM subject');
+                $subject = ($db->getResults());
 
-                        ));
+                View::renderTemplate ('Resources/addCourseForm.twig.html', [
+                                        'status' => '<div class="alert alert-danger alert-dismissable">
+                                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                            <h4 class="text-center">Course already exist!</h4>
+                                                    </div>',
+                                        'title' => 'Add New Course',
+                                        'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
+                                        'traineeGroupTable' => $subject
+                                    ]);
 
-            unset($_POST);
+            }else{
+                 //create digest of the form submission:
 
+                $messageIdent = md5($_POST['name'] . $_POST['code'] . $_POST['required_period']);
 
+                //and check it against the stored value: $sessionData->email
 
-            View::renderTemplate ('Resources/addCourseForm.twig.html', [
-                                    'status' => '<div class="alert alert-success alert-dismissable">
-                                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                                        <h4 class="text-center">A new course has been added!</h4>
-                                                </div>',
-                                    'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
-                                    'traineeGroupTable' => $subject
-                                ]);
+                $sessionMessageIdent = isset($sessionData->messageIdent) ? $sessionData->messageIdent: '';
+
+                if($messageIdent!=$sessionMessageIdent){//if its different:
+                    //save the session var:
+                    $sessionData->messageIdent = $messageIdent;
+                    // save the data 
+                    $db->insert('subject', 
+                            array(  'name' => $name,
+                                    'code' =>  $code,
+                                    'required_period' => $required_period,
+                                    'description' => $description
+
+                            ));
+                    unset($_POST);
+                    $db->query('SELECT * FROM subject');
+                    $subject = ($db->getResults());
+
+                    View::renderTemplate ('Resources/addCourseForm.twig.html', [
+                                            'status' => '<div class="alert alert-success alert-dismissable">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                <h4 class="text-center">Course save!</h4>
+                                                        </div>',
+                                            'title' => 'Add New Course',
+                                            'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
+                                            'traineeGroupTable' => $subject
+                                        ]);
+                
+                }else{
+                    //you've sent this already!
+                    $db->query('SELECT * FROM subject');
+                    $subject = ($db->getResults());
+
+                    View::renderTemplate ('Resources/addCourseForm.twig.html', [
+                                            'status' => '<div class="alert alert-danger alert-dismissable">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                <h4 class="text-center">Previous data already save.</h4>
+                                                        </div>',
+                                            'title' => 'Add New Course',
+                                            'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
+                                            'traineeGroupTable' => $subject
+                                        ]);
+                }
+                
+            }
+            
+
+            
 
 
 
@@ -227,23 +331,40 @@ class ResourceController extends \Core\Controller{
         }
     }
 
-}
-/*
-//create digest of the form submission:
 
-    $messageIdent = md5($_POST['name'] . $_POST['email'] . $_POST['phone'] . $_POST['comment']);
+    /*
+     * addInstructor - action will provide the controller mechanism to display a form with the list
+     * list of already store course from the database. 
+     *
+     * @param		none
+     * @return      none	 	
+     */
+    public function addInstructorAction (){
+        $sessionData = Session::getInstance();
+        if ($sessionData->inSession) {
+            $db = DB::getInstance();
+            $db->query('SELECT * FROM instructor');
+            $instructor = ($db->getResults());
+            // $db->query('SELECT * FROM posts');
 
-//and check it against the stored value:
+            
+            View::renderTemplate ('Resources/addInstructorForm.twig.html', [
+                                        'traineeGroupTable' => $instructor,
+                                        'title' => 'Add A New Instructor',
+                                        'tableHeadings' => ['First name', 'Last name', 'Note']
 
-    $sessionMessageIdent = isset($_SESSION['messageIdent'])?$_SESSION['messageIdent']:'';
+                                    ]);
 
-    if($messageIdent!=$sessionMessageIdent){//if its different:          
-        //save the session var:
-            $_SESSION['messageIdent'] = $messageIdent;
-        //and...
-            do_your_thang();
-    } else {
-        //you've sent this already!
+
+        
+        }else {
+
+            View::renderTemplate('Auth/login.twig.html');
+
+        }
+        
     }
 
-*/
+
+}
+

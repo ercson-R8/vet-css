@@ -15,30 +15,30 @@
 
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h3>Add A New Course</h3>
+                            <h3>{{title}}</h3>
                         </div>
                         <div class="panel-body">
                             
-                            <form class="form center-block" name="addTraineeGroup" action="/resource/resourceController/createNewCourse" method="post">
+                            <form class="form center-block" name="addTraineeGroup" action="/resource/resourceController/createNewInstructor" method="post">
                                 <div class="form-group form-group-lg">
                                     
-                                    <input type="text" class="form-control" name="name" placeholder="Course name" required>
+                                    <input type="text" class="form-control" name="first_name" placeholder="First name" required>
                                
                                     
                                 </div>
                                 <div class="form-group form-group-lg">
-                                    <input type="text" class="form-control" name="code" placeholder="Course code" required>
+                                    <input type="text" class="form-control" name="last_name" placeholder="Last name" required>
                                
                                 </div>
 
 
                                 <div class="form-group form-group-lg">
-                                    <input type="number" min="1" step="1" class="form-control" name="required_period" placeholder="Required periods" required>
+                                    <input type="number" min="1" step="1" class="form-control" name="id_num" placeholder="ID number" required>
                                 </div>
 
 
                                 <div class="form-group form-group-lg" >
-                                    <input type="text" class="form-control" name="description" onblur="return x()" placeholder="Description">
+                                    <input type="text" class="form-control" name="note" placeholder="Note">
                                 </div>       
 
                                 <div class="form-group">
@@ -66,7 +66,7 @@
                 <div class="well"> 
                     <div class="panel panel-info">
                         <div class="panel-heading">
-                            <h3>List of Courses</h3>
+                            <h3>List of Instructors</h3>
                         </div>
                         <div class="panel-body">
                             
@@ -101,10 +101,9 @@
                                 <tbody>
                                     {% for row in traineeGroupTable %}
                                     <tr>
-                                        <td>{{ row.name }} </td>
-                                        <td>{{ row.code }}</td>
-                                        <td style="text-align:center">{{ row.required_period }}</td>
-                                        <td>{{ row.description }}</td>
+                                        <td>{{ row.first_name }} </td>
+                                        <td>{{ row.last_name }}</td>
+                                        <td>{{ row.remark }}</td>
                                         <td>..</td>
                                     </tr>
                                     {% endfor %}
