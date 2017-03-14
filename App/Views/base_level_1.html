@@ -65,14 +65,15 @@
 
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-toggle="tooltip" data-placement="left" title="Manage courses, instructors, rooms, etc.." href="#">
-                         Timetable<i class="fa fa-list-alt fa-fw fa-2x"></i>  <i class="fa fa-caret-down"></i>
+                         Timetable  <i class="fa fa-list-alt fa-fw fa-2x"></i>  <i class="fa fa-caret-down"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-user">
+                    <ul class="dropdown-menu dropdown-user ">
                         <li data-toggle="tooltip" data-placement="bottom" title="Change account information">
                             <a href="#">
                                 <i class="fa fa-group fa-2x"></i> Add Trainee Groups</a>
                         </li>
-                        <li data-toggle="tooltip" data-placement="left" title="Change you password"><a href="#">
+                        <li data-toggle="tooltip" data-placement="left" title="Change you password">
+                            <a href="#">
                             <i class="fa fa-book fa-fw fa-2x"></i> Add Courses</a>
                         </li>
    
@@ -97,17 +98,18 @@
                 
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-toggle="tooltip" data-placement="left" title="Manage courses, instructors, rooms, etc.." href="#">
-                         Resources<i class="fa fa-bar-chart-o fa-fw fa-2x"></i>  <i class="fa fa-caret-down"></i>
+                         Resources  <i class="fa fa-bar-chart-o fa-fw fa-2x"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li data-toggle="tooltip" data-placement="bottom" title="Add a new trainee group.">
-                            <a href="addTraineeGroupForm" data-toggle="modal" >
+                            <a href="/Resource/ResourceController/addTraineeGroup" data-toggle="modal" >
                                 
                                 <i class="fa fa-group fa-2x"></i> Add Trainee Groups</a>
 
 
                         </li>
-                        <li data-toggle="tooltip" data-placement="left" title="Add a new course."><a href="#">
+                        <li data-toggle="tooltip" data-placement="left" title="Add a new course.">
+                            <a href="/Resource/ResourceController/addCourse">
                             <i class="fa fa-book fa-fw fa-2x"></i> Add Courses</a>
                         </li>
    
@@ -156,7 +158,7 @@
             <div class="row"></div>
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <div class="well"> </div>
+                    
                 </div>
                 <!-- /.panel-heading -->
             </div>
@@ -252,9 +254,9 @@
         $(document).ready(function() {
             $('#dataTables-example').DataTable({
                 responsive: true,
-                "ordering": false,
+                "ordering": true,
                 
-                "lengthMenu": [[-1, 10, 25, 50], ["All", 10, 25, 50]]
+                "lengthMenu": [[5, 10, 25, -1], [5 , 10, 25, "All"]]
             });
         });
         </script>

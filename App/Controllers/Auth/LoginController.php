@@ -82,7 +82,7 @@ class LoginController extends \Core\Controller
         $user = ($db->getResults());
         // print_r($user);
         // print_r("\n".$_POST['password']."\n");
-        if($db->count() > 0 && password_verify(($_POST['password']), $user[0]->password) ){
+        if($db->count() > 0 && password_verify(($_POST['password']), htmlspecialchars( $user[0]->password)) ){
             print_r("\nYou are logged in.."."\n");
             $sessionData->email = $user[0]->email;
             $sessionData->firstName = $user[0]->first_name;
@@ -100,9 +100,10 @@ class LoginController extends \Core\Controller
             // echo "\nELSE here..";
             View::renderTemplate('Auth/login.twig.html', [
                                             
-                'errorMessage' => '<div class="alert alert-danger alert-dismissable">
+                'errorMessage' => '<span>&nbsp;</span><div class="alert alert-danger alert-dismissable">
+                                   
                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                   <code>Please verify email and password.</code>
+                                   Please verify your email and password.
                                   </div>' 
                 ]);
 

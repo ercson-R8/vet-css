@@ -220,9 +220,9 @@ class DB extends \Core\Model{
             }
             $sql = "INSERT INTO {$table} (`"  .implode('`, `' ,$keys).   "`) VALUES ({$values})";
 
-            echo "<br/>Sql:".$sql."<br/>fields: ";
-            var_dump( $fields);
-            echo "<br/>values: ".$values."<br/>";
+            // echo "<br/>Sql:".$sql."<br/>fields: ";
+            // var_dump( $fields);
+            // echo "<br/>values: ".$values."<br/>";
             $this->query($sql, $fields);
             if (!$this->error()){
                 return $this;
