@@ -39,16 +39,57 @@ class Test extends \Core\Controller {
         
 
 
-        var_dump($x);
+        // var_dump($x);
+        /*
+        SELECT room.name AS  'room name', room.type AS  'room type no.', room_type.name AS  'room type', room.location
+        FROM room_type, room
+        WHERE room.type = room_type.id
+        LIMIT 0 , 30
+
+        SELECT * 
+            FROM room
+            INNER JOIN room_type ON
+            room.type = room_type.id
+
+        SELECT room.id as 'RoomID', room.name as 'RoomName', 
+                room.type as 'RoomType', room.location as 'RoomLoc', 
+                room.description as 'RoomDesc', room_type.id as rtID, 
+                room_type.name as rdNAme, 
+                room_type.description as rtDesc 
+        FROM room, INNER JOIN room_type ON room.type = room_type.id WHERE room.type like ?
+                        array('room.id as \'RoomID\'', 'room.name as \'RoomName\'', 'room.type as \'RoomType\'', 'room.location as \'RoomLoc\'', 'room.description as \'RoomDesc\'',
+                        'room_type.id as rtID', 'room_type.name as rdNAme', 'room_type.description as rtDesc'
+        */
+
 
         $db = DB::getInstance();
             $db->select(
-                array('*'),
-                array('trainee_group'),
+                array(  'room.id as \'RoomID\'', 
+                        'room.name as \'RoomName\'', 
+                        'room.type as \'RoomType\'', 
+                        'room.location as \'RoomLoc\'', 
+                        'room.description as \'RoomDesc\'',
+                        'room_type.id as rtID', 
+                        'room_type.name as rdNAme', 
+                        'room_type.description as rtDesc'),
+                array('room INNER JOIN room_type ON room.type = room_type.id'),
                 array(
-                    ['name','LIKE', '%' ]
+                    ['room.type', 'like', '%']
                 )
             );
+
+        // $db->query('SELECT  FROM room INNER JOIN room_type ON room.type = room_type.id');
+        $db->query('SELECT  room.id as \'RoomID\',
+                            room.name as \'RoomName\',
+                            room.type as \'RoomType\',
+                            room.location as \'RoomLoc\',
+                            room.description as \'RoomDesc\',
+                            room_type.id as \'room_type.ID\',
+                            room_type.name as \'room_type.name\',
+                            room_type.description as \'room_type.description\'
+                    FROM room INNER JOIN room_type ON room.type = room_type.id');
+
+
             $data = ($db->getResults());
 
             echo "<pre>";

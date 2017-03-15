@@ -361,7 +361,7 @@ class ResourceController extends \Core\Controller{
         
     }
 
-        /*
+    /*
      * addCourse - action will provide the controller mechanism to display a form with the list
      * list of already store course from the database. 
      *
@@ -483,23 +483,28 @@ class ResourceController extends \Core\Controller{
         $sessionData = Session::getInstance();
         if ($sessionData->inSession) {
             $db = DB::getInstance();
-            // SELECT room.name, room_type.name as 'category', room.location FROM room, room_type WHERE room.type = room_type.id
-            // $db->query('SELECT * FROM room, room_type');
             $db->select(
-                    array('room.name', 'room_type.name', 'room.location'),
-                    array('room', 'room_type'),
-                    array( // WHERE
-                        ['room.type',    '=', 'room_type.id' ],
-                    )
-                );
+                array(   
+                        'room.name as \'RoomName\'', 
+                        'room.type as \'RoomType\'', 
+                        'room.location as \'RoomLoc\'', 
+                        'room.description as \'RoomDesc\'',
+                        'room_type.id as rtID', 
+                        'room_type.name as rtNAme', 
+                        'room_type.description as rtDesc'),
+                array('room INNER JOIN room_type ON room.type = room_type.id'),
+                array(
+                    ['room.type', 'like', '%']
+                )
+            );
             $room = ($db->getResults());
-            print_r("<pre>");
-            print_r($room);
-            // View::renderTemplate ('Resources/addRoomForm.twig.html', [
-            //                             'traineeGroupTable' => $room,
-            //                             'title' => 'Add A New Room',
-            //                             'tableHeadings' => ['Name', 'Type', 'Location' ,'Description']
-            //                         ]);
+            // print_r("<pre>");
+            // print_r($room);
+            View::renderTemplate ('Resources/addRoomForm.twig.html', [
+                                        'traineeGroupTable' => $room,
+                                        'title' => 'Add A New Room',
+                                        'tableHeadings' => ['Name', 'Type', 'Location' ,'Description']
+                                    ]);
         }else {
 
             header("Location: /home/logout");
@@ -510,7 +515,157 @@ class ResourceController extends \Core\Controller{
 
 
 
+/*
+     * createNewRoom - action will provide the controller mechanism to display a form with the list
+     * list of already store course from the database. 
+     *
+     * @param		none
+     * @return      none	 	
+     */
+    public function createNewRoom(){
+        $sessionData = Session::getInstance();
+        $db = DB::getInstance();
+        if ($sessionData->inSession) {
+            $db->query('SELECT * FROM room');
 
+            $room = ($db->getResults());
+            $name = $_POST["name"];
+            $type = $_POST["type"];
+            $location = $_POST["location"];
+            $description = $_POST["description"];
+
+
+            // check first if code already exist
+            $db->select(
+                array('*'),
+                array('room'),
+                array(
+                    ['room.name',    '=', $_POST['name'] ],
+                    ['room.type',    '=', $_POST['type'] ],
+                    ['room.location',    '=', $_POST['location'] ],
+                )
+            );
+
+            
+             // it alread exist
+            if($db->count() > 0){
+                // print_r("<pre> count: ".$db->count());
+                 $db->select(
+                array(   
+                            'room.name as \'RoomName\'', 
+                            'room.type as \'RoomType\'', 
+                            'room.location as \'RoomLoc\'', 
+                            'room.description as \'RoomDesc\'',
+                            'room_type.id as rtID', 
+                            'room_type.name as rtNAme', 
+                            'room_type.description as rtDesc'),
+                    array('room INNER JOIN room_type ON room.type = room_type.id'),
+                    array(
+                        ['room.type', 'like', '%']
+                    )
+                );
+                $room = ($db->getResults());
+
+                View::renderTemplate ('Resources/addRoomForm.twig.html', [
+                                        'status' => '<div class="alert alert-danger alert-dismissable">
+                                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                            <h4 class="text-center">Room already exist!</h4>
+                                                    </div>',
+                                        'title' => 'Add New Instructor',
+                                        'tableHeadings' =>  ['Name', 'Type', 'Location' ,'Description'],
+                                        'traineeGroupTable' => $room
+                                    ]);
+
+            }else{
+                 //create digest of the form submission:
+
+                $messageIdent = md5($_POST['name'] . $_POST['type'] . $_POST['location']);
+
+                //and check it against the stored value: $sessionData->email
+
+                $sessionMessageIdent = isset($sessionData->messageIdent) ? $sessionData->messageIdent: '';
+
+                if($messageIdent!=$sessionMessageIdent){//if its different:
+                    //save the session var:
+                    $sessionData->messageIdent = $messageIdent;
+                    // save the data 
+                    $db->insert('room', 
+                            array(  'name' => $name,
+                                    'type' =>  $type,
+                                    'location' => $location,
+                                    'description' => $description
+
+                            ));
+
+                    unset($_POST);
+                    $db->select(
+                    array(   
+                                'room.name as \'RoomName\'', 
+                                'room.type as \'RoomType\'', 
+                                'room.location as \'RoomLoc\'', 
+                                'room.description as \'RoomDesc\'',
+                                'room_type.id as rtID', 
+                                'room_type.name as rtNAme', 
+                                'room_type.description as rtDesc'),
+                        array('room INNER JOIN room_type ON room.type = room_type.id'),
+                        array(
+                            ['room.type', 'like', '%']
+                        )
+                    );
+                    $room = ($db->getResults());
+
+                    View::renderTemplate ('Resources/addRoomForm.twig.html', [
+                                            'status' => '<div class="alert alert-success alert-dismissable">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                <h4 class="text-center">Room save!</h4>
+                                                        </div>',
+                                            'title' => 'Add New Instructor',
+                                            'tableHeadings' =>  ['Name', 'Type', 'Location' ,'Description'],
+                                            'traineeGroupTable' => $room
+                                        ]);
+                
+                }else{
+                    //you've sent this already!
+                    $db->select(
+                        array(   
+                                'room.name as \'RoomName\'', 
+                                'room.type as \'RoomType\'', 
+                                'room.location as \'RoomLoc\'', 
+                                'room.description as \'RoomDesc\'',
+                                'room_type.id as rtID', 
+                                'room_type.name as rtNAme', 
+                                'room_type.description as rtDesc'),
+                        array('room INNER JOIN room_type ON room.type = room_type.id'),
+                        array(
+                            ['room.type', 'like', '%']
+                        )
+                    );
+                    $room = ($db->getResults());
+
+                    View::renderTemplate ('Resources/addRoomForm.twig.html', [
+                                            'status' => '<div class="alert alert-danger alert-dismissable">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                <h4 class="text-center">Previous data already save.</h4>
+                                                        </div>',
+                                            'title' => 'Add New Room',
+                                            'tableHeadings' =>  ['Name', 'Type', 'Location' ,'Description'],
+                                            'traineeGroupTable' => $room
+                                        ]);
+                }
+                
+            }
+            
+
+            
+
+
+
+            
+        }else {
+            header("Location: /home/logout");
+
+        }
+    }
 
 
 

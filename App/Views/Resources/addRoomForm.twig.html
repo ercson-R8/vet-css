@@ -19,47 +19,40 @@
                         </div>
                         <div class="panel-body">
                             
-                            <form class="form   center-block" name="addTraineeGroup" action="/resource/resourceController/createNewTraineeGroup" method="post">
+                            <form class="form   center-block" name="addTraineeGroup" action="/resource/resourceController/createNewRoom" method="post">
                                 <div class="form-group form-group-lg">
                                     
-                                    <select class="form-control" name="traineeGroup" required >
-                                        <option value="">Select group name</option>
-                                        <option value="Electrical">Electrical</option>
-                                        <option value="Electronics">Electronics</option>
-                                        <option value="Mechatronics">Mechatronics</option>
-                                        <option value="Welding">Welding</option>
-                                        <option value="RAC">R A C</option>
-                                        <option value="Business">Business</option>
-                                        <option value="Post Foundation">Post Foundation Program</option>
-                                        <option value="Foundation">Foundation Program</option>
-                                    </select>
+                                    <input type="text" class="form-control" name="name" onblur="return x()" placeholder="Room name" required>
+                                
                                     
                                 </div>
                                 <div class="form-group form-group-lg">
-                                    <select class="form-control" name="level" required>
-                                        <option value="">Select level</option>
-                                        <option value="1">Level 1</option>
-                                        <option value="2">Level 2</option>
-                                        <option value="3">Level 3</option>
-                                        <option value="4">Level 4</option>
-                                        <option value="5">Level 5</option>
-                                        <option value="6">Level 6</option>
-                                        <option value="7">Level 7</option>
-                                        <option value="8">Level 8</option>
-                                        <option value="9">Level 9</option>                         
+                                    <select class="form-control" name="type" required>
+                                        <option value="">Select room type</option>
+                                        <option value="1">Classroom</option>
+                                        <option value="2">Computer LAB</option>
+                                        <option value="3">Workshop-MECH</option>
+                                        <option value="4">Workshop-WELD</option>
+                                        <option value="5">Workshop-RAC</option>
+                                        <option value="6">Workshop-ELX</option>
+                                        <option value="7">Workshop-ELC</option>
+                                        <option value="8">Drawing LAB</option>
+                                        <option value="9">Canteen</option>
+                                        <option value="10">Caravan</option>
+                                        <option value="11">Caravan-Converted room</option>
+                                        <option value="12">ELC-Converted room</option>
+                                        <option value="13">ELX-Converted room</option>
+                                        
                                     </select>
                                 </div>
 
 
                                 <div class="form-group form-group-lg">
-                                    <select class="form-control" name="section" required>
-                                        <option value="">Select section</option>
-                                        <option value="A">Section A</option>
-                                        <option value="B">Section B</option>
-                                        <option value="C">Section C</option>
-                                        <option value="D">Section D</option>
-                                        <option value="E">Section E</option>
-                       
+                                    <select class="form-control" name="location" required>
+                                        <option value="">Select location</option>
+                                        <option value="Main Building">Main Building</option>
+                                        <option value="Caravan">Caravan</option>
+                                        <option value="Campus">Campus</option>
                                     </select>
                                 </div>
 
@@ -136,10 +129,10 @@
                                 <tbody>
                                     {% for row in traineeGroupTable %}
                                     <tr>
-                                        <td>{{ row.name }}</td>
-                                        <td style="text-align:center">{{ row.level }}</td>
-                                        <td>{{ row.location }}</td>
-                                        <td>{{ row.description }}</td>
+                                        <td>{{ row.RoomName }}</td>
+                                        <td>{{ row.rtNAme }}</td>
+                                        <td>{{ row.RoomLoc }}</td>
+                                        <td>{{ row.RoomDesc }}</td>
                                         <td></td>
                                     </tr>
                                     {% endfor %}
