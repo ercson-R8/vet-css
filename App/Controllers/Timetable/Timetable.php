@@ -22,6 +22,7 @@ class Timetable {
  | 
  */
     private $subjects, $traineeGroups, $rooms, $roomTypes, $instructors = null;
+    private $baseSubjectClass = null;
 
     /*
      * fetchBaseSubjectClass method fetches raw data from the database
@@ -909,7 +910,7 @@ class Timetable {
                                                                 $db->getResults()[$i]->id,
                                                                 $db->getResults()[$i]->first_name,
                                                                 $db->getResults()[$i]->last_name,
-                                                                $db->getResults()[$i]->remark
+                                                                $db->getResults()[$i]->note
                                                             );
             }
             // return the data 

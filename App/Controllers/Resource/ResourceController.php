@@ -21,7 +21,9 @@ class ResourceController extends \Core\Controller{
     protected function before()
     {
         $sessionData = Session::getInstance();
-
+        if (!$sessionData->inSession){
+            header("Location: /home/logout");
+        }
     }
 
     /**
@@ -31,7 +33,7 @@ class ResourceController extends \Core\Controller{
      */
     protected function after()
     {
-        //echo " (after)";
+
     }
 
 
@@ -89,7 +91,7 @@ class ResourceController extends \Core\Controller{
     public function createNewTraineeGroupAction(){
         $sessionData = Session::getInstance();
         $db = DB::getInstance();
-        if ($sessionData->inSession) {
+        // if ($sessionData->inSession) {
 
             $traineeGroup = $_POST["traineeGroup"] ? $_POST["traineeGroup"] : null;
             $level = $_POST["level"] ? $_POST["level"] : null;
@@ -177,10 +179,10 @@ class ResourceController extends \Core\Controller{
                 }
             }
             
-        }else { // have not logged in yet
-            View::renderTemplate('Auth/login.twig.html');
+        // }else { // have not logged in yet
+        //     View::renderTemplate('Auth/login.twig.html');
 
-        }
+        // }
 
     }
  
@@ -326,7 +328,7 @@ class ResourceController extends \Core\Controller{
 
             
         }else {
-            View::renderTemplate('Auth/login.twig.html');
+            header("Location: /home/logout");
 
         }
     }
@@ -345,25 +347,175 @@ class ResourceController extends \Core\Controller{
             $db = DB::getInstance();
             $db->query('SELECT * FROM instructor');
             $instructor = ($db->getResults());
-            // $db->query('SELECT * FROM posts');
-
-            
             View::renderTemplate ('Resources/addInstructorForm.twig.html', [
                                         'traineeGroupTable' => $instructor,
                                         'title' => 'Add A New Instructor',
-                                        'tableHeadings' => ['First name', 'Last name', 'Note']
+                                        'tableHeadings' => ['First name', 'Last name', 'ID Number' ,'Note']
 
                                     ]);
-
-
-        
         }else {
 
-            View::renderTemplate('Auth/login.twig.html');
+            header("Location: /home/logout");
 
         }
         
     }
+
+        /*
+     * addCourse - action will provide the controller mechanism to display a form with the list
+     * list of already store course from the database. 
+     *
+     * @param		none
+     * @return      none	 	
+     */
+    public function createNewInstructor(){
+        $sessionData = Session::getInstance();
+        $db = DB::getInstance();
+        if ($sessionData->inSession) {
+            $db->query('SELECT * FROM instructor');
+
+            $instructor = ($db->getResults());
+            $first_name = $_POST["first_name"];
+            $last_name = $_POST["last_name"];
+            $id_number = $_POST["id_number"];
+            $note = $_POST["note"];
+
+
+            // check first if code already exist
+            $db->select(
+                    array('*'),
+                    array('instructor'),
+                    array( // WHERE
+                        ['instructor.id_number',    '=', $_POST['id_number'] ],
+                    )
+                );
+            
+             // it alread exist
+            if($db->count() > 0){
+                // print_r("<pre> count: ".$db->count());
+                $db->query('SELECT * FROM instructor');
+                $subject = ($db->getResults());
+
+                View::renderTemplate ('Resources/addInstructorForm.twig.html', [
+                                        'status' => '<div class="alert alert-danger alert-dismissable">
+                                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                            <h4 class="text-center">Instructor already exist!</h4>
+                                                    </div>',
+                                        'title' => 'Add New Instructor',
+                                        'tableHeadings' => ['Name', 'Level', 'ID Number', 'Note'],
+                                        'traineeGroupTable' => $subject
+                                    ]);
+
+            }else{
+                 //create digest of the form submission:
+
+                $messageIdent = md5($_POST['first_name'] . $_POST['last_name'] . $_POST['id_number'] . $_POST['note']);
+
+                //and check it against the stored value: $sessionData->email
+
+                $sessionMessageIdent = isset($sessionData->messageIdent) ? $sessionData->messageIdent: '';
+
+                if($messageIdent!=$sessionMessageIdent){//if its different:
+                    //save the session var:
+                    $sessionData->messageIdent = $messageIdent;
+                    // save the data 
+                    $db->insert('instructor', 
+                            array(  'first_name' => $first_name,
+                                    'last_name' =>  $last_name,
+                                    'id_number' => $id_number,
+                                    'note' => $note
+
+                            ));
+                    unset($_POST);
+                    $db->query('SELECT * FROM instructor');
+                    $instructor = ($db->getResults());
+
+                    View::renderTemplate ('Resources/addInstructorForm.twig.html', [
+                                            'status' => '<div class="alert alert-success alert-dismissable">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                <h4 class="text-center">Instructor save!</h4>
+                                                        </div>',
+                                            'title' => 'Add New Instructor',
+                                            'tableHeadings' => ['Name', 'Level', 'Section', 'Note'],
+                                            'traineeGroupTable' => $instructor
+                                        ]);
+                
+                }else{
+                    //you've sent this already!
+                    $db->query('SELECT * FROM instructor');
+                    $instructor = ($db->getResults());
+
+                    View::renderTemplate ('Resources/addInstructorForm.twig.html', [
+                                            'status' => '<div class="alert alert-danger alert-dismissable">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                <h4 class="text-center">Previous data already save.</h4>
+                                                        </div>',
+                                            'title' => 'Add New Instructor',
+                                            'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
+                                            'traineeGroupTable' => $instructor
+                                        ]);
+                }
+                
+            }
+            
+
+            
+
+
+
+            
+        }else {
+            header("Location: /home/logout");
+
+        }
+    }
+
+    
+
+    /*
+     * addRoom - action will provide the controller mechanism to display a form with the list
+     * list of already store room from the database. 
+     *
+     * @param		none
+     * @return      none	 	
+     */
+    public function addRoomAction (){
+        $sessionData = Session::getInstance();
+        if ($sessionData->inSession) {
+            $db = DB::getInstance();
+            // SELECT room.name, room_type.name as 'category', room.location FROM room, room_type WHERE room.type = room_type.id
+            // $db->query('SELECT * FROM room, room_type');
+            $db->select(
+                    array('room.name', 'room_type.name', 'room.location'),
+                    array('room', 'room_type'),
+                    array( // WHERE
+                        ['room.type',    '=', 'room_type.id' ],
+                    )
+                );
+            $room = ($db->getResults());
+            print_r("<pre>");
+            print_r($room);
+            // View::renderTemplate ('Resources/addRoomForm.twig.html', [
+            //                             'traineeGroupTable' => $room,
+            //                             'title' => 'Add A New Room',
+            //                             'tableHeadings' => ['Name', 'Type', 'Location' ,'Description']
+            //                         ]);
+        }else {
+
+            header("Location: /home/logout");
+
+        }
+        
+    }
+
+
+
+
+
+
+
+
+
 
 
 }

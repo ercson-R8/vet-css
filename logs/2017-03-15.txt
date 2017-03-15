@@ -1,0 +1,52 @@
+[15-Mar-2017 02:06:28 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\vet-css\public\index.php(43): Core\Router->dispatch('favicon.ico')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\vet-css\Core\Router.php' on line 130
+[15-Mar-2017 02:11:18 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\vet-css\public\index.php(43): Core\Router->dispatch('vendor/bootstra...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\vet-css\Core\Router.php' on line 130
+[15-Mar-2017 02:42:32 Europe/Berlin] Uncaught exception: 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'room_type.name' in 'field list''
+Stack trace: #0 C:\xampp\htdocs\vet-css\App\Models\DB.php(69): PDOStatement->execute()
+#1 C:\xampp\htdocs\vet-css\App\Models\DB.php(319): App\Models\DB->query('SELECT room.nam...', Array)
+#2 C:\xampp\htdocs\vet-css\App\Controllers\Resource\ResourceController.php(494): App\Models\DB->select(Array, Array, Array)
+#3 [internal function]: App\Controllers\Resource\ResourceController->addRoomAction()
+#4 C:\xampp\htdocs\vet-css\Core\Controller.php(48): call_user_func_array(Array, Array)
+#5 C:\xampp\htdocs\vet-css\Core\Router.php(121): Core\Controller->__call('addRoom', Array)
+#6 C:\xampp\htdocs\vet-css\Core\Router.php(121): App\Controllers\Resource\ResourceController->addRoom()
+#7 C:\xampp\htdocs\vet-css\public\index.php(43): Core\Router->dispatch('Resource/Resour...')
+#8 {main}
+Thrown in 'C:\xampp\htdocs\vet-css\App\Models\DB.php' on line 69
+[15-Mar-2017 02:43:01 Europe/Berlin] Uncaught exception: 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'room_type.name' in 'field list''
+Stack trace: #0 C:\xampp\htdocs\vet-css\App\Models\DB.php(69): PDOStatement->execute()
+#1 C:\xampp\htdocs\vet-css\App\Models\DB.php(319): App\Models\DB->query('SELECT room.nam...', Array)
+#2 C:\xampp\htdocs\vet-css\App\Controllers\Resource\ResourceController.php(494): App\Models\DB->select(Array, Array, Array)
+#3 [internal function]: App\Controllers\Resource\ResourceController->addRoomAction()
+#4 C:\xampp\htdocs\vet-css\Core\Controller.php(48): call_user_func_array(Array, Array)
+#5 C:\xampp\htdocs\vet-css\Core\Router.php(121): Core\Controller->__call('addRoom', Array)
+#6 C:\xampp\htdocs\vet-css\Core\Router.php(121): App\Controllers\Resource\ResourceController->addRoom()
+#7 C:\xampp\htdocs\vet-css\public\index.php(43): Core\Router->dispatch('Resource/Resour...')
+#8 {main}
+Thrown in 'C:\xampp\htdocs\vet-css\App\Models\DB.php' on line 69
+[15-Mar-2017 02:43:09 Europe/Berlin] Uncaught exception: 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'room_type.name' in 'field list''
+Stack trace: #0 C:\xampp\htdocs\vet-css\App\Models\DB.php(69): PDOStatement->execute()
+#1 C:\xampp\htdocs\vet-css\App\Models\DB.php(319): App\Models\DB->query('SELECT room.nam...', Array)
+#2 C:\xampp\htdocs\vet-css\App\Controllers\Resource\ResourceController.php(494): App\Models\DB->select(Array, Array, Array)
+#3 [internal function]: App\Controllers\Resource\ResourceController->addRoomAction()
+#4 C:\xampp\htdocs\vet-css\Core\Controller.php(48): call_user_func_array(Array, Array)
+#5 C:\xampp\htdocs\vet-css\Core\Router.php(121): Core\Controller->__call('addRoom', Array)
+#6 C:\xampp\htdocs\vet-css\Core\Router.php(121): App\Controllers\Resource\ResourceController->addRoom()
+#7 C:\xampp\htdocs\vet-css\public\index.php(43): Core\Router->dispatch('Resource/Resour...')
+#8 {main}
+Thrown in 'C:\xampp\htdocs\vet-css\App\Models\DB.php' on line 69
+[15-Mar-2017 02:43:48 Europe/Berlin] Uncaught exception: 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'room_type.name' in 'field list''
+Stack trace: #0 C:\xampp\htdocs\vet-css\App\Models\DB.php(69): PDOStatement->execute()
+#1 C:\xampp\htdocs\vet-css\App\Models\DB.php(319): App\Models\DB->query('SELECT room.nam...', Array)
+#2 C:\xampp\htdocs\vet-css\App\Controllers\Resource\ResourceController.php(494): App\Models\DB->select(Array, Array, Array)
+#3 [internal function]: App\Controllers\Resource\ResourceController->addRoomAction()
+#4 C:\xampp\htdocs\vet-css\Core\Controller.php(48): call_user_func_array(Array, Array)
+#5 C:\xampp\htdocs\vet-css\Core\Router.php(121): Core\Controller->__call('addRoom', Array)
+#6 C:\xampp\htdocs\vet-css\Core\Router.php(121): App\Controllers\Resource\ResourceController->addRoom()
+#7 C:\xampp\htdocs\vet-css\public\index.php(43): Core\Router->dispatch('Resource/Resour...')
+#8 {main}
+Thrown in 'C:\xampp\htdocs\vet-css\App\Models\DB.php' on line 69

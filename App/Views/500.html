@@ -1,10 +1,48 @@
-{% extends "base.html" %}
+{% extends "baseHeader.html" %}
 
-{% block title %}Error{% endblock %}
+{% block title %}Internal Server Error{% endblock %}
 
 {% block body %}
+    <div>
+        <div class="container">
+            <div class="row"></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+                <div class="login-panel panel panel-danger">
+                    <div class="panel-heading">
+                        
+                        <h3 class="panel-title"><i class="fa fa-bolt fa-2x"></i> Aw, snap!
+                    </div>
+                    <div class="panel-body">
 
-    <h1>An error occurred</h1>
-    <p>Sorry, an error has occurred.</p>
+                <div class="panel panel-red">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-frown-o fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 ">
+                                <div > <h3>Sorry, something went wrong while displaying this page.</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/home/index">
+                        <div class="panel-footer">
+                            <span class="pull-left">Back Home</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4"></div>
+        </div>
+    </div>
+
 
 {% endblock %}
