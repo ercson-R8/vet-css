@@ -57,8 +57,6 @@
                                         <option value="A">Section A</option>
                                         <option value="B">Section B</option>
                                         <option value="C">Section C</option>
-                                        <option value="D">Section D</option>
-                                        <option value="E">Section E</option>
                        
                                     </select>
                                 </div>
@@ -116,7 +114,7 @@
                                                 <th>{{ tableHeader }}</th>
                                             {% endif %}
                                             {% endfor %}
-                                        <th>..</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -129,18 +127,25 @@
                                                 <th>{{ tableHeader }}</th>
                                             {% endif %}
                                         {% endfor %}
-                                        <th>..</th>
+                                        <th></th>
                                     </tr>
                                     
                                 </tfoot>
                                 <tbody>
                                     {% for row in traineeGroupTable %}
                                     <tr>
-                                        <td>{{ row.name }}</td>
+                                        <td style="font-weight: bold; background-color: #55AAFF">{{ row.name }}</td>
                                         <td style="text-align:center">{{ row.level }}</td>
                                         <td style="text-align:center">{{ row.section }}</td>
-                                        <td>{{ row.description }}</td>
-                                        <td>..</td>
+                                        <td>{{ row.remarks }}</td>
+                                        <td style="text-align:center">
+                                            <a href="#" data-toggle="tooltip" data-placement="right" title="Edit this Item!"  class="btn btn-xs btn-primary">
+                                                <span class="fa fa-edit"></span>
+                                            </a>
+                                            <a href="#" data-toggle="tooltip" data-placement="right" title="Delete this Item!"  class="btn btn-xs btn-danger">
+                                                <span class="fa fa-remove"></span>
+                                            </a>
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                     

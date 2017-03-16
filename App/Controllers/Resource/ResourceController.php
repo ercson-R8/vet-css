@@ -72,6 +72,7 @@ class ResourceController extends \Core\Controller{
             
             View::renderTemplate ('Resources/addTraineeGroupForm.twig.html', [
                                         'traineeGroupTable' => $traineeGroupTable,
+                                        'firstName' => $sessionData->firstName,
                                         'timeslots' => $timeslots,
                                         'title' => 'Add New Trainee Group',
                                         'tableHeadings' => ['Name', 'Level', 'Section', 'Description']
@@ -122,6 +123,7 @@ class ResourceController extends \Core\Controller{
                                                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                                                             <h4 class="text-center">Trainee Group already exist!</h4>
                                                     </div>',
+                                        'firstName' => $sessionData->firstName,
                                         'title' => 'Add New Trainee Group',
                                         'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                         'traineeGroupTable' => $traineeGroupTable
@@ -158,6 +160,7 @@ class ResourceController extends \Core\Controller{
                                                                     <h4 class="text-center">A new Trainee Group has been added!</h4>
                                                             </div>',
                                                 'title' => 'Add New Trainee Group',
+                                                'firstName' => $sessionData->firstName,
                                                 'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                                 'traineeGroupTable' => $traineeGroupTable
                                             ]);
@@ -172,6 +175,7 @@ class ResourceController extends \Core\Controller{
                                                                     <h4 class="text-center">Previous data already save.</h4>
                                                             </div>',
                                                 'title' => 'Add New Trainee Group',
+                                                'firstName' => $sessionData->firstName,
                                                 'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                                 'traineeGroupTable' => $traineeGroupTable
                                             ]);
@@ -206,6 +210,7 @@ class ResourceController extends \Core\Controller{
             View::renderTemplate ('Resources/addCourseForm.twig.html', [
                                         'traineeGroupTable' => $subject,
                                         'title' => 'Add New Course',
+                                        'firstName' => $sessionData->firstName,
                                         'tableHeadings' => ['Name', 'Code', 'Req. Period', 'Description']
 
                                     ]);
@@ -265,6 +270,7 @@ class ResourceController extends \Core\Controller{
                                                             <h4 class="text-center">Course already exist!</h4>
                                                     </div>',
                                         'title' => 'Add New Course',
+                                        'firstName' => $sessionData->firstName,
                                         'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                         'traineeGroupTable' => $subject
                                     ]);
@@ -299,6 +305,7 @@ class ResourceController extends \Core\Controller{
                                                                 <h4 class="text-center">Course save!</h4>
                                                         </div>',
                                             'title' => 'Add New Course',
+                                            'firstName' => $sessionData->firstName,
                                             'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                             'traineeGroupTable' => $subject
                                         ]);
@@ -314,6 +321,7 @@ class ResourceController extends \Core\Controller{
                                                                 <h4 class="text-center">Previous data already save.</h4>
                                                         </div>',
                                             'title' => 'Add New Course',
+                                            'firstName' => $sessionData->firstName,
                                             'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                             'traineeGroupTable' => $subject
                                         ]);
@@ -350,6 +358,7 @@ class ResourceController extends \Core\Controller{
             View::renderTemplate ('Resources/addInstructorForm.twig.html', [
                                         'traineeGroupTable' => $instructor,
                                         'title' => 'Add A New Instructor',
+                                        'firstName' => $sessionData->firstName,
                                         'tableHeadings' => ['First name', 'Last name', 'ID Number' ,'Note']
 
                                     ]);
@@ -402,6 +411,7 @@ class ResourceController extends \Core\Controller{
                                                             <h4 class="text-center">Instructor already exist!</h4>
                                                     </div>',
                                         'title' => 'Add New Instructor',
+                                        'firstName' => $sessionData->firstName,
                                         'tableHeadings' => ['Name', 'Level', 'ID Number', 'Note'],
                                         'traineeGroupTable' => $subject
                                     ]);
@@ -436,6 +446,7 @@ class ResourceController extends \Core\Controller{
                                                                 <h4 class="text-center">Instructor save!</h4>
                                                         </div>',
                                             'title' => 'Add New Instructor',
+                                            'firstName' => $sessionData->firstName,
                                             'tableHeadings' => ['Name', 'Level', 'Section', 'Note'],
                                             'traineeGroupTable' => $instructor
                                         ]);
@@ -451,6 +462,7 @@ class ResourceController extends \Core\Controller{
                                                                 <h4 class="text-center">Previous data already save.</h4>
                                                         </div>',
                                             'title' => 'Add New Instructor',
+                                            'firstName' => $sessionData->firstName,
                                             'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                             'traineeGroupTable' => $instructor
                                         ]);
@@ -503,6 +515,7 @@ class ResourceController extends \Core\Controller{
             View::renderTemplate ('Resources/addRoomForm.twig.html', [
                                         'traineeGroupTable' => $room,
                                         'title' => 'Add A New Room',
+                                        'firstName' => $sessionData->firstName,
                                         'tableHeadings' => ['Name', 'Type', 'Location' ,'Description']
                                     ]);
         }else {
@@ -571,7 +584,8 @@ class ResourceController extends \Core\Controller{
                                                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                                                             <h4 class="text-center">Room already exist!</h4>
                                                     </div>',
-                                        'title' => 'Add New Instructor',
+                                        'title' => 'Add New Room',
+                                        'firstName' => $sessionData->firstName,
                                         'tableHeadings' =>  ['Name', 'Type', 'Location' ,'Description'],
                                         'traineeGroupTable' => $room
                                     ]);
@@ -619,7 +633,8 @@ class ResourceController extends \Core\Controller{
                                                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                                                                 <h4 class="text-center">Room save!</h4>
                                                         </div>',
-                                            'title' => 'Add New Instructor',
+                                            'title' => 'Add New Room',
+                                            'firstName' => $sessionData->firstName,
                                             'tableHeadings' =>  ['Name', 'Type', 'Location' ,'Description'],
                                             'traineeGroupTable' => $room
                                         ]);
@@ -648,6 +663,7 @@ class ResourceController extends \Core\Controller{
                                                                 <h4 class="text-center">Previous data already save.</h4>
                                                         </div>',
                                             'title' => 'Add New Room',
+                                            'firstName' => $sessionData->firstName,
                                             'tableHeadings' =>  ['Name', 'Type', 'Location' ,'Description'],
                                             'traineeGroupTable' => $room
                                         ]);
