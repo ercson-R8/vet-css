@@ -560,9 +560,18 @@ class ResourceController extends \Core\Controller{
             );
 
             
-             // it alread exist
+             // it already exist
             if($db->count() > 0){
                 // print_r("<pre> count: ".$db->count());
+                // // $db->query('SELECT  room.id as \'RoomID\',
+                // --             room.name as \'RoomName\',
+                // --             room.type as \'RoomType\',
+                // --             room.location as \'RoomLoc\',
+                // --             room.description as \'RoomDesc\',
+                // --             room_type.id as rtID,
+                // --             room_type.name as rtNAme,
+                // --             room_type.description as rtDesc
+                // --     FROM room INNER JOIN room_type ON room.type = room_type.id');
                  $db->select(
                 array(   
                             'room.name as \'RoomName\'', 
@@ -610,8 +619,18 @@ class ResourceController extends \Core\Controller{
                                     'description' => $description
 
                             ));
-
+                    $lastInsertId = $db->getlastInsertId();
                     unset($_POST);
+                    // // $db->query('SELECT  room.id as \'RoomID\',
+                    // --         room.name as \'RoomName\',
+                    // --         room.type as \'RoomType\',
+                    // --         room.location as \'RoomLoc\',
+                    // --         room.description as \'RoomDesc\',
+                    // --         room_type.id as rtID,
+                    // --         room_type.name as rtNAme,
+                    // --         room_type.description as rtDesc
+                    // -- FROM room INNER JOIN room_type ON room.type = room_type.id');
+                    
                     $db->select(
                     array(   
                                 'room.name as \'RoomName\'', 
@@ -627,13 +646,16 @@ class ResourceController extends \Core\Controller{
                         )
                     );
                     $room = ($db->getResults());
-
+                   
+                    // echo "<pre>";
+                    //  print_r("\ngetlastInsertId: ".$lastInsertId."\n");
+                    // print_r($room);
                     View::renderTemplate ('Resources/addRoomForm.twig.html', [
                                             'status' => '<div class="alert alert-success alert-dismissable">
                                                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                                                                 <h4 class="text-center">Room save!</h4>
                                                         </div>',
-                                            'title' => 'Add New Room',
+                                            'title' => 'Add New Room'.' '.$lastInsertId,
                                             'firstName' => $sessionData->firstName,
                                             'tableHeadings' =>  ['Name', 'Type', 'Location' ,'Description'],
                                             'traineeGroupTable' => $room
@@ -641,6 +663,15 @@ class ResourceController extends \Core\Controller{
                 
                 }else{
                     //you've sent this already!
+                    // //  $db->query('SELECT  room.id as \'RoomID\',
+                    // --         room.name as \'RoomName\',
+                    // --         room.type as \'RoomType\',
+                    // --         room.location as \'RoomLoc\',
+                    // --         room.description as \'RoomDesc\',
+                    // --         room_type.id as rtID,
+                    // --         room_type.name as rtNAme,
+                    // --         room_type.description as rtDesc
+                    // -- FROM room INNER JOIN room_type ON room.type = room_type.id');
                     $db->select(
                         array(   
                                 'room.name as \'RoomName\'', 
@@ -670,13 +701,7 @@ class ResourceController extends \Core\Controller{
                 }
                 
             }
-            
-
-            
-
-
-
-            
+                        
         }else {
             header("Location: /home/logout");
 

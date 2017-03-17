@@ -13,4 +13,53 @@
         {% endfor %}
     </ul>
 
+      
+
+ 
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<style>
+
+#traineeGroup-list{float:left;list-style:none;margin-top:-3px;padding:0;width:190px;position: absolute;}
+#traineeGroup-list li{padding: 10px; background: #f0f0f0; border-bottom: #bbb9b9 1px solid;}
+#traineeGroup-list li:hover{background:#ece3d2;cursor: pointer;}
+
+</style>
+<script>
+    $(document).ready(function(){
+        $("#search-box").keyup(function(){
+            $.ajax({
+            type: "POST",
+            url: "/home/readTraineeGroup",
+            data:'keyword='+$(this).val(),
+            beforeSend: function(){
+                $("#search-box").css("background","#FFF url(../vendor/image/LoaderIcon.gif) no-repeat 100px");
+
+            },
+            success: function(data){
+                $("#suggesstion-box").show();
+                $("#suggesstion-box").html(data);
+                $("#search-box").css("background","#FFF");
+                $("#suggesstion-box").css("background","#F1F1FA");
+            }
+            });
+        });
+    });
+
+    function selectCountry(val) {
+        $("#search-box").val(val);
+        $("#suggesstion-box").hide();
+        $("#loading").hide();
+    }
+</script>
+
+        
+        <div class="form-group form-group-lg" >
+            <input type="text" class="form-control" name="traineeGroup" id="search-box" placeholder="Trainee group" required>
+            
+        </div>
+
+
+        <div id="suggesstion-box"></div>
+
+
 {% endblock %}

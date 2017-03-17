@@ -184,7 +184,12 @@ class testDBController extends \Core\Controller{
                 ['user.id', '=', '1']
             )
         );
-        echo "<br/>Result count: {$db->count()}<br/> ";
+
+        echo "<br/>Result count: {$db->count()} ----- <br/>";
+
+
+
+
         if ($db->count()){
             print_r ($db->getResults());
             var_dump($db->first());
@@ -230,6 +235,23 @@ class testDBController extends \Core\Controller{
         //VALUES ('foo', 'bar', (SELECT color.color_id FROM color WHERE color.color_name = 'red'))
  
         
+    }
+    /*
+     * index2 method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function testAction (){
+        $db = DB::getInstance();
+        echo "<pre>";
+                echo "<br/>";
+        print_r($db);
+
+        $db->query('SELECT * FROM posts where id = 5');
+        print_r($db->getResults());
+        print_r('db->getResults()[0]->created_at: '.$db->getResults()[0]->created_at);
+
     }
 
 

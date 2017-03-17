@@ -30,10 +30,10 @@ class Users extends \Core\Controller
      */
     public function indexAction()
     {   
-        $d = new Demo();
-        //echo 'User admin index';
-        \Core\View::renderTemplate('Admin/index.twig.html');
-        $d->indexAction();
+        // $d = new Demo();
+        // //echo 'User admin index';
+        // \Core\View::renderTemplate('Admin/index.twig.html');
+        // $d->indexAction();
         $r = new \Core\Router();
         print_r($r);
 

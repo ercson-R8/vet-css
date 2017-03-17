@@ -22,6 +22,7 @@ class DB extends \Core\Model{
             $_query,
             $_error,
             $_results,
+            $_lastInsertId,
             $_count = 0;
 
     private function __construct (){
@@ -67,16 +68,17 @@ class DB extends \Core\Model{
                 }
             }
             if ($this->_query->execute()){
-                
+                $this->_lastInsertId = $this->_pdo->lastInsertId('created_at');
                 $this->_count = $this->_query->rowCount();
-
+                // print_r("\nthis->_lastInsertId: ".$this->_lastInsertId."\n");
+                // print_r("\nthis->_count: ".$this->_count."\n");
                 // if sql statement is SELECT, fetch the result otherwise do nothing
                 $sqlStatement = explode(' ',trim($sql))[0];
                 // echo "<br/>statement is: {$sqlStatement}<br/>";
                 if (strcasecmp($sqlStatement, 'SELECT') == 0){
                 
                     $this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ); 
-                
+                    
                 } 
                 
             }else{
@@ -86,6 +88,10 @@ class DB extends \Core\Model{
             }
         }
     } 
+
+    public function getlastInsertId(){
+        return $this->_lastInsertId;
+    }
 
     public function getResults(){
         return $this->_results;

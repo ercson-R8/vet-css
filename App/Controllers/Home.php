@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use \Core\View;
 use App\Controllers\Auth\Session;
+use App\Models\DB;
+
 /**
  * Home controller
  *
@@ -74,7 +76,70 @@ class Home extends \Core\Controller
 
     }
 
+
+/** 
+     * Show some data
+     *
+     * @return void
+     */
+    public function showAction()
+    {   
+        $db = DB::getInstance();
+        // $db->query("SELECT * FROM trainee_group WHERE id = {$ID}");
+        // $id = "1";
+        // // echo "<pre>";
+        $db->query("SELECT * FROM room ");
+        // foreach ($db->getResults() as $result){
+        //     print_r($result);
+        // }
+
+        $x = $db->getResults();
+        $data = "here is the dadddta";
+        
+        header('Content-Type: application/json');
+        echo json_encode($data);
+        
+    } 
+
+
+
+    /*
+     * readTraineeGroup method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function readTraineeGroup(){
+
+        if(!empty($_POST["keyword"])) {
+            $db = DB::getInstance();
+            $keyword = "'".$_POST["keyword"]."%'";
+          
+            $db->query("SELECT * FROM trainee_group WHERE trainee_group.name LIKE {$keyword} ORDER BY trainee_group.name LIMIT 0,10");
+            //  print_r($db->count());
+            if ($db->count()){
+                ?>
+                    <ul id="traineeGroup-list" class="list-unstyled">
+                    <?php
+                        foreach ($db->getResults() as $result){
+                        ?>
+                        <li onClick="selectCountry('<?php echo $result->name ?>');"><?php echo $result->name; ?></li>
+                        <?php } ?>
+                    </ul>
+                <?php
+            }            
+        }
+
+    }
+
+
     public function testAction(){
+
+        // $data = "here is the data";
+        
+        // header('Content-Type: application/json');
+        // echo json_encode($data);
+ 
         View::renderTemplate('Home/test.twig.html');
     }
 

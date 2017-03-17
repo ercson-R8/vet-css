@@ -79,6 +79,7 @@ class Test extends \Core\Controller {
             );
 
         // $db->query('SELECT  FROM room INNER JOIN room_type ON room.type = room_type.id');
+        /*
         $db->query('SELECT  room.id as \'RoomID\',
                             room.name as \'RoomName\',
                             room.type as \'RoomType\',
@@ -88,11 +89,15 @@ class Test extends \Core\Controller {
                             room_type.name as \'room_type.name\',
                             room_type.description as \'room_type.description\'
                     FROM room INNER JOIN room_type ON room.type = room_type.id');
-
+                    */
+                    $id = 3;
+            echo "<pre>";
+            print_r("\ngetlastInsertId: ".$db->getlastInsertId()."\n");
+        $db->query('SELECT  * FROM room WHERE room.type = '. $id);
 
             $data = ($db->getResults());
 
-            echo "<pre>";
+            
             print_r(($data));
     }
 
