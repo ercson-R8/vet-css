@@ -157,13 +157,25 @@ class TimetableController extends \Core\Controller{
                 array('subject_class'),
                 array(['subject_class.timetable_id', '=', $sessionData->currentTimetable])
             );
-  
-        
+
             $subject_class = ($db->getResults());
+
+            $db->select(
+                array('*'),
+                array('timetable'),
+                array(['timetable.id', '=', $sessionData->currentTimetable])
+            );
+          
+            $timetable = ($db->getResults());
+            print_r($timetable);
+            $tableTitle = 'List of classes for AY '.$timetable[0]->year_start.'-'.$timetable[0]->year_end.' Term'.$timetable[0]->term;
+            $tableSubTitle = '('.$timetable[0]->remarks.')';
             View::renderTemplate ('Timetables/addSubjectClassForm.twig.html', [
                                         'subjectClass' => $subject_class,
-                                        'title' => 'Add A Class '.$sessionData->currentTimetable,
+                                        'title' => 'Add a Class '.$sessionData->currentTimetable,
                                         'firstName' => $sessionData->firstName,
+                                        'tableTitle' => $tableTitle,
+                                        'tableSubTitle' => $tableSubTitle,
                                         'tableHeadings' => ['timetable_id', 'subject_id', 'trainee_group_id' ,'instructor_id']
                                     ]);
 

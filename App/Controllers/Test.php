@@ -352,9 +352,9 @@ class Test extends \Core\Controller {
      * @param		
      * @return	 	
      */
-    public function sysInfoAction (){
-         
-        return ;
+    public function htmlTableAction (){
+         echo "htmlTable...";
+        
     }
 
 

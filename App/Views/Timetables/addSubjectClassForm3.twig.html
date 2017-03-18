@@ -18,66 +18,37 @@
                             <h3>{{title}}</h3>
                         </div>
                         <div class="panel-body">
+                            
                             <form class="form center-block" name="addTraineeGroup" action="/Timetable/TimetableController/createNewTimetable" method="post">
-                                <table width="100%" class="table table-hover" >
-                                    
-                                        <tr >
-                                            <td colspan="3" > 
-                                                <div class="form-group form-group-lg">
-                                                    <input type="text" class="form-control" name="year_start" placeholder="Trainee group" required>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-group form-group-lg">
-                                                    <input type="text" class="form-control" name="year_end" placeholder="Course" required>
-                                                </div>
-                                            </td>
-                                            <td colspan="2">
-                                                <div class="form-group form-group-lg">
-                                                    <input type="text" class="form-control" name="year_end" placeholder="Instructor" required>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-group form-group-lg">
-                                                    <input type="number" min="1" max="4" step="1" class="form-control" name="year_end" placeholder="No. of days" required>
-                                                    <span class="pull-left text-muted small"><i>Number of days</i></span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <input type="number" min="1" max="4" step="1" class="form-control" name="year_end" value="1" required>
-                                                <span class="pull-left text-muted small"><i>Pref. start</i></span>
-                                            </td>
-                                            <td>
-                                                <input type="number" min="1" max="4" step="1" class="form-control" name="year_end" required>
-                                                <span class="pull-left text-muted small"><i>Pref. End</i></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-group form-group-lg">
-                                                    <input type="text" class="form-control" name="year_start" placeholder="Room type" required>
-                                                </div>
-                                            </td>
-                                            <td colspan="2">
-                                                <div class="form-group form-group-lg">
-                                                    <input type="text" class="form-control" name="year_start" placeholder="Room*" >
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        
-                                </table>
                                 <div class="form-group form-group-lg">
+                                    
+                                    <input type="number" min="2017" step="1" class="form-control" name="year_start" placeholder="Year Start" required>
+                               
+                                    
+                                </div>
+                                <div class="form-group form-group-lg">
+                                    <input type="number" min="2017" step="1" class="form-control" name="year_end" placeholder="Year End" required>
+                               
+                                </div>
+
+
+                                <div class="form-group form-group-lg">
+                                    <input type="number" min="1" max="4" step="1" class="form-control" name="term" placeholder="Term number" required>
+                                </div>
+
+
+                                <div class="form-group form-group-lg" >
+                                    <input type="text" class="form-control" name="remarks" onblur="return x()" placeholder="Description">
+                                </div>       
+
+                                <div class="form-group">
                                     <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit">
-                                       {{title}}
-                                    </button>
+                                        {{title}}
+                                    </button>                                    
                                 </div>
                             </form>
-                        </div>
                         
+                        </div>
                         <!-- class="panel-body" -->
                         <div class="panel-footer">
                             <span><a href="/home/index">Cancel and go back home</a></span>
@@ -95,8 +66,7 @@
                 <div class="well"> 
                     <div class="panel panel-info">
                         <div class="panel-heading">
-                            <h3>{{tableTitle}}</h3>
-                            <h4>{{tableSubTitle}}</h4>
+                            <h3>List of Timetables</h3>
                         </div>
                         <div class="panel-body">
                             

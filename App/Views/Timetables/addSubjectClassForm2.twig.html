@@ -1,0 +1,224 @@
+
+{% extends "base_level_1.html" %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block body %}
+
+    {{ status | raw}}
+
+    <div class="row"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12" >
+                <div class="well"> 
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3>{{title}}</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form class="form center-block" name="addTraineeGroup" action="/Timetable/TimetableController/addSubjectClass" method="post">
+                                <div class="col-lg-12 col-md-10 col-sm-10" >
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-10 col-sm-10" >
+                                            <div class="form-group form-group-lg">
+                                                <input type="text" class="form-control" name="traineeGroup" id="search-box" placeholder="Trainee group" size="10"required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <div class="table-responsive">
+                                        <div class="form-group form-group-sm">
+                                            <table width="100%" cellspacing="100" border="2" class="table table-hover table-responsive table-striped table-bordered" id="">
+                                                <thead>
+                                                    <tr >
+                                                        <th style="text-align:center">Course</th>
+                                                        <th style="text-align:center">Preferred Start</th> 
+                                                        <th style="text-align:center">Preferred End</th>
+                                                        <th style="text-align:center">Number of Days</th>
+                                                        <th style="text-align:center">Instructor</th>
+                                                        <th style="text-align:center">Room Type</th>
+                                                        <th style="text-align:center">Room</th>
+                                                    </tr>
+                                                </thead>
+                                                <tfoot>
+                                                
+                                                    <tr>
+                                                        <th style="text-align:center">Course</th>
+                                                        <th style="text-align:center">Preferred Start</th> 
+                                                        <th style="text-align:center">Preferred End</th>
+                                                        <th style="text-align:center">Number of Days</th>
+                                                        <th style="text-align:center">Instructor</th>
+                                                        <th style="text-align:center">Room Type</th>
+                                                        <th style="text-align:center">Room</th>
+                                                    </tr>
+                                                    
+                                                </tfoot>
+                                                <tbody>
+                                                    
+                                                    <tr>
+                                                        <td><input type="text" class="form-control" name="firstname"></td>
+                                                        <td><input type="number" min="2017" step="1" class="form-control" name="year_end" size="1"></td> 
+                                                        <td><input type="number" min="2017" step="1" class="form-control" name="year_end" placeholder="" size="1"></td>
+                                                        <td><input type="number" min="2017" step="1" class="form-control" name="year_end" placeholder="" size="1"></td>
+                                                        <td><input type="text" class="form-control" name="firstname" ></td> 
+                                                        <td><input type="text" class="form-control" name="firstname"></td>
+                                                        <td><input type="text" class="form-control" name="firstname"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="text" class="form-control" name="firstname"></td>
+                                                        <td><input type="number" min="2017" step="1" class="form-control" name="year_end" size="1"></td> 
+                                                        <td><input type="number" min="2017" step="1" class="form-control" name="year_end" placeholder="" size="1"></td>
+                                                        <td><input type="number" min="2017" step="1" class="form-control" name="year_end" placeholder="" size="1"></td>
+                                                        <td><input type="text" class="form-control" name="firstname" ></td> 
+                                                        <td><input type="text" class="form-control" name="firstname"></td>
+                                                        <td><input type="text" class="form-control" name="firstname"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="text" class="form-control" name="firstname"></td>
+                                                        <td><input type="number" min="2017" step="1" class="form-control" name="year_end" size="1"></td> 
+                                                        <td><input type="number" min="2017" step="1" class="form-control" name="year_end" placeholder="" size="1"></td>
+                                                        <td><input type="number" min="2017" step="1" class="form-control" name="year_end" placeholder="" size="1"></td>
+                                                        <td><input type="text" class="form-control" name="firstname" ></td> 
+                                                        <td><input type="text" class="form-control" name="firstname"></td>
+                                                        <td><input type="text" class="form-control" name="firstname"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="text" class="form-control" name="firstname"></td>
+                                                        <td><input type="number" min="2017" step="1" class="form-control" name="year_end" size="1"></td> 
+                                                        <td><input type="number" min="2017" step="1" class="form-control" name="year_end" placeholder="" size="1"></td>
+                                                        <td><input type="number" min="2017" step="1" class="form-control" name="year_end" placeholder="" size="1"></td>
+                                                        <td><input type="text" class="form-control" name="firstname" ></td> 
+                                                        <td><input type="text" class="form-control" name="firstname"></td>
+                                                        <td><input type="text" class="form-control" name="firstname"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="text" class="form-control" name="firstname"></td>
+                                                        <td><input type="number" min="2017" step="1" class="form-control" name="year_end" size="1"></td> 
+                                                        <td><input type="number" min="2017" step="1" class="form-control" name="year_end" placeholder="" size="1"></td>
+                                                        <td><input type="number" min="2017" step="1" class="form-control" name="year_end" placeholder="" size="1"></td>
+                                                        <td><input type="text" class="form-control" name="firstname" ></td> 
+                                                        <td><input type="text" class="form-control" name="firstname"></td>
+                                                        <td><input type="text" class="form-control" name="firstname"></td>
+                                                    </tr>
+                                                 
+
+                                                    
+                                                </tbody>
+                                            </table>
+                                            <!-- /.table-responsive -->
+                                        </div>
+                                        <!--  class="form-group form-group-lg" -->
+
+                                    </div>
+                                    <!-- class="table-responsive" -->
+                                    <p></p>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12" >
+                                            <div class="form-group form-group-lg">
+                                                <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit">
+                                                    {{title}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- class="col-lg-10 col-md-10 col-sm-10" -->
+                            </form>
+
+
+                            
+                        
+                        </div>
+                        <!-- class="panel-body" -->
+                        <div class="panel-footer">
+                            <span><a href="/home/index">Cancel and go back home</a></span>
+                        </div>
+                        <!-- class="panel-footer" -->
+                    </div>
+                    <!-- class="panel panel-primary" -->
+
+                </div>
+                <!-- class="well" -->
+            </div>
+            <!-- class="col-lg-6 col-md-6 col-sm-6" -->
+
+            
+        </div>
+        <!-- class="row" -->
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12" >
+                <div class="well"> 
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3>List of Classes</h3>
+                        </div>
+                        <div class="panel-body">
+                            
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+
+                                        {% for tableHeader in tableHeadings %}
+                                            {% if (tableHeader == "Description") %}
+                                                <th >{{ tableHeader }}</th>
+                                            {% else %}
+                                                <th style="text-align:center">{{ tableHeader }}</th>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                
+                                    <tr>
+                                        {% for tableHeader in tableHeadings %}
+                                            {% if (tableHeader == "Description") %}
+                                                <th>{{ tableHeader }}</th>
+                                            {% else %}
+                                                <th style="text-align:center">{{ tableHeader }}</th>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <th></th>
+                                    </tr>
+                                    
+                                </tfoot>
+                                <tbody>
+                                    {% for row in subjectClass %}
+                                    <tr>
+                                        <td style="text-align:center">{{ row.timetable_id }} </td>
+                                        <td style="text-align:center">{{ row.subject_id }}</td>
+                                        <td style="text-align:center">{{ row.trainee_group_id }}</td>
+                                        <td>{{ row.room_id }}</td>
+                                        <td>..</td>
+                                    </tr>
+                                    {% endfor %}
+                                    
+
+                                    
+                                </tbody>
+                            </table>
+                            <!-- /.table-responsive -->
+
+                        </div>
+                        <!-- class="panel-body" -->
+
+                    </div>
+                    <!-- class="panel panel-primary" -->
+                </div>
+                <!-- class="well" -->
+            </div>
+            <!-- class="col-lg-3 col-md-3 col-sm-3" -->
+
+         </div>
+        <!-- class="row" -->
+
+
+    </div> 
+        <!-- class="container-fluid" -->
+
+{% endblock %}
