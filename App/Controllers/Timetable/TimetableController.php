@@ -317,7 +317,7 @@ class TimetableController extends \Core\Controller{
                     <?php
                         foreach ($db->getResults() as $result){
                         ?>
-                        <li onClick="selectOptionsCourse('<?php echo $result->code ?>',' <?php echo $result->name ?>');"><?php echo $result->name; ?></li>
+                        <li onClick="selectOptionsCourse('<?php echo $result->code ?>','<?php echo $result->name ?>');"><?php echo $result->name; ?></li>
                         <?php } ?>
                     </ul>
                 <?php
@@ -347,7 +347,7 @@ class TimetableController extends \Core\Controller{
                     <?php
                         foreach ($db->getResults() as $result){
                         ?>
-                        <li onClick="selectOptionsInstructor('<?php echo $result->id ?>',' <?php echo $result->fullName ?>');"><?php echo $result->fullName; ?></li>
+                        <li onClick="selectOptionsInstructor('<?php echo $result->id ?>','<?php echo $result->fullName ?>');"><?php echo $result->fullName; ?></li>
                         <?php } ?>
                     </ul>
                 <?php
@@ -356,7 +356,49 @@ class TimetableController extends \Core\Controller{
 
     }
     
+    /*
+     * ajaxFetchRoomTypes method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function ajaxFetchRoomTypes(){
 
+        if(!empty($_POST["keyword"])) {
+            $db = DB::getInstance();
+            $keyword = "'%".$_POST["keyword"]."%'";
+            $db->query("SELECT * FROM room_type WHERE room_type.name LIKE {$keyword} ORDER BY room_type.name LIMIT 0,10");
+             
+            if ($db->count()){
+                ?>
+                    <ul id="ajaxFetch-list" class="list-unstyled">
+                    <?php
+                        foreach ($db->getResults() as $result){
+                        ?>
+                        
+                        <li onClick="selectOptionsRoomType('<?php 
+                                    // $roomTypeID = $result->id;
+                                    // $db->query("SELECT * FROM room WHERE room.type = {$roomTypeID} ORDER BY room.name LIMIT 0,10");
+
+
+                                    echo $result->id ?>','<?php echo $result->name.' '.$result->id ?>');"><?php echo $result->name.' '.$result->id; ?>
+                        </li>
+
+
+
+
+
+                        <?php 
+                        
+                        
+                        } ?>
+                        
+                    </ul>
+                <?php
+            }            
+        }
+
+    }
 
 
 
@@ -395,6 +437,61 @@ Array
 
 )
 
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("button").click(function(){
+        $("p").remove("#rem");
+        $("select").remove("#mySelect");
+        
+         var data = "asdf";
+        var data = "<select name=\"type\" id=\"mySelect\"><option value=\"volvo\">Volvo</option><option value=\"saab\">Saab</option><option value=\"mercedes\">Mercedes</option><option value=\"audi\">Audi</option></select>";
+        $("#divSelect").html(data);
+    });
+   
+    
+    
+    
+});
+</script>
+<style>
+.test {
+    color: red;
+    font-size: 20px;
+}
+
+.demo {
+    color: green;
+    font-size: 25px;
+}
+</style>
+</head>
+<body>
+
+  <select name="type" id="mySelect">
+    <option value="volvo">Volvo</option>
+    <option value="saab">Saab</option>
+    <option value="mercedes">Mercedes</option>
+    <option value="audi">Audi</option>
+  </select>
+
+
+<p>This is a paragraph.</p>
+<p id="rem" class="test">This is p element with class="test".</p>
+<p id="rem" class="test">This is p element with class="test".</p>
+<p class="demo">This is p element with class="demo".</p>
+
+<button>Remove all p elements with class="test" and class="demo"</button>
+
+<div id="divSelect">
+</div>
+
+
+</body>
+</html>
 
 
 

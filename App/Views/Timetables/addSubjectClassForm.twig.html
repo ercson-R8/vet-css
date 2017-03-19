@@ -76,12 +76,18 @@
                                         <tr>
                                             <td>
                                                 <div class="form-group form-group-lg">
-                                                    <input type="text" class="form-control" name="year_start" placeholder="Room type" required>
+                                                    <input type="text" class="form-control" name="roomType" placeholder="Room type" id="search-box-roomType"required>
+                                                    <p></p><div id="suggesstion-box-roomType"></div>
                                                 </div>
                                             </td>
                                             <td colspan="2">
                                                 <div class="form-group form-group-lg">
-                                                    <input type="text" class="form-control" name="year_start" placeholder="Room*" >
+                                                    <div id="roomDiv">
+                                                        <select class="form-control" name="room" placeholder="Room*" id="search-box-room" >
+                                                            <option value="">Room</option>
+                                                        </select>
+                                                    </div>
+                                                    <span class="pull-left text-muted small"><i>* Room is optional</i></span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -233,6 +239,28 @@
                 });
             });
 
+            $("#search-box-roomType").keyup(function(){
+                $.ajax({
+                type: "POST",
+                url: "/timetable/TimetableController/ajaxFetchRoomTypes",
+                data:'keyword='+$(this).val(),
+                beforeSend: function(){
+                    $("#search-box-roomType").css("background","#FFF url(../../vendor/image/LoaderIcon.gif) no-repeat 120px");
+
+                },
+                success: function(data){
+                    $("#suggesstion-box-roomType").show();
+                    $("#suggesstion-box-roomType").html(data);
+                    $("#search-box-roomType").css("background","#FFF");
+                    $("#suggesstion-box-roomType").css("background","#F1F1FA");
+                }
+                });
+            });
+
+            $("input").blur(function(){
+                alert("The text has been changed.");
+            });
+
 
         });
 
@@ -247,12 +275,20 @@
             $("#suggesstion-box-course").hide();
             $("#loading").hide();
         }
+        
         function selectOptionsInstructor(code, fullName) {
             $("#search-box-instructor").val(fullName);
             $("#suggesstion-box-instructor").hide();
             $("#loading").hide();
         }
 
+        function selectOptionsRoomType(code, roomTypeName) {
+            $("#search-box-roomType").val(roomTypeName);
+            $("#suggesstion-box-roomType").hide();
+            $("#loading").hide();
+            $("select").remove("#search-box-room");
+
+        }
 
 
 
