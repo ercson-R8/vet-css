@@ -167,16 +167,20 @@ class TimetableController extends \Core\Controller{
             );
           
             $timetable = ($db->getResults());
-            print_r($timetable);
-            $tableTitle = 'List of classes for AY '.$timetable[0]->year_start.'-'.$timetable[0]->year_end.' Term'.$timetable[0]->term;
+            // print_r($timetable);
+            $tableTitle = 'List of classes for AY '.$timetable[0]->year_start.'-'.$timetable[0]->year_end.' Term '.$timetable[0]->term;
             $tableSubTitle = '('.$timetable[0]->remarks.')';
+            
+            // print_r($subject_class);
+
+            // print_r($timetable);
             View::renderTemplate ('Timetables/addSubjectClassForm.twig.html', [
                                         'subjectClass' => $subject_class,
                                         'title' => 'Add a Class '.$sessionData->currentTimetable,
                                         'firstName' => $sessionData->firstName,
                                         'tableTitle' => $tableTitle,
                                         'tableSubTitle' => $tableSubTitle,
-                                        'tableHeadings' => ['timetable_id', 'subject_id', 'trainee_group_id' ,'instructor_id']
+                                        'tableHeadings' => ['Group', 'Subject', 'Instructor' ,'No. of Days', 'Start-End', 'Room']
                                     ]);
 
             }else {
@@ -246,6 +250,167 @@ class TimetableController extends \Core\Controller{
 
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+     * ajaxFetchTraineeGroup method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function ajaxFetchTraineeGroups(){
+
+        if(!empty($_POST["keyword"])) {
+            $db = DB::getInstance();
+            $keyword = "'%".$_POST["keyword"]."%'";
+          
+            $db->query("SELECT * FROM trainee_group WHERE trainee_group.name LIKE {$keyword} ORDER BY trainee_group.name LIMIT 0,10");
+
+            if ($db->count()){
+                ?>
+                    <ul id="ajaxFetch-list" class="list-unstyled">
+                    <?php
+                        foreach ($db->getResults() as $result){
+                        ?>
+                        <li onClick="selectOptionsTraineeGroup('<?php echo $result->name ?>');"><?php echo $result->name; ?></li>
+                        <?php } ?>
+                    </ul>
+                <?php
+            }            
+        }
+    }
+    /*
+     * ajaxFetchTraineeGroup method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function ajaxFetchCourses(){
+
+        if(!empty($_POST["keyword"])) {
+            $db = DB::getInstance();
+            $keyword = "'%".$_POST["keyword"]."%'";
+          
+            $db->query("SELECT * FROM subject WHERE subject.name LIKE {$keyword} ORDER BY subject.name LIMIT 0,10");
+            //  print_r($db->count());
+            if ($db->count()){
+                ?>
+                    <ul id="ajaxFetch-list" class="list-unstyled">
+                    <?php
+                        foreach ($db->getResults() as $result){
+                        ?>
+                        <li onClick="selectOptionsCourse('<?php echo $result->code ?>',' <?php echo $result->name ?>');"><?php echo $result->name; ?></li>
+                        <?php } ?>
+                    </ul>
+                <?php
+            }            
+        }
+
+    }
+
+    /*
+     * ajaxFetchInstructors method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function ajaxFetchInstructors(){
+
+        if(!empty($_POST["keyword"])) {
+            $db = DB::getInstance();
+            $keyword = "'%".$_POST["keyword"]."%'";
+            $fields = "id, concat(instructor.first_name,' ',instructor.last_name) AS fullName";
+            $where = "concat(instructor.first_name,' ',instructor.last_name) ";
+            $db->query("SELECT {$fields} FROM instructor WHERE {$where} LIKE {$keyword} ORDER BY instructor.first_name LIMIT 0,10");
+             
+            if ($db->count()){
+                ?>
+                    <ul id="ajaxFetch-list" class="list-unstyled">
+                    <?php
+                        foreach ($db->getResults() as $result){
+                        ?>
+                        <li onClick="selectOptionsInstructor('<?php echo $result->id ?>',' <?php echo $result->fullName ?>');"><?php echo $result->fullName; ?></li>
+                        <?php } ?>
+                    </ul>
+                <?php
+            }            
+        }
+
+    }
+    
+
+
+
+
+/*
+
+
+Array
+(
+    [0] => stdClass Object
+        (
+            [id] => 6
+            [year_start] => 2019
+            [year_end] => 2020
+            [term] => 2
+            [remarks] => W3Schools.com - the world's largest web development site.
+        [current] => 1
+        )
+
+)
+Array
+(
+    [0] => stdClass Object
+        (
+            [id] => 1
+            [timetable_id] => 6
+            [subject_id] => 1
+            [trainee_group_id] => 2
+            [instructor_id] => 1
+            [room_id] => 19
+            [room_type_id] => 1
+            [meeting_time_id_TBDropped] => 
+            [preferred_start_period] => 
+            [preferred_end_period] => 
+            [preferred_number_days] => 
+        )
+
+)
+
+
+
+
+
+
+
+*/
+
+
+
+
+
+
+
+
+
 
 
 

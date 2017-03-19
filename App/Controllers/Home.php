@@ -98,6 +98,28 @@ class Home extends \Core\Controller
         
         header('Content-Type: application/json');
         echo json_encode($data);
+
+        /*
+        SELECT instructor.id, concat(instructor.first_name,' ',instructor.last_name) as fullName 
+        FROM instructor
+        WHERE concat(instructor.first_name,' ',instructor.last_name) like '%ton%'
+
+        */
+        $db = DB::getInstance();
+            $keyword = "'%"."a"."%'";
+            $fields = "id, concat(instructor.first_name,' ',instructor.last_name) AS fullName";
+            $where = "concat(instructor.first_name,' ',instructor.last_name) ";
+            print_r("\n".$fields."\n");
+
+            print_r("\n".''."\n");
+            $db->query("SELECT {$fields} FROM instructor WHERE {$where} LIKE {$keyword} ORDER BY instructor.first_name LIMIT 0,10");
+             print_r($db->count());
+             $results = $db->getResults();
+
+            //  print_r($results);
+             foreach ($results as $result){
+                 print_r("\n".$result->fullName."\n");
+             }
         
     } 
 

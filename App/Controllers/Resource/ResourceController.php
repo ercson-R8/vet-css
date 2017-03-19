@@ -502,7 +502,7 @@ class ResourceController extends \Core\Controller{
                         'room.location as \'RoomLoc\'', 
                         'room.description as \'RoomDesc\'',
                         'room_type.id as rtID', 
-                        'room_type.name as rtNAme', 
+                        'room_type.name as rtName', 
                         'room_type.description as rtDesc'),
                 array('room INNER JOIN room_type ON room.type = room_type.id'),
                 array(
