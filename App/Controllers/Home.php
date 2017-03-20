@@ -161,8 +161,10 @@ class Home extends \Core\Controller
         
         // header('Content-Type: application/json');
         // echo json_encode($data);
+        print_r($this->route_params);
  
-        View::renderTemplate('Home/test.twig.html');
+        // View::renderTemplate('Home/test.twig.html',
+        //                     ['params'=> $this->param]);
     }
 
 

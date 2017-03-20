@@ -82,15 +82,16 @@ class TimetableController extends \Core\Controller{
     public function createNewTimetable(){
         $sessionData = Session::getInstance();
         $db = DB::getInstance();
+        
         if ($sessionData->inSession) {
             
 
-            $timetable = ($db->getResults());
+            //$timetable = ($db->getResults());
             $year_start = $_POST["year_start"];
             $year_end = $_POST["year_end"];
             $term = $_POST["term"];
             $remarks = $_POST["remarks"];
-
+            
 
             //create digest of the form submission:
 
@@ -101,20 +102,31 @@ class TimetableController extends \Core\Controller{
             if($messageIdent!=$sessionMessageIdent){ //if its different:
                 //save the session var: 
                 $sessionData->messageIdent = $messageIdent;
+                // UPDATE timetable
+                // SET timetable.current = 0
+                // WHERE timetable.current = 1
+                $db = DB::getInstance();
+                $db->query('UPDATE timetable SET timetable.current = 0  WHERE timetable.current = 1');
+                // echo ("<pre>asdfadf <br/>");
+                $timetable = ($db->getResults());
+                // print_r($db->count());
                 // save the data 
                 $db->insert('timetable', 
                         array(  'year_start' => $year_start,
                                 'year_end' =>  $year_end,
                                 'term' => $term,
-                                'remarks' => $remarks
-
+                                'remarks' => $remarks,
+                                'current' => 1
                         ));
 
                 unset($_POST);
                 
 
+
                 $lastInsertId = $db->getlastInsertId();
                 $sessionData->currentTimetable = $lastInsertId;
+
+                // print_r("\n".$sessionData->currentTimetable."\n");
                 header("Location: /Timetable/TimetableController/addSubjectClass");
 
                 // $this->addSubjectClassAction( $lastInsertId ); 
@@ -123,7 +135,7 @@ class TimetableController extends \Core\Controller{
             }else{
                 //you've sent this already!
                 
-
+                
                // $this->addSubjectClassAction();
 
 
@@ -201,14 +213,38 @@ class TimetableController extends \Core\Controller{
     public function createSubjectClass (){
         $sessionData = Session::getInstance();
         $db = DB::getInstance();
+        echo ("<pre>");
+        print_r($_POST);
         if ($sessionData->inSession) {
-            
+            /*
+                    Array
+                        (
+                            [0] => stdClass Object
+                                (
+                                    [id] => 1
+                                    [timetable_id] => 6
+                                    [subject_id] => 1
+                                    [trainee_group_id] => 2
+                                    [instructor_id] => 1
+                                    [room_id] => 19
+                                    [room_type_id] => 1
+                                    [meeting_time_id_TBDropped] => 
+                                    [preferred_start_period] => 
+                                    [preferred_end_period] => 
+                                    [preferred_number_days] => 
+                                )
 
-            $timetable = ($db->getResults());
-            $year_start = $_POST["year_start"];
-            $year_end = $_POST["year_end"];
-            $term = $_POST["term"];
-            $remarks = $_POST["remarks"];
+                        )
+            */
+
+            $subject_id             = $_POST["subject_id"];
+            $trainee_group_id       = $_POST["trainee_group_id"];
+            $instructor_id          = $_POST["instructor_id"];
+            $room_id                = $_POST["room_id"];
+            $room_type_id           = $_POST["room_type_id"];
+            $preferred_start_period = $_POST["preferred_start_period"];
+            $preferred_end_period   = $_POST["preferred_end_period"];
+            $preferred_number_days  = $_POST["preferred_number_days"];
 
 
             //create digest of the form submission:
@@ -221,17 +257,17 @@ class TimetableController extends \Core\Controller{
                 //save the session var: 
                 $sessionData->messageIdent = $messageIdent;
                 // save the data 
-                $db->insert('timetable', 
-                            array(  'year_start' => $year_start,
-                                    'year_end' =>  $year_end,
-                                    'term' => $term,
-                                    'remarks' => $remarks
+                // $db->insert('timetable', 
+                //             array(  'year_start' => $year_start,
+                //                     'year_end' =>  $year_end,
+                //                     'term' => $term,
+                //                     'remarks' => $remarks
 
-                            ));
+                //             ));
 
                 unset($_POST);
 
-                header("Location: /Timetable/TimetableController/addSubjectClass");
+                // header("Location: /Timetable/TimetableController/addSubjectClass");
 
                  
                 
@@ -264,13 +300,7 @@ class TimetableController extends \Core\Controller{
 
 
 
-
-
-
-
-
-
-/*
+    /*
      * ajaxFetchTraineeGroup method 
      *
      * @param		
@@ -381,7 +411,7 @@ class TimetableController extends \Core\Controller{
                                     // $db->query("SELECT * FROM room WHERE room.type = {$roomTypeID} ORDER BY room.name LIMIT 0,10");
 
 
-                                    echo $result->id ?>','<?php echo $result->name.' '.$result->id ?>');"><?php echo $result->name.' '.$result->id; ?>
+                                    echo $result->id ?>','<?php echo $result->name; ?>');"><?php echo $result->name.' '.$result->id; ?>
                         </li>
 
 
@@ -399,115 +429,59 @@ class TimetableController extends \Core\Controller{
         }
 
     }
+    /*
+     * ajaxFetchRoom method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function ajaxFetchRooms(){
+
+        if(!empty($_POST["keyword"])) {
+            $db = DB::getInstance();
+           
+            // will take the id pass through the URL 
+            // $keyword = "'".$this->route_params['id']."'";
+            $keyword = "'".$_POST["keyword"]."'";
+
+            $db->query("SELECT * FROM room WHERE room.type LIKE {$keyword} ORDER BY room.name LIMIT 0,10");
+            
+            if ($db->count()){
+                ?>
+                    <ul id="ajaxFetch-list" class="list-unstyled">
+                        <li onClick="selectOptionsRoom('', 'Any of this type')">Any of this type</li>
+                    <?php 
+                        foreach ($db->getResults() as $result){
+                        ?>
+                        
+                        <li onClick="selectOptionsRoom('<?php 
+                                    echo $result->id ?>','<?php echo $result->name ?>');"><?php echo $result->name; ?>
+                        </li>
+                        <?php 
+                        } ?>
+                        
+                    </ul>
+                <?php
+            }            
+        }
+
+    }
 
 
+        public function testAction(){
 
-/*
-
-
-Array
-(
-    [0] => stdClass Object
-        (
-            [id] => 6
-            [year_start] => 2019
-            [year_end] => 2020
-            [term] => 2
-            [remarks] => W3Schools.com - the world's largest web development site.
-        [current] => 1
-        )
-
-)
-Array
-(
-    [0] => stdClass Object
-        (
-            [id] => 1
-            [timetable_id] => 6
-            [subject_id] => 1
-            [trainee_group_id] => 2
-            [instructor_id] => 1
-            [room_id] => 19
-            [room_type_id] => 1
-            [meeting_time_id_TBDropped] => 
-            [preferred_start_period] => 
-            [preferred_end_period] => 
-            [preferred_number_days] => 
-        )
-
-)
-
-<!DOCTYPE html>
-<html>
-<head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-    $("button").click(function(){
-        $("p").remove("#rem");
-        $("select").remove("#mySelect");
+        // $data = "here is the data";
         
-         var data = "asdf";
-        var data = "<select name=\"type\" id=\"mySelect\"><option value=\"volvo\">Volvo</option><option value=\"saab\">Saab</option><option value=\"mercedes\">Mercedes</option><option value=\"audi\">Audi</option></select>";
-        $("#divSelect").html(data);
-    });
-   
-    
-    
-    
-});
-</script>
-<style>
-.test {
-    color: red;
-    font-size: 20px;
-}
+        // header('Content-Type: application/json');
+        // echo json_encode($data);pack
+        print_r("\n".'<pre>'."\n");
 
-.demo {
-    color: green;
-    font-size: 25px;
-}
-</style>
-</head>
-<body>
-
-  <select name="type" id="mySelect">
-    <option value="volvo">Volvo</option>
-    <option value="saab">Saab</option>
-    <option value="mercedes">Mercedes</option>
-    <option value="audi">Audi</option>
-  </select>
-
-
-<p>This is a paragraph.</p>
-<p id="rem" class="test">This is p element with class="test".</p>
-<p id="rem" class="test">This is p element with class="test".</p>
-<p class="demo">This is p element with class="demo".</p>
-
-<button>Remove all p elements with class="test" and class="demo"</button>
-
-<div id="divSelect">
-</div>
-
-
-</body>
-</html>
-
-
-
-
-
-
-*/
-
-
-
-
-
-
-
-
-
+        print_r($this->route_params);
+        print_r("\n".$this->route_params['id']."\n");
+ 
+        // View::renderTemplate('Home/test.twig.html',
+        //                     ['params'=> $this->param]);
+    }
 
 
 

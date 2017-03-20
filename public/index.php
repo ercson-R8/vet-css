@@ -41,5 +41,6 @@ $router->add('admin/{controller}/{action}', ['namespace' => 'Admin']);
 $router->add('Auth/{controller}/{action}', ['namespace' => 'Auth']);
 $router->add('Resource/{controller}/{action}', ['namespace' => 'Resource']);
 $router->add('Timetable/{controller}/{action}', ['namespace' => 'Timetable']);
+$router->add('Timetable/{controller}/{id:\d+}/{action}', ['namespace' => 'Timetable']);
 $router->dispatch($_SERVER['QUERY_STRING']);
 

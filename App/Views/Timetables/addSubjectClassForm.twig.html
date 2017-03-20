@@ -30,13 +30,13 @@
                             <h3>{{title}}</h3>
                         </div>
                         <div class="panel-body">
-                            <form class="form center-block" name="addTraineeGroup" action="/Timetable/TimetableController/createNewTimetable" method="post">
+                            <form class="form center-block" name="addTraineeGroup" action="/Timetable/TimetableController/createNewSubjectClass" method="post">
                                 <table width="100%" class="table table-hover" >
                                     
                                         <tr >
                                             <td colspan="3" > 
                                                 <div class="form-group form-group-lg">
-                                                    <input type="text" class="form-control" name="traineeGroup" placeholder="Trainee group" id="search-box-traineeGroup" required>
+                                                    <input type="text" class="form-control" name="trainee_group_id" placeholder="Trainee group" id="search-box-traineeGroup" required>
                                                     <p></p><div id="suggesstion-box-traineeGroup"></div>
                                                 </div>
                                             </td>
@@ -44,50 +44,65 @@
                                         <tr>
                                             <td colspan="3">
                                                 <div class="form-group form-group-lg">
-                                                    <input type="text" class="form-control" name="course" placeholder="Course" id="search-box-course" required>
+                                                    <input type="text" class="form-control" name="subject_id" placeholder="Course" id="search-box-course" required>
                                                     <p></p><div id="suggesstion-box-course"></div>
                                                 </div>
                                                 <div class="form-group form-group-lg">
-                                                    <input type="text" class="form-control" name="instructor" placeholder="Instructor" id="search-box-instructor"required>
+                                                    <input type="text" class="form-control" name="instructor_id" placeholder="Instructor" id="search-box-instructor"required>
                                                     <p></p><div id="suggesstion-box-instructor"></div>
                                                 </div>
                                             </td>
                                         </tr>
+
+[] => 1
+                                    [] => 2
+                                    [] => 1
+                                    [] => 19
+                                    [] => 1
+                                    [meeting_time_id_TBDropped] => 
+                                    [] => 
+                                    [] => 
+                                    [] => 
+
+
+
                                         <tr>
                                             <td>
-                                                <div class="form-group form-group-lg">
-                                                    <input type="number" min="1" max="4" step="1" class="form-control" name="year_end" placeholder="No. of days" required>
+                                                <div class="form-group form-group-sm">
+                                                    <input type="number" min="1" max="4" step="1" class="form-control" name="preferred_number_days" placeholder="No. of days" required>
                                                     <span class="pull-left text-muted small"><i> Number of days</i></span>
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="form-group form-group-lg">
-                                                    <input type="number" min="1" max="4" step="1" class="form-control" name="year_end" value="1" required>
+                                                <div class="form-group form-group-sm">
+                                                    <input type="number" min="1" max="4" step="1" class="form-control" name="preferred_start_period" value="1" required>
                                                     <span class="pull-left text-muted small"><i>Pref. start</i></span>
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="form-group form-group-lg">
-                                                    <input type="number" min="1" max="4" step="1" class="form-control" name="year_end" required>
+                                                <div class="form-group form-group-sm">
+                                                    <input type="number" min="1" max="4" step="1" class="form-control" name="preferred_end_period" required>
+                                                    <input type="hidden" class="form-control" name="preferred_end_period" placeholder="" id="preferred_end_periodHidden" required>
                                                     <span class="pull-left text-muted small"><i>Pref. End</i></span>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <div class="form-group form-group-lg">
-                                                    <input type="text" class="form-control" name="roomType" placeholder="Room type" id="search-box-roomType"required>
+                                                <div class="form-group form-group-sm">
+                                                    
+                                                    <input type="text" class="form-control"  name="room_type_id_dummy" placeholder="Room type" id="search-box-roomType"required>
+                                                    <input type="hidden" class="form-control" name="room_type_id" placeholder="" id="roomTypeHidden" required>
+                                                    <span class="pull-left text-muted small"><i>Room type</i></span>
                                                     <p></p><div id="suggesstion-box-roomType"></div>
                                                 </div>
                                             </td>
                                             <td colspan="2">
-                                                <div class="form-group form-group-lg">
-                                                    <div id="roomDiv">
-                                                        <select class="form-control" name="room" placeholder="Room*" id="search-box-room" >
-                                                            <option value="">Room</option>
-                                                        </select>
-                                                    </div>
-                                                    <span class="pull-left text-muted small"><i>* Room is optional</i></span>
+                                                <div class="form-group form-group-sm">
+                                                        <input type="text" class="form-control" name="room_id" placeholder="-Room-" id="search-box-room" disabled >
+                                                        
+                                                    <span class="pull-left text-muted small"><i>Room selected</i></span>
+                                                    <p></p><div id="suggesstion-box-room"></div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -256,12 +271,7 @@
                 }
                 });
             });
-
-            $("input").blur(function(){
-                alert("The text has been changed.");
-            });
-
-
+            
         });
 
         function selectOptionsTraineeGroup(val) {
@@ -283,11 +293,36 @@
         }
 
         function selectOptionsRoomType(code, roomTypeName) {
+
             $("#search-box-roomType").val(roomTypeName);
             $("#suggesstion-box-roomType").hide();
             $("#loading").hide();
-            $("select").remove("#search-box-room");
+            //alert("code val: "+ code);
 
+            var x = $("#search-box-roomType").val();
+            $("#roomTypeHidden").val(code);
+            
+            $.ajax({
+                type: "POST",
+                url: "/timetable/TimetableController/"+  $("#roomTypeHidden").val()+"/ajaxFetchRooms",
+                data:'keyword='+$("#roomTypeHidden").val(),
+                beforeSend: function(){
+                    //alert("beforeSend "+$("#roomTypeHidden").val());
+                },
+                success: function(data){
+                    //alert("success "+$("#roomTypeHidden").val());
+                    $("#suggesstion-box-room").show();
+                    $("#suggesstion-box-room").html(data);
+                    
+                }
+            });
+
+        }
+
+         function selectOptionsRoom(code, fullName) {
+            $("#search-box-room").val(fullName);
+            $("#suggesstion-box-room").hide();
+            $("#loading").hide();
         }
 
 
