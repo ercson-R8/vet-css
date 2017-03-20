@@ -36,7 +36,8 @@
                                         <tr >
                                             <td colspan="3" > 
                                                 <div class="form-group form-group-lg">
-                                                    <input type="text" class="form-control" name="trainee_group_id" placeholder="Trainee group" id="search-box-traineeGroup" required>
+                                                    <input type="text" class="form-control" name="trainee_group" placeholder="Trainee group" id="search-box-traineeGroup" required>
+                                                    <input type="hidden" class="form-control" name= "trainee_group_id" placeholder="" id="trainee_group_id" required>
                                                     <p></p><div id="suggesstion-box-traineeGroup"></div>
                                                 </div>
                                             </td>
@@ -44,25 +45,20 @@
                                         <tr>
                                             <td colspan="3">
                                                 <div class="form-group form-group-lg">
-                                                    <input type="text" class="form-control" name="subject_id" placeholder="Course" id="search-box-course" required>
+                                                    <input type="text" class="form-control" name="subject" placeholder="Course" id="search-box-course" required>
+                                                    <input type="hidden" class="form-control" name= "subject_id" placeholder="" id="subject_id" required>
                                                     <p></p><div id="suggesstion-box-course"></div>
                                                 </div>
                                                 <div class="form-group form-group-lg">
-                                                    <input type="text" class="form-control" name="instructor_id" placeholder="Instructor" id="search-box-instructor"required>
+
+                                                    <input type="text" class="form-control" name="instructor" placeholder="Instructor" id="search-box-instructor"required>
+                                                    <input type="hidden" class="form-control" name= "instructor_id" placeholder="" id="instructor_id" required>
                                                     <p></p><div id="suggesstion-box-instructor"></div>
                                                 </div>
                                             </td>
                                         </tr>
 
-[] => 1
-                                    [] => 2
-                                    [] => 1
-                                    [] => 19
-                                    [] => 1
-                                    [meeting_time_id_TBDropped] => 
-                                    [] => 
-                                    [] => 
-                                    [] => 
+
 
 
 
@@ -75,14 +71,13 @@
                                             </td>
                                             <td>
                                                 <div class="form-group form-group-sm">
-                                                    <input type="number" min="1" max="4" step="1" class="form-control" name="preferred_start_period" value="1" required>
+                                                    <input type="number" min="1" max="4" step="1" class="form-control" name="preferred_start_period" required>
                                                     <span class="pull-left text-muted small"><i>Pref. start</i></span>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-group form-group-sm">
-                                                    <input type="number" min="1" max="4" step="1" class="form-control" name="preferred_end_period" required>
-                                                    <input type="hidden" class="form-control" name="preferred_end_period" placeholder="" id="preferred_end_periodHidden" required>
+                                                    <input type="number" min="1" max="10" step="1" class="form-control" name="preferred_end_period" required>
                                                     <span class="pull-left text-muted small"><i>Pref. End</i></span>
                                                 </div>
                                             </td>
@@ -91,16 +86,16 @@
                                             <td>
                                                 <div class="form-group form-group-sm">
                                                     
-                                                    <input type="text" class="form-control"  name="room_type_id_dummy" placeholder="Room type" id="search-box-roomType"required>
-                                                    <input type="hidden" class="form-control" name="room_type_id" placeholder="" id="roomTypeHidden" required>
+                                                    <input type="text" class="form-control"  name="room_type" placeholder="Room type" id="search-box-roomType"required>
+                                                    <input type="hidden" class="form-control" name="room_type_id" placeholder="" id="room_type_id" required>
                                                     <span class="pull-left text-muted small"><i>Room type</i></span>
                                                     <p></p><div id="suggesstion-box-roomType"></div>
                                                 </div>
                                             </td>
                                             <td colspan="2">
                                                 <div class="form-group form-group-sm">
-                                                        <input type="text" class="form-control" name="room_id" placeholder="-Room-" id="search-box-room" disabled >
-                                                        
+                                                        <input type="text" class="form-control" name="room_id_dummy" placeholder="-Room-" id="search-box-room" disabled >
+                                                        <input type="hidden" class="form-control" name= "room_id" placeholder="" id="room_id" required>
                                                     <span class="pull-left text-muted small"><i>Room selected</i></span>
                                                     <p></p><div id="suggesstion-box-room"></div>
                                                 </div>
@@ -165,11 +160,12 @@
                                 <tbody>
                                     {% for row in subjectClass %}
                                     <tr>
-                                        <td style="text-align:center">{{ row.timetable_id }} </td>
-                                        <td style="text-align:center">{{ row.subject_id }}</td>
-                                        <td style="text-align:center">{{ row.trainee_group_id }}</td>
-                                        <td>{{ row.instructor_id }}</td>
-                                        <td>{{ row.room_id }}</td><td>{{ row.preferred_number_days }}</td>
+                                        <td style="text-align:center">{{ row.trainee_group }} </td>
+                                        <td style="text-align:center">{{ row.subject }}<br/>{{row.instructor}}</td>
+                                        <td style="text-align:center">{{ row.room }}</td>
+                                        <td style="text-align:center">{{ row.days }}</td>
+                                        <td style="text-align:center">{{ row.start }} - {{ row.end }}</td>
+                                        
                                         <td>..</td>
                                     </tr>
                                     {% endfor %}
@@ -274,20 +270,23 @@
             
         });
 
-        function selectOptionsTraineeGroup(val) {
-            $("#search-box-traineeGroup").val(val);
+        function selectOptionsTraineeGroup(code, traineeGroupName) {
+            $("#search-box-traineeGroup").val(traineeGroupName);
+            $("#trainee_group_id").val(code);
             $("#suggesstion-box-traineeGroup").hide();
             $("#loading").hide();
         }
 
         function selectOptionsCourse(code, subjectName) {
             $("#search-box-course").val(subjectName);
+            $("#subject_id").val(code);
             $("#suggesstion-box-course").hide();
             $("#loading").hide();
         }
         
         function selectOptionsInstructor(code, fullName) {
             $("#search-box-instructor").val(fullName);
+            $("#instructor_id").val(code);
             $("#suggesstion-box-instructor").hide();
             $("#loading").hide();
         }
@@ -299,34 +298,31 @@
             $("#loading").hide();
             //alert("code val: "+ code);
 
-            var x = $("#search-box-roomType").val();
-            $("#roomTypeHidden").val(code);
+            //var x = $("#search-box-roomType").val();
+            $("#room_type_id").val(code);
             
             $.ajax({
                 type: "POST",
-                url: "/timetable/TimetableController/"+  $("#roomTypeHidden").val()+"/ajaxFetchRooms",
-                data:'keyword='+$("#roomTypeHidden").val(),
+                url: "/timetable/TimetableController/"+  $("#room_type_id").val()+"/ajaxFetchRooms",
+                data:'keyword='+$("#room_type_id").val(),
                 beforeSend: function(){
-                    //alert("beforeSend "+$("#roomTypeHidden").val());
+                    //alert("beforeSend "+$("#room_type_id").val());
                 },
                 success: function(data){
-                    //alert("success "+$("#roomTypeHidden").val());
+                    //alert("success "+$("#room_type_id").val());
                     $("#suggesstion-box-room").show();
                     $("#suggesstion-box-room").html(data);
-                    
                 }
             });
 
         }
 
-         function selectOptionsRoom(code, fullName) {
+        function selectOptionsRoom(code, fullName) {
             $("#search-box-room").val(fullName);
+            $("#room_id").val(code);
             $("#suggesstion-box-room").hide();
             $("#loading").hide();
         }
-
-
-
 
     </script>
 

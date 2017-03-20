@@ -35,11 +35,7 @@ class TimetableController extends \Core\Controller{
     {
 
     }
-
-
-    
-
-    
+   
 
     /*
      * addTimetable - action will provide the controller mechanism to display a form with the list
@@ -100,17 +96,18 @@ class TimetableController extends \Core\Controller{
             $sessionMessageIdent = isset($sessionData->messageIdent) ? $sessionData->messageIdent: '';
 
             if($messageIdent!=$sessionMessageIdent){ //if its different:
+
                 //save the session var: 
                 $sessionData->messageIdent = $messageIdent;
-                // UPDATE timetable
-                // SET timetable.current = 0
-                // WHERE timetable.current = 1
+
+                // reset the previous current timetable from 1 to 0
                 $db = DB::getInstance();
+
                 $db->query('UPDATE timetable SET timetable.current = 0  WHERE timetable.current = 1');
-                // echo ("<pre>asdfadf <br/>");
+
                 $timetable = ($db->getResults());
-                // print_r($db->count());
-                // save the data 
+
+                // save the data and this timetable to be the current  (1)
                 $db->insert('timetable', 
                         array(  'year_start' => $year_start,
                                 'year_end' =>  $year_end,
@@ -136,8 +133,7 @@ class TimetableController extends \Core\Controller{
                 //you've sent this already!
                 
                 
-               // $this->addSubjectClassAction();
-
+                header("Location: /Timetable/TimetableController/addSubjectClass");
 
             }
                         
@@ -165,13 +161,35 @@ class TimetableController extends \Core\Controller{
             $db = DB::getInstance();   
 
             $db->select(
-                array('*'),
-                array('subject_class'),
-                array(['subject_class.timetable_id', '=', $sessionData->currentTimetable])
-            );
-
+                    array(  
+                            'trainee_group.name as \'trainee_group\'', 
+                            'subject.name as \'subject\'', 
+                            'concat (instructor.first_name,\' \', instructor.last_name) as \'instructor\'', 
+                            'room.name as \'room\'',
+                            'subject_class.preferred_number_days as \'days\'', 
+                            'subject_class.preferred_start_period as \'start\'', 
+                            'subject_class.preferred_end_period as \'end\''
+                    ),
+                    array('subject_class 
+                            INNER JOIN trainee_group 
+                                    ON subject_class.trainee_group_id = trainee_group.id 
+                            INNER JOIN subject 
+                                    ON subject_class.subject_id = subject.id 
+                            INNER JOIN instructor 
+                                    ON subject_class.instructor_id = instructor.id 
+                            INNER JOIN room 
+                                    ON subject_class.room_id = room.id'
+                    ),
+                    array(
+                        ['subject_class.timetable_id', '=', $sessionData->currentTimetable]
+                    )
+                );
             $subject_class = ($db->getResults());
+            $x = $db->count();
+            ?>  
+            <script>alert(<?php echo $x; ?> );</script>
 
+            <?php 
             $db->select(
                 array('*'),
                 array('timetable'),
@@ -179,7 +197,6 @@ class TimetableController extends \Core\Controller{
             );
           
             $timetable = ($db->getResults());
-            // print_r($timetable);
             $tableTitle = 'List of classes for AY '.$timetable[0]->year_start.'-'.$timetable[0]->year_end.' Term '.$timetable[0]->term;
             $tableSubTitle = '('.$timetable[0]->remarks.')';
             
@@ -192,7 +209,7 @@ class TimetableController extends \Core\Controller{
                                         'firstName' => $sessionData->firstName,
                                         'tableTitle' => $tableTitle,
                                         'tableSubTitle' => $tableSubTitle,
-                                        'tableHeadings' => ['Group', 'Subject', 'Instructor' ,'No. of Days', 'Start-End', 'Room']
+                                        'tableHeadings' => ['Group', 'Subject - Instructor' , 'Room' ,'No. of Days', 'Start - End']
                                     ]);
 
             }else {
@@ -210,38 +227,20 @@ class TimetableController extends \Core\Controller{
      * @param		
      * @return	 	
      */
-    public function createSubjectClass (){
+    public function createNewSubjectClass (){
         $sessionData = Session::getInstance();
         $db = DB::getInstance();
-        echo ("<pre>");
-        print_r($_POST);
+        // echo ("<pre>");
+        // print_r($_POST);
         if ($sessionData->inSession) {
-            /*
-                    Array
-                        (
-                            [0] => stdClass Object
-                                (
-                                    [id] => 1
-                                    [timetable_id] => 6
-                                    [subject_id] => 1
-                                    [trainee_group_id] => 2
-                                    [instructor_id] => 1
-                                    [room_id] => 19
-                                    [room_type_id] => 1
-                                    [meeting_time_id_TBDropped] => 
-                                    [preferred_start_period] => 
-                                    [preferred_end_period] => 
-                                    [preferred_number_days] => 
-                                )
 
-                        )
-            */
+            
 
             $subject_id             = $_POST["subject_id"];
             $trainee_group_id       = $_POST["trainee_group_id"];
             $instructor_id          = $_POST["instructor_id"];
-            $room_id                = $_POST["room_id"];
-            $room_type_id           = $_POST["room_type_id"];
+            $room_id                = $_POST["room_id"] ? $_POST["room_id"] : 25; // type 14 is any room of the same type
+            $room_type_id           = $_POST["room_type_id"] ;  
             $preferred_start_period = $_POST["preferred_start_period"];
             $preferred_end_period   = $_POST["preferred_end_period"];
             $preferred_number_days  = $_POST["preferred_number_days"];
@@ -249,7 +248,10 @@ class TimetableController extends \Core\Controller{
 
             //create digest of the form submission:
 
-            $messageIdent = md5($_POST['year_start'] . $_POST['year_end'] . $_POST['term']);
+            $messageIdent = md5($_POST['subject_id']            . $_POST['trainee_group_id']    . $_POST['instructor_id'] . 
+                                $_POST['room_id']               . $_POST['room_type_id']        . $_POST['preferred_start_period']. 
+                                $_POST['preferred_end_period']  . $_POST['preferred_number_days']
+                                );
 
             $sessionMessageIdent = isset($sessionData->messageIdent) ? $sessionData->messageIdent: '';
 
@@ -257,17 +259,21 @@ class TimetableController extends \Core\Controller{
                 //save the session var: 
                 $sessionData->messageIdent = $messageIdent;
                 // save the data 
-                // $db->insert('timetable', 
-                //             array(  'year_start' => $year_start,
-                //                     'year_end' =>  $year_end,
-                //                     'term' => $term,
-                //                     'remarks' => $remarks
-
-                //             ));
+                $db->insert('subject_class', 
+                            array(  'timetable_id'          => $sessionData->currentTimetable,
+                                    'subject_id'            => $subject_id,
+                                    'instructor_id'         => $instructor_id,
+                                    'trainee_group_id'      =>  $trainee_group_id,
+                                    'room_id'               => $room_id,
+                                    'room_type_id'          => $room_type_id ,
+                                    'preferred_start_period'=> $preferred_start_period ,
+                                    'preferred_end_period'  => $preferred_end_period ,
+                                    'preferred_number_days' => $preferred_number_days
+                            ));
 
                 unset($_POST);
 
-                // header("Location: /Timetable/TimetableController/addSubjectClass");
+                header("Location: /Timetable/TimetableController/addSubjectClass");
 
                  
                 
@@ -275,8 +281,8 @@ class TimetableController extends \Core\Controller{
             }else{
                 //you've sent this already!
                 
-
-                $this->addSubjectClassAction();
+                header("Location: /Timetable/TimetableController/addSubjectClass");
+                // $this->addSubjectClassAction();
 
 
             }
@@ -286,18 +292,6 @@ class TimetableController extends \Core\Controller{
 
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     /*
@@ -320,7 +314,7 @@ class TimetableController extends \Core\Controller{
                     <?php
                         foreach ($db->getResults() as $result){
                         ?>
-                        <li onClick="selectOptionsTraineeGroup('<?php echo $result->name ?>');"><?php echo $result->name; ?></li>
+                        <li onClick="selectOptionsTraineeGroup('<?php echo $result->id ?>','<?php echo $result->name ?>');"><?php echo $result->name; ?></li>
                         <?php } ?>
                     </ul>
                 <?php
@@ -347,7 +341,7 @@ class TimetableController extends \Core\Controller{
                     <?php
                         foreach ($db->getResults() as $result){
                         ?>
-                        <li onClick="selectOptionsCourse('<?php echo $result->code ?>','<?php echo $result->name ?>');"><?php echo $result->name; ?></li>
+                        <li onClick="selectOptionsCourse('<?php echo $result->id ?>','<?php echo $result->name ?>');"><?php echo $result->name; ?></li>
                         <?php } ?>
                     </ul>
                 <?php
@@ -411,7 +405,7 @@ class TimetableController extends \Core\Controller{
                                     // $db->query("SELECT * FROM room WHERE room.type = {$roomTypeID} ORDER BY room.name LIMIT 0,10");
 
 
-                                    echo $result->id ?>','<?php echo $result->name; ?>');"><?php echo $result->name.' '.$result->id; ?>
+                                    echo $result->id ?>','<?php echo $result->name; ?>');"><?php echo $result->name; ?>
                         </li>
 
 
@@ -468,7 +462,7 @@ class TimetableController extends \Core\Controller{
     }
 
 
-        public function testAction(){
+    public function testAction(){
 
         // $data = "here is the data";
         
