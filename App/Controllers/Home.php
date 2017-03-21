@@ -43,10 +43,21 @@ class Home extends \Core\Controller
     public function indexAction(){
         $sessionData = Session::getInstance();
         if ($sessionData->inSession) {
+            $db = DB::getInstance();
+            $db->select(
+                array('*'),
+                array('timetable'),
+                array(['timetable.current', '=', '1'])
+            );
+            $timetable = ($db->getResults());
+            $tableTitle = 'List of classes for AY '.$timetable[0]->year_start.'-'.$timetable[0]->year_end.' Term '.$timetable[0]->term;
+            $tableSubTitle = '('.$timetable[0]->remarks.') '.$timetable[0]->created;
+
             View::renderTemplate ('Home/index.twig.html', [
                                         'firstName' => $sessionData->firstName,
                                         'lastName' => $sessionData->lastName,
-                                        'pageHeading' => 'Current Timetable'
+                                        'tableTitle' => $tableTitle,
+                                        'tableSubTitle' => $tableSubTitle
                                     ]);
         }else {
             View::renderTemplate('Auth/login.twig.html');

@@ -18,8 +18,7 @@ class TimetableController extends \Core\Controller{
      *
      * @return void
      */
-    protected function before()
-    {
+    protected function before(){
         $sessionData = Session::getInstance();
         if (!$sessionData->inSession){
             header("Location: /home/logout");
@@ -31,9 +30,8 @@ class TimetableController extends \Core\Controller{
      *
      * @return void
      */
-    protected function after()
-    {
-
+    protected function after(){
+        // 
     }
    
 
@@ -124,10 +122,7 @@ class TimetableController extends \Core\Controller{
                 $sessionData->currentTimetable = $lastInsertId;
 
                 // print_r("\n".$sessionData->currentTimetable."\n");
-                header("Location: /Timetable/TimetableController/addSubjectClass");
-
-                // $this->addSubjectClassAction( $lastInsertId ); 
-                
+                header("Location: /Timetable/TimetableController/addSubjectClass");                
             
             }else{
                 //you've sent this already!
@@ -191,10 +186,7 @@ class TimetableController extends \Core\Controller{
                 );
             $subject_class = ($db->getResults());
             $x = $db->count();
-            ?>  
-            <script>alert(<?php echo $x; ?> );</script>
 
-            <?php 
             $db->select(
                 array('*'),
                 array('timetable'),
@@ -210,7 +202,7 @@ class TimetableController extends \Core\Controller{
             // print_r($timetable);
             View::renderTemplate ('Timetables/addSubjectClassForm.twig.html', [
                                         'subjectClass' => $subject_class,
-                                        'title' => 'Add a Class ',
+                                        'title' => 'Add a Class '.$sessionData->currentTimetable, 
                                         'firstName' => $sessionData->firstName,
                                         'tableTitle' => $tableTitle,
                                         'tableSubTitle' => $tableSubTitle,
@@ -298,6 +290,41 @@ class TimetableController extends \Core\Controller{
         }
     }
 
+    /*
+     * manageTimetable method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function setCurrentTimetable (){
+        $sessionData = Session::getInstance();
+        $db = DB::getInstance();
+
+        $sessionData->currentTimetable = $this->route_params["id"];
+        $db->query('UPDATE timetable SET timetable.current = 0  WHERE timetable.current = 1');
+        $qry = 'UPDATE timetable SET timetable.current = 1  WHERE timetable.id = '.$sessionData->currentTimetable ;
+        $db->query($qry);
+
+
+        header("Location: /home/index");
+    }
+
+    /*
+     * editCurrentTimetable method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function editCurrentTimetable (){
+        $sessionData = Session::getInstance();
+        $db = DB::getInstance();
+
+        $sessionData->currentTimetable = $this->route_params["id"];
+        $db->query('UPDATE timetable SET timetable.current = 0  WHERE timetable.current = 1');
+        $qry = 'UPDATE timetable SET timetable.current = 1  WHERE timetable.id = '.$sessionData->currentTimetable ;
+        $db->query($qry);
+        header("Location: /Timetable/TimetableController/addSubjectClass");
+    }
 
     /*
      * ajaxFetchTraineeGroup method 
