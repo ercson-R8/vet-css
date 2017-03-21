@@ -163,8 +163,11 @@ class TimetableController extends \Core\Controller{
             $db->select(
                     array(  
                             'trainee_group.name as \'trainee_group\'', 
-                            'subject.name as \'subject\'', 
+                            'subject.name as \'subject\'',
+                            'subject.code as \'code\'',
+                            'subject.required_period as \'required_period\'',
                             'concat (instructor.first_name,\' \', instructor.last_name) as \'instructor\'', 
+                            'room_type.name as \'room_type\'',
                             'room.name as \'room\'',
                             'subject_class.preferred_number_days as \'days\'', 
                             'subject_class.preferred_start_period as \'start\'', 
@@ -177,6 +180,8 @@ class TimetableController extends \Core\Controller{
                                     ON subject_class.subject_id = subject.id 
                             INNER JOIN instructor 
                                     ON subject_class.instructor_id = instructor.id 
+                            INNER JOIN room_type 
+                                    ON subject_class.room_type_id = room_type.id
                             INNER JOIN room 
                                     ON subject_class.room_id = room.id'
                     ),
@@ -205,7 +210,7 @@ class TimetableController extends \Core\Controller{
             // print_r($timetable);
             View::renderTemplate ('Timetables/addSubjectClassForm.twig.html', [
                                         'subjectClass' => $subject_class,
-                                        'title' => 'Add a Class '.$sessionData->currentTimetable,
+                                        'title' => 'Add a Class ',
                                         'firstName' => $sessionData->firstName,
                                         'tableTitle' => $tableTitle,
                                         'tableSubTitle' => $tableSubTitle,

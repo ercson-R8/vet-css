@@ -23,7 +23,7 @@
     <div class="container-fluid">
         <div class="row">
 
-            <div class="col-lg-4 col-md-3 col-sm-3" >
+            <div class="col-lg-3 col-md-3 col-sm-3" >
                 <div class="well"> 
                     <div class="panel panel-primary">
                         <div class="panel-heading">
@@ -31,11 +31,11 @@
                         </div>
                         <div class="panel-body">
                             <form class="form center-block" name="addTraineeGroup" action="/Timetable/TimetableController/createNewSubjectClass" method="post">
-                                <table width="100%" class="table table-hover" >
+                                <table width="100%" class="table table-hover">
                                     
                                         <tr >
                                             <td colspan="3" > 
-                                                <div class="form-group form-group-lg">
+                                                <div class="form-group form-group-sm">
                                                     <input type="text" class="form-control" name="trainee_group" placeholder="Trainee group" id="search-box-traineeGroup" required>
                                                     <input type="hidden" class="form-control" name= "trainee_group_id" placeholder="" id="trainee_group_id" required>
                                                     <p></p><div id="suggesstion-box-traineeGroup"></div>
@@ -44,12 +44,12 @@
                                         </tr>
                                         <tr>
                                             <td colspan="3">
-                                                <div class="form-group form-group-lg">
+                                                <div class="form-group form-group-sm">
                                                     <input type="text" class="form-control" name="subject" placeholder="Course" id="search-box-course" required>
                                                     <input type="hidden" class="form-control" name= "subject_id" placeholder="" id="subject_id" required>
                                                     <p></p><div id="suggesstion-box-course"></div>
                                                 </div>
-                                                <div class="form-group form-group-lg">
+                                                <div class="form-group form-group-sm">
 
                                                     <input type="text" class="form-control" name="instructor" placeholder="Instructor" id="search-box-instructor"required>
                                                     <input type="hidden" class="form-control" name= "instructor_id" placeholder="" id="instructor_id" required>
@@ -57,21 +57,19 @@
                                                 </div>
                                             </td>
                                         </tr>
-
-
-
-
-
                                         <tr>
-                                            <td>
+                                            <td colspan="3" >
                                                 <div class="form-group form-group-sm">
                                                     <input type="number" min="1" max="4" step="1" class="form-control" name="preferred_number_days" placeholder="No. of days" required>
                                                     <span class="pull-left text-muted small"><i> Number of days</i></span>
                                                 </div>
                                             </td>
-                                            <td>
+                                           
+                                        </tr>
+                                        <tr>
+                                             <td>
                                                 <div class="form-group form-group-sm">
-                                                    <input type="number" min="1" max="4" step="1" class="form-control" name="preferred_start_period" required>
+                                                    <input type="number" min="1" max="4" step="1" class="form-control" name="preferred_start_period" value="1"required>
                                                     <span class="pull-left text-muted small"><i>Pref. start</i></span>
                                                 </div>
                                             </td>
@@ -82,6 +80,7 @@
                                                 </div>
                                             </td>
                                         </tr>
+
                                         <tr>
                                             <td>
                                                 <div class="form-group form-group-sm">
@@ -105,7 +104,7 @@
                                 </table>
                                 <div class="form-group form-group-lg">
                                     <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit">
-                                       {{title}}
+                                    {{title}}
                                     </button>
                                 </div>
                             </form>
@@ -124,7 +123,7 @@
             <!-- class="col-lg-3 col-md-3 col-sm-3" -->
 
 
-            <div class="col-lg-8 col-md-8 col-sm-8" >
+            <div class="col-lg-9 col-md-8 col-sm-8" >
                 <div class="well"> 
                     <div class="panel panel-info">
                         <div class="panel-heading">
@@ -132,47 +131,56 @@
                             <h4>{{tableSubTitle}}</h4>
                         </div>
                         <div class="panel-body">
-                            
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-
                                         {% for tableHeader in tableHeadings %}
-                                           
-                                                <th style="text-align:center">{{ tableHeader }}</th>
-                                            
+                                                <td class="text small" style="text-align:center"><strong>{{ tableHeader }}</strong></td>
                                         {% endfor %}
-                                        <th></th>
+                                        <td> </td>
                                     </tr>
                                 </thead>
+                                
+                                <tbody>
+                                    {% for row in subjectClass %}
+                                    <tr>
+                                        <td class="text small" style="text-align:center">{{ row.trainee_group }} </td>
+                                        <td class="text small" style="text-align:center">{{ row.subject }} ({{ row.code }})<br/>
+                                                            <span class="text-primary small"><i>{{ row.instructor}}</i></span></td> 
+                                        <td class="text small" style="text-align:center">{{ row.room }}<br/>
+                                                            <span class="text-muted small"><i>{{ row.room_type}}</i></span></td>
+                                        <td class="text small" style="text-align:center">{{ row.days }}</td>
+                                        <td class="text small" style="text-align:center">{{ row.start }} - {{ row.end }}</td>
+                                        
+                                        <td style="text-align:center">
+                                            <a href="#" data-toggle="tooltip" data-placement="right" title="Set as default!"  class="btn btn-xs btn-primary">
+                                                <span class="fa-toggle-right"></span>
+                                            </a>
+                                             <a href="#" data-toggle="tooltip" data-placement="right" title="Edit this Item!"  class="btn btn-xs btn-primary">
+                                                <span class="fa fa-edit"></span>
+                                            </a>
+                                            <a href="#" data-toggle="tooltip" data-placement="right" title="Delete this Item!"  class="btn btn-xs btn-danger">
+                                                <span class="fa fa-remove"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %} fa-toggle-right
+                                    
+
+                                    
+                                </tbody>
                                 <tfoot>
                                 
                                     <tr>
                                         {% for tableHeader in tableHeadings %}
                                            
-                                                <th style="text-align:center">{{ tableHeader }}</th>
+                                                <td class="text small" style="text-align:center"><b>{{ tableHeader }}</b></td>
                                             
                                         {% endfor %}
                                         <th></th>
                                     </tr>
                                     
                                 </tfoot>
-                                <tbody>
-                                    {% for row in subjectClass %}
-                                    <tr>
-                                        <td style="text-align:center">{{ row.trainee_group }} </td>
-                                        <td style="text-align:center">{{ row.subject }}<br/>{{row.instructor}}</td>
-                                        <td style="text-align:center">{{ row.room }}</td>
-                                        <td style="text-align:center">{{ row.days }}</td>
-                                        <td style="text-align:center">{{ row.start }} - {{ row.end }}</td>
-                                        
-                                        <td>..</td>
-                                    </tr>
-                                    {% endfor %}
-                                    
-
-                                    
-                                </tbody>
                             </table>
                             <!-- /.table-responsive -->
 
