@@ -108,8 +108,8 @@
                                             [{{row.id}}*{{row.created}}]<br/>{{ row.remarks }}
                                         </td>
                                         <td style="text-align:center">
-                                            <a href="/Timetable/TimetableController/{{row.id}}/setCurrentTimetable" data-toggle="tooltip" data-placement="right" title="Set as current!"  class="btn btn-xs btn-success">
-                                                <span class="fa fa-toggle-right small" name="set_current" type="submit"></span>
+                                            <a href="/Timetable/TimetableController/{{row.id}}/setCurrentTimetable" data-toggle="tooltip" data-placement="right" title="Set as current!"  class="btn btn-xs btn-default">
+                                                <span class="fa fa-toggle-right text-primary small" name="set_current" type="submit"></span>
                                             </a>
                                             <a href="/Timetable/TimetableController/{{row.id}}/editCurrentTimetable" data-toggle="tooltip" data-placement="right" title="Edit this timetable!" class="btn btn-xs btn-default">
                                                 <span class="fa fa-pencil text-primary  small"></span>
@@ -148,14 +148,29 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Remove!</h4>
                 </div>
                 <div class="modal-body">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </div>
+                    
+                    <form class="form center-block" name="addTraineeGroup" action="/Timetable/TimetableController/{{row.id}}/deleteCurrentTimetable" method="post">
+                            <div class="row">
+                                <div class="col-xs-1">
+                                    <i class="fa fa-warning text-danger fa-3x"></i>
+                                </div>
+                                <div class="col-xs-11">
+                                    <div class="huge text-danger">Warning</div>
+                                    <div class="lead">
+                                    <p class="lead">By removing this timetable all of its content will also be deleted from the database and will 
+                                        reset the current timetable. 
+                                    </p>
+                                    </div>
+                                </div>
+                            </div>
+                                
+             
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-danger pull-right">Proceed and delete timetable</button>
+                    </form>
                 </div>
             </div>
             <!-- /.modal-content -->

@@ -327,6 +327,25 @@ class TimetableController extends \Core\Controller{
     }
 
     /*
+     * deleteCurrentTimetable method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function deleteCurrentTimetable (){
+        $sessionData = Session::getInstance();
+        $db = DB::getInstance();
+
+        $sessionData->currentTimetable = $this->route_params["id"];
+        $db->query('UPDATE timetable SET timetable.current = 0  WHERE timetable.current = 1');
+        //$qry = 'UPDATE timetable SET timetable.current = 1  WHERE timetable.id = '.$sessionData->currentTimetable ;
+        $db->query($qry);
+        header("Location: /Timetable/TimetableController/addSubjectClass");
+        
+    }
+
+
+    /*
      * ajaxFetchTraineeGroup method 
      *
      * @param		
