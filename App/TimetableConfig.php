@@ -18,13 +18,13 @@ class TimetableConfig {
      * Total periods per day
      * @var int
      */
-    const TOTAL_PERIODS = 5;
+    const TOTAL_PERIODS = 7;
 
      /**  
      * Total number of training days per week
      * @var int 
      */
-    const TOTAL_DAYS = 3;
+    const TOTAL_DAYS = 5;
     
      /**  
      * Total number of training days per week

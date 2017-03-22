@@ -51,16 +51,15 @@ class Timetable {
                     "instructor_id" => $subjectClass->instructor_id,
                     "room_id" => $subjectClass->room_id,
                     "room_type_id" => $subjectClass->room_type_id,
-                    "meeting_time_id_TBDropped" => $subjectClass->meeting_time_id_TBDropped,
+                    "room_fixed" => $subjectClass->room_fixed,
                     "preferred_start_period" => $subjectClass->preferred_start_period,
                     "preferred_end_period" => $subjectClass->preferred_end_period,
                     "preferred_number_days" => $subjectClass->preferred_number_days,
                 ];    
             }
-            return $subjectClassSet;
+            
         }
-
-        
+        return $subjectClassSet;
     }
     /*
      * createSubjectClass method creates a set of subject class belonging to a specific
@@ -89,12 +88,18 @@ class Timetable {
 
             for($i=0; $i < sizeof($baseSubjectClass); $i++){
                 // print_r("basesubjectID: ".$baseSubjectClass[$i]["id"]);
-                if ($baseSubjectClass[$i]["room_id"]){ // room_id is provided, cannot be changed. 
+
+                if ($baseSubjectClass[$i]["room_fixed"]){ // room_id is provided, cannot be changed. 
+
                     // echo "<br/>room_id specified: {$baseSubjectClass[$i]["room_id"]} scID: {$baseSubjectClass[$i]["id"]}";
                     $room = $this->getRoom($baseSubjectClass[$i]["room_id"]);
+
                     $isRoomFixed = true;
+
                 }else{
+
                     $room = $this->getRandomRoom($baseSubjectClass[$i]["room_type_id"]);
+                    
                     $isRoomFixed = false;
                     // echo "<br/>room_id specified: {$baseSubjectClass[$i]["room_id"]} scID: {$baseSubjectClass[$i]["id"]}";
                     
@@ -107,6 +112,7 @@ class Timetable {
                                             $this->getInstructor($baseSubjectClass[$i]["instructor_id"]), 
                                             $this->getRoomType($baseSubjectClass[$i]["room_type_id"]), 
                                             $room,
+                                            $baseSubjectClass[$i]["room_fixed"],
                                             $baseSubjectClass[$i]["preferred_start_period"],
                                             $baseSubjectClass[$i]["preferred_end_period"],
                                             $baseSubjectClass[$i]["preferred_number_days"]);
@@ -376,16 +382,17 @@ class Timetable {
         echo"Timetable Class<pre>";
 
 
-        $timetableID = 1;  // will be replaced by the actual database table id later
+        $timetableID = 3;  // will be replaced by the actual database table id later
         $population = [];
         $timetableFitness = [];
         $subjectClassSets = [];
         $fitnessHighest = null;
         $fitnessLowest = null;
         $fitTimetableFound = false;
+
         // base subjectClass is created once, to fetch data from mySQL tables
         // an N subjectClasses will be created from the base with 
-        // random rooms if the property isRoomFixed = false. 
+        // random rooms if the property roomFixed = null. 
   
         $baseSubjectClass = $this->fetchBaseSubjectClass($timetableID); 
   
@@ -395,6 +402,11 @@ class Timetable {
         //    # Fill it with DNA encoded objects (pick random values to start)
 
         for($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++){
+
+                /* 
+                    Create SubjectClass objects based on baseSubjectClass, providing random if
+                    necessary. 
+                */
                 $subjectClassSets[$timetable] = $this->createSubjectClass($baseSubjectClass);
                 $population[$timetable] = $this->createTimetable($subjectClassSets[$timetable]);
 
@@ -827,12 +839,12 @@ class Timetable {
 
     public function getRoom($ID){
 
-        // if data have been downloaded, return the data
+        
         if (isset($this->rooms)){ 
-            // find the tg based on the ID and return the object;
+
             return $this->rooms[$ID];
 
-        }else { // otherwise, fetch all the data from the table subject. 
+        }else { // otherwise, fetch all the data from the table room. 
             $db = DB::getInstance();
             $db->query("SELECT * FROM room");
             for ($i=0; $i < $db->count(); $i++){
@@ -851,6 +863,13 @@ class Timetable {
     }
 
     private function getRandomRoom($roomType){
+
+        // initialize the room object just incase the 1st created class 
+        // was to a random room 
+
+        if (!isset($this->rooms)){ 
+            $this->getRoom(1);
+        }        
 
         // for each room in rooms, search for the req room type 
         // store the object/s in an assoc chosenRoom;

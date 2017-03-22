@@ -178,7 +178,7 @@ class TimetableController extends \Core\Controller{
                             INNER JOIN room_type 
                                     ON subject_class.room_type_id = room_type.id
                             INNER JOIN room 
-                                    ON subject_class.room_id = room.id'
+                                    ON subject_class.room_id = room.id' 
                     ),
                     array(
                         ['subject_class.timetable_id', '=', $sessionData->currentTimetable]
@@ -195,11 +195,11 @@ class TimetableController extends \Core\Controller{
           
             $timetable = ($db->getResults());
             $tableTitle = 'List of classes for AY '.$timetable[0]->year_start.'-'.$timetable[0]->year_end.' Term '.$timetable[0]->term;
-            $tableSubTitle = '('.$timetable[0]->remarks.')';
+            $tableSubTitle = '('.$timetable[0]->remarks.') '.$timetable[0]->created;
             
-            // print_r($subject_class);
+            print_r($subject_class);
 
-            // print_r($timetable);
+            print_r($timetable);
             View::renderTemplate ('Timetables/addSubjectClassForm.twig.html', [
                                         'subjectClass' => $subject_class,
                                         'title' => 'Add a Class '.$sessionData->currentTimetable, 
@@ -227,8 +227,8 @@ class TimetableController extends \Core\Controller{
     public function createNewSubjectClass (){
         $sessionData = Session::getInstance();
         $db = DB::getInstance();
-        // echo ("<pre>");
-        // print_r($_POST);
+        echo ("<pre>");
+        print_r($_POST);
         if ($sessionData->inSession) {
 
             
@@ -236,12 +236,24 @@ class TimetableController extends \Core\Controller{
             $subject_id             = $_POST["subject_id"];
             $trainee_group_id       = $_POST["trainee_group_id"];
             $instructor_id          = $_POST["instructor_id"];
-            $room_id                = $_POST["room_id"] ? $_POST["room_id"] : 25; // type 14 is any room of the same type
             $room_type_id           = $_POST["room_type_id"] ;  
             $preferred_start_period = $_POST["preferred_start_period"];
             $preferred_end_period   = $_POST["preferred_end_period"];
             $preferred_number_days  = $_POST["preferred_number_days"];
 
+            if ($_POST["room_id"]) { // room_id is specified
+
+                $room_id = $_POST["room_id"];
+                $room_id_final = $room_id;
+                $room_fixed = 1;
+            
+            }else{ // any room can chosen later on. 
+            
+                $room_fixed = null;
+            
+                $room_id = 25; // this is free room, will be changed later based on room_type_id
+            
+            }
 
             //create digest of the form submission:
 
@@ -260,8 +272,9 @@ class TimetableController extends \Core\Controller{
                             array(  'timetable_id'          => $sessionData->currentTimetable,
                                     'subject_id'            => $subject_id,
                                     'instructor_id'         => $instructor_id,
-                                    'trainee_group_id'      =>  $trainee_group_id,
+                                    'trainee_group_id'      => $trainee_group_id,
                                     'room_id'               => $room_id,
+                                    'room_fixed'            => $room_fixed,
                                     'room_type_id'          => $room_type_id ,
                                     'preferred_start_period'=> $preferred_start_period ,
                                     'preferred_end_period'  => $preferred_end_period ,
@@ -337,7 +350,7 @@ class TimetableController extends \Core\Controller{
         $db = DB::getInstance();
 
         $sessionData->currentTimetable = $this->route_params["id"];
-        $db->query('UPDATE timetable SET timetable.current = 0  WHERE timetable.current = 1');
+        //$db->query('UPDATE timetable SET timetable.current = 0  WHERE timetable.current = 1');
         //$qry = 'UPDATE timetable SET timetable.current = 1  WHERE timetable.id = '.$sessionData->currentTimetable ;
         $db->query($qry);
         header("Location: /Timetable/TimetableController/addSubjectClass");
@@ -383,8 +396,13 @@ class TimetableController extends \Core\Controller{
         if(!empty($_POST["keyword"])) {
             $db = DB::getInstance();
             $keyword = "'%".$_POST["keyword"]."%'";
-          
-            $db->query("SELECT * FROM subject WHERE subject.name LIKE {$keyword} ORDER BY subject.name LIMIT 0,10");
+
+            $fields = "id, concat(subject.code, '-',subject.name,' (',subject.required_period,')') AS 'fullSubjectName'";
+            
+            $where = "concat(subject.code, ' ',subject.name)";
+            $db->query("SELECT {$fields} FROM subject WHERE {$where} LIKE {$keyword} ORDER BY subject.name LIMIT 0,10");
+
+            // $db->query("SELECT * FROM subject WHERE subject.name LIKE {$keyword} ORDER BY subject.name LIMIT 0,10");
             //  print_r($db->count());
             if ($db->count()){
                 ?>
@@ -392,7 +410,7 @@ class TimetableController extends \Core\Controller{
                     <?php
                         foreach ($db->getResults() as $result){
                         ?>
-                        <li onClick="selectOptionsCourse('<?php echo $result->id ?>','<?php echo $result->name ?>');"><?php echo $result->name; ?></li>
+                        <li onClick="selectOptionsCourse('<?php echo $result->id ?>','<?php echo $result->fullSubjectName ?>');"><?php echo $result->fullSubjectName; ?></li>
                         <?php } ?>
                     </ul>
                 <?php
@@ -452,9 +470,6 @@ class TimetableController extends \Core\Controller{
                         ?>
                         
                         <li onClick="selectOptionsRoomType('<?php 
-                                    // $roomTypeID = $result->id;
-                                    // $db->query("SELECT * FROM room WHERE room.type = {$roomTypeID} ORDER BY room.name LIMIT 0,10");
-
 
                                     echo $result->id ?>','<?php echo $result->name; ?>');"><?php echo $result->name; ?>
                         </li>
@@ -494,7 +509,7 @@ class TimetableController extends \Core\Controller{
             if ($db->count()){
                 ?>
                     <ul id="ajaxFetch-list" class="list-unstyled">
-                        <li onClick="selectOptionsRoom('', 'Any of this type')">Any of this type</li>
+                        <li onClick="selectOptionsRoom('<?php null; ?>', 'Any of this type')">Any of this type</li>
                     <?php 
                         foreach ($db->getResults() as $result){
                         ?>

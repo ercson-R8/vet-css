@@ -20,6 +20,7 @@ class SubjectClass {
             $traineeGroup,    // object of TraineeGroup class
             $instructor,      // object of Instructor class
             $room,            // object of Room class
+            $room_fixed,
             $roomType,          // object of RoomType class
             $preferredStart,
             $preferredEnd,
@@ -44,6 +45,7 @@ class SubjectClass {
                                     $instructor = null,
                                     $roomType = null,
                                     $room = null,
+                                    $room_fixed = null,
                                     $preferredStart = null,
                                     $preferredEnd = null,
                                     $preferredNumberOfDays = null){
@@ -61,6 +63,7 @@ class SubjectClass {
         $this->instructor = $instructor;
         $this->room = $room;
         $this->roomType = $roomType;
+        $this->room_fixed = $room_fixed;
         $this->preferredStart = $preferredStart;
         $this->preferredEnd = $preferredEnd;
         $this->preferredNumberOfDays = $preferredNumberOfDays; 
