@@ -41,8 +41,9 @@ class Timetable {
         if ($db->count()){
             $i=0;
             foreach($db->getResults() as $subjectClass){
-                // print_r($subjectClass->id);
-                // print_r(array_keys($subjectClass));
+                
+                // this will collect each row of the selected table and store 
+                // all of it in an assoc array. 
                 $subjectClassSet[] =[
                     "id" => $subjectClass->id,
                     "timetable_id" => $subjectClass->timetable_id,
@@ -83,7 +84,7 @@ class Timetable {
         )
      */
     public function createSubjectClass ($baseSubjectClass){
-        // print_r("\nSizeof base: ".sizeof($baseSubjectClass));
+
         $subjectClass = [];
 
             for($i=0; $i < sizeof($baseSubjectClass); $i++){
@@ -139,7 +140,9 @@ class Timetable {
 
         foreach($subjectClassSet as $key => $subjectClass){
 
+            // find a suitable timeslot for the current subjectCclass
             $timeslot = $this->getTimeslot($subjectClass);
+
             for($j=0; $j < sizeof($timeslot); $j++){
 
                 // create a MeetingTime object for each timeslot. 
@@ -148,17 +151,7 @@ class Timetable {
             }
 
         }
-        // usort($timetable, function($a, $b){
-        //     // return ((int)$a->getSubjectClassID() > (int)$b->getSubjectClassID());
 
-        //     return ((int)$a->getTimeslot() > (int)$b->getTimeslot());
-
-        //     // if ((int)$a->getTimeslot() == (int)$b->getTimeslot()) return 0;
-        //     // return (int)$a->getTimeslot() < (int)$b->getTimeslot() ? -1 : 1;
-
-        // });
-        // print_r("\n=========================");
-        // print_r($timetable);
         return $timetable;
     }
 
@@ -382,7 +375,7 @@ class Timetable {
         echo"Timetable Class<pre>";
 
 
-        $timetableID = 3;  // will be replaced by the actual database table id later
+        $timetableID = 5;  // will be replaced by the actual database table id later
         $population = [];
         $timetableFitness = [];
         $subjectClassSets = [];
@@ -468,7 +461,7 @@ class Timetable {
                 $timetableFitness[$timetable] = $this->calcFitness($population[$timetable]);
 
 
-                if(($timetableFitness[$timetable] < 1 )){
+                if(($timetableFitness[$timetable] == 0 )){
                     $fitTimetableFound = true;
                     // print_r($population[$timetable]);
                     print_r("\n<h2>=======================generation: ".$generation."======================================</h2>");
@@ -489,7 +482,7 @@ class Timetable {
                                 " Grp: ".$tempTable[$i]->getSubjectClass()->getTraineeGroup()->getID(). 
                                 ")\t(Sbj: ".$tempTable[$i]->getSubjectClass()->getSubject()->getID().
                                 " Inst: ".$tempTable[$i]->getSubjectClass()->getInstructor()->getID().
-                                ")\t[".$tempTable[$i]->getSubjectClass()->getRoom()->getName().
+                                ")\t["."id ".$tempTable[$i]->getSubjectClass()->getRoom()->getID() ."-".$tempTable[$i]->getSubjectClass()->getRoom()->getName().
                                 "]");
                     }
                    
@@ -527,7 +520,7 @@ class Timetable {
                 $parentA = 0;
                 $parentA = 0;
 
-                for($timetable=TimetableConfig::ELITISM; $timetable < TimetableConfig::POP_SIZE; $timetable++){
+                for($timetable=TimetableConfig::ELITISM - 1; $timetable < TimetableConfig::POP_SIZE; $timetable++){
                     //$subjectClassSets[$timetable] = $this->createSubjectClass($baseSubjectClass);
                     $population[$timetable] = $this->createTimetable($subjectClassSets[$timetable]);
                     $timetableFitness[$timetable] = $this->calcFitness($population[$timetable]);
@@ -537,16 +530,21 @@ class Timetable {
 
             // 2. Process fitness values. 
             
-            $uniqueFitnessValues = array_unique ($timetableFitness);
+            $uniqueFitnessValues = ($timetableFitness); // array_unique ($timetableFitness); // 
             
             asort($uniqueFitnessValues);
             
                         
             // 2.0 eliminate the least fit timetable.
             array_pop($uniqueFitnessValues); // remove the least fit from selection pool
-            print_r("\nuniqueFitnessValues: ");
+            print_r("\nunique/FitnessValues: ");
+            $i = 0;
             foreach($uniqueFitnessValues as $key => $value){
                 print_r("[".$key."]=><b>".$value."</b> ");
+                // if ($i >= 1){
+                //     break;
+                // }
+                // $i++;
             }
 
 
@@ -562,14 +560,16 @@ class Timetable {
                 $matingPoolFrequency = round( (1 / ($fitnessValue+1)* 100));
                 $totalFitnessValues += $matingPoolFrequency;
             }
+            print_r("\ntotalFitnessValues:". $totalFitnessValues."\n" );
 
             // 2.3 Normalize each fitness values: (fitnessVale/TotalFitness) * 100
             foreach($uniqueFitnessValues as $key => $fitnessValue){
-                $x =   (round( (1 / ($fitnessValue+1)* 100)));
+                // $x =   (round( (1 / ($fitnessValue+1)* 100)));
 
                 // 2.3 Normalize each fitness values: (fitnessVale/TotalFitness) * 100 
-                $matingPoolFrequency = round(((round( (1 / ($fitnessValue+1)* 100))) / $totalFitnessValues) * 100);
-                              
+                // $matingPoolFrequency = round(   ((round( (1 / ($fitnessValue+1)* 100))) / $totalFitnessValues)    * 100);
+                $matingPoolFrequency =    round ((  ((1/($fitnessValue+1)* 100))  /  $totalFitnessValues ) * 100)           ;
+                print_r(" ".$matingPoolFrequency);              
                 // 3. prepare matingPool indexes
                 // 3.1 Populate the matingPool
                 
@@ -612,7 +612,7 @@ class Timetable {
             print_r("]");
 
             $crossRate = (int)(TimetableConfig::POP_SIZE * TimetableConfig::CROSSOVER_RATE ) ;
-            for( $timetable=TimetableConfig::ELITISM ; $timetable < $crossRate ; $timetable++ ){
+            for( $timetable=TimetableConfig::ELITISM - 1; $timetable < $crossRate ; $timetable++ ){
                    
                
                 // 4. SELECTION parentA and parentB.
@@ -769,11 +769,7 @@ class Timetable {
                     $done = true;
                     $s = (fmod($timeslot[0],TimetableConfig::TOTAL_PERIODS))+1;
                     $e = (fmod($timeslot[sizeof($day)-1],TimetableConfig::TOTAL_PERIODS))+1;
-                    // echo "\nstart: ".$s;
-                    
-                    // echo "\t end: ".$e;
-                    
-                    // echo "<br/>";
+
                 }
                 
             }
