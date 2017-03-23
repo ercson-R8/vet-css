@@ -1,5 +1,8 @@
+// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
+
 // Genetic Algorithm, Evolving Shakespeare
-// Daniel Shiffman <http://www.shiffman.net>
 
 // A class to describe a psuedo-DNA, i.e. genotype
 //   Here, a virtual organism's DNA is an array of character.
@@ -31,14 +34,14 @@ class DNA {
   }
   
   // Fitness function (returns floating point % of "correct" characters)
-  void calcFitness (String target) {
+  void fitness (String target) {
      int score = 0;
      for (int i = 0; i < genes.length; i++) {
         if (genes[i] == target.charAt(i)) {
           score++;
         }
      }
-     fitness = (float)score / (float)target.length();
+     fitness = pow(2,score);
   }
   
   // Crossover

@@ -145,7 +145,7 @@
                                     {% for row in subjectClass %}
                                     <tr>
                                         <td class="text small" style="text-align:center">{{ row.trainee_group }} </td>
-                                        <td class="text small" style="text-align:center">{{ row.subject }} ({{ row.code }})<br/>
+                                        <td class="text small" style="text-align:center">{{ row.subject }} {{ row.code }} [{{row.required_period}}]<br/>
                                                             <span class="text-primary small"><i>{{ row.instructor}}</i></span></td> 
                                         <td class="text small" style="text-align:center">{{ row.room }}<br/>
                                                             <span class="text-muted small"><i>{{ row.room_type}}</i></span></td>

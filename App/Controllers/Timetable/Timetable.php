@@ -370,12 +370,12 @@ class Timetable {
     public function indexAction (){
         //place this before any script you want to calculate time
         $time_start = microtime(true); 
-        ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+        ini_set('max_execution_time', 600); //300 seconds = 5 minutes
         $startMemory = memory_get_usage();
-        echo"Timetable Class<pre>";
+        echo"Timetable Class<pre>".fmod(6, 5);
 
 
-        $timetableID = 5;  // will be replaced by the actual database table id later
+        $timetableID = 4;  // will be replaced by the actual database table id later
         $population = [];
         $timetableFitness = [];
         $subjectClassSets = [];
@@ -464,7 +464,7 @@ class Timetable {
                 if(($timetableFitness[$timetable] == 0 )){
                     $fitTimetableFound = true;
                     // print_r($population[$timetable]);
-                    print_r("\n<h2>=======================generation: ".$generation."======================================</h2>");
+                    print_r("\n<h2>======== generation: ".$generation."===============</h2>");
 
                     print_r("\n<h1>FOUND!!! CONFLICTS: ".$timetableFitness[$timetable]." </h1>");
                     // display pop. 
@@ -486,7 +486,7 @@ class Timetable {
                                 "]");
                     }
                    
-                     $tempTable = null;
+                    $tempTable = null;
                     print_r("\n".""."\n");
                     echo memory_get_usage() - $startMemory, ' bytes';
                     var_dump( ini_get('memory_limit') );
@@ -519,7 +519,7 @@ class Timetable {
                 $totalFitnessValues = 0;
                 $parentA = 0;
                 $parentA = 0;
-
+                print_r("\nstarting at: ".(TimetableConfig::ELITISM - 1)."\n");
                 for($timetable=TimetableConfig::ELITISM - 1; $timetable < TimetableConfig::POP_SIZE; $timetable++){
                     //$subjectClassSets[$timetable] = $this->createSubjectClass($baseSubjectClass);
                     $population[$timetable] = $this->createTimetable($subjectClassSets[$timetable]);
@@ -530,7 +530,7 @@ class Timetable {
 
             // 2. Process fitness values. 
             
-            $uniqueFitnessValues = ($timetableFitness); // array_unique ($timetableFitness); // 
+            $uniqueFitnessValues = ($timetableFitness); // array_unique ($timetableFitness); //  
             
             asort($uniqueFitnessValues);
             
@@ -560,7 +560,7 @@ class Timetable {
                 $matingPoolFrequency = round( (1 / ($fitnessValue+1)* 100));
                 $totalFitnessValues += $matingPoolFrequency;
             }
-            print_r("\ntotalFitnessValues:". $totalFitnessValues."\n" );
+            print_r("\nmatingPoolFrequency:"." " );
 
             // 2.3 Normalize each fitness values: (fitnessVale/TotalFitness) * 100
             foreach($uniqueFitnessValues as $key => $fitnessValue){
@@ -568,8 +568,8 @@ class Timetable {
 
                 // 2.3 Normalize each fitness values: (fitnessVale/TotalFitness) * 100 
                 // $matingPoolFrequency = round(   ((round( (1 / ($fitnessValue+1)* 100))) / $totalFitnessValues)    * 100);
-                $matingPoolFrequency =    round ((  ((1/($fitnessValue+1)* 100))  /  $totalFitnessValues ) * 100)           ;
-                print_r(" ".$matingPoolFrequency);              
+                $matingPoolFrequency =    round ((  ((1/($fitnessValue+1)* 100))  /  TimetableConfig::POP_SIZE ) * 100)           ;
+                print_r($matingPoolFrequency." ");              
                 // 3. prepare matingPool indexes
                 // 3.1 Populate the matingPool
                 
@@ -583,6 +583,25 @@ class Timetable {
 
             }
 
+            print_r("\nPopulation: ".sizeof($population)."");
+            print_r("\nSize of matingPool: ".sizeof($matingPool)." pool index: \n[");
+            // $i = 0;
+            // foreach($matingPool as $key => $value){
+            //     print_r($value.", ");
+            //     if(!fmod($i, 20) && $i > 5){
+            //         print_r("<br/>");
+            //     }
+            //     $i++;
+            // }
+            print_r("]");
+            print_r("\nselectionPool: ".sizeof($selectionPool)."");
+            print_r("\nselection pool index: [");
+            foreach($selectionPool as $key => $value){
+                print_r($key.", ");
+            }
+            print_r("]");
+
+
 
             $n=0;
             // ELITISM, find the elite/s 
@@ -595,24 +614,17 @@ class Timetable {
                     $population[$n][$j] = clone $value[$j];
 
                 }
-                if ($n >= TimetableConfig::ELITISM - 1 ){
+                if ($n >= TimetableConfig::ELITISM-1){
                     break;
                 }
                 $n++;
             }
             
-            print_r("\n(population): ".sizeof($population)."");
-            print_r("\n(matingPool): ".sizeof($matingPool)."");
             
-            print_r("\nselectionPool: ".sizeof($selectionPool)."");
-            print_r("\nselection pool index: [");
-            foreach($selectionPool as $key => $value){
-                print_r($key.", ");
-            }
-            print_r("]");
+
 
             $crossRate = (int)(TimetableConfig::POP_SIZE * TimetableConfig::CROSSOVER_RATE ) ;
-            for( $timetable=TimetableConfig::ELITISM - 1; $timetable < $crossRate ; $timetable++ ){
+            for( $timetable=TimetableConfig::ELITISM; $timetable < $crossRate ; $timetable++ ){
                    
                
                 // 4. SELECTION parentA and parentB.

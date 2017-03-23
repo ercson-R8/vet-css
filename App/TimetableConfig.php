@@ -18,7 +18,7 @@ class TimetableConfig {
      * Total periods per day
      * @var int
      */
-    const TOTAL_PERIODS = 7;
+    const TOTAL_PERIODS = 8;
 
      /**  
      * Total number of training days per week
@@ -51,19 +51,19 @@ class TimetableConfig {
      * The rate of mutation for a child timetable.
      * @var float 
      */
-    const MUTATION_RATE = 0.01;   
+    const MUTATION_RATE = 0.005;   
 
     /**  
      * The rate of crossover for a set of timetables. 
      * @var float 
      */
-    const CROSSOVER_RATE = 0.6; // 1=100% 
+    const CROSSOVER_RATE = 0.5; // 1=100% 
 
     /**  
      * The number of elites to be kept in the population. 
      * @var float 
      */
-    const ELITISM = 4;
+    const ELITISM = 3;
 
 
 }
