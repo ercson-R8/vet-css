@@ -2,12 +2,9 @@
 
 namespace App\Controllers\Timetable;
 
-// use \Core\View;
 use App\Models\DB;
 use App\TimetableConfig;
-use App\Controllers\Timetable\TraineeGroup;
-use App\Controllers\Timetable\SubjectClass;
-
+use App\Controllers\Auth\Session;
 
 class Timetable {
 /* 
@@ -368,6 +365,8 @@ class Timetable {
     }
 
     public function indexAction (){
+        $sessionData = Session::getInstance();
+
         //place this before any script you want to calculate time
         $time_start = microtime(true); 
         ini_set('max_execution_time', 600); //300 seconds = 5 minutes
@@ -375,7 +374,7 @@ class Timetable {
         echo"Timetable Class<pre>".fmod(6, 5);
 
 
-        $timetableID = 4;  // will be replaced by the actual database table id later
+        $timetableID = $sessionData->currentTimetable;  // will be replaced by the actual database table id later
         $population = [];
         $timetableFitness = [];
         $subjectClassSets = [];
@@ -466,7 +465,7 @@ class Timetable {
                     // print_r($population[$timetable]);
                     print_r("\n<h2>======== generation: ".$generation."===============</h2>");
 
-                    print_r("\n<h1>FOUND!!! CONFLICTS: ".$timetableFitness[$timetable]." </h1>");
+                    print_r("\n<h1>FOUND! CONFLICTS: ".$timetableFitness[$timetable]." </h1>");
                     // display pop. 
                     
                     $tempTable = $population[$timetable];
@@ -485,7 +484,21 @@ class Timetable {
                                 ")\t["."id ".$tempTable[$i]->getSubjectClass()->getRoom()->getID() ."-".$tempTable[$i]->getSubjectClass()->getRoom()->getName().
                                 "]");
                     }
-                   
+                    $dispOrder = [];
+                    for ($i=0; $i < TimetableConfig::TOTAL_PERIODS; $i++) { 
+                        echo "\n\n";
+                        for ($j=0; $j < (TimetableConfig::TOTAL_TIME_SLOTS); $j++) { 
+                            if (! fmod(($i - $j), 8) ){
+                                print_r("\t".$j);
+                                $dispOrder[] = $j;
+                            }
+                        }
+                    }
+                    print_r($dispOrder);
+                    print_r("\n\n");
+                    // print_r($tempTable);
+
+
                     $tempTable = null;
                     print_r("\n".""."\n");
                     echo memory_get_usage() - $startMemory, ' bytes';
@@ -499,7 +512,7 @@ class Timetable {
 
                     //execution time of the script
                     echo '<b>Total Execution Time:</b> '.$execution_time.'sec';
-                    return;
+                    return $tempTable;
                 }
             }
 
@@ -519,25 +532,25 @@ class Timetable {
                 $totalFitnessValues = 0;
                 $parentA = 0;
                 $parentA = 0;
-                print_r("\nstarting at: ".(TimetableConfig::ELITISM - 1)."\n");
-                for($timetable=TimetableConfig::ELITISM - 1; $timetable < TimetableConfig::POP_SIZE; $timetable++){
+                print_r("\nstarting at: ".(TimetableConfig::ELITISM)."\n");
+                for($timetable=TimetableConfig::ELITISM; $timetable < TimetableConfig::POP_SIZE; $timetable++){
                     //$subjectClassSets[$timetable] = $this->createSubjectClass($baseSubjectClass);
                     $population[$timetable] = $this->createTimetable($subjectClassSets[$timetable]);
                     $timetableFitness[$timetable] = $this->calcFitness($population[$timetable]);
                 }
             }
-
+            print_r("\nPopulation: ".sizeof($population)."");
 
             // 2. Process fitness values. 
             
-            $uniqueFitnessValues = ($timetableFitness); // array_unique ($timetableFitness); //  
-            
+            $uniqueFitnessValues = array_unique ($timetableFitness); //   ($timetableFitness); // 
+
             asort($uniqueFitnessValues);
             
                         
             // 2.0 eliminate the least fit timetable.
             array_pop($uniqueFitnessValues); // remove the least fit from selection pool
-            print_r("\nunique/FitnessValues: ");
+            print_r("\nSorted unique/FitnessValues: ");
             $i = 0;
             foreach($uniqueFitnessValues as $key => $value){
                 print_r("[".$key."]=><b>".$value."</b> ");
@@ -555,11 +568,16 @@ class Timetable {
             $fitnessLowest = [array_search(max($timetableFitness), $timetableFitness) => max($timetableFitness)];
 
 
-            // 2.2 Find the total fitness values
-            foreach($uniqueFitnessValues as $key => $fitnessValue){
-                $matingPoolFrequency = round( (1 / ($fitnessValue+1)* 100));
-                $totalFitnessValues += $matingPoolFrequency;
-            }
+            // 2.2 Find the total fitness values 
+            // foreach($uniqueFitnessValues as $key => $fitnessValue){
+            //     $matingPoolFrequency = round( (1 / ($fitnessValue+1)* 100));
+            //     $totalFitnessValues += $matingPoolFrequency;
+            // } 
+
+            // code above replaced by POP_SIZE
+
+
+
             print_r("\nmatingPoolFrequency:"." " );
 
             // 2.3 Normalize each fitness values: (fitnessVale/TotalFitness) * 100
@@ -583,7 +601,7 @@ class Timetable {
 
             }
 
-            print_r("\nPopulation: ".sizeof($population)."");
+            
             print_r("\nSize of matingPool: ".sizeof($matingPool)." pool index: \n[");
             // $i = 0;
             // foreach($matingPool as $key => $value){
@@ -599,7 +617,7 @@ class Timetable {
             foreach($selectionPool as $key => $value){
                 print_r($key.", ");
             }
-            print_r("]");
+            print_r("]\n");
 
 
 
@@ -608,7 +626,7 @@ class Timetable {
             // 4.2 save the top n timetables
             foreach($selectionPool as $key=>$value){
                 // 4.3 Add the best timetable so far to population[i]
-
+                print_r ("\t n: ".$n." selPool: "."=>".$key." sizeof(value): ".sizeof($value));
                 // $population[$n] =  $value;
                 for($j=0; $j <sizeof($value); $j++){
                     $population[$n][$j] = clone $value[$j];

@@ -3,6 +3,7 @@
 namespace App\Controllers\Timetable;
 
 use \Core\View;
+
 use App\Controllers\Auth\Session;
 use App\Models\DB;
 /**
@@ -356,6 +357,25 @@ class TimetableController extends \Core\Controller{
         header("Location: /Timetable/TimetableController/addSubjectClass");
         
     }
+
+
+    /*
+     * generateNewTimetable method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function generateNewTimetable (){
+        
+        echo "generateNewTimetable<pre>";
+        print_r($_POST);
+        $t = new Timetable();
+
+        $t->indexAction();
+    }
+
+
+
 
 
     /*
