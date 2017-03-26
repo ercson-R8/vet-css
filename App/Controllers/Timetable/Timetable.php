@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers\Timetable;
 
@@ -6,19 +6,10 @@ use App\Models\DB;
 use App\TimetableConfig;
 use App\Controllers\Auth\Session;
 
-class Timetable {
-/* 
- |--------------------------------------------------------------------------
- | TimeTable   
- |--------------------------------------------------------------------------
- | 
- | desc 
- | 
- | 
- | 
- | 
- */
+class Timetable{
+
     private $subjects, $traineeGroups, $rooms, $roomTypes, $instructors = null;
+    private $population = [];
     private $baseSubjectClass = null;
 
     /*
@@ -29,19 +20,20 @@ class Timetable {
      * @param		int         timetable id, from the table 'timetable'
      * @return	 	array       SubjectClasses objects; 
      */
-    public function fetchBaseSubjectClass ($timeTableID){
+    public function fetchBaseSubjectClass($timeTableID){
         
         $subjectClassSet = [];
         $db = DB::getInstance();
         $db->query("SELECT * FROM subject_class WHERE subject_class.timetable_id = {$timeTableID}");
-        // print_r($db->getResults());
-        if ($db->count()){
+        
+        print_r($db->getResults());
+        if ($db->count()) {
             $i=0;
-            foreach($db->getResults() as $subjectClass){
-                
-                // this will collect each row of the selected table and store 
-                // all of it in an assoc array. 
-                $subjectClassSet[] =[
+            foreach ($db->getResults() as $subjectClass) {
+                print_r("\nCopying tables..."."\n");
+                // this will collect each row of the selected table and store
+                // all of it in an assoc array.
+                $subjectClassSet[$subjectClass->id] =[
                     "id" => $subjectClass->id,
                     "timetable_id" => $subjectClass->timetable_id,
                     "subject_id" => $subjectClass->subject_id,
@@ -53,101 +45,74 @@ class Timetable {
                     "preferred_start_period" => $subjectClass->preferred_start_period,
                     "preferred_end_period" => $subjectClass->preferred_end_period,
                     "preferred_number_days" => $subjectClass->preferred_number_days,
-                ];    
+                ];
             }
-            
+        }else{
+            // todo 
+            print_r("\nError here no class found on this time timetable"."\n");
+            print_r("\nSize of db->getResults() ".sizeof($db->getResults())."\n");
+            exit;
         }
+
+
         return $subjectClassSet;
     }
     /*
-     * createSubjectClass method creates a set of subject class belonging to a specific
-     * timetable.  
+     * assignRoom method assign a room to an individual
      *
-     * @param		object      stdClass object, raw data from fetchBaseSubjectClass. 
-     * @return	 	array       SubjectClass object; 
-         [0] => stdClass Object
-        (
-            [id] => 1
-            [timetable_id] => 1
-            [subject_id] => 1
-            [trainee_group_id] => 1
-            [instructor_id] => 4
-            [room_id] => 3
-            [room_type_id] => 2
-            [meeting_time_id_TBDropped] => 
-            [preferred_start_period] => 4
-            [preferred_end_period] => 5
-            [preferred_number_days] => 1
-        )
+     * @param		array       individual
+     * @return	 	int         roomID
      */
-    public function createSubjectClass ($baseSubjectClass){
+    public function assignRoom($indi){   
 
-        $subjectClass = [];
+        // Get a room room_fixed is set to null
+        print_r("\nAssigning rooms...."."\n");
+        if ($indi["room_fixed"]) { // room_id is provided, cannot be changed.
+            
+            $room = $this->getRoom($indi["room_id"])->getID();
+            
+        } else {
+            
+            $room = $this->getRandomRoom($indi["room_type_id"])->getID();
+        }
 
-            for($i=0; $i < sizeof($baseSubjectClass); $i++){
-                // print_r("basesubjectID: ".$baseSubjectClass[$i]["id"]);
-
-                if ($baseSubjectClass[$i]["room_fixed"]){ // room_id is provided, cannot be changed. 
-
-                    // echo "<br/>room_id specified: {$baseSubjectClass[$i]["room_id"]} scID: {$baseSubjectClass[$i]["id"]}";
-                    $room = $this->getRoom($baseSubjectClass[$i]["room_id"]);
-
-                    $isRoomFixed = true;
-
-                }else{
-
-                    $room = $this->getRandomRoom($baseSubjectClass[$i]["room_type_id"]);
-                    
-                    $isRoomFixed = false;
-                    // echo "<br/>room_id specified: {$baseSubjectClass[$i]["room_id"]} scID: {$baseSubjectClass[$i]["id"]}";
-                    
-                }
-                $subjectClass[$baseSubjectClass[$i]["id"]] =  new SubjectClass (
-                                            $baseSubjectClass[$i]["id"],
-                                            $baseSubjectClass[$i]["timetable_id"],
-                                            $this->getSubject($baseSubjectClass[$i]["subject_id"]),
-                                            $this->getTraineeGroup($baseSubjectClass[$i]["trainee_group_id"]), 
-                                            $this->getInstructor($baseSubjectClass[$i]["instructor_id"]), 
-                                            $this->getRoomType($baseSubjectClass[$i]["room_type_id"]), 
-                                            $room,
-                                            $baseSubjectClass[$i]["room_fixed"],
-                                            $baseSubjectClass[$i]["preferred_start_period"],
-                                            $baseSubjectClass[$i]["preferred_end_period"],
-                                            $baseSubjectClass[$i]["preferred_number_days"]);
-                $subjectClass[$baseSubjectClass[$i]["id"]]->setRoomFixed($isRoomFixed);
-            }
-            // print_r($subjectClass);
-        return $subjectClass;
+        return $room;
     }
 
 
     /*
-     * CreateTimetable method 
+     * setInitTimeSlot method 
      *
      * @param		
      * @return	 	
      */
-    public function createTimetable ($subjectClassSet){
+    public function setInitTimeSlot($subjectClassSet)
+    {
         $timetable = [];
         $mt_id = 0;
-
         // get all the timeslot for this subjectClass
         // timeslots are based on the required period and preferred number of days
-        // timeslots are distributed in ref to the number of days. 
+        // timeslots are distributed in ref to the number of days.
 
-        foreach($subjectClassSet as $key => $subjectClass){
-
+        foreach ($subjectClassSet as $key => $subjectClass) {
             // find a suitable timeslot for the current subjectCclass
-            $timeslot = $this->getTimeslot($subjectClass);
+            print_r("\nsetInitTimeSlot key: ".$key);
+            $requiredPeriods = (int) $this->getSubject($subjectClass["subject_id"])->getRequiredPeriod();
+            $preferredNumberOfDays = (int) $subjectClass["preferred_number_days"] ;
+            $preferredStart = (int) $subjectClass["preferred_start_period"] ;
+            $preferredEnd = (int) $subjectClass["preferred_end_period"] ;
 
-            for($j=0; $j < sizeof($timeslot); $j++){
+            $timeslot = $this->getTimeslot( $requiredPeriods, $preferredNumberOfDays,
+                                            $preferredStart, $preferredEnd);
 
-                // create a MeetingTime object for each timeslot. 
-                $timetable [] = new MeetingTime ($mt_id, $subjectClass, $timeslot[$j]);
+            for ($j=0; $j < sizeof($timeslot); $j++) {
+                // create a MeetingTime object for each timeslot.
+                $timetable [] = ["mt_id"=>$mt_id, "sc"=>$subjectClass, "ts"=>$timeslot[$j]];
                 $mt_id++;
             }
-
         }
+
+        // print_r($timetable);
 
         return $timetable;
     }
@@ -161,47 +126,118 @@ class Timetable {
      * @param		object      subjectClass 
      * @return	 	array       timeslots for this subject class for 1 meeting (day)
      */
-    public function getTimeslot ($subjectClass){
+    public function getTimeslot($requiredPeriod, $preferredNumberOfDays, $preferredStart, $preferredEnd){
         $timeslot = []; // subjectClass-timeslot
         // distribute the required period/s with the preferred number of day/s
-        // returns an array. $distBlock = [ [day]=>[no. of periods] ] 
+        // returns an array. $distBlock = [ [day]=>[no. of periods] ]
         //     Array
         // (
         //     [0] => 2
         //     [1] => 1
         //     [2] => 1
         // )
-
-        $distBlock = $this->getDistBlock(   $subjectClass->getSubject()->getRequiredPeriod(),
-                                            $subjectClass->getPreferredNumberOfDays() 
-                                        );
-
+        print_r("\nStart getTimeslot"."\n");
+        $distBlock = $this->getDistBlock(   $requiredPeriod, $preferredNumberOfDays);
+        print_r($distBlock);
         $day = [];
-        for($i=0; $i < count($distBlock); $i++ ){
-                $sameDay = true;
-                while ($sameDay){
-                    $temp_slot = $this->getRandomSlot(
-                                                $distBlock[$i],
-                                                $subjectClass->getPreferredStart(),
-                                                $subjectClass->getPreferredEnd() 
-                                        );
-                    $daySelected = ((int) (($temp_slot[0])/TimetableConfig::TOTAL_PERIODS) );
-                    if (!in_array($daySelected, $day)){
+        for ($i=0; $i < count($distBlock); $i++) {
+            $sameDay = true;
+            while ($sameDay) {
+                $temp_slot = $this->getRandomSlot(
+                                        $distBlock[$i],
+                                        $preferredStart, 
+                                        $preferredEnd
+                                );
 
-                        $day[]= $daySelected;
+                $daySelected = ((int) (($temp_slot[0])/TimetableConfig::TOTAL_PERIODS) );
+                if (!in_array($daySelected, $day)) {
+                    $day[]= $daySelected;
 
-                        for($j=0; $j < count($temp_slot); $j++){
-
-                            $timeslot[] =  $temp_slot[$j];
-                        }
-                        
-                        $sameDay = false;
+                    for ($j=0; $j < count($temp_slot); $j++) {
+                        $timeslot[] =  $temp_slot[$j];
                     }
+                        
+                    $sameDay = false;
                 }
+            }
         }
-
+        print_r("\nEnd getTimeslot"."\n");
+        print_r($timeslot);
         return $timeslot;
     }
+
+
+    public function getDistBlock($requiredPeriod , $preferredNumberOfDays){
+        $total = 0;
+        $block = [];
+        $adjustedNumberOfDays = ($preferredNumberOfDays < 3) ? $preferredNumberOfDays: $preferredNumberOfDays-1;
+        print_r("\ngetDistBlock() requiredPeriod : ".$requiredPeriod." preferredNumberOfDays : ".$preferredNumberOfDays."\n");
+        for ($i = 0; $i < ($preferredNumberOfDays  - 1); $i++) {
+            
+            $period = (int)( $requiredPeriod  / ($adjustedNumberOfDays));
+            array_push($block, $period);
+            $total += $period;
+        }
+        array_push($block, ($requiredPeriod -$total));
+        shuffle($block); // randomize distribution block
+        return $block;
+    }
+
+    public function getRandomSlot($numberOfPeriods, $preferred_start_period, $preferred_end_period){
+        // subject-classes are taught in "d" number days with "p" number of periods per day
+        // this loop is "per" distribution block
+        // count: 3 Array
+        // (
+        //     [0] => 2
+        //     [1] => 1
+        //     [2] => 1
+        // )
+        // print_r("\n\tgetRandomSlot numberOfPeriods: ".$numberOfPeriods." ");
+        // print_r(" getRandomSlot preferred_start_period: ".$preferred_start_period." ");
+        // print_r(" getRandomSlot preferred_end_period: ".$preferred_end_period." ");
+        // $s = $preferred_start_period;
+        // $e = $preferred_end_period;
+        // echo "<br/><br/><h3>periods between {$s}-{$e}</h3>";
+        
+        $period_start = (($preferred_start_period==null) ? 0 : $preferred_start_period-1);
+        $period_end = (($preferred_end_period==null) ? TimetableConfig::TOTAL_PERIODS : $preferred_end_period-1);
+        
+        $done = false;
+        while (!$done) {
+            $timeslot = [];
+            $day = [];
+            $initSlot = mt_rand(0, TimetableConfig::TOTAL_TIME_SLOTS-1);
+            print_r("\n\tgetRandomSlot initSlot: ".$initSlot."\n");
+            for ($j=0; $j < $numberOfPeriods; $j++) {
+
+                array_push($timeslot, $initSlot+$j);
+
+
+                // push the timeslot in $day array
+                array_push($day, ((int) (($initSlot+$j)/TimetableConfig::TOTAL_PERIODS) ));
+            }
+
+            // all timeslot belongs to the same day
+            if ((count(array_unique($day)) === 1)) {
+
+                // if the selected starting period is from the preferred start onward
+                if (( fmod($timeslot[0], TimetableConfig::TOTAL_PERIODS) >= $period_start) &&
+                    
+
+                    // and the selected ending period is on or before the preferred ending period
+                    (fmod($timeslot[sizeof($day)-1], TimetableConfig::TOTAL_PERIODS) <= $period_end)) {
+                    // then the slot selected is a match;
+                    $done = true;
+                    // $s = (fmod($timeslot[0], TimetableConfig::TOTAL_PERIODS))+1;
+                    // $e = (fmod($timeslot[sizeof($day)-1], TimetableConfig::TOTAL_PERIODS))+1;
+                }
+            }
+        }
+        echo "<br/>timeslot: ";print_r($timeslot);
+        echo "<br/><br/>";
+        return $timeslot;
+    }
+
 
     /*
      * calcFitness method 
@@ -209,50 +245,45 @@ class Timetable {
      * @param		array       of meetingTime object 
      * @return	 	array       the number of conflicts and the fitness value.        
      */
-    public function calcFitness ($timetable){
+    public function calcFitness($timetable)
+    {
         $timeslots = [];
         $totalConflicts = 0;
-
-        for($i=0; $i < sizeof($timetable); $i++){
-
+        for ($i=0; $i < sizeof($timetable); $i++) {
             // fetch timeslot that is associated with a subjectClassID
-            array_push($timeslots, $timetable[$i]->getTimeslot());
-            
+            array_push($timeslots, $timetable[$i]["ts"]);
         }
-
+        // print_r($timetable);
         // remove duplicate timeslot from the list of timeslot that is associated with a subjectClassID
-        $timeslots = (array_unique($timeslots)); 
+        $timeslots = (array_unique($timeslots));
+        // print_r($timeslots);
 
-        foreach($timeslots as $timeslot){
-            
+        foreach ($timeslots as $timeslot) {
             $subjectClassID =[];
             $roomID = [];
             $traineeGroupID = [];
             $instructorID = [];
             $subjectID = [];
 
-            for($i=0; $i < sizeof($timetable); $i++){
-                
-                // gather all IDs belonging to this timeslot. 
-                if($timeslot == $timetable[$i]->getTimeslot()){
-                    $subjectClassID[] = $timetable[$i]->getSubjectClass()->getID();
-                    $roomID[] = $timetable[$i]->getSubjectClass()->getRoom()->getID();
-                    $traineeGroupID[] = $timetable[$i]->getSubjectClass()->getTraineeGroup()->getID();
-                    $instructorID[] = $timetable[$i]->getSubjectClass()->getInstructor()->getID();
-                    $subjectID[]= $timetable[$i]->getSubjectClass()->getSubject()->getID();
+            for ($i=0; $i < sizeof($timetable); $i++) {
+                // gather all IDs belonging to this timeslot.
+                if ($timeslot == $timetable[$i]["ts"]) {
+                    $subjectClassID[] = $timetable[$i]["sc"]["subject_id"];
+                    $roomID[] = $timetable[$i]["sc"]["room_id"];
+                    $traineeGroupID[] = $timetable[$i]["sc"]["trainee_group_id"];
+                    $instructorID[] = $timetable[$i]["sc"]["instructor_id"];
+                    $subjectID[]= $timetable[$i]["sc"]["id"];
                 }
             }
             
             // the difference between size of the arrayID and the number of UNIQUE items in that
-            // array is 0 then there is no conflict.  
+            // array is 0 then there is no conflict.
             $totalConflicts +=  (sizeof($subjectClassID)-sizeof(array_unique($subjectClassID))) +
                                 (sizeof($roomID)-sizeof(array_unique($roomID))) +
-                                (sizeof($traineeGroupID)-sizeof(array_unique($traineeGroupID))) + 
-                                (sizeof($instructorID)-sizeof(array_unique($instructorID))) + 
+                                (sizeof($traineeGroupID)-sizeof(array_unique($traineeGroupID))) +
+                                (sizeof($instructorID)-sizeof(array_unique($instructorID))) +
                                 (sizeof($subjectID)-sizeof(array_unique($subjectID))
-                                ); 
-                                
-                        
+                                );
         }
 
         return $totalConflicts;
@@ -267,58 +298,84 @@ class Timetable {
      * @param		
      * @return	 	
      */
-    public function crossover ($parentA, $parentB){
+    public function crossover($parentA, $parentB){
+
 
         $child = [];
-
-        $timeslotsA = [];
+        $timeslotsA = []; 
         $timeslotsB = [];
 
         $timetableSize = sizeof($parentA);
 
-        for($i=0; $i < ($timetableSize); $i++){
-            $timeslotsA[$parentA[$i]->getSubjectClass()->getID()][] = $parentA[$i]->getTimeslot();
-            $timeslotsB[$parentB[$i]->getSubjectClass()->getID()][]= $parentB[$i]->getTimeslot();
-
+        // fetch and store timeslots of parent A & B to arrays timeslotA and timeslotB
+        foreach ($parentA as $key => $value) {
+            $timeslotsA[$key] [] = $parentA[$key]['ts'];
         }
-
+        foreach ($parentB as $key => $value) {
+            $timeslotsB[$key] [] = $parentB[$key]['ts'];
+        }
 
         // choose base timeslots for the child;
-        $timeslotsC = (rand(0,1)) ?  $timeslotsA :  $timeslotsB;
+        if (rand(0, 1)) {
+            // timeslotC will be based on timeslotsA
+            // print_r(" timeslotsA\n");            
+            $timeslotsC = $timeslotsA;
 
-        // crossver the timeslot set in $timeslotsA and $timeslotsB into 
-        // the child timetable. 
-        $luckyPick = rand(0,1);
-        foreach($timeslotsA as $key => $value){
-            if($luckyPick){
-                $timeslotsC[$key] = $value;
-            }
-        }
-        foreach($timeslotsB as $key => $value){
-            if(rand(0,1)){
-                $timeslotsC[$key] = $value;
-            }
-        }
-
-
-        if($luckyPick){
-            foreach($parentB as $key => $value){
-                $child[] = clone $value;
+            // crossover the timeslot set in $timeslotsA into the timeslotsC.             
+            foreach ($timeslotsB as $key => $value) {
+                if (rand(0, 1)) {
+                    // print_r(" B+");
+                    $timeslotsC[$key] = $value;
+                }else {
+                    // print_r(" A+");
+                }
             }
         }else{
-            foreach($parentA as $key => $value){
-                $child[] = clone $value;
+            // timeslotC will be based on timeslotsB
+            // print_r(" timeslotsB\n");
+            $timeslotsC = $timeslotsB;
+
+            // crossover the timeslot set in $timeslotsA into the timeslotsC. 
+            foreach ($timeslotsA as $key => $value) {
+                if (rand(0, 1)) {
+                    // print_r(" A+");
+                    $timeslotsC[$key] = $value;
+                }else {
+                    // print_r(" B+");
+                }
+            }
+        }
+        
+        if (rand(0, 1)) {
+            foreach ($parentB as $key => $value) {
+                $child[] = $value;
+            }
+        } else {
+            foreach ($parentA as $key => $value) {
+                $child[] = $value;
             }
         }
 
-       
+        // print_r($timeslotsA);
+        // print_r($timeslotsB);
+        // print_r($timeslotsC);
+
+        // print_r($parentA);
+        // print_r($parentB);
+        // print_r($child);
+        
 
         // insert the $timetableC timeslots into the child
-        for($i=0; $i < ($timetableSize); $i++){
-            $timeslot_shift = array_shift($timeslotsC[$child[$i]->getSubjectClass()->getID()]);
-            $child[$i]->setTimeslot($timeslot_shift);
-        }
+        
+        for ($i=0; $i < ($timetableSize); $i++) {
 
+            // $timeslot_shift = array_shift($timeslotsC[$child[$i]->getSubjectClass()->getID()]);
+
+            $timeslot_shift = array_shift($timeslotsC[$i]);
+            // print_r(" timeslot_shift: ".$timeslot_shift."");
+            $child[$i]['ts'] = $timeslot_shift;
+        }
+        // print_r($child);
         return $child;
     }
 
@@ -328,95 +385,160 @@ class Timetable {
      * @param		
      * @return	 	
      */
-    public function mutate ($child){
+    public function mutate($childTimetable){
+        $notApplied = 0;
+        $applied = 0;
         $mutant = [];
-        for($j=0; $j <sizeof($child); $j++){
-            $mutant[$j] = clone $child[$j];
-        }
+        $mutant =  $childTimetable;
 
         $processedSubjectClassID = [];
-        for($i=0; $i < sizeof($child); $i++){
-            $rand = (rand(0,100)/100);
-            if ( $rand < TimetableConfig::MUTATION_RATE){
-                $subjectClassID = $mutant[$i]->getSubjectClass()->getID();
 
-                if (!array_search($subjectClassID, $processedSubjectClassID)){
-                    $processedSubjectClassID[] = $subjectClassID;
-                    $isFixed = $mutant[$i]->getSubjectClass()->isRoomFixed();
-                    if($isFixed){
-                        
+        for ($i=0; $i < sizeof($childTimetable); $i++) {
+            $rand = (mt_rand(0, 100)/100);
+            if ($rand < TimetableConfig::MUTATION_RATE) {
+                $applied++;
+                $subjectClassID = $mutant[$i]['sc']['id'];
+
+                if (!array_search($subjectClassID, $processedSubjectClassID)) {
+
+                    $processedSubjectClassID[] = $subjectClassID; // include this id in the already processed array 
+
+                    $isFixed = $mutant[$i]['sc']['room_fixed'] ;  //->getSubjectClass()->isRoomFixed();
+
+                    if ($isFixed) {
                         // print_r("\nisFixed YES: ".$isFixed." ");
-
-                    }else{
-                        $roomTypeID = $mutant[$i]->getSubjectClass()->getRoomType()->getID(); 
+                    } else {
+                        $roomTypeID = $mutant[$i]['sc']['room_type_id'] ; //->getSubjectClass()->getRoomType()->getID();
                         $randomRoom = $this->getRandomRoom($roomTypeID);
-                        $mutant[$i]->getSubjectClass()->setRoom($randomRoom);
+                        $mutant[$i]['sc']['room_id'] ; //->getSubjectClass()->setRoom($randomRoom);
                     }
-                    
                 }
-
             }
-            
+            else{
+                $notApplied++;
+            }
         }
 
-        
-        $child = null;
+        print_r("\nMUTATION \tapplied: ".$applied."x.\tNot applied: ".$notApplied."x");
+        unset($childTimetable);
         return $mutant;
     }
 
-    public function indexAction (){
+    /*
+     * dispTable method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function dispTable ($timetable, $sort = false){
+        // print_r($timetable);
+        /*
+            foreach ($data as $key => $row) {
+                $distance[$key] = $row['distance'];
+            }
+
+            array_multisort($distance, SORT_ASC, $data);
+        */
+        $tempTable = $timetable;
+        foreach ($tempTable as $key => $row) {
+            $ts[$key] = $row['ts'];
+        }
+        if ($sort){
+            array_multisort($ts,SORT_ASC, $tempTable );
+        }
+        
+
+        // usort($timetable, function($a, $b) {
+        //     return (int)$a['ts'] - (int)$b['ts'];
+        // });
+        for($i=0; $i < sizeof($tempTable); $i++){
+                        
+        print_r("\nmID:    ".$tempTable[$i]["mt_id"]. 
+                "\ttimeslot: ".$tempTable[$i]["ts"]. 
+                "\t\t(Class: ".$tempTable[$i]["sc"]["id"].
+                
+                " Grp: ".$tempTable[$i]["sc"]["trainee_group_id"]. 
+                ")\t(Sbj: ".$tempTable[$i]["sc"]["subject_id"].
+                " Inst: ".$tempTable[$i]["sc"]["instructor_id"].
+                ")\t["."id ".$tempTable[$i]["sc"]["room_id"]."-".
+                        $this->getRoom($tempTable[$i]["sc"]["room_id"])->getName().
+                "]");
+    }
+        
+    }
+
+    public function indexAction()
+    {
+        
         $sessionData = Session::getInstance();
 
         //place this before any script you want to calculate time
-        $time_start = microtime(true); 
+        $time_start = microtime(true);
         ini_set('max_execution_time', 600); //300 seconds = 5 minutes
         $startMemory = memory_get_usage();
-        echo"Timetable Class<pre>".fmod(6, 5);
 
-
+        echo"Hello form TimetableController.... <pre>";
         $timetableID = $sessionData->currentTimetable;  // will be replaced by the actual database table id later
-        $population = [];
+        print_r("\n".$timetableID."\n");
+
+
         $timetableFitness = [];
-        $subjectClassSets = [];
+        $subjectClassSet = []; // contains base plus initial room assignment
         $fitnessHighest = null;
         $fitnessLowest = null;
         $fitTimetableFound = false;
-
+         
         // base subjectClass is created once, to fetch data from mySQL tables
-        // an N subjectClasses will be created from the base with 
-        // random rooms if the property roomFixed = null. 
+        // a POP_SIZE subjectClasses will be created from the base with
+        // random rooms if the property roomFixed = null.
   
-        $baseSubjectClass = $this->fetchBaseSubjectClass($timetableID); 
-  
+        $baseSubjectClass = $this->fetchBaseSubjectClass($timetableID);
+        print_r("\nSize of base: ".sizeof($baseSubjectClass)."\n");
+        print_r($baseSubjectClass);
+
+
         // setup()
-        //  # Step 1: The Population 
-        //    # Create an empty population (an array or ArrayList)
+        //  # Step 1: The Population
         //    # Fill it with DNA encoded objects (pick random values to start)
-
-        for($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++){
-
-                /* 
-                    Create SubjectClass objects based on baseSubjectClass, providing random if
-                    necessary. 
-                */
-                $subjectClassSets[$timetable] = $this->createSubjectClass($baseSubjectClass);
-                $population[$timetable] = $this->createTimetable($subjectClassSets[$timetable]);
-
+        for ($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++) { 
+            foreach ($baseSubjectClass as $key => $value) {
+                    $subjectClassSet[$timetable][$key] = $value;
+                    $subjectClassSet[$timetable][$key]["room_id"] = $this->assignRoom($subjectClassSet[$timetable][$key]);
+                    
+            }
         }
-
-        /* error checking for the length of the population index $timetable. 
-           no fit timetable is found, the lenght of the population is equal to 
-           ($timetable-1)
-        */ 
+        ;
         
+        // print_r($subjectClassSet);
 
-        if (!$fitTimetableFound){
-            $timetable--;
+        for ($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++) { 
+
+            $this->population[$timetable] = $this->setInitTimeSlot($subjectClassSet[$timetable]);
+            $timetableFitness[$timetable] = $this->calcFitness($this->population[$timetable]);
             
+            // evaluate fitness of timetables (population)
+            // though it may be highly unlikely to generate a fit timetable at this stage
+            // still possibility is there. 
+            if(($timetableFitness[$timetable] == 0 )){
+                $fitTimetableFound = true;
+                $this->dispTable($this->population[$timetable]);
+
+                print_r("\n".""."\n"); echo memory_get_usage() - $startMemory, ' bytes'; var_dump( ini_get('memory_limit') );
+                var_dump(memory_get_usage() ); $time_end = microtime(true); $execution_time = ($time_end - $time_start);
+                echo '<b>Total Execution Time:</b> '.$execution_time.'sec';
+
+                return $this->population[$timetable] ;
+            }
         }
 
-        
 
+
+        // print_r($timetableFitness);
+        
+        // for ($i=0; $i < sizeof($this->population); $i++) { 
+        //     // print_r("\n"."\n");
+        //     // $this->dispTable($this->population[$i]);
+        // }
 
 
         /*
@@ -424,9 +546,8 @@ class Timetable {
                 1. evaluate fitness of timetables (population)
                     
                 2. Process fitness values. 
-                    2.0 eliminate the least fit timetable.
                     2.1 Find the best timetable so far
-                    2.2 Find the total fitness values 
+                    2.2 eliminate the least fit timetable.
                     2.3 Normalize each fitness values: (fitnessVale/TotalFitness) * 100
                 3. Prepare matingPool indexes and the selection Pool
                     3.1 Populate the matingPool
@@ -436,93 +557,39 @@ class Timetable {
                     4.2 Save the top N timetables
                     4.3 Add the best timetable so far to population[i] 
                      
-                4. SELECTION parentA and parentB.
-                5. CROSSOVER parentA and parentB. 
-                6. MUTATE child
-                7. Add to the population //starting @ pop[i]  
+                5. SELECTION parentA and parentB.
+                6. CROSSOVER parentA and parentB. 
+                7. MUTATE child
+                8. Add to the population //starting @ pop[i]  
 
             }
 
         */
-
+        
+        // while no fitTimetableFound 
         $generation = 0;
         while((!$fitTimetableFound) and ($generation < TimetableConfig::MAX_GEN)){
-
-            
-            
-            
-            
-            
-            
-            // 1. evaluate fitness of timetables (population)
+            print_r("\n<h2>======== generation: ".$generation." ===============</h2>");
+            //     1. evaluate fitness of timetables (population)
             for($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++){
-                
-                $timetableFitness[$timetable] = $this->calcFitness($population[$timetable]);
-
-
+                $timetableFitness[$timetable] = $this->calcFitness($this->population[$timetable]);
                 if(($timetableFitness[$timetable] == 0 )){
+                    print_r("<h1>FOUND! CONFLICTS: ".$timetableFitness[$timetable]." </h1>");
+
                     $fitTimetableFound = true;
-                    // print_r($population[$timetable]);
-                    print_r("\n<h2>======== generation: ".$generation."===============</h2>");
 
-                    print_r("\n<h1>FOUND! CONFLICTS: ".$timetableFitness[$timetable]." </h1>");
-                    // display pop. 
+                    $this->dispTable($this->population[$timetable], true);
                     
-                    $tempTable = $population[$timetable];
-                    usort($tempTable, function($a, $b){
-                        return ((int)$a->getTimeslot() > (int)$b->getTimeslot());
-                    });
-                    for($i=0; $i < sizeof($tempTable); $i++){
-                        
-                        print_r("\nmID:    ".$tempTable[$i]->getID(). 
-                                "\ttimeslot: ".$tempTable[$i]->getTimeslot(). 
-                                "\t\t(Class: ".$tempTable[$i]->getSubjectClass()->getID().
-                                
-                                " Grp: ".$tempTable[$i]->getSubjectClass()->getTraineeGroup()->getID(). 
-                                ")\t(Sbj: ".$tempTable[$i]->getSubjectClass()->getSubject()->getID().
-                                " Inst: ".$tempTable[$i]->getSubjectClass()->getInstructor()->getID().
-                                ")\t["."id ".$tempTable[$i]->getSubjectClass()->getRoom()->getID() ."-".$tempTable[$i]->getSubjectClass()->getRoom()->getName().
-                                "]");
-                    }
-                    $dispOrder = [];
-                    for ($i=0; $i < TimetableConfig::TOTAL_PERIODS; $i++) { 
-                        echo "\n\n";
-                        for ($j=0; $j < (TimetableConfig::TOTAL_TIME_SLOTS); $j++) { 
-                            if (! fmod(($i - $j), 8) ){
-                                print_r("\t".$j);
-                                $dispOrder[] = $j;
-                            }
-                        }
-                    }
-                    print_r($dispOrder);
-                    print_r("\n\n");
-                    // print_r($tempTable);
-
-
-                    $tempTable = null;
-                    print_r("\n".""."\n");
-                    echo memory_get_usage() - $startMemory, ' bytes';
-                    var_dump( ini_get('memory_limit') );
-                    var_dump(memory_get_usage() );
-                    
-                    $time_end = microtime(true);
-
-                    //dividing with 60 will give the execution time in minutes other wise seconds
-                    $execution_time = ($time_end - $time_start);
-
-                    //execution time of the script
+                    print_r("\n".""."\n"); echo memory_get_usage() - $startMemory, ' bytes';
+                    var_dump( ini_get('memory_limit') ); var_dump(memory_get_usage() );
+                    $time_end = microtime(true);$execution_time = ($time_end - $time_start);
                     echo '<b>Total Execution Time:</b> '.$execution_time.'sec';
-                    return $tempTable;
+
+                    return $this->population[$timetable] ;
                 }
             }
 
-            print_r("\n<h2>Generation: ".$generation."</h2>");
-
-            /* if there were no fit timetable found, restart from scratch
-             * generation a new population with the ELITES kept. 
-             *
-             */
-
+            // no fitTimetableFound, initialize the each population's chromosome again with new genes
             if(!$fitTimetableFound){
                 $fitnessHighest = null;
                 $fitnessLowest = null;
@@ -533,60 +600,50 @@ class Timetable {
                 $parentA = 0;
                 $parentA = 0;
                 print_r("\nstarting at: ".(TimetableConfig::ELITISM)."\n");
-                for($timetable=TimetableConfig::ELITISM; $timetable < TimetableConfig::POP_SIZE; $timetable++){
-                    //$subjectClassSets[$timetable] = $this->createSubjectClass($baseSubjectClass);
-                    $population[$timetable] = $this->createTimetable($subjectClassSets[$timetable]);
-                    $timetableFitness[$timetable] = $this->calcFitness($population[$timetable]);
+                for ($timetable=TimetableConfig::ELITISM; $timetable < TimetableConfig::POP_SIZE; $timetable++) { 
+                    foreach ($baseSubjectClass as $key => $value) {
+                            $subjectClassSet[$timetable][$key] = $value;
+                            $subjectClassSet[$timetable][$key]["room_id"] = $this->assignRoom($subjectClassSet[$timetable][$key]);
+                            
+                    }
+                    $this->population[$timetable] = $this->setInitTimeSlot($subjectClassSet[$timetable]);
                 }
             }
-            print_r("\nPopulation: ".sizeof($population)."");
 
-            // 2. Process fitness values. 
-            
-            $uniqueFitnessValues = array_unique ($timetableFitness); //   ($timetableFitness); // 
+            //     2. Process fitness values. 
+            for($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++){
+                $timetableFitness[$timetable] = $this->calcFitness($this->population[$timetable]);
+                if(($timetableFitness[$timetable] == 0 )){
+                    
+                    print_r("<h1>FOUND! CONFLICTS: ".$timetableFitness[$timetable]." </h1>");
 
-            asort($uniqueFitnessValues);
-            
-                        
-            // 2.0 eliminate the least fit timetable.
-            array_pop($uniqueFitnessValues); // remove the least fit from selection pool
-            print_r("\nSorted unique/FitnessValues: ");
-            $i = 0;
-            foreach($uniqueFitnessValues as $key => $value){
-                print_r("[".$key."]=><b>".$value."</b> ");
-                // if ($i >= 1){
-                //     break;
-                // }
-                // $i++;
+                    $fitTimetableFound = true;
+                    $this->dispTable($this->population[$timetable], true);
+                    
+                    print_r("\n".""."\n"); echo memory_get_usage() - $startMemory, ' bytes';
+                    var_dump( ini_get('memory_limit') ); var_dump(memory_get_usage() );
+                    $time_end = microtime(true);$execution_time = ($time_end - $time_start);
+                    echo '<b>Total Execution Time:</b> '.$execution_time.'sec';
+
+                    return $this->population[$timetable] ;
+                }
             }
+            //         2.1 Find the best timetable so far
+            $uniqueFitnessValues =  array_unique ($timetableFitness); //  $timetableFitness; // 
+            asort($uniqueFitnessValues);
 
+            //        2.2 eliminate the least fit timetable.
+             array_pop($uniqueFitnessValues); // remove the least fit from selection pool
 
-            // find the min/max fitness values from the assoc timetableFitness
-            
-            // 2.1 Find the best timetable so far
             $fitnessHighest = [array_search(min($timetableFitness), $timetableFitness) => min($timetableFitness)];
             $fitnessLowest = [array_search(max($timetableFitness), $timetableFitness) => max($timetableFitness)];
 
-
-            // 2.2 Find the total fitness values 
-            // foreach($uniqueFitnessValues as $key => $fitnessValue){
-            //     $matingPoolFrequency = round( (1 / ($fitnessValue+1)* 100));
-            //     $totalFitnessValues += $matingPoolFrequency;
-            // } 
-
-            // code above replaced by POP_SIZE
-
-
-
-            print_r("\nmatingPoolFrequency:"." " );
-
             // 2.3 Normalize each fitness values: (fitnessVale/TotalFitness) * 100
             foreach($uniqueFitnessValues as $key => $fitnessValue){
-                // $x =   (round( (1 / ($fitnessValue+1)* 100)));
 
                 // 2.3 Normalize each fitness values: (fitnessVale/TotalFitness) * 100 
-                // $matingPoolFrequency = round(   ((round( (1 / ($fitnessValue+1)* 100))) / $totalFitnessValues)    * 100);
                 $matingPoolFrequency =    round ((  ((1/($fitnessValue+1)* 100))  /  TimetableConfig::POP_SIZE ) * 100)           ;
+                
                 print_r($matingPoolFrequency." ");              
                 // 3. prepare matingPool indexes
                 // 3.1 Populate the matingPool
@@ -597,51 +654,30 @@ class Timetable {
 
                 // 3.2 Populate the selectionPool
                 // the first key in this pool is the fittest so far 
-                $selectionPool[$key] = $population[$key];
+                $selectionPool[$key] = $this->population[$key];
 
             }
-
-            
-            print_r("\nSize of matingPool: ".sizeof($matingPool)." pool index: \n[");
-            // $i = 0;
-            // foreach($matingPool as $key => $value){
-            //     print_r($value.", ");
-            //     if(!fmod($i, 20) && $i > 5){
-            //         print_r("<br/>");
-            //     }
-            //     $i++;
-            // }
-            print_r("]");
-            print_r("\nselectionPool: ".sizeof($selectionPool)."");
-            print_r("\nselection pool index: [");
-            foreach($selectionPool as $key => $value){
-                print_r($key.", ");
-            }
-            print_r("]\n");
-
-
 
             $n=0;
             // ELITISM, find the elite/s 
             // 4.2 save the top n timetables
             foreach($selectionPool as $key=>$value){
                 // 4.3 Add the best timetable so far to population[i]
-                print_r ("\t n: ".$n." selPool: "."=>".$key." sizeof(value): ".sizeof($value));
-                // $population[$n] =  $value;
-                for($j=0; $j <sizeof($value); $j++){
-                    $population[$n][$j] = clone $value[$j];
+                
+                $this->population[$n] = null;
+                $this->population[$n] = $value;
 
-                }
+                print_r("\n\nPopulation AFTER ELITISM [". $this->calcFitness($this->population[$n])."]\n");
+                // $this->dispTable($this->population[$n]);
+
                 if ($n >= TimetableConfig::ELITISM-1){
                     break;
                 }
                 $n++;
             }
-            
-            
-
-
+                     
             $crossRate = (int)(TimetableConfig::POP_SIZE * TimetableConfig::CROSSOVER_RATE ) ;
+            print_r("\nCROSS@..... ".$crossRate."\n");
             for( $timetable=TimetableConfig::ELITISM; $timetable < $crossRate ; $timetable++ ){
                    
                
@@ -652,29 +688,31 @@ class Timetable {
 
                 // 5. CROSSOVER parentA and parentB. 
                 $child = null;
+                print_r("\nDOING CROSS....."."\n");
                 $child = $this->crossover($selectionPool[$parentA], $selectionPool[$parentB]);
                 
 
                     
                 // 6. MUTATE child 
-                for($j=0; $j <sizeof($child); $j++){
-                    $clone[$j] = clone $child[$j];
-                }
-                $child = null;
+
+                $clone = $child;
+
+                $child = [];
                 $child = $this->mutate($clone);
                 
                 // 7. Add to the population //starting @ pop[i]
-                for($j=0; $j <sizeof($population[$timetable]); $j++){
-                    $population[$timetable][$j] = clone $child[$j];
+                $this->population[$timetable] = null;
+                $this->population[$timetable] =  $child;
 
-                }
 
             }
+            print_r("\nPopulation AFTER ELITISM [". $this->calcFitness($this->population[0])."]\n");
+            // $this->dispTable($this->population[0]);
  
-
-
-            $generation++;
+        $generation++;
         }
+
+        
 
 
 
@@ -693,37 +731,6 @@ class Timetable {
     }
 
 
-
-    /* 
-     |--------------------------------------------------------------------------
-     | name
-     |--------------------------------------------------------------------------
-     | 
-     | desc 
-     | 
-     | 
-     | 
-     | 
-     */
-
-
-    public function displayTimetable($timetable){
-        echo "<br/><br/>\tSC-ID \tTimeslot \t TGroup \t Subj Name-Inst \t Room<br>";
-        for ($i=0; $i<sizeof($timetable); $i++){
-            echo "<br/> {$i} "; 
-            
-            print_r ("\t".$timetable[$i][0]->getID());
-            print_r ("\t ".$timetable[$i][1]);
-            print_r ("\t".$timetable[$i][0]->getTraineeGroup()->getTraineeGroupName());
-            print_r ("\t".$timetable[$i][0]->getSubject()->getSubjectCode()." - ".
-                            $timetable[$i][0]->getInstructor()->getFirst_name()
-                    );
-            print_r ("\t\t\t".$timetable[$i][0]->getRoom()->getName());
-            
-            echo "";
-        }
-    }
-
     
     /*
      * getDistBlock method 
@@ -738,87 +745,18 @@ class Timetable {
      *                   )
      */
 
-    public function getDistBlock($requiredNumberOfPeriods, $preferredNumberOfDays){
 
-        $total = 0;
-        $block = [];
-        for ($i = 0; $i < ($preferredNumberOfDays - 1); $i++){
-            $period = (int)( $requiredNumberOfPeriods / $preferredNumberOfDays);
-            array_push($block, $period);
-            $total += $period;
-        }
-        array_push($block, ($requiredNumberOfPeriods-$total));
-        shuffle($block); // randomize distribution block 
-        return $block;
-    }
 
-    public function getRandomSlot($numberOfPeriods, $preferred_start_period, $preferred_end_period){
-        // subject-classes are taught in "d" number days with "p" number of periods per day
-        // this loop is "per" distribution block
-        // count: 3 Array
-        // (
-        //     [0] => 2
-        //     [1] => 1
-        //     [2] => 1
-        // )
-        
-        $s = $preferred_start_period;
-        $e = $preferred_end_period;
-        // echo "<br/><br/><h3>periods between {$s}-{$e}</h3>";
-        
-        $period_start = (($preferred_start_period==null) ? 0 : $preferred_start_period-1);
-        $period_end = (($preferred_end_period==null) ? TimetableConfig::TOTAL_PERIODS : $preferred_end_period-1);
-        
-        $done = false;
-        while (!$done){
-            $timeslot = [];
-            $day = [];  
-            $initSlot = mt_rand(0, TimetableConfig::TOTAL_TIME_SLOTS-1);
-            // echo "\ninitSlot: {$initSlot}<br/>";
-            for ($j=0; $j < $numberOfPeriods; $j++){
-                // echo "\tj={$j} "; print_r($initSlot+$j);
-                array_push($timeslot, $initSlot+$j);
-
-                // echo "\tday: ";print_r( (int) (($initSlot+$j)/TimetableConfig::TOTAL_PERIODS) );
-
-                // push the timeslot in $day array 
-                array_push($day, ((int) (($initSlot+$j)/TimetableConfig::TOTAL_PERIODS) ));
-            
-            }
-            // all timeslot belongs to the same day
-            if ((count(array_unique($day)) === 1)){
-
-                // if the selected starting period is from the preferred start onward
-                if( ( fmod($timeslot[0],TimetableConfig::TOTAL_PERIODS) >= $period_start) && 
-                    
-
-                    // and the selected ending period is on or before the preferred ending period
-                    (fmod($timeslot[sizeof($day)-1],TimetableConfig::TOTAL_PERIODS) <= $period_end)){
-
-                    // then the slot selected is a match; 
-                    $done = true;
-                    $s = (fmod($timeslot[0],TimetableConfig::TOTAL_PERIODS))+1;
-                    $e = (fmod($timeslot[sizeof($day)-1],TimetableConfig::TOTAL_PERIODS))+1;
-
-                }
-                
-            }
-        }
-        // echo "<br/>timeslot: ";print_r($timeslot);
-        // echo "<br/><br/>";
-        return $timeslot;
-    }
-
-    public function getTraineeGroup($ID){
+    public function getTraineeGroup($ID)
+    {
         // if data have been downloaded, return the data
-        if (isset($this->traineeGroups)){ 
+        if (isset($this->traineeGroups)) {
             // find the tg based on the ID and return the object;
             return $this->traineeGroups[$ID];
-
-        }else { // otherwise, fetch all the data from the table subject. 
+        } else { // otherwise, fetch all the data from the table subject.
             $db = DB::getInstance();
             $db->query("SELECT * FROM trainee_group");
-            for ($i=0; $i < $db->count(); $i++){
+            for ($i=0; $i < $db->count(); $i++) {
                 $traineeGroupID = $db->getResults()[$i]->id;
                 $this->traineeGroups[$traineeGroupID] = new TraineeGroup(
                                                                 $db->getResults()[$i]->id,
@@ -828,21 +766,21 @@ class Timetable {
                                                                 $db->getResults()[$i]->remarks
                                                             );
             }
-            // return the data 
+            // return the data
             return $this->traineeGroups[$ID];
-        }      
+        }
     }
 
-    public function getSubject($ID){
+    public function getSubject($ID)
+    {
  
-        if (isset($this->subjects)){
+        if (isset($this->subjects)) {
             // find the tg based on the ID and return the object;
             return $this->subjects[$ID];
-
-        }else {
+        } else {
             $db = DB::getInstance();
             $db->query("SELECT * FROM subject");
-            for ($i=0; $i < $db->count(); $i++){
+            for ($i=0; $i < $db->count(); $i++) {
                 $subjectID = $db->getResults()[$i]->id;
                 $this->subjects[$subjectID] = new Subject(
                                                             $db->getResults()[$i]->id,
@@ -851,29 +789,21 @@ class Timetable {
                                                             $db->getResults()[$i]->required_period,
                                                             $db->getResults()[$i]->description
                                                         );
-            }//for 
+            }//for
             return $this->subjects[$ID];
-            
-        }//else 
-
-        
-
-
-
-        
+        }//else
     }
 
-    public function getRoom($ID){
+    public function getRoom($ID =null)
+    {
 
         
-        if (isset($this->rooms)){ 
-
+        if (isset($this->rooms)) {
             return $this->rooms[$ID];
-
-        }else { // otherwise, fetch all the data from the table room. 
+        } else { // otherwise, fetch all the data from the table room.
             $db = DB::getInstance();
             $db->query("SELECT * FROM room");
-            for ($i=0; $i < $db->count(); $i++){
+            for ($i=0; $i < $db->count(); $i++) {
                 $roomsID = $db->getResults()[$i]->id;
                 $this->rooms[$roomsID] = new Room(
                                                     $db->getResults()[$i]->id,
@@ -883,50 +813,50 @@ class Timetable {
                                                     $db->getResults()[$i]->description
                                                 );
             }
-            // return the data 
+            // return the data
             return $this->rooms[$ID];
-        }     
+        }
     }
 
-    private function getRandomRoom($roomType){
+    private function getRandomRoom($roomType)
+    {
 
-        // initialize the room object just incase the 1st created class 
-        // was to a random room 
+        // initialize the room object just incase the 1st created class
+        // was set to a random room
 
-        if (!isset($this->rooms)){ 
+        if (!isset($this->rooms)) {
             $this->getRoom(1);
-        }        
-
-        // for each room in rooms, search for the req room type 
+        }
+            
+        
+        // for each room in rooms, search for the req room type
         // store the object/s in an assoc chosenRoom;
         $chosenRoom = [];
 
-        foreach ($this->rooms as $room){
-            if($room->getType() == $roomType){
+        foreach ($this->rooms as $room) {
+            if ($room->getType() == $roomType) {
                 $chosenRoom[]= $room;
             }
         }
+        
         // randomly choose from 0 to sizeof(tempArray)-1;
         $randomRoom = rand(0, sizeof($chosenRoom)-1);
-
-        // return the result. 
+        // return the result.
         return $chosenRoom [$randomRoom];
-
-
     }
 
 
-    public function getRoomType($ID){
+    public function getRoomType($ID)
+    {
         
         // if data have been downloaded, return the data
-        if (isset($this->roomTypes)){ 
+        if (isset($this->roomTypes)) {
             // find the roomType based on the ID and return the object;
             return $this->roomTypes[$ID];
-
-        }else { // otherwise, fetch all the data from the table roomType. 
+        } else { // otherwise, fetch all the data from the table roomType.
             $db = DB::getInstance();
             $db->query("SELECT * FROM room_type");
-            for ($i=0; $i < $db->count(); $i++){
+            for ($i=0; $i < $db->count(); $i++) {
                 $roomTypesID = $db->getResults()[$i]->id;
                 $this->roomTypes[$roomTypesID] = new RoomType(
                                                                 $db->getResults()[$i]->id,
@@ -934,22 +864,22 @@ class Timetable {
                                                                 $db->getResults()[$i]->description
                                                             );
             }
-            // return the data 
+            // return the data
             return $this->roomTypes[$ID];
-        }     
+        }
     }
 
-    public function getInstructor($ID){
+    public function getInstructor($ID)
+    {
 
         // if data have been downloaded, return the data
-        if (isset($this->instructors)){ 
+        if (isset($this->instructors)) {
             // find the instructor based on the ID and return the object;
             return $this->instructors[$ID];
-
-        }else { // otherwise, fetch all the data from the table instructor. 
+        } else { // otherwise, fetch all the data from the table instructor.
             $db = DB::getInstance();
             $db->query("SELECT * FROM instructor");
-            for ($i=0; $i < $db->count(); $i++){
+            for ($i=0; $i < $db->count(); $i++) {
                 $instructorsID = $db->getResults()[$i]->id;
                 $this->instructors[$instructorsID] = new Instructor(
                                                                 $db->getResults()[$i]->id,
@@ -958,10 +888,551 @@ class Timetable {
                                                                 $db->getResults()[$i]->note
                                                             );
             }
-            // return the data 
+            // return the data
             return $this->instructors[$ID];
-        }       
+        }
     }
 }
-// class end 
+// class end
+/*
+Size of base: 2
+Array
+(
+    [72] => Array
+        (
+            [id] => 72
+            [timetable_id] => 3
+            [subject_id] => 33
+            [trainee_group_id] => 10
+            [instructor_id] => 19
+            [room_id] => 25
+            [room_type_id] => 10
+            [room_fixed] => 
+            [preferred_start_period] => 1
+            [preferred_end_period] => 8
+            [preferred_number_days] => 3
+        )
 
+    [73] => Array
+        (
+            [id] => 73
+            [timetable_id] => 3
+            [subject_id] => 32
+            [trainee_group_id] => 4
+            [instructor_id] => 25
+            [room_id] => 1
+            [room_type_id] => 1
+            [room_fixed] => 1
+            [preferred_start_period] => 1
+            [preferred_end_period] => 8
+            [preferred_number_days] => 1
+        )
+
+)
+Array
+(
+    [0] => Array
+        (
+            [72] => Array
+                (
+                    [id] => 72
+                    [timetable_id] => 3
+                    [subject_id] => 33
+                    [trainee_group_id] => 10
+                    [instructor_id] => 19
+                    [room_id] => 20
+                    [room_type_id] => 10
+                    [room_fixed] => 
+                    [preferred_start_period] => 1
+                    [preferred_end_period] => 8
+                    [preferred_number_days] => 3
+                )
+
+            [73] => Array
+                (
+                    [id] => 73
+                    [timetable_id] => 3
+                    [subject_id] => 32
+                    [trainee_group_id] => 4
+                    [instructor_id] => 25
+                    [room_id] => 1
+                    [room_type_id] => 1
+                    [room_fixed] => 1
+                    [preferred_start_period] => 1
+                    [preferred_end_period] => 8
+                    [preferred_number_days] => 1
+                )
+
+        )
+
+    [1] => Array
+        (
+            [72] => Array
+                (
+                    [id] => 72
+                    [timetable_id] => 3
+                    [subject_id] => 33
+                    [trainee_group_id] => 10
+                    [instructor_id] => 19
+                    [room_id] => 17
+                    [room_type_id] => 10
+                    [room_fixed] => 
+                    [preferred_start_period] => 1
+                    [preferred_end_period] => 8
+                    [preferred_number_days] => 3
+                )
+
+            [73] => Array
+                (
+                    [id] => 73
+                    [timetable_id] => 3
+                    [subject_id] => 32
+                    [trainee_group_id] => 4
+                    [instructor_id] => 25
+                    [room_id] => 1
+                    [room_type_id] => 1
+                    [room_fixed] => 1
+                    [preferred_start_period] => 1
+                    [preferred_end_period] => 8
+                    [preferred_number_days] => 1
+                )
+
+        )
+
+    [2] => Array
+        (
+            [72] => Array
+                (
+                    [id] => 72
+                    [timetable_id] => 3
+                    [subject_id] => 33
+                    [trainee_group_id] => 10
+                    [instructor_id] => 19
+                    [room_id] => 20
+                    [room_type_id] => 10
+                    [room_fixed] => 
+                    [preferred_start_period] => 1
+                    [preferred_end_period] => 8
+                    [preferred_number_days] => 3
+                )
+
+            [73] => Array
+                (
+                    [id] => 73
+                    [timetable_id] => 3
+                    [subject_id] => 32
+                    [trainee_group_id] => 4
+                    [instructor_id] => 25
+                    [room_id] => 1
+                    [room_type_id] => 1
+                    [room_fixed] => 1
+                    [preferred_start_period] => 1
+                    [preferred_end_period] => 8
+                    [preferred_number_days] => 1
+                )
+
+        )
+
+)
+
+
+
+
+
+
+starting at: 1
+Array population
+(
+    [0] => Array timetable
+        (
+            [0] => Array meeting time
+                (
+                    [mt_id] => 0
+                    [sc] => Array
+                        (
+                            [id] => 72
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 10
+                            [instructor_id] => 4
+                            [room_id] => 23
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 6
+                )
+
+            [1] => Array
+                (
+                    [mt_id] => 1
+                    [sc] => Array
+                        (
+                            [id] => 72
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 10
+                            [instructor_id] => 4
+                            [room_id] => 23
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 7
+                )
+
+            [2] => Array
+                (
+                    [mt_id] => 2
+                    [sc] => Array
+                        (
+                            [id] => 72
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 10
+                            [instructor_id] => 4
+                            [room_id] => 23
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 4
+                )
+
+            [3] => Array
+                (
+                    [mt_id] => 3
+                    [sc] => Array
+                        (
+                            [id] => 73
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 4
+                            [instructor_id] => 4
+                            [room_id] => 24
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 1
+                )
+
+            [4] => Array
+                (
+                    [mt_id] => 4
+                    [sc] => Array
+                        (
+                            [id] => 73
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 4
+                            [instructor_id] => 4
+                            [room_id] => 24
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 4
+                )
+
+            [5] => Array
+                (
+                    [mt_id] => 5
+                    [sc] => Array
+                        (
+                            [id] => 73
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 4
+                            [instructor_id] => 4
+                            [room_id] => 24
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 5
+                )
+
+        )
+
+    [1] => Array
+        (
+            [0] => Array
+                (
+                    [mt_id] => 0
+                    [sc] => Array
+                        (
+                            [id] => 72
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 10
+                            [instructor_id] => 4
+                            [room_id] => 23
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 2
+                )
+
+            [1] => Array
+                (
+                    [mt_id] => 1
+                    [sc] => Array
+                        (
+                            [id] => 72
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 10
+                            [instructor_id] => 4
+                            [room_id] => 23
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 6
+                )
+
+            [2] => Array
+                (
+                    [mt_id] => 2
+                    [sc] => Array
+                        (
+                            [id] => 72
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 10
+                            [instructor_id] => 4
+                            [room_id] => 23
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 7
+                )
+
+            [3] => Array
+                (
+                    [mt_id] => 3
+                    [sc] => Array
+                        (
+                            [id] => 73
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 4
+                            [instructor_id] => 4
+                            [room_id] => 24
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 8
+                )
+
+            [4] => Array
+                (
+                    [mt_id] => 4
+                    [sc] => Array
+                        (
+                            [id] => 73
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 4
+                            [instructor_id] => 4
+                            [room_id] => 24
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 4
+                )
+
+            [5] => Array
+                (
+                    [mt_id] => 5
+                    [sc] => Array
+                        (
+                            [id] => 73
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 4
+                            [instructor_id] => 4
+                            [room_id] => 24
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 5
+                )
+
+        )
+
+    [2] => Array
+        (
+            [0] => Array
+                (
+                    [mt_id] => 0
+                    [sc] => Array
+                        (
+                            [id] => 72
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 10
+                            [instructor_id] => 4
+                            [room_id] => 24
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 9
+                )
+
+            [1] => Array
+                (
+                    [mt_id] => 1
+                    [sc] => Array
+                        (
+                            [id] => 72
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 10
+                            [instructor_id] => 4
+                            [room_id] => 24
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 4
+                )
+
+            [2] => Array
+                (
+                    [mt_id] => 2
+                    [sc] => Array
+                        (
+                            [id] => 72
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 10
+                            [instructor_id] => 4
+                            [room_id] => 24
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 5
+                )
+
+            [3] => Array
+                (
+                    [mt_id] => 3
+                    [sc] => Array
+                        (
+                            [id] => 73
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 4
+                            [instructor_id] => 4
+                            [room_id] => 23
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 4
+                )
+
+            [4] => Array
+                (
+                    [mt_id] => 4
+                    [sc] => Array
+                        (
+                            [id] => 73
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 4
+                            [instructor_id] => 4
+                            [room_id] => 23
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 5
+                )
+
+            [5] => Array
+                (
+                    [mt_id] => 5
+                    [sc] => Array
+                        (
+                            [id] => 73
+                            [timetable_id] => 3
+                            [subject_id] => 55
+                            [trainee_group_id] => 4
+                            [instructor_id] => 4
+                            [room_id] => 23
+                            [room_type_id] => 2
+                            [room_fixed] => 
+                            [preferred_start_period] => 1
+                            [preferred_end_period] => 8
+                            [preferred_number_days] => 2
+                        )
+
+                    [ts] => 11
+                )
+
+        )
+
+)
+
+*/

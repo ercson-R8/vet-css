@@ -38,6 +38,11 @@ class Room {
 
     }
 
+    public function __clone() {
+        // $this->subjectClassObject = clone $this->subjectClassObject;
+    }
+
+
     /**
      * getID method 
      *

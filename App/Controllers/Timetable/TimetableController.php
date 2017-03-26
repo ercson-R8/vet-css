@@ -198,9 +198,9 @@ class TimetableController extends \Core\Controller{
             $tableTitle = 'List of classes for AY '.$timetable[0]->year_start.'-'.$timetable[0]->year_end.' Term '.$timetable[0]->term;
             $tableSubTitle = '('.$timetable[0]->remarks.') '.$timetable[0]->created;
             
-            print_r($subject_class);
+            // print_r($subject_class);
 
-            print_r($timetable);
+            // print_r($timetable);
             View::renderTemplate ('Timetables/addSubjectClassForm.twig.html', [
                                         'subjectClass' => $subject_class,
                                         'title' => 'Add a Class '.$sessionData->currentTimetable, 

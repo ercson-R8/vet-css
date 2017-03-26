@@ -104,7 +104,7 @@ class Test extends \Core\Controller {
 
 
     public function indexAction(){
-        echo "testing from controller test....<br/>";
+        // echo "testing from controller test....<br/>";
         $t = new Timetable();
         // $u = new Timetable();
         // $v = new Timetable();
@@ -165,7 +165,10 @@ class Test extends \Core\Controller {
         print_r("\nsetX------------\n");
         print_r($setX);
 
-
+        // $setA = [];
+        $setA[] = 1;
+        $setA[3] = null;
+        $setA[3] = 3;
         print_r("\nsetA------------\n");
         print_r($setA);
 
@@ -355,6 +358,85 @@ class Test extends \Core\Controller {
     public function htmlTableAction (){
          echo "htmlTable...";
         
+    }
+    /*
+     * testArray method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function testArray (){
+        $myArray = [];
+        echo "<pre>";
+
+        for ($i=0; $i < 10; $i++) { 
+            $myArray [] = round(rand(1,100));
+        }
+        print_r("\n\nmyArray"."\n");
+        foreach ($myArray as $key => $value) {
+            print_r(" [".$key."]=>".$value);
+        }
+
+
+        $done=false;
+        $gen = 0;
+        while(!$done){
+            
+            if(array_search(8, $myArray) ){
+                $done = true;
+                print_r("\n===================<h2>Found"." ");
+                print_r("myArray"."\n");
+                foreach ($myArray as $key => $value) {
+                    print_r(" [".$key."]=>".$value);
+                }
+                break;
+            }
+
+            print_r("\n\n<h3>================Generation: ".$gen."===================</h3>Nothing found, unsetting myArray"."\n");
+            $gen++;
+            unset($myArray);
+            for ($i=0; $i < 10; $i++) { 
+                $myArray [] = round(rand(1,100));
+            }
+            print_r("\n\nmyArray"."\n");
+            foreach ($myArray as $key => $value) {
+                print_r(" [".$key."]=>".$value);
+            }
+
+            print_r("\n\ntempArray"."\n");
+            $tempArray = $myArray;
+            foreach ($tempArray as $key => $value) {
+                print_r(" [".$key."]=>".$value);
+            }
+
+            asort($tempArray);
+            print_r("\n\ntempArray Using asort"."\n");
+            foreach ($tempArray as $key => $value) {
+                print_r(" [".$key."]=>".$value);
+            }
+
+            print_r("\n\nmyArray"."\n");
+            foreach ($myArray as $key => $value) {
+                print_r(" [".$key."]=>".$value);
+            }
+
+            print_r("\nTransferring values"."\n");
+            $n=0;
+            foreach ($tempArray as $key => $value) {
+                print_r(" [".$key."]=>".$value);
+                $myArray[$n] = $value;
+                if($n >= 1){
+                    break;
+                }
+                $n++;
+            }
+            print_r("\n\nmyArray Mod"."\n");
+            foreach ($myArray as $key => $value) {
+                print_r(" [".$key."]=>".$value);
+            }
+
+
+        }
     }
 
 

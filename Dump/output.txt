@@ -1,708 +1,447 @@
-IP	Hostname	MAC Address	In	Out	Total	Last seen
-10.153.146.119	(none)	d0:fc:cc:69:22:b7	1,325,429,397	70,763,179	1,396,192,576	4 hrs, 22 mins, 56 secs
-10.153.146.104	(none)	14:32:d1:bb:7d:82	743,117,139	11,541,213	754,658,352	4 hrs, 16 mins, 21 secs
-10.153.146.115	(none)	10:4a:7d:dd:7b:1f	686,685,818	20,448,102	707,133,920	5 hrs, 57 mins, 24 secs
-10.153.146.235	(none)	dc:cf:96:03:85:3a	626,364,739	20,075,837	646,440,576	3 hrs, 43 mins, 49 secs
-10.153.146.254	(none)	00:0b:86:42:8b:60	599,814,290	0	599,814,290	(never)
-10.153.146.96	(none)	10:4a:7d:dd:7a:fc	427,097,131	17,069,689	444,166,820	6 hrs, 5 mins, 9 secs
-31.13.75.53	instagram-p3-shv-01-mrs1.fbcdn.net	00:1a:a0:3a:1a:3d	399,848,546	22,601,681	422,450,227	24 mins, 22 secs
-
-
-// rebuild, reattach
-
-initSlot: 0
-room_id specified: 3 
-room ID chosen-------------:2
-room ID chosen-------------:1
-room ID chosen-------------:3
-room ID chosen-------------:2
-room_id specified: 1 ===
- ===
- SubjectID 	 TGroup 		 Subj Name 		 Inst 		 Room
-
-	1	Electronics		Basic Math		Wall		ComLab 1 
- 
-count: 1 Array
+generateNewTimetable
+Array
 (
-    [0] => 2
-)
-no of periods: 2
-
-*******************************
-TOTAL_TIME_SLOTS: 15
-numberOfPeriods= 2
-
-
-initSlot: 6
-j=0 6
-day: 1
-j=1 7
-day: 1
-true
-timeslot: Array
-(
-    [0] => 6
-    [1] => 7
+    [generate] => 
 )
 
-
-timeTable now: Array
+Size of base: 3
+Array
 (
     [0] => Array
         (
-            [0] => App\Controllers\Timetable\SubjectClass Object
+            [72] => Array
                 (
-                    [id:App\Controllers\Timetable\SubjectClass:private] => 1
-                    [timeTableID:App\Controllers\Timetable\SubjectClass:private] => 1
-                    [subject:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Subject Object
-                        (
-                            [subjectID:App\Controllers\Timetable\Subject:private] => 1
-                            [subjectCode:App\Controllers\Timetable\Subject:private] => MATH101
-                            [subjectName:App\Controllers\Timetable\Subject:private] => Basic Math
-                            [requiredPeriod:App\Controllers\Timetable\Subject:private] => 2
-                            [description:App\Controllers\Timetable\Subject:private] => Basic Math taught in level 1
-                        )
-
-                    [traineeGroup:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\TraineeGroup Object
-                        (
-                            [traineeGroupID:App\Controllers\Timetable\TraineeGroup:private] => 1
-                            [traineeGroupName:App\Controllers\Timetable\TraineeGroup:private] => Electronics
-                            [traineeGroupSection:App\Controllers\Timetable\TraineeGroup:private] => Group A
-                            [traineeGroupLevel:App\Controllers\Timetable\TraineeGroup:private] => 1
-                            [traineeGroupRemarks:App\Controllers\Timetable\TraineeGroup:private] => 
-                        )
-
-                    [instructor:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Instructor Object
-                        (
-                            [instructorID:App\Controllers\Timetable\Instructor:private] => 1
-                            [instructorCode:App\Controllers\Timetable\Instructor:private] => John
-                            [instructorName:App\Controllers\Timetable\Instructor:private] => Wall
-                            [remark:App\Controllers\Timetable\Instructor:private] => 
-                            [description:App\Controllers\Timetable\Instructor:private] => 
-                            [requiredPeriod] => Math instructor
-                        )
-
-                    [room:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Room Object
-                        (
-                            [roomID:App\Controllers\Timetable\Room:private] => 3
-                            [roomName:App\Controllers\Timetable\Room:private] => ComLab 1
-                            [roomType:App\Controllers\Timetable\Room:private] => 2
-                            [roomLocation:App\Controllers\Timetable\Room:private] => Bldg 1
-                            [roomDescription:App\Controllers\Timetable\Room:private] => IT computer laboratory
-                        )
-
-                    [roomType:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\RoomType Object
-                        (
-                            [roomTypeID:App\Controllers\Timetable\RoomType:private] => 2
-                            [roomTypeName:App\Controllers\Timetable\RoomType:private] => Computer LAB
-                            [roomTypeDescription:App\Controllers\Timetable\RoomType:private] => Used for IT classes
-                        )
-
-                    [preferredStart:App\Controllers\Timetable\SubjectClass:private] => 1
-                    [preferredEnd:App\Controllers\Timetable\SubjectClass:private] => 5
-                    [preferredNumberOfDays:App\Controllers\Timetable\SubjectClass:private] => 1
-                    [isRoomFixed:App\Controllers\Timetable\SubjectClass:private] => 1
+                    [id] => 72
+                    [timetable_id] => 3
+                    [subject_id] => 55
+                    [trainee_group_id] => 10
+                    [instructor_id] => 4
+                    [room_id] => 24
+                    [room_type_id] => 2
+                    [room_fixed] => 
+                    [preferred_start_period] => 1
+                    [preferred_end_period] => 8
+                    [preferred_number_days] => 2
                 )
 
-            [1] => 6
+            [73] => Array
+                (
+                    [id] => 73
+                    [timetable_id] => 3
+                    [subject_id] => 55
+                    [trainee_group_id] => 4
+                    [instructor_id] => 4
+                    [room_id] => 24
+                    [room_type_id] => 2
+                    [room_fixed] => 
+                    [preferred_start_period] => 1
+                    [preferred_end_period] => 8
+                    [preferred_number_days] => 2
+                )
+
+            [74] => Array
+                (
+                    [id] => 74
+                    [timetable_id] => 3
+                    [subject_id] => 43
+                    [trainee_group_id] => 4
+                    [instructor_id] => 50
+                    [room_id] => 5
+                    [room_type_id] => 1
+                    [room_fixed] => 
+                    [preferred_start_period] => 1
+                    [preferred_end_period] => 8
+                    [preferred_number_days] => 2
+                )
+
         )
 
     [1] => Array
         (
-            [0] => App\Controllers\Timetable\SubjectClass Object
+            [72] => Array
                 (
-                    [id:App\Controllers\Timetable\SubjectClass:private] => 1
-                    [timeTableID:App\Controllers\Timetable\SubjectClass:private] => 1
-                    [subject:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Subject Object
-                        (
-                            [subjectID:App\Controllers\Timetable\Subject:private] => 1
-                            [subjectCode:App\Controllers\Timetable\Subject:private] => MATH101
-                            [subjectName:App\Controllers\Timetable\Subject:private] => Basic Math
-                            [requiredPeriod:App\Controllers\Timetable\Subject:private] => 2
-                            [description:App\Controllers\Timetable\Subject:private] => Basic Math taught in level 1
-                        )
-
-                    [traineeGroup:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\TraineeGroup Object
-                        (
-                            [traineeGroupID:App\Controllers\Timetable\TraineeGroup:private] => 1
-                            [traineeGroupName:App\Controllers\Timetable\TraineeGroup:private] => Electronics
-                            [traineeGroupSection:App\Controllers\Timetable\TraineeGroup:private] => Group A
-                            [traineeGroupLevel:App\Controllers\Timetable\TraineeGroup:private] => 1
-                            [traineeGroupRemarks:App\Controllers\Timetable\TraineeGroup:private] => 
-                        )
-
-                    [instructor:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Instructor Object
-                        (
-                            [instructorID:App\Controllers\Timetable\Instructor:private] => 1
-                            [instructorCode:App\Controllers\Timetable\Instructor:private] => John
-                            [instructorName:App\Controllers\Timetable\Instructor:private] => Wall
-                            [remark:App\Controllers\Timetable\Instructor:private] => 
-                            [description:App\Controllers\Timetable\Instructor:private] => 
-                            [requiredPeriod] => Math instructor
-                        )
-
-                    [room:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\Room Object
-                        (
-                            [roomID:App\Controllers\Timetable\Room:private] => 3
-                            [roomName:App\Controllers\Timetable\Room:private] => ComLab 1
-                            [roomType:App\Controllers\Timetable\Room:private] => 2
-                            [roomLocation:App\Controllers\Timetable\Room:private] => Bldg 1
-                            [roomDescription:App\Controllers\Timetable\Room:private] => IT computer laboratory
-                        )
-
-                    [roomType:App\Controllers\Timetable\SubjectClass:private] => App\Controllers\Timetable\RoomType Object
-                        (
-                            [roomTypeID:App\Controllers\Timetable\RoomType:private] => 2
-                            [roomTypeName:App\Controllers\Timetable\RoomType:private] => Computer LAB
-                            [roomTypeDescription:App\Controllers\Timetable\RoomType:private] => Used for IT classes
-                        )
-
-                    [preferredStart:App\Controllers\Timetable\SubjectClass:private] => 1
-                    [preferredEnd:App\Controllers\Timetable\SubjectClass:private] => 5
-                    [preferredNumberOfDays:App\Controllers\Timetable\SubjectClass:private] => 1
-                    [isRoomFixed:App\Controllers\Timetable\SubjectClass:private] => 1
+                    [id] => 72
+                    [timetable_id] => 3
+                    [subject_id] => 55
+                    [trainee_group_id] => 10
+                    [instructor_id] => 4
+                    [room_id] => 24
+                    [room_type_id] => 2
+                    [room_fixed] => 
+                    [preferred_start_period] => 1
+                    [preferred_end_period] => 8
+                    [preferred_number_days] => 2
                 )
 
-            [1] => 7
+            [73] => Array
+                (
+                    [id] => 73
+                    [timetable_id] => 3
+                    [subject_id] => 55
+                    [trainee_group_id] => 4
+                    [instructor_id] => 4
+                    [room_id] => 23
+                    [room_type_id] => 2
+                    [room_fixed] => 
+                    [preferred_start_period] => 1
+                    [preferred_end_period] => 8
+                    [preferred_number_days] => 2
+                )
+
+            [74] => Array
+                (
+                    [id] => 74
+                    [timetable_id] => 3
+                    [subject_id] => 43
+                    [trainee_group_id] => 4
+                    [instructor_id] => 50
+                    [room_id] => 1
+                    [room_type_id] => 1
+                    [room_fixed] => 
+                    [preferred_start_period] => 1
+                    [preferred_end_period] => 8
+                    [preferred_number_days] => 2
+                )
+
+        )
+
+    [2] => Array
+        (
+            [72] => Array
+                (
+                    [id] => 72
+                    [timetable_id] => 3
+                    [subject_id] => 55
+                    [trainee_group_id] => 10
+                    [instructor_id] => 4
+                    [room_id] => 23
+                    [room_type_id] => 2
+                    [room_fixed] => 
+                    [preferred_start_period] => 1
+                    [preferred_end_period] => 8
+                    [preferred_number_days] => 2
+                )
+
+            [73] => Array
+                (
+                    [id] => 73
+                    [timetable_id] => 3
+                    [subject_id] => 55
+                    [trainee_group_id] => 4
+                    [instructor_id] => 4
+                    [room_id] => 24
+                    [room_type_id] => 2
+                    [room_fixed] => 
+                    [preferred_start_period] => 1
+                    [preferred_end_period] => 8
+                    [preferred_number_days] => 2
+                )
+
+            [74] => Array
+                (
+                    [id] => 74
+                    [timetable_id] => 3
+                    [subject_id] => 43
+                    [trainee_group_id] => 4
+                    [instructor_id] => 50
+                    [room_id] => 1
+                    [room_type_id] => 1
+                    [room_fixed] => 
+                    [preferred_start_period] => 1
+                    [preferred_end_period] => 8
+                    [preferred_number_days] => 2
+                )
+
         )
 
 )
 
-
-
-
-
-
-
-{
-    
-        room_id specified: 3 
-        room ID chosen-------------:2
-        room ID chosen-------------:2
-        room ID chosen-------------:3
-        room ID chosen-------------:2
-        room ID chosen-------------:1
-        room_id specified: 4 
-        room_id specified: 4 ===
-        ===
-        
-        ==================>>>count: 1 Array
-        (
-            [0] => 2
-        )
-
-
-        periods between 4-5
-        initSlot: 4
-
-        j=0 4
-        day: 0
-
-        j=1 5
-        day: 1
-        initSlot: 0
-
-        j=0 0
-        day: 0
-
-        j=1 1
-        day: 0
-        initSlot: 7
-
-        j=0 7
-        day: 1
-
-        j=1 8
-        day: 1
-        initSlot: 0
-
-        j=0 0
-        day: 0
-
-        j=1 1
-        day: 0
-        initSlot: 7
-
-        j=0 7
-        day: 1
-
-        j=1 8
-        day: 1
-        initSlot: 6
-
-        j=0 6
-        day: 1
-
-        j=1 7
-        day: 1
-        initSlot: 1
-
-        j=0 1
-        day: 0
-
-        j=1 2
-        day: 0
-        initSlot: 8
-
-        j=0 8
-        day: 1
-
-        j=1 9
-        day: 1
-
-        start: 4 end: 5
-        timeslot: Array
-        (
-            [0] => 8
-            [1] => 9
-        )
-
-
-
-        ==================>>>count: 1 Array
-        (
-            [0] => 2
-        )
-
-
-        periods between 3-4
-        initSlot: 6
-
-        j=0 6
-        day: 1
-
-        j=1 7
-        day: 1
-        initSlot: 9
-
-        j=0 9
-        day: 1
-
-        j=1 10
-        day: 2
-        initSlot: 10
-
-        j=0 10
-        day: 2
-
-        j=1 11
-        day: 2
-        initSlot: 2
-
-        j=0 2
-        day: 0
-
-        j=1 3
-        day: 0
-
-        start: 3 end: 4
-        timeslot: Array
-        (
-            [0] => 2
-            [1] => 3
-        )
-
-
-
-        ==================>>>count: 3 Array
-        (
-            [0] => 2
-            [1] => 1
-            [2] => 1
-        )
-
-
-        periods between -
-        initSlot: 10
-
-        j=0 10
-        day: 2
-
-        j=1 11
-        day: 2
-
-        start: 1 end: 2
-        timeslot: Array
-        (
-            [0] => 10
-            [1] => 11
-        )
-
-
-
-
-        periods between -
-        initSlot: 0
-
-        j=0 0
-        day: 0
-
-        start: 1 end: 1
-        timeslot: Array
-        (
-            [0] => 0
-        )
-
-
-
-
-        periods between -
-        initSlot: 4
-
-        j=0 4
-        day: 0
-
-        start: 5 end: 5
-        timeslot: Array
-        (
-            [0] => 4
-        )
-
-
-
-        ==================>>>count: 1 Array
-        (
-            [0] => 2
-        )
-
-
-        periods between -
-        initSlot: 3
-
-        j=0 3
-        day: 0
-
-        j=1 4
-        day: 0
-
-        start: 4 end: 5
-        timeslot: Array
-        (
-            [0] => 3
-            [1] => 4
-        )
-
-
-
-        ==================>>>count: 1 Array
-        (
-            [0] => 2
-        )
-
-
-        periods between -
-        initSlot: 2
-
-        j=0 2
-        day: 0
-
-        j=1 3
-        day: 0
-
-        start: 3 end: 4
-        timeslot: Array
-        (
-            [0] => 2
-            [1] => 3
-        )
-
-
-
-        ==================>>>count: 3 Array
-        (
-            [0] => 1
-            [1] => 2
-            [2] => 1
-        )
-
-
-        periods between -
-        initSlot: 9
-
-        j=0 9
-        day: 1
-
-        start: 5 end: 5
-        timeslot: Array
-        (
-            [0] => 9
-        )
-
-
-
-
-        periods between -
-        initSlot: 2
-
-        j=0 2
-        day: 0
-
-        j=1 3
-        day: 0
-
-        start: 3 end: 4
-        timeslot: Array
-        (
-            [0] => 2
-            [1] => 3
-        )
-
-
-
-
-        periods between -
-        initSlot: 0
-
-        j=0 0
-        day: 0
-
-        start: 1 end: 1
-        timeslot: Array
-        (
-            [0] => 0
-        )
-
-
-
-        ==================>>>count: 5 Array
-        (
-            [0] => 1
-            [1] => 1
-            [2] => 1
-            [3] => 1
-            [4] => 1
-        )
-
-
-        periods between 2-3
-        initSlot: 6
-
-        j=0 6
-        day: 1
-
-        start: 2 end: 2
-        timeslot: Array
-        (
-            [0] => 6
-        )
-
-
-
-
-        periods between 2-3
-        initSlot: 2
-
-        j=0 2
-        day: 0
-
-        start: 3 end: 3
-        timeslot: Array
-        (
-            [0] => 2
-        )
-
-
-
-
-        periods between 2-3
-        initSlot: 3
-
-        j=0 3
-        day: 0
-        initSlot: 11
-
-        j=0 11
-        day: 2
-
-        start: 2 end: 2
-        timeslot: Array
-        (
-            [0] => 11
-        )
-
-
-
-
-        periods between 2-3
-        initSlot: 11
-
-        j=0 11
-        day: 2
-
-        start: 2 end: 2
-        timeslot: Array
-        (
-            [0] => 11
-        )
-
-
-
-
-        periods between 2-3
-        initSlot: 5
-
-        j=0 5
-        day: 1
-        initSlot: 8
-
-        j=0 8
-        day: 1
-        initSlot: 0
-
-        j=0 0
-        day: 0
-        initSlot: 4
-
-        j=0 4
-        day: 0
-        initSlot: 13
-
-        j=0 13
-        day: 2
-        initSlot: 4
-
-        j=0 4
-        day: 0
-        initSlot: 9
-
-        j=0 9
-        day: 1
-        initSlot: 10
-
-        j=0 10
-        day: 2
-        initSlot: 4
-
-        j=0 4
-        day: 0
-        initSlot: 9
-
-        j=0 9
-        day: 1
-        initSlot: 7
-
-        j=0 7
-        day: 1
-
-        start: 3 end: 3
-        timeslot: Array
-        (
-            [0] => 7
-        )
-
-
-
-        ==================>>>count: 5 Array
-        (
-            [0] => 1
-            [1] => 1
-            [2] => 1
-            [3] => 1
-            [4] => 1
-        )
-
-
-        periods between 4-5
-        initSlot: 3
-
-        j=0 3
-        day: 0
-
-        start: 4 end: 4
-        timeslot: Array
-        (
-            [0] => 3
-        )
-
-
-
-
-        periods between 4-5
-        initSlot: 13
-
-        j=0 13
-        day: 2
-
-        start: 4 end: 4
-        timeslot: Array
-        (
-            [0] => 13
-        )
-
-
-
-
-        periods between 4-5
-        initSlot: 4
-
-        j=0 4
-        day: 0
-
-        start: 5 end: 5
-        timeslot: Array
-        (
-            [0] => 4
-        )
-
-
-
-
-    periods between 4-5
-    initSlot: 14
-
-    j=0 14
-    day: 2
-
-    start: 5 end: 5
-    timeslot: Array
-    (
-        [0] => 14
-    )
-
-
-
-
-    periods between 4-5
-    initSlot: 13
-
-    j=0 13
-    day: 2
-
-    start: 4 end: 4
-    timeslot: Array
-    (
-        [0] => 13
-    )
-
-
-
-
-        SC-ID 	Timeslot 	 TGroup 	 Subj Name-Inst 	 Room
-
-    0 	1	 8	Electronics	MATH101 - John			ComLab 1
-    1 	1	 9	Electronics	MATH101 - John			ComLab 1
-    2 	2	 2	Electronics	POLSC101 - Paul			Room 2
-    3 	2	 3	Electronics	POLSC101 - Paul			Room 2
-    4 	3	 10	Electronics	ENGL101 - James			Room 2
-    5 	3	 11	Electronics	ENGL101 - James			Room 2
-    6 	3	 0	Electronics	ENGL101 - James			Room 2
-    7 	3	 4	Electronics	ENGL101 - James			Room 2
-    8 	4	 3	Mechtronics	MATH101 - John			ComLab 1
-    9 	4	 4	Mechtronics	MATH101 - John			ComLab 1
-    10 	5	 2	Mechtronics	POLSC101 - Paul			Room 2
-    11 	5	 3	Mechtronics	POLSC101 - Paul			Room 2
-    12 	6	 9	Mechtronics	ENGL101 - James			Room 1
-    13 	6	 2	Mechtronics	ENGL101 - James			Room 1
-    14 	6	 3	Mechtronics	ENGL101 - James			Room 1
-    15 	6	 0	Mechtronics	ENGL101 - James			Room 1
-    16 	7	 6	Electronics	Study Break - 			
-    17 	7	 2	Electronics	Study Break - 			
-    18 	7	 11	Electronics	Study Break - 			
-    19 	7	 11	Electronics	Study Break - 			
-    20 	7	 7	Electronics	Study Break - 			
-    21 	8	 3	Mechtronics	Study Break - 			
-    22 	8	 13	Mechtronics	Study Break - 			
-    23 	8	 4	Mechtronics	Study Break - 			
-    24 	8	 14	Mechtronics	Study Break - 			
-    25 	8	 13	Mechtronics	Study Break - 			
-}
+setInitTimeSlot key: 72
+Start getTimeslot
+
+getDistBlock() requiredPeriod : 3 preferredNumberOfDays : 2
+Array
+(
+    [0] => 2
+    [1] => 1
+)
+
+	getRandomSlot numberOfPeriods: 2  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 3
+
+	getRandomSlot numberOfPeriods: 1  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 5
+
+	getRandomSlot numberOfPeriods: 1  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 1
+
+End getTimeslot
+Array
+(
+    [0] => 3
+    [1] => 4
+    [2] => 1
+)
+
+setInitTimeSlot key: 73
+Start getTimeslot
+
+getDistBlock() requiredPeriod : 3 preferredNumberOfDays : 2
+Array
+(
+    [0] => 1
+    [1] => 2
+)
+
+	getRandomSlot numberOfPeriods: 1  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 5
+
+	getRandomSlot numberOfPeriods: 2  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 1
+
+End getTimeslot
+Array
+(
+    [0] => 5
+    [1] => 1
+    [2] => 2
+)
+
+setInitTimeSlot key: 74
+Start getTimeslot
+
+getDistBlock() requiredPeriod : 3 preferredNumberOfDays : 2
+Array
+(
+    [0] => 1
+    [1] => 2
+)
+
+	getRandomSlot numberOfPeriods: 1  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 4
+
+	getRandomSlot numberOfPeriods: 2  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 3
+
+	getRandomSlot numberOfPeriods: 2  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 4
+
+	getRandomSlot numberOfPeriods: 2  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 2
+
+	getRandomSlot initSlot: 3
+
+	getRandomSlot numberOfPeriods: 2  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 1
+
+End getTimeslot
+Array
+(
+    [0] => 4
+    [1] => 1
+    [2] => 2
+)
+
+setInitTimeSlot key: 72
+Start getTimeslot
+
+getDistBlock() requiredPeriod : 3 preferredNumberOfDays : 2
+Array
+(
+    [0] => 2
+    [1] => 1
+)
+
+	getRandomSlot numberOfPeriods: 2  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 4
+
+	getRandomSlot numberOfPeriods: 1  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 2
+
+End getTimeslot
+Array
+(
+    [0] => 4
+    [1] => 5
+    [2] => 2
+)
+
+setInitTimeSlot key: 73
+Start getTimeslot
+
+getDistBlock() requiredPeriod : 3 preferredNumberOfDays : 2
+Array
+(
+    [0] => 2
+    [1] => 1
+)
+
+	getRandomSlot numberOfPeriods: 2  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 1
+
+	getRandomSlot numberOfPeriods: 1  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 0
+
+	getRandomSlot numberOfPeriods: 1  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 3
+
+End getTimeslot
+Array
+(
+    [0] => 1
+    [1] => 2
+    [2] => 3
+)
+
+setInitTimeSlot key: 74
+Start getTimeslot
+
+getDistBlock() requiredPeriod : 3 preferredNumberOfDays : 2
+Array
+(
+    [0] => 2
+    [1] => 1
+)
+
+	getRandomSlot numberOfPeriods: 2  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 3
+
+	getRandomSlot numberOfPeriods: 1  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 0
+
+End getTimeslot
+Array
+(
+    [0] => 3
+    [1] => 4
+    [2] => 0
+)
+
+setInitTimeSlot key: 72
+Start getTimeslot
+
+getDistBlock() requiredPeriod : 3 preferredNumberOfDays : 2
+Array
+(
+    [0] => 1
+    [1] => 2
+)
+
+	getRandomSlot numberOfPeriods: 1  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 1
+
+	getRandomSlot numberOfPeriods: 2  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 4
+
+End getTimeslot
+Array
+(
+    [0] => 1
+    [1] => 4
+    [2] => 5
+)
+
+setInitTimeSlot key: 73
+Start getTimeslot
+
+getDistBlock() requiredPeriod : 3 preferredNumberOfDays : 2
+Array
+(
+    [0] => 1
+    [1] => 2
+)
+
+	getRandomSlot numberOfPeriods: 1  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 2
+
+	getRandomSlot numberOfPeriods: 2  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 5
+
+	getRandomSlot initSlot: 2
+
+	getRandomSlot initSlot: 4
+
+End getTimeslot
+Array
+(
+    [0] => 2
+    [1] => 4
+    [2] => 5
+)
+
+setInitTimeSlot key: 74
+Start getTimeslot
+
+getDistBlock() requiredPeriod : 3 preferredNumberOfDays : 2
+Array
+(
+    [0] => 1
+    [1] => 2
+)
+
+	getRandomSlot numberOfPeriods: 1  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 5
+
+	getRandomSlot numberOfPeriods: 2  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 4
+
+	getRandomSlot numberOfPeriods: 2  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 4
+
+	getRandomSlot numberOfPeriods: 2  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 3
+
+	getRandomSlot numberOfPeriods: 2  getRandomSlot preferred_start_period: 1  getRandomSlot preferred_end_period: 8 
+	getRandomSlot initSlot: 0
+
+End getTimeslot
+Array
+(
+    [0] => 5
+    [1] => 0
+    [2] => 1
+)
+Array
+(
+    [0] => 5
+    [1] => 3
+    [2] => 5
+)
+
+
+
+mID:    2	timeslot: 1		(Class: 72 Grp: 10)	(Sbj: 55 Inst: 4)	[id 24-Computer LAB 2]
+mID:    4	timeslot: 1		(Class: 73 Grp: 4)	(Sbj: 55 Inst: 4)	[id 24-Computer LAB 2]
+mID:    7	timeslot: 1		(Class: 74 Grp: 4)	(Sbj: 43 Inst: 50)	[id 5-Room 5]
+mID:    5	timeslot: 2		(Class: 73 Grp: 4)	(Sbj: 55 Inst: 4)	[id 24-Computer LAB 2]
+mID:    8	timeslot: 2		(Class: 74 Grp: 4)	(Sbj: 43 Inst: 50)	[id 5-Room 5]
+mID:    0	timeslot: 3		(Class: 72 Grp: 10)	(Sbj: 55 Inst: 4)	[id 24-Computer LAB 2]
+mID:    1	timeslot: 4		(Class: 72 Grp: 10)	(Sbj: 55 Inst: 4)	[id 24-Computer LAB 2]
+mID:    6	timeslot: 4		(Class: 74 Grp: 4)	(Sbj: 43 Inst: 50)	[id 5-Room 5]
+mID:    3	timeslot: 5		(Class: 73 Grp: 4)	(Sbj: 55 Inst: 4)	[id 24-Computer LAB 2]
+
+
+mID:    8	timeslot: 0		(Class: 74 Grp: 4)	(Sbj: 43 Inst: 50)	[id 1-Room 1]
+mID:    3	timeslot: 1		(Class: 73 Grp: 4)	(Sbj: 55 Inst: 4)	[id 23-Computer LAB 1]
+mID:    2	timeslot: 2		(Class: 72 Grp: 10)	(Sbj: 55 Inst: 4)	[id 24-Computer LAB 2]
+mID:    4	timeslot: 2		(Class: 73 Grp: 4)	(Sbj: 55 Inst: 4)	[id 23-Computer LAB 1]
+mID:    5	timeslot: 3		(Class: 73 Grp: 4)	(Sbj: 55 Inst: 4)	[id 23-Computer LAB 1]
+mID:    6	timeslot: 3		(Class: 74 Grp: 4)	(Sbj: 43 Inst: 50)	[id 1-Room 1]
+mID:    0	timeslot: 4		(Class: 72 Grp: 10)	(Sbj: 55 Inst: 4)	[id 24-Computer LAB 2]
+mID:    7	timeslot: 4		(Class: 74 Grp: 4)	(Sbj: 43 Inst: 50)	[id 1-Room 1]
+mID:    1	timeslot: 5		(Class: 72 Grp: 10)	(Sbj: 55 Inst: 4)	[id 24-Computer LAB 2]
+
+
+mID:    7	timeslot: 0		(Class: 74 Grp: 4)	(Sbj: 43 Inst: 50)	[id 1-Room 1]
+mID:    0	timeslot: 1		(Class: 72 Grp: 10)	(Sbj: 55 Inst: 4)	[id 23-Computer LAB 1]
+mID:    8	timeslot: 1		(Class: 74 Grp: 4)	(Sbj: 43 Inst: 50)	[id 1-Room 1]
+mID:    3	timeslot: 2		(Class: 73 Grp: 4)	(Sbj: 55 Inst: 4)	[id 24-Computer LAB 2]
+mID:    1	timeslot: 4		(Class: 72 Grp: 10)	(Sbj: 55 Inst: 4)	[id 23-Computer LAB 1]
+mID:    4	timeslot: 4		(Class: 73 Grp: 4)	(Sbj: 55 Inst: 4)	[id 24-Computer LAB 2]
+mID:    2	timeslot: 5		(Class: 72 Grp: 10)	(Sbj: 55 Inst: 4)	[id 23-Computer LAB 1]
+mID:    5	timeslot: 5		(Class: 73 Grp: 4)	(Sbj: 55 Inst: 4)	[id 24-Computer LAB 2]
+mID:    6	timeslot: 5		(Class: 74 Grp: 4)	(Sbj: 43 Inst: 50)	[id 1-Room 1]
+
+156896 bytesstring(4) "128M"
+int(763696)
+Total Execution Time: 0.0052089691162109sec

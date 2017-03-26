@@ -69,13 +69,13 @@
                                         <tr>
                                              <td>
                                                 <div class="form-group form-group-sm">
-                                                    <input type="number" min="1" max="10" step="1" class="form-control" name="preferred_start_period" value="1"required>
+                                                    <input type="number" min="1" max="10" step="1" class="form-control" name="preferred_start_period" value="1" required>
                                                     <span class="pull-left text-muted small"><i>Pref. start</i></span>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-group form-group-sm">
-                                                    <input type="number" min="1" max="11" step="1" class="form-control" name="preferred_end_period" required>
+                                                    <input type="number" min="1" max="11" step="1" class="form-control" name="preferred_end_period"value="8" required>
                                                     <span class="pull-left text-muted small"><i>Pref. End</i></span>
                                                 </div>
                                             </td>
@@ -148,7 +148,7 @@
                                         </div>
                                     </div>
                                 </form>
-                                
+                                <h1></h1>
                             </div>
                             <!-- class="well" -->
                             
@@ -166,7 +166,7 @@
                                     {% for row in subjectClass %}
                                     <tr>
                                         <td class="text small" style="text-align:center">{{ row.trainee_group }} </td>
-                                        <td class="text small" style="text-align:center">{{ row.subject }} {{ row.code }} [{{row.required_period}}]<br/>
+                                        <td class="text small" style="text-align:center">{{ row.code }} {{ row.subject }} ({{row.required_period}})<br/>
                                                             <span class="text-primary small"><i>{{ row.instructor}}</i></span></td> 
                                         <td class="text small" style="text-align:center">{{ row.room }}<br/>
                                                             <span class="text-muted small"><i>{{ row.room_type}}</i></span></td>
@@ -179,7 +179,7 @@
                                                 <span class="fa fa-edit"></span>
                                             </a>
                                             <a href="#" data-toggle="tooltip" data-placement="right" title="Delete this Item!"  class="btn btn-xs btn-danger">
-                                                <span class="fa fa-remove"></span>
+                                                <span class="fa fa-trash-o"></span>
                                             </a>
                                         </td>
                                     </tr>
