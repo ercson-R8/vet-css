@@ -226,7 +226,7 @@ class Test extends \Core\Controller {
     }
 
 
-        public function testAction(){
+    public function testAction(){
         // echo "testing from controller test<br/>";
         $a = null;
         if (isset ($a)){
@@ -255,76 +255,67 @@ class Test extends \Core\Controller {
 
         $a=array("a"=>"red","b"=>"green","c"=>1);
         print_r($a);
-    echo array_search(1,$a);
+        echo array_search(1,$a);
 
-    echo "<br/>============================\n";
-    // $startMemory = memory_get_usage();
-    // $array = range(1, 100000);
-    // echo memory_get_usage() - $startMemory, ' bytes<br/>';
-
-
-    // $startMemory = memory_get_usage();
-    // $array = new \SplFixedArray(1000000);
-    // for ($i = 0; $i < 10000; ++$i) {
-    //     $array[$i] = $i;
-    // }
-    // echo memory_get_usage() - $startMemory, ' bytes';
-
-    $requiredNumberOfPeriods = 7;
-
-    $preferredNumberOfDays = 4;
-    print_r("\nxxxxxxxxxxxxxxxxxxxxxxxxxxxx"."=================================================\n");
-    print_r("\nDAYS: ".$preferredNumberOfDays."\nPeriods: ".$requiredNumberOfPeriods);
-    $total = 0;
-    $block = [];
-    for ($i = 0; $i < ($preferredNumberOfDays - 1); $i++){
-        $period = (int)( $requiredNumberOfPeriods / $preferredNumberOfDays);
-        array_push($block, $period);
-        $total += $period;
-    }
-    array_push($block, ($requiredNumberOfPeriods-$total));
-    shuffle($block); // randomize distribution block 
-    print_r("\nblock: "."\n");
-    print_r($block);
+        echo "<br/>============================\n";
+        // $startMemory = memory_get_usage();
+        // $array = range(1, 100000);
+        // echo memory_get_usage() - $startMemory, ' bytes<br/>';
 
 
+        // $startMemory = memory_get_usage();
+        // $array = new \SplFixedArray(1000000);
+        // for ($i = 0; $i < 10000; ++$i) {
+        //     $array[$i] = $i;
+        // }
+        // echo memory_get_usage() - $startMemory, ' bytes';
 
+        $requiredNumberOfPeriods = 7;
 
-    $i = 8;
-    $factor = round( (1 / ($i+1)* 100));
-
-    print_r("\nFactor: ".$factor);
-    echo "\n";
-    $a = ["id" => 12, "age" => 55, "dist" => 5];
-        
-        asort( $a);
-        print_r($a);
-        print_r("\nsizeof a: ".sizeof($a));
-        print_r("\n");
-        print_r(array_pop($a));
-       
-        print_r("\n");
-
-        print_r("\nrand: ".(rand(0,100)/100)."\n");
-        for($i=0; $i < sizeof($a); $i++){
-            // print_r($a[sizeof($a)]." ");
-            // array_pop($a);
+        $preferredNumberOfDays = 4;
+        print_r("\nxxxxxxxxxxxxxxxxxxxxxxxxxxxx"."=================================================\n");
+        print_r("\nDAYS: ".$preferredNumberOfDays."\nPeriods: ".$requiredNumberOfPeriods);
+        $total = 0;
+        $block = [];
+        for ($i = 0; $i < ($preferredNumberOfDays - 1); $i++){
+            $period = (int)( $requiredNumberOfPeriods / $preferredNumberOfDays);
+            array_push($block, $period);
+            $total += $period;
         }
+        array_push($block, ($requiredNumberOfPeriods-$total));
+        shuffle($block); // randomize distribution block 
+        print_r("\nblock: "."\n");
+        print_r($block);
 
 
 
 
+        $i = 8;
+        $factor = round( (1 / ($i+1)* 100));
 
+        print_r("\nFactor: ".$factor);
+        echo "\n";
+        $a = ["id" => 12, "age" => 55, "dist" => 5];
+            
+            asort( $a);
+            print_r($a);
+            print_r("\nsizeof a: ".sizeof($a));
+            print_r("\n");
+            print_r(array_pop($a));
+        
+            print_r("\n");
 
+            print_r("\nrand: ".(rand(0,100)/100)."\n");
+            for($i=0; $i < sizeof($a); $i++){
+                // print_r($a[sizeof($a)]." ");
+                // array_pop($a);
+            }
 
         var_dump(memory_get_usage() );
 
         print_r("\n");
         $x =(int) 300 * 0.8;
         print_r("\nx=".$x."\n");
-
-
-
         
 
     }
@@ -355,9 +346,60 @@ class Test extends \Core\Controller {
      * @param		
      * @return	 	
      */
-    public function htmlTableAction (){
-         echo "htmlTable...";
+    public function modAction (){
+        echo "htmlTable...<pre>";
+        $total = 0;
+        $block = [];
+        $requiredPeriod = 8;
+        $preferredNumberOfDays = 3;
+        $modulo = fmod($requiredPeriod, $preferredNumberOfDays);
+        print_r("\nRequiredPeriod: ".$requiredPeriod." ");
+        print_r(" preferredNumberOfDays: ".$preferredNumberOfDays." ");
+        print_r(" modulo: ".$modulo."\n");
+        if ($modulo == 0){
+            print_r("\nEqual to zero"."\n");
+            for ($i=0; $i < ($preferredNumberOfDays); $i++) { 
+                $period = (int)( $requiredPeriod  / ($preferredNumberOfDays));
+                array_push($block, $period);
+                $total += $period;
+            }
+
+        }else{
+            
+            print_r("\nNOT Equal to zero"."\n");
+            
+            for ($i=0; $i < ($preferredNumberOfDays); $i++) { 
+                $period = (int) ( $requiredPeriod / ($preferredNumberOfDays));
+                $total += $period;
+                array_push($block, $period);
+            }
+            print_r("\nTOTAL: ".$total."\n");
+            $excess = $requiredPeriod - $total;
+            print_r("\nExcess: ".$excess."\n");
+            // distribute the excess
+            while($excess > 0){
+                for ($i=0; $i < ($preferredNumberOfDays-1); $i++) { 
+                    $total += 1;
+                    $block[$i] += 1;
+                    $excess--;
+                    print_r("\nExcess ".$excess." Total: ".$total."\n");
+                    if($excess == 0){
+                        break;
+                    }
+                }
+            }
+
+
+
+
+            //array_push($block, ($requiredPeriod -$total));
+            
+        }
         
+        shuffle($block); // randomize distribution block
+
+        print_r("\nResult"."\n");
+        print_r($block);
     }
     /*
      * testArray method 

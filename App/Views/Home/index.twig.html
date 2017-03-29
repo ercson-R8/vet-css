@@ -5,46 +5,86 @@
 
 
 {% block body %}
+        <span class="text-muted small">Generated @ <b style="color:red">{{timestamp}}</b></span>
+
 
         <div class="panel-body">
-            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+            
+            
+            <table width="100%" class="table table-striped table-bordered" id="dataTables-currentTimetable">
                 <thead>
-                    <tr style="color:red">
-                        <th></th>
-                        <th>Sunday</th>
-                        <th>Monday</th>
-                        <th>Tuesday</th>
-                        <th>Wednesday</th>
-                        <th>Thursday</th>
+                    {#<tr style="color:red">#}
+                    <tr style="color:darkblue">
+                        <td class="text small" style="text-align:center"><strong></strong></td>
+                        <td class="text small" style="text-align:center"><strong>Sunday</strong></td>
+                        <td class="text small" style="text-align:center"><strong>Monday</strong></td>
+                        <td class="text small" style="text-align:center"><strong>Tuesday</strong></td>
+                        <td class="text small" style="text-align:center"><strong>Wednesday</strong></td>
+                        <td class="text small" style="text-align:center"><strong>Thursday</strong></td>
+                   
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td></td>
-                        <td style="font-weight: bold; background-color: #55AAFF">Trident</td>
-                        <td>Internet Explorer 4.0</td>
-                        <td>Win 95+</td>
-                        <td class="center">4</td>
-                        <td class="center">X</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Misc</td>
-                        <td>IE Mobile</td>
-                        <td>Windows Mobile 6</td>
-                        <td class="center">-</td>
-                        <td class="center">C</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Misc</td>
-                        <td>PSP browser</td>
-                        <td>PSP</td>
-                        <td class="center">-</td>
-                        <td class="center">C</td>
-                    </tr>
+                    {% set i = 0 %}
+                    
+                    {% for key, value in time_col %}
+                        <tr>
+                            <td class="text small text-center" style="vertical-align:middle "> {{ key }}</td>
+                            {% for time_slot in value %}
+                                
+                                    <td class="text small" style="text-align:center">
+                                        
+                                        {% for sc in subject_class %}
+                                            {% if sc.time_slot == time_slot %}
+                                            <table width="100%" class="table  "><tbody>
+                                            <tr> 
+                                                {% if 'Fabien' starts with 'F' %}
+                                                {% endif %}
+
+                                                {% if sc.code  starts with 'B' %} 
+                                                    <td style="background-color:#F5EEF8">
+                                                {% else %}
+                                                    <td style="background-color:#EBF5FB">
+                                                {% endif %}
+                                                
+                                                <b>{{ sc.trainee_group }}</b><br/>
+                                                {{ sc.code }}<br/>
+                                                
+                                                {{ sc.subject }}<br/>
+                                                {{ sc.instructor }} - {{ sc.room }}
+                                                </td>
+                                            </tr>
+                                            </tbody></table>
+                                            {% endif %}
+                                        {% endfor %}
+                                           
+                                    </td>
+                                    
+                            {% endfor %}
+                        </tr>
+
+
+                    {% set i = i + 1 %}
+                    
+                    {% endfor %}
+                  
+
+                    
+                    
                     
                 </tbody>
+                <tfoot>
+                                
+                    <tr>
+                        <td class="text small" style="text-align:center"><strong></strong></td>
+                        <td class="text small" style="text-align:center"><strong>Sunday</strong></td>
+                        <td class="text small" style="text-align:center"><strong>Monday</strong></td>
+                        <td class="text small" style="text-align:center"><strong>Tuesday</strong></td>
+                        <td class="text small" style="text-align:center"><strong>Wednesday</strong></td>
+                        <td class="text small" style="text-align:center"><strong>Thursday</strong></td>
+                    </tr>
+                    
+                </tfoot>
             </table>
             <!-- /.table-responsive -->
             

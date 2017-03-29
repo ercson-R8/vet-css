@@ -164,8 +164,8 @@
                         <div class="row"></div>
                         <div class="panel panel-primary">
                             <div class="panel-heading">
-                                <h3>{{tableTitle}}</h3>
-                                <h4>{{tableSubTitle}}</h4>
+                                <h3>{{tableTitle | raw }}</h3>
+                                <h4>{{tableSubTitle| raw }}</h4>
                                 
                             </div>
                             <!-- /.panel-heading -->
@@ -247,7 +247,21 @@
         $(document).ready(function() {
             $('#dataTables-example').DataTable({
                 responsive: true,
-                "ordering": false
+                "ordering": true,
+                "searching": true
+                
+            });
+        });
+
+        $(document).ready(function() {
+            $('#dataTables-currentTimetable').DataTable({
+                "fixedHeader": true,
+                "responsive": true,
+                "ordering": false,
+                "searching": true,
+                "paging":   false
+                
+                
                 
             });
         });

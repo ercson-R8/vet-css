@@ -111,39 +111,4 @@ class LoginController extends \Core\Controller
 
     }
 
-
-
-
-
-
 }
-
-
-
-        // Let's store datas in the session
-        // $sessionData->nickname = 'Someone';
-        // $sessionData->age = 18;
-
-        // Let's display datas
-        // printf( '<p>My name is %s and I\'m %d years old.</p>' , $sessionData->nickname , $sessionData->age );
-
-        /*
-            It will display:
-            
-            Array
-            (
-                [nickname] => Someone
-                [age] => 18
-            )
-        */
-
-        // printf( '<pre>%s</pre>' , print_r( $_SESSION , TRUE ));
-
-        // // TRUE
-        // var_dump( isset( $sessionData->nickname ));
-
-        // // We destroy the session
-        // $sessionData->destroy();
-
-        // // FALSE
-        // var_dump( isset( $sessionData->nickname ));
