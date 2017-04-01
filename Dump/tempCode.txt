@@ -1,0 +1,96 @@
+{  // generate new timetable button was clicked
+                $t = new Timetable();
+
+                View::renderTemplate ('Timetables/generateTimetablePage.twig.html', [
+                                        'title' => 'Add a Class '.$sessionData->currentTimetable, 
+                                        'firstName' => $sessionData->firstName
+                                    ]);
+
+                $t->dummy();
+
+                
+                
+               
+                
+                // set this as the current timetable;
+                $sessionData->currentTimetable = $timetable[0]["sc"]['timetable_id'];
+                /*
+                    $timetable Array
+                        (
+                            [0] => Array
+                                (
+                                    [mt_id] => 0
+                                    [sc] => Array
+                                        (
+                                            [id] => 20
+                                            [timetable_id] => 1
+                                            [subject_id] => 2
+                                            [trainee_group_id] => 4
+                                            [instructor_id] => 63
+                                            [room_id] => 2
+                                            [room_type_id] => 1
+                                            [room_fixed] => 
+                                            [preferred_start_period] => 1
+                                            [preferred_end_period] => 8
+                                            [preferred_number_days] => 3
+                                        )
+
+                                    [ts] => 0
+                                )
+                        )
+        
+                */
+
+                // check if this timetable does not have a generated timetable yet
+                // this is done by querying the meeting table if the currenttimetable ID exist;
+                
+                $db->query("SELECT * FROM meeting WHERE meeting.timetable_id = {$sessionData->currentTimetable}");
+                $meeting = $db->getResults();
+
+                // print_r($meeting);
+
+                /*
+                    if generated timetable already exist; 
+                    copy record of timetable with the current timetableID 
+                    and create a new entry in the timetable database table;
+                    append timestamp in the description;
+
+                    copy records in subject_class table; 
+                    and create duplicates of those record;
+
+                    else updated
+
+                */
+                if ($db->count()){ // generated timetable already exist
+                    // copy the timetable record
+                    // print_r("\ngenerated timetable already exist"."\n");
+                    exit;
+                    $db->query("SELECT * FROM timetable WHERE timetable.id = {$sessionData->currentTimetable}");
+                    $currentTimetable = $db->getResults();
+                    $db->query("SELECT * FROM timetable WHERE timetable.id = {$sessionData->currentTimetable}");
+
+
+                    // echo $db->count();
+                    //print_r($db->getResults());
+                    foreach ( $currentTimetable as $result){
+                        // print_r($result);
+                    }
+
+                }else{ // generated timetable does not exist
+                    foreach ($newData as $key => $value) {
+                        $db->insert('meeting', 
+                                    array(  'timetable_id'      =>  $value['timetable_id'],
+                                            'subject_class_id'  =>  $value['subject_class_id'],
+                                            'trainee_group_id'  =>  $value['trainee_group_id'],
+                                            'subject_id'        =>  $value['subject_id'],
+                                            'instructor_id'     =>  $value['instructor_id'],
+                                            'room_id'           =>  $value["room_id"], 
+                                            'time_slot'         =>  $value["time_slot"]
+                        ));
+                    }
+                }
+                View::renderTemplate ('Timetables/generateTimetableDonePage.twig.html', [
+                                        'title' => 'Add a Class '.$sessionData->currentTimetable, 
+                                        'firstName' => $sessionData->firstName
+                                    ]);
+            }

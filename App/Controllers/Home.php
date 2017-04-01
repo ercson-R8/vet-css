@@ -25,6 +25,7 @@ class Home extends \Core\Controller
         $sessionData = Session::getInstance();
         if (!$sessionData->inSession) {
             header("Location: /auth/LoginController/index");
+            exit;
         }
           
     }
@@ -48,7 +49,6 @@ class Home extends \Core\Controller
         $sessionData = Session::getInstance();
         // session was processed by the before Method above; 
 
-
         $db = DB::getInstance();
         // fetch timetable info 
         $db->select(
@@ -57,28 +57,33 @@ class Home extends \Core\Controller
             array(['timetable.current', '=', '1'])
         );
         $timetable = ($db->getResults());
-
-        $sessionData->currentTimetable = $timetable[0]->id;
-
+        if($db->count() > 0){
+            $sessionData->currentTimetable = $timetable[0]->id;
+        }else{
+            // need to redirect ... wip
+            header("Location: /Timetable/TimetableController/addTimetable");
+            exit;
+            
+        }
         
         $tableTitle = 'List of classes for AY '.$timetable[0]->year_start.'-'.$timetable[0]->year_end.' Term '.$timetable[0]->term;
-        $tableSubTitle = '('.$timetable[0]->remarks.') '.$timetable[0]->created;
+        $tableSubTitle = ''.$timetable[0]->remarks.' '.$timetable[0]->created;
 
-        // fetch meeting_time info; 
+        // fetch meeting info; 
         $db->select(
             array('*'),
-            array('meeting_time'),
-            array(['meeting_time.timetable_id', '=', $sessionData->currentTimetable])
+            array('meeting'),
+            array(['meeting.timetable_id', '=', $sessionData->currentTimetable])
         );
 
 
-        $meeting_time = ($db->getResults());
+        $meeting = ($db->getResults());
         
 
         // if there exist a generated timetable for this current timetable; 
         // fetch the data and pass it to the view index.twig.html; 
         if ($db->count()){
-            $timestamp = $meeting_time[0]->timestamp;
+            $timestamp = $meeting[0]->timestamp;
 
             // setup the periods and their corresponding time slots; 
             if(true) {
@@ -115,49 +120,37 @@ class Home extends \Core\Controller
             $db = DB::getInstance();
             $db->select(
                     array(  
-                            'subject_class.id',
-                            'trainee_group.name as \'trainee_group\'', 
+                            'trainee_group.name as \'trainee_group\'',
                             'subject.name as \'subject\'',
                             'subject.code as \'code\'',
-                            'subject.required_period as \'required_period\'',
                             'concat (instructor.first_name,\' \', instructor.last_name) as\'instructor\'', 
-                            'room_type.name as \'room_type\'',
                             'room.name as \'room\'',
-                            'subject_class.preferred_number_days as \'days\'', 
-                            'subject_class.preferred_start_period as \'start\'', 
-                            'subject_class.preferred_end_period as \'end\'',
-                            'meeting_time.time_slot',
-                            'meeting_time.subject_class_id',
-                            'meeting_time.timetable_id'
+                            'meeting.time_slot'
 
                     ),
-                    array('subject_class 
-                            INNER JOIN trainee_group 
-                                    ON subject_class.trainee_group_id = trainee_group.id 
-                            INNER JOIN subject 
-                                    ON subject_class.subject_id = subject.id 
-                            INNER JOIN instructor 
-                                    ON subject_class.instructor_id = instructor.id 
-                            INNER JOIN room_type 
-                                    ON subject_class.room_type_id = room_type.id
-                            INNER JOIN room 
-                                    ON subject_class.room_id = room.id
-                            INNER JOIN meeting_time
-                                    ON subject_class.id = meeting_time.subject_class_id' 
+                    array('meeting
+                                INNER JOIN trainee_group
+                                    ON meeting.trainee_group_id = trainee_group.id
+                                INNER JOIN subject
+                                    ON meeting.subject_id = subject.id
+                                INNER JOIN instructor
+                                    ON meeting.instructor_id = instructor.id
+                                INNER JOIN room
+                                    on meeting.room_id = room.id' 
                     ),
                     array(
-                        ['subject_class.timetable_id', '=', $sessionData->currentTimetable]
+                        ['meeting.timetable_id', '=', $sessionData->currentTimetable]
                         // ,['instructor.first_name', 'LIKE', '%Fat%']
                     )
                 );
-            $subject_class = ($db->getResults());
+            $meeting = ($db->getResults());
 
             
             
 
-            usort($subject_class, function($a, $b) { return $a->time_slot - $b->time_slot; });
+            usort($meeting, function($a, $b) { return $a->time_slot - $b->time_slot; });
             // print_r("\n<pre>"."\n");
-            // print_r($subject_class);
+            // print_r($meeting);
            
             // print_r($time_col);
             // exit;
@@ -167,9 +160,8 @@ class Home extends \Core\Controller
                                         'lastName'      => $sessionData->lastName,
                                         'tableTitle'    => $tableTitle,
                                         'tableSubTitle' => $tableSubTitle,
-                                        'meeting_time'  => $meeting_time,
+                                        'meetings'       => $meeting,
                                         'time_col'      => $time_col,
-                                        'subject_class' => $subject_class,
                                         'timestamp'     => $timestamp
                                     ]);
 
@@ -182,7 +174,7 @@ class Home extends \Core\Controller
                                         'lastName'      => $sessionData->lastName,
                                         'tableTitle'    => 'No timetable generated yet!<br/> Generate using the Timetable menu above.',
                                         'tableSubTitle' => '',
-                                        'meeting_time'  => []
+                                        'meeting'       => []
                                     ]);
         }
                                           
@@ -253,14 +245,13 @@ class Home extends \Core\Controller
                 
         $sessionData = Session::getInstance();
         $sessionData->destroy();
-
-        header("Location: /auth/LoginController/index");   
-
+        header("Location: /auth/LoginController/index");
+        exit;
     }
 
     /** 
-     * Show some data
-     *
+     * Show some data 
+     * used during debugging...; 
      * @return void
      */
     public function showAction()

@@ -12,15 +12,15 @@
             <div class="col-lg-4 col-md-4 col-sm-4" >
                 <div class="well"> 
 
-                    <div class="panel panel-primary">
+                    <div class="panel panel-danger">
                         <div class="panel-heading">
                             <h3>{{title}}</h3>
                         </div>
                         <div class="panel-body">
                             
-                            <form class="form   center-block" name="addTraineeGroup" action="/resource/resourceController/createNewTraineeGroup" method="post">
-                                <div class="form-group form-group-lg">
-                                    
+                            <form class="form center-block" name="addTraineeGroup" action="/resource/resourceController/updateTraineeGroup" method="post">
+                                
+                                <div class="form-group form-group-lg has-warning traineeGroupClass">
                                     <select class="form-control" name="traineeGroup" required >
                                         <option value="">Select group name</option>
                                         <option value="ELC">Electrical</option>
@@ -34,7 +34,7 @@
                                     </select>
                                     
                                 </div>
-                                <div class="form-group form-group-lg">
+                                <div class="form-group form-group-lg has-warning levelClass">
                                     <select class="form-control" name="level" required>
                                         <option value="">Select level</option>
                                         <option value="1">Level 1</option>
@@ -50,8 +50,8 @@
                                 </div>
 
 
-                                <div class="form-group form-group-lg">
-                                    <select class="form-control" name="section" required>
+                                <div class="form-group form-group-lg has-warning section">
+                                    <select class="form-control" name="section" id="section"required>
                                         <option value="">Select section</option>
                                         <option value="A">Section A</option>
                                         <option value="B">Section B</option>
@@ -63,13 +63,14 @@
                                 </div>
 
 
-                                <div class="form-group form-group-lg" >
-                                    <input type="text" class="form-control" name="description" onblur="return x()" placeholder="Description">
+                                <div class="form-group form-group-lg has-warning" >
+                                    <input type="hidden" class="form-control"  name="TraineeGroup_id" id="TraineeGroup_id" value="">
+                                    <input type="text" class="form-control" name="description" id="description" placeholder="Description">
                                 </div>       
 
                                 <div class="form-group">
-                                    <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit" >
-                                        Save New Group
+                                    <button class="btn btn-danger btn-lg btn-block" name="submit" type="submit" >
+                                        Update This Group
                                     </button>                                    
                                 </div>
                             </form>
@@ -90,13 +91,21 @@
 
             <div class="col-lg-8 col-md-8 col-sm-8" >
                 <div class="well"> 
-                    <div class="panel panel-info">
+                    <div class="panel panel-danger">
                         <div class="panel-heading">
-                            <h3>List of Trainee Groups</h3>
+                            <h3>Trainee Group</h3>
                         </div>
                         <div class="panel-body">
+                            {% for key,value in oldEntry %}
+                                 
+                                 <input type="hidden" name="name_{{ key }}" id="id_{{ key }}" value="{{ value }}">
+                                
+                            {% endfor %}
                             
-                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+
+                
+
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="">
                                 <thead>
                                     <tr>
                                            {% for tableHeader in tableHeadings %}
@@ -106,42 +115,17 @@
                                                 <th>{{ tableHeader }}</th>
                                             {% endif %}
                                             {% endfor %}
-                                        <th></th>
+
                                     </tr>
                                 </thead>
-                                <tfoot>
                                 
-                                    <tr>
-                                            {% for tableHeader in tableHeadings %}
-                                            {% if (tableHeader == "Level") or (tableHeader == "Section") %}
-                                                <th style="text-align:center">{{ tableHeader }}</th>
-                                            {% else %}
-                                                <th>{{ tableHeader }}</th>
-                                            {% endif %}
-                                        {% endfor %}
-                                        <th></th>
-                                    </tr>
-                                    
-                                </tfoot>
                                 <tbody>
-                                    {% for row in traineeGroupTable %}
+                                    {% for row in trainee_group %}
                                     <tr>
                                         <td >{{ row.name }}</td>
                                         <td style="text-align:center">{{ row.level }}</td>
                                         <td style="text-align:center">{{ row.section }}</td>
                                         <td>{{ row.remarks }}</td>
-                                        <td style="text-align:center">
-                                            <a href="/Resource/ResourceController/{{ row.id }}/editTraineeGroup" data-toggle="tooltip" data-placement="right" title="Edit this Item!" class="btn btn-xs btn-primary">
-                                                <span class="fa fa-edit"></span>
-                                            </a>
-
-                                            <a href="#delete-modal" data-toggle="modal" 
-                                                id="{{ row.name }}"  
-                                               
-                                                title="Delete this Item!"  class="btn btn-xs btn-danger" >
-                                                <span class="fa fa-remove" ></span>
-                                            </a>
-                                        </td>
                                     </tr>
                                     {% endfor %}                                 
                                 </tbody>
@@ -163,56 +147,22 @@
     <!-- class="container-fluid" -->
 
 
-    <!-- Modal -->
-    <div id="delete-modal" class="modal true fade" tabindex="-2" role="dialog" aria-labelledby="delete-modal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="delete-modal">Confirm Remove!</h4>
-                </div>
-                <div class="modal-body ">
-                    <form class="form center-block" name="addTraineeGroup" action="/resource/resourceController/deleteTraineeGroup" method="post">
-                            <div class="row">
-                                <div class="col-xs-1">
-                                    <i class="fa fa-warning text-danger fa-3x"></i>
-                                </div>
-                                <div class="col-xs-11">
-                                    <div class="huge text-danger">Warning</div>
-                                    <div class="lead">
-                                    
-                                    <p class="lead">By removing this trainee group <span class="modal-message text-danger delete-content"></span>, all the timetables created that has this group will also be deleted from the database and will 
-                                        reset the current timetable. 
-                                    </p>
-                                    <input type="hidden" class="modal-input delete-input" name="traineeGroupName" value="">
-                                    
-                                    </div>
-                                </div>
-                            </div>
-                                
-            
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger pull-right">Proceed and Delete</button>
-                    </form>
-                <div>
-
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
+    
 
 
     <script>
         $(document).ready(function(){
-            $('#delete-modal').on('show.bs.modal', function(e) {
-                var $modal = $(this),
-                    deleteId = e.relatedTarget.id;
-                    $modal.find('.delete-content').html(deleteId);
-                    $modal.find('.delete-input').val(deleteId);
-            });            
+
+            
+            $("div.traineeGroupClass select").val( $('#id_group').val() );
+            $("div.levelClass select").val( $('#id_level').val() );
+            $("div.section select").val( $('#id_section').val() );
+
+            $("#description").val( $('#id_remarks').val() );
+            $("#TraineeGroup_id").val( $('#id_id').val() );
+
+
+
         });
     </script>
 

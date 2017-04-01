@@ -270,8 +270,8 @@ class DB extends \Core\Model{
         }
         $sql = "UPDATE {$table} SET {$set} WHERE {$where}";
 
-        echo "Fields: ";
-        print_r($fields); 
+        // echo "Fields: ";
+        // print_r($fields); 
         $this->query($sql, $fields);
         if (!$this->error()){
             return $this;

@@ -252,6 +252,16 @@ class testDBController extends \Core\Controller{
         print_r($db->getResults());
         print_r('db->getResults()[0]->created_at: '.$db->getResults()[0]->created_at);
 
+        $db->update ('posts', 
+                    array (
+                        ['title','=','update'],
+                        ['content','=','updateupdate 646464 ']
+                    ),
+                    array(
+                        ['id','=', 6]
+                    )
+        );
+
     }
 
 

@@ -6,16 +6,12 @@
 
 {% block body %}
         <span class="text-muted small">Generated @ <b style="color:red">{{timestamp}}</b></span>
-
-
         <div class="panel-body">
-            
-            
             <table width="100%" class="table table-striped table-bordered" id="dataTables-currentTimetable">
                 <thead>
                     {#<tr style="color:red">#}
                     <tr style="color:darkblue">
-                        <td class="text small" style="text-align:center"><strong></strong></td>
+                        <td class="text small" style="text-align:center"><strong>Time</strong></td>
                         <td class="text small" style="text-align:center"><strong>Sunday</strong></td>
                         <td class="text small" style="text-align:center"><strong>Monday</strong></td>
                         <td class="text small" style="text-align:center"><strong>Tuesday</strong></td>
@@ -25,7 +21,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% set i = 0 %}
+  
                     
                     {% for key, value in time_col %}
                         <tr>
@@ -34,24 +30,25 @@
                                 
                                     <td class="text small" style="text-align:center">
                                         
-                                        {% for sc in subject_class %}
-                                            {% if sc.time_slot == time_slot %}
-                                            <table width="100%" class="table  "><tbody>
+                                        {% for meeting in meetings %}
+                                            {% if meeting.time_slot == time_slot %}
+                                            <table width="50%" class="table"><tbody>
                                             <tr> 
                                                 {% if 'Fabien' starts with 'F' %}
                                                 {% endif %}
 
-                                                {% if sc.code  starts with 'B' %} 
+                                                {% if meeting.code  starts with 'B' %} 
                                                     <td style="background-color:#F5EEF8">
                                                 {% else %}
                                                     <td style="background-color:#EBF5FB">
                                                 {% endif %}
                                                 
-                                                <b>{{ sc.trainee_group }}</b><br/>
-                                                {{ sc.code }}<br/>
+                                                <b>{{ meeting.trainee_group }}</b><br/>
+                                                <span class="small">{{ meeting.code }}</span>-
                                                 
-                                                {{ sc.subject }}<br/>
-                                                {{ sc.instructor }} - {{ sc.room }}
+                                                <span class="text-primary small"><i>{{ meeting.subject }}<br/>
+                                                <span class="text-default small"><i>{{ meeting.instructor }}</i></span> -  
+                                                <span class="text-primary small"><i>{{ meeting.room }}</i></span>
                                                 </td>
                                             </tr>
                                             </tbody></table>
@@ -64,7 +61,7 @@
                         </tr>
 
 
-                    {% set i = i + 1 %}
+
                     
                     {% endfor %}
                   
@@ -76,7 +73,7 @@
                 <tfoot>
                                 
                     <tr>
-                        <td class="text small" style="text-align:center"><strong></strong></td>
+                        <td class="text small" style="text-align:center"><strong>Time</strong></td>
                         <td class="text small" style="text-align:center"><strong>Sunday</strong></td>
                         <td class="text small" style="text-align:center"><strong>Monday</strong></td>
                         <td class="text small" style="text-align:center"><strong>Tuesday</strong></td>

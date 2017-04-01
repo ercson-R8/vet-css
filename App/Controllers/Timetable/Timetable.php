@@ -11,7 +11,19 @@ class Timetable{
     private $subjects, $traineeGroups, $rooms, $roomTypes, $instructors = null; 
     private $population = [];
     private $baseSubjectClass = null;
-
+    /*
+     * dummy method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function dummy (){
+        
+        for ($i=0; $i < 100000; $i++) { 
+            # code...
+        }
+        // echo "<h1>From dummy method</h1>";
+    }
     /*
      * fetchBaseSubjectClass method fetches raw data from the database
      * returns an array representing the subject_class table.  
@@ -26,11 +38,11 @@ class Timetable{
         $db = DB::getInstance();
         $db->query("SELECT * FROM subject_class WHERE subject_class.timetable_id = {$timeTableID}");
         
-        // print_r($db->getResults());
+        // // print_r($db->getResults());
         if ($db->count()) {
             $i=0;
             foreach ($db->getResults() as $subjectClass) {
-                print_r("\nCopying tables..."."\n");
+                // print_r("\nCopying tables..."."\n");
                 // this will collect each row of the selected table and store
                 // all of it in an assoc array.
                 $subjectClassSet[$subjectClass->id] =[
@@ -49,8 +61,8 @@ class Timetable{
             }
         }else{
             // todo 
-            print_r("\nError here no class found on this time timetable"."\n");
-            print_r("\nSize of db->getResults() ".sizeof($db->getResults())."\n");
+            // print_r("\nError here no class found on this time timetable"."\n");
+            // print_r("\nSize of db->getResults() ".sizeof($db->getResults())."\n");
             exit;
         }
 
@@ -66,7 +78,7 @@ class Timetable{
     public function assignRoom($indi){   
 
         // Get a room room_fixed is set to null
-        // print_r("\nAssigning rooms...."."\n");
+        // // print_r("\nAssigning rooms...."."\n");
         if ($indi["room_fixed"]) { // room_id is provided, cannot be changed.
             
             $room = $this->getRoom($indi["room_id"])->getID();
@@ -95,7 +107,7 @@ class Timetable{
 
         foreach ($subjectClassSet as $key => $subjectClass) {
             // find a suitable timeslot for the current subjectCclass
-            // print_r("\nsetInitTimeSlot key: ".$key);
+            // // print_r("\nsetInitTimeSlot key: ".$key);
             $requiredPeriods = (int) $this->getSubject($subjectClass["subject_id"])->getRequiredPeriod();
             $preferredNumberOfDays = (int) $subjectClass["preferred_number_days"] ;
             $preferredStart = (int) $subjectClass["preferred_start_period"] ;
@@ -111,7 +123,7 @@ class Timetable{
             }
         }
 
-        // print_r($timetable);
+        // // print_r($timetable);
 
         return $timetable;
     }
@@ -135,9 +147,9 @@ class Timetable{
         //     [1] => 1
         //     [2] => 1
         // )
-        // print_r("\nStart getTimeslot"."\n");
+        // // print_r("\nStart getTimeslot"."\n");
         $distBlock = $this->getDistBlock(   $requiredPeriod, $preferredNumberOfDays);
-        // print_r($distBlock);
+        // // print_r($distBlock);
         $day = [];
         for ($i=0; $i < count($distBlock); $i++) {
             $sameDay = true;
@@ -160,8 +172,8 @@ class Timetable{
                 }
             }
         }
-        // print_r("\nEnd getTimeslot"."\n");
-        // print_r($timeslot);
+        // // print_r("\nEnd getTimeslot"."\n");
+        // // print_r($timeslot);
         return $timeslot;
     }
 
@@ -170,11 +182,11 @@ class Timetable{
         $total = 0;
         $block = [];
         $modulo = fmod($requiredPeriod, $preferredNumberOfDays);
-        // print_r("\nRequiredPeriod: ".$requiredPeriod." ");
-        // print_r(" preferredNumberOfDays: ".$preferredNumberOfDays." ");
-        // print_r(" modulo: ".$modulo."\n");
+        // // print_r("\nRequiredPeriod: ".$requiredPeriod." ");
+        // // print_r(" preferredNumberOfDays: ".$preferredNumberOfDays." ");
+        // // print_r(" modulo: ".$modulo."\n");
         if ($modulo == 0){
-            // print_r("\nEqual to zero"."\n");
+            // // print_r("\nEqual to zero"."\n");
             for ($i=0; $i < ($preferredNumberOfDays); $i++) { 
                 $period = (int)( $requiredPeriod  / ($preferredNumberOfDays));
                 array_push($block, $period);
@@ -183,23 +195,23 @@ class Timetable{
 
         }else{
             
-            // print_r("\nNOT Equal to zero"."\n");
+            // // print_r("\nNOT Equal to zero"."\n");
             
             for ($i=0; $i < ($preferredNumberOfDays); $i++) { 
                 $period = (int) ( $requiredPeriod / ($preferredNumberOfDays));
                 $total += $period;
                 array_push($block, $period);
             }
-            // print_r("\nTOTAL: ".$total."\n");
+            // // print_r("\nTOTAL: ".$total."\n");
             $excess = $requiredPeriod - $total;
-            // print_r("\nExcess: ".$excess."\n");
+            // // print_r("\nExcess: ".$excess."\n");
             // distribute the excess
             while($excess > 0){
                 for ($i=0; $i < ($preferredNumberOfDays-1); $i++) { 
                     $total += 1;
                     $block[$i] += 1;
                     $excess--;
-                    // print_r("\nExcess ".$excess." Total: ".$total."\n");
+                    // // print_r("\nExcess ".$excess." Total: ".$total."\n");
                     if($excess == 0){
                         break;
                     }
@@ -226,12 +238,12 @@ class Timetable{
         //     [1] => 1
         //     [2] => 1
         // )
-        // print_r("\n\tgetRandomSlot numberOfPeriods: ".$numberOfPeriods." ");
-        // print_r(" getRandomSlot preferred_start_period: ".$preferred_start_period." ");
-        // print_r(" getRandomSlot preferred_end_period: ".$preferred_end_period." ");
+        // // print_r("\n\tgetRandomSlot numberOfPeriods: ".$numberOfPeriods." ");
+        // // print_r(" getRandomSlot preferred_start_period: ".$preferred_start_period." ");
+        // // print_r(" getRandomSlot preferred_end_period: ".$preferred_end_period." ");
         // $s = $preferred_start_period;
         // $e = $preferred_end_period;
-        // echo "<br/><br/><h3>periods between {$s}-{$e}</h3>";
+        // // echo "<br/><br/><h3>periods between {$s}-{$e}</h3>";
         
         $period_start = (($preferred_start_period==null) ? 0 : $preferred_start_period-1);
         $period_end = (($preferred_end_period==null) ? TimetableConfig::TOTAL_PERIODS : $preferred_end_period-1);
@@ -241,7 +253,7 @@ class Timetable{
             $timeslot = [];
             $day = [];
             $initSlot = mt_rand(0, TimetableConfig::TOTAL_TIME_SLOTS-1);
-            // print_r("\n\tgetRandomSlot initSlot: ".$initSlot."\n");
+            // // print_r("\n\tgetRandomSlot initSlot: ".$initSlot."\n");
             for ($j=0; $j < $numberOfPeriods; $j++) {
 
                 array_push($timeslot, $initSlot+$j);
@@ -267,8 +279,8 @@ class Timetable{
                 }
             }
         }
-        // echo "<br/>timeslot: ";print_r($timeslot);
-        // echo "<br/><br/>";
+        // // echo "<br/>timeslot: ";// print_r($timeslot);
+        // // echo "<br/><br/>";
         return $timeslot;
     }
 
@@ -286,17 +298,17 @@ class Timetable{
             // fetch timeslot that is associated with a subjectClassID
             array_push($timeslots, $timetable[$i]["ts"]);
         }
-        // print_r($timetable);
+        // // print_r($timetable);
         // remove duplicate timeslot from the list of timeslot that is associated with a subjectClassID
         $timeslots = (array_unique($timeslots));
-        // print_r($timeslots);
+        // // print_r($timeslots);
 
         foreach ($timeslots as $timeslot) {
             $subjectClassID =[];
             $roomID = [];
             $traineeGroupID = [];
             $instructorID = [];
-            $subjectID = [];
+            //$subjectID = [];
 
             for ($i=0; $i < sizeof($timetable); $i++) {
                 // gather all IDs belonging to this timeslot.
@@ -305,18 +317,19 @@ class Timetable{
                     $roomID[] = $timetable[$i]["sc"]["room_id"];
                     $traineeGroupID[] = $timetable[$i]["sc"]["trainee_group_id"];
                     $instructorID[] = $timetable[$i]["sc"]["instructor_id"];
-                    $subjectID[]= $timetable[$i]["sc"]["id"];
+                    //$subjectID[]= $timetable[$i]["sc"]["id"];
                 }
             }
             
             // the difference between size of the arrayID and the number of UNIQUE items in that
             // array is 0 then there is no conflict.
-            $totalConflicts +=  (sizeof($subjectClassID)-sizeof(array_unique($subjectClassID))) +
-                                (sizeof($roomID)-sizeof(array_unique($roomID))) +
-                                (sizeof($traineeGroupID)-sizeof(array_unique($traineeGroupID))) +
-                                (sizeof($instructorID)-sizeof(array_unique($instructorID))) +
-                                (sizeof($subjectID)-sizeof(array_unique($subjectID))
-                                );
+            $totalConflicts +=  (sizeof($subjectClassID)-sizeof(array_unique($subjectClassID))) 
+                                + (sizeof($roomID)-sizeof(array_unique($roomID)))
+                                + (sizeof($traineeGroupID)-sizeof(array_unique($traineeGroupID)))
+                                + (sizeof($instructorID)-sizeof(array_unique($instructorID))) 
+                                // + (sizeof($subjectID)-sizeof(array_unique($subjectID)))
+                                
+                                ;
         }
 
         return $totalConflicts;
@@ -382,7 +395,7 @@ class Timetable{
         $luckypick = (mt_rand(0, 1));
         $baseParent = ($luckypick) ? $parentA : $parentB;
         
-        // print_r("\nBase parent :".$luckypick."\n");
+        // // print_r("\nBase parent :".$luckypick."\n");
         // crossover parentA & parentB
         $currentID = null;
         foreach ($baseParent as $key => $value) {
@@ -391,27 +404,27 @@ class Timetable{
                 $currentID = array_shift($processedSubjectClassID);
                 $luckypick = ($luckypick) ? 0 : 1;
                 $chosenParent =  ($luckypick)? $chromoA : $chromoB;
-                // print_r(" currentID ".$currentID." luckypick ".$luckypick."\n");
+                // // print_r(" currentID ".$currentID." luckypick ".$luckypick."\n");
             }
             if (($value['sc']['id'] == $currentID)){ 
                 $child[$key] = $value;
                 $child[$key]['ts'] = array_shift($chosenParent['ts'][$value['sc']['id']]);
                 $child[$key]['sc']['room_id'] = array_shift($chosenParent['room_id'][$value['sc']['id']]);
-                // print_r(" currentID ".$currentID." luckypick ".$luckypick."\n");
-                // print_r(" room_id ".$value['sc']['room_id']." ts ".$value['ts']."\n");
+                // // print_r(" currentID ".$currentID." luckypick ".$luckypick."\n");
+                // // print_r(" room_id ".$value['sc']['room_id']." ts ".$value['ts']."\n");
             }
 
         }
 
-        // print_r("\nchild"."\n");
+        // // print_r("\nchild"."\n");
 
-        // print_r($child);
+        // // print_r($child);
         // exit;
-        // print_r("\nChromoA"."\n");
+        // // print_r("\nChromoA"."\n");
 
-        // print_r($chromoA);
-        // print_r("\nChromoB"."\n");
-        // print_r($chromoB);
+        // // print_r($chromoA);
+        // // print_r("\nChromoB"."\n");
+        // // print_r($chromoB);
 
         return $child;
 
@@ -448,7 +461,7 @@ class Timetable{
 
         // assign timeslots to the newTimetable;
         $newTimetable = $this->setInitTimeSlot($newTimetable);
-        // print_r($newTimetable);
+        // // print_r($newTimetable);
 
         $copyProcessedSubjectClassID = $processedSubjectClassID;
 
@@ -495,25 +508,25 @@ class Timetable{
                 
                 $chosenParent =   ($luckypick)  ? $mutatedChromo   : $originalChromo ;
                 if (($luckypick)){
-                    // print_r("\nluckpick selected ".$luckypick." ");
+                    // // print_r("\nluckpick selected ".$luckypick." ");
                     $applied++;
                 }else {
-                    // print_r("\nNOT luckpick selected ".$luckypick." ");
+                    // // print_r("\nNOT luckpick selected ".$luckypick." ");
                     
                     $notApplied++;
                 }
-                // print_r(" currentID ".$currentID." luckypick ".$luckypick."\n");
+                // // print_r(" currentID ".$currentID." luckypick ".$luckypick."\n");
             }
             if (($value['sc']['id'] == $currentID)){ 
                 $mutant[$key] = $value;
                 $mutant[$key]['ts'] = array_shift($chosenParent['ts'][$value['sc']['id']]);
                 $mutant[$key]['sc']['room_id'] = array_shift($chosenParent['room_id'][$value['sc']['id']]);
-                // print_r(" currentID ".$currentID." luckypick ".$luckypick."\n");
-                // print_r(" room_id ".$value['sc']['room_id']." ts ".$value['ts']."\n");
+                // // print_r(" currentID ".$currentID." luckypick ".$luckypick."\n");
+                // // print_r(" room_id ".$value['sc']['room_id']." ts ".$value['ts']."\n");
             }
 
         }
-        print_r("mutated:<b>".$applied."</b> of:<".($applied+$notApplied)."> ");
+        // print_r("mutated:<b>".$applied."</b> of:<".($applied+$notApplied)."> ");
         return $mutant;
     }
 
@@ -524,7 +537,7 @@ class Timetable{
      * @return	 	
      */
     public function dispTable ($timetable, $sort = false){
-        // print_r($timetable);
+        // // print_r($timetable);
         /*
             foreach ($data as $key => $row) {
                 $distance[$key] = $row['distance'];
@@ -546,16 +559,16 @@ class Timetable{
         // });
         for($i=0; $i < sizeof($tempTable); $i++){
                         
-            print_r("\nmID:    ".$tempTable[$i]["mt_id"]. 
-                    "\ttimeslot: ".$tempTable[$i]["ts"]. 
-                    "\t\t(Class: ".$tempTable[$i]["sc"]["id"].
+            // print_r("\nmID:    ".$tempTable[$i]["mt_id"]. 
+            //         "\ttimeslot: ".$tempTable[$i]["ts"]. 
+            //         "\t\t(Class: ".$tempTable[$i]["sc"]["id"].
                     
-                    " Grp: ".$tempTable[$i]["sc"]["trainee_group_id"]. 
-                    ")\t(Sbj: ".$tempTable[$i]["sc"]["subject_id"].
-                    " Inst: ".$tempTable[$i]["sc"]["instructor_id"].
-                    ")\t["."id ".$tempTable[$i]["sc"]["room_id"]."-".
-                            $this->getRoom($tempTable[$i]["sc"]["room_id"])->getName().
-                    "]");
+            //         " Grp: ".$tempTable[$i]["sc"]["trainee_group_id"]. 
+            //         ")\t(Sbj: ".$tempTable[$i]["sc"]["subject_id"].
+            //         " Inst: ".$tempTable[$i]["sc"]["instructor_id"].
+            //         ")\t["."id ".$tempTable[$i]["sc"]["room_id"]."-".
+            //                 $this->getRoom($tempTable[$i]["sc"]["room_id"])->getName().
+            //         "]");
         }
         
     }
@@ -571,7 +584,7 @@ class Timetable{
         $startMemory = memory_get_usage();
 
         $timetableID = $sessionData->currentTimetable;  // will be replaced by the actual database table id later
-        print_r("\nTimetable #: ".$timetableID."\n<pre>");
+        // print_r("\nTimetable #: ".$timetableID."\n<pre>");
 
 
         $timetableFitness = [];
@@ -585,7 +598,7 @@ class Timetable{
         // random rooms if the property roomFixed = null.
   
         $this->baseSubjectClass = $this->fetchBaseSubjectClass($timetableID);
-        print_r("\nNumber of Classes: ".sizeof($this->baseSubjectClass)."\n");
+        // print_r("\nNumber of Classes: ".sizeof($this->baseSubjectClass)."\n");
 
         // setup()
         //  # Step 1: The Population
@@ -598,47 +611,15 @@ class Timetable{
             }
         }
         
-        // print_r($subjectClassSet);
+        // // print_r($subjectClassSet);
 
         for ($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++) { 
 
             $this->population[$timetable] = $this->setInitTimeSlot($subjectClassSet[$timetable]);
             $timetableFitness[$timetable] = $this->calcFitness($this->population[$timetable]);
             
-            // evaluate fitness of timetables (population)
-            // though it may be highly unlikely to generate a fit timetable at this stage
-            // still possibility is there. 
-            // if(($timetableFitness[$timetable] == 0 )){
-            //     $fitTimetableFound = true;
-            //     $this->dispTable($this->population[$timetable]);
-
-            //     print_r("\n".""."\n"); echo memory_get_usage() - $startMemory, ' bytes'; var_dump( ini_get('memory_limit') );
-            //     var_dump(memory_get_usage() ); $time_end = microtime(true); $execution_time = ($time_end - $time_start);
-            //     echo '<b>Total Execution Time:</b> '.(round($execution_time,2)).' sec';
-
-            //     return $this->population[$timetable] ;
-            // }
         }
 
-        
-
-        // $this->dispTable($this->population[0]);
-        // print_r("\n"."\n");
-        // $this->dispTable($this->population[1]);
-        // print_r("\n"."\n");
-        
-
-        // $child = $this->crossover(($this->population[0]), ($this->population[1]));
-        // // foreach ($this->population as $key => $value) {
-        // //     $this->dispTable($value);
-        // //     echo "\n";
-        // // }
-        // echo "\nAfter cross\n";
-        // $this->dispTable($child);
-        // $child = $this->mutate($child);
-        // echo "\nAfter mutation\n";
-        // $this->dispTable($child);
-        // return 0;
 
         /*
             while no fitTimetableFound {
@@ -668,33 +649,34 @@ class Timetable{
         // while no fitTimetableFound 
         $generation = 0;
         while((!$fitTimetableFound) and ($generation < TimetableConfig::MAX_GEN)){
-            print_r("\n<h2>======== generation: ".$generation." ===============</h2>");
-            print_r("\nSize of population: ".sizeof($this->population)."\n");
-            print_r("\nPopulation[0] ELITISM <b>". $this->calcFitness($this->population[0])."</b>");
-            print_r("\nPopulation[1] ELITISM <b>". $this->calcFitness($this->population[1])."</b>");
+            // print_r("\n<h2>======== generation: ".$generation." ===============</h2>");
+            // print_r("\nSize of population: ".sizeof($this->population)."\n");
+            // print_r("\nPopulation[0] ELITISM <b>". $this->calcFitness($this->population[0])."</b>");
+            // print_r("\nPopulation[1] ELITISM <b>". $this->calcFitness($this->population[1])."</b>");
             //     1. evaluate fitness of timetables (population)
             for($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++){
                 $timetableFitness[$timetable] = $this->calcFitness($this->population[$timetable]);
+                
                 if(($timetableFitness[$timetable] == 0 )){
-                    
-                    print_r("<h1>FOUND! CONFLICTS: ".$timetableFitness[$timetable]." </h1>");
-                    print_r("\nPopulation[0] ELITISM <b>". $this->calcFitness($this->population[0])."</b>");
-                    print_r("\nPopulation[1] ELITISM <b>". $this->calcFitness($this->population[1])."</b>");
-                    print_r("\nPopulation[".$timetable."] has fitness of ". $this->calcFitness($this->population[$timetable])."</b>");
+                    $fitnessValue = $this->calcFitness($this->population[$timetable]);
+                    // print_r("<h1>FOUND! CONFLICTS: ".$timetableFitness[$timetable]." </h1>");
+                    // print_r("\nPopulation[0] ELITISM <b>". $this->calcFitness($this->population[0])."</b>");
+                    // print_r("\nPopulation[1] ELITISM <b>". $this->calcFitness($this->population[1])."</b>");
+                    // print_r("\nPopulation[".$timetable."] has fitness of ".  $fitnessValue."</b>");
                     $fitTimetableFound = true;
 
                     $this->dispTable($this->population[$timetable], true);
                     
-                    print_r("\n".""."\n"); echo memory_get_usage() - $startMemory, ' bytes';
-                    var_dump( ini_get('memory_limit') ); var_dump(memory_get_usage() );
+                    // print_r("\n".""."\n"); // echo memory_get_usage() - $startMemory, ' bytes';
+                    // var_dump( ini_get('memory_limit') ); // var_dump(memory_get_usage() );
                     $time_end = microtime(true);$execution_time = ($time_end - $time_start);
-                    echo '<b>Total Execution Time:</b> '.(round($execution_time,2)).' sec';
+                    // echo '<b>Total Execution Time:</b> '.(round($execution_time,2)).' sec';
 
-                    return $this->population[$timetable] ;
+                    return ['timetable' => $this->population[$timetable] , 'fitnessValue' => $fitnessValue];
                 }
             }
 
-            // no fitTimetableFound, initialize the each population's chromosome again with new genes
+            // no fitTimetableFound, reset variables; 
             if(!$fitTimetableFound){
                 $fitnessHighest = null;
                 $fitnessLowest = null;
@@ -704,36 +686,9 @@ class Timetable{
                 $totalFitnessValues = 0;
                 $parentA = 0;
                 $parentA = 0;
-                print_r("\nstarting at: ".(TimetableConfig::ELITISM)."\n");
-                // for ($timetable=TimetableConfig::ELITISM; $timetable < TimetableConfig::POP_SIZE; $timetable++) { 
-                //     foreach ($this->baseSubjectClass as $key => $value) {
-                //             $subjectClassSet[$timetable][$key] = $value;
-                //             $subjectClassSet[$timetable][$key]["room_id"] = $this->assignRoom($subjectClassSet[$timetable][$key]);
-                            
-                //     }
-                //     $this->population[$timetable] = $this->setInitTimeSlot($subjectClassSet[$timetable]);
-                // }
+                // print_r("\nstarting at: ".(TimetableConfig::ELITISM)."\n");
             }
 
-
-
-            // for($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++){
-            //     $timetableFitness[$timetable] = $this->calcFitness($this->population[$timetable]);
-            //     if(($timetableFitness[$timetable] == 0 )){
-                    
-            //         print_r("<h1>FOUND! CONFLICTS: ".$timetableFitness[$timetable]." </h1>");
-
-            //         $fitTimetableFound = true;
-            //         $this->dispTable($this->population[$timetable], true);
-                    
-            //         print_r("\n".""."\n"); echo memory_get_usage() - $startMemory, ' bytes';
-            //         var_dump( ini_get('memory_limit') ); var_dump(memory_get_usage() );
-            //         $time_end = microtime(true);$execution_time = ($time_end - $time_start);
-            //         echo '<b>Total Execution Time:</b> '.(round($execution_time,2)).' sec';
-
-            //         return $this->population[$timetable] ;
-            //     }
-            // }
 
 
             //     2. Process fitness values.             
@@ -742,25 +697,24 @@ class Timetable{
             asort($uniqueFitnessValues);
 
             //        2.2 eliminate the least fit timetable.
-            // array_pop($uniqueFitnessValues); // remove the least fit from selection pool
-            // array_pop($uniqueFitnessValues);
+
 
             $fitnessHighest = [array_search(min($timetableFitness), $timetableFitness) => min($timetableFitness)];
             $fitnessLowest = [array_search(max($timetableFitness), $timetableFitness) => max($timetableFitness)];
             
-            print_r("\nFitnessValue=>"."Frequency\n");
+            // print_r("\nFitnessValue=>"."Frequency\n");
             // 2.3 Normalize each fitness values: (fitnessVale/TotalFitness) * 100
             foreach($uniqueFitnessValues as $key => $fitnessValue){
                 
                 // 2.3 Normalize each fitness values: (fitnessVale/TotalFitness) * 100 
                 $matingPoolFrequency =    round ((  ((1/($fitnessValue+1)* 100))  /  TimetableConfig::POP_SIZE ) * 100)           ;
                 if(fmod($key, 4) == 0 ){
-                    echo"\n";
+                    // echo"\n";
                 }
 
 
                 if ($fitnessValue < 20 ){
-                    print_r("<b>[".$fitnessValue."]</b>=>".$matingPoolFrequency."");
+                    // print_r("<b>[".$fitnessValue."]</b>=>".$matingPoolFrequency."");
                 }                
                 // 3. prepare matingPool indexes
                 // 3.1 Populate the matingPool
@@ -775,7 +729,7 @@ class Timetable{
 
             }
 
-            print_r("\nSelection Pool: ".(sizeof($selectionPool)-TimetableConfig::ELITISM)." Mating Pool: ".sizeof($matingPool)."\n");
+            // print_r("\nSelection Pool: ".(sizeof($selectionPool)-TimetableConfig::ELITISM)." Mating Pool: ".sizeof($matingPool)."\n");
             $n=0;
             // ELITISM, find the elite/s 
             // 4.2 save the top n timetables
@@ -790,16 +744,16 @@ class Timetable{
                 }
                 $n++;
             }
-            print_r("\nPopulation[0] AFTER ELITISM <b>". $this->calcFitness($this->population[0])."</b>");
-            print_r("\nPopulation[1] AFTER ELITISM <b>". $this->calcFitness($this->population[1])."</b>");
+            // print_r("\nPopulation[0] AFTER ELITISM <b>". $this->calcFitness($this->population[0])."</b>");
+            // print_r("\nPopulation[1] AFTER ELITISM <b>". $this->calcFitness($this->population[1])."</b>");
                      
             $crossRate = (int)(TimetableConfig::POP_SIZE * TimetableConfig::CROSSOVER_RATE ) ;
             
-            print_r("\nCROSS up to : =====> ".$crossRate."\n");
+            // print_r("\nCROSS up to : =====> ".$crossRate."\n");
             
             for( $timetable=TimetableConfig::ELITISM; $timetable < $crossRate ; $timetable++ ){
                 if(fmod($timetable+3, 5) == 0 ){
-                    echo"\n";
+                    // echo"\n";
                 } 
                
                 // 4. SELECTION parentA and parentB.
@@ -813,21 +767,12 @@ class Timetable{
                 $child = $this->crossover($selectionPool[$parentA], $selectionPool[$parentB]);
                     
                 // 6. MUTATE child 
-                // $this->dispTable($selectionPool[$parentA]);
-                // print_r("\n"."\n");
-                // $this->dispTable($selectionPool[$parentB]);
-                // print_r("\n"."\n");
-                
+
                 // $this->dispTable($child);
                 $clone = $child;
 
                 $child = [];
                 $child = $this->mutate($clone);
-                
-    
-                // print_r("\nmutate...."."\n");
-                // $this->dispTable($child);
-                // exit;
 
                 // 7. Add to the population //starting @ pop[i]
                 $this->population[$timetable] = null;
@@ -835,8 +780,8 @@ class Timetable{
 
 
             }
-            print_r("\nPopulation[0] AFTER CROSS <b>". $this->calcFitness($this->population[0])."</b>");
-            print_r("\nPopulation[1] AFTER CROSS <b>". $this->calcFitness($this->population[1])."</b>");
+            // print_r("\nPopulation[0] AFTER CROSS <b>". $this->calcFitness($this->population[0])."</b>");
+            // print_r("\nPopulation[1] AFTER CROSS <b>". $this->calcFitness($this->population[1])."</b>");
             
             // $this->dispTable($this->population[0]);
  
@@ -847,10 +792,10 @@ class Timetable{
 
 
 
-        print_r("\n".""."\n");
-        echo memory_get_usage() - $startMemory, ' bytes';
-        var_dump( ini_get('memory_limit') );
-        var_dump(memory_get_usage() );
+        // print_r("\n".""."\n");
+        // echo memory_get_usage() - $startMemory, ' bytes';
+        // var_dump( ini_get('memory_limit') );
+        // var_dump(memory_get_usage() );
         
         $time_end = microtime(true);
 
@@ -858,8 +803,13 @@ class Timetable{
         $execution_time = ($time_end - $time_start);
 
         //execution time of the script
-        echo '<b>Total Execution Time:</b> '.(round($execution_time,2)).' sec';
-        return ($this->population[0]);
+        // echo '<b>Total Execution Time:</b> '.(round($execution_time,2)).' sec';
+        // print_r("\n".""."\n");
+
+        // [0] is the elite
+        // $this->dispTable($this->population[0], true);
+        return ['timetable' => $this->population[0] , 'fitnessValue' => $this->calcFitness($this->population[0])];
+
     }
     
     /*
@@ -1024,545 +974,3 @@ class Timetable{
     }
 }
 // class end
-/*
-Size of base: 2
-Array
-(
-    [72] => Array
-        (
-            [id] => 72
-            [timetable_id] => 3
-            [subject_id] => 33
-            [trainee_group_id] => 10
-            [instructor_id] => 19
-            [room_id] => 25
-            [room_type_id] => 10
-            [room_fixed] => 
-            [preferred_start_period] => 1
-            [preferred_end_period] => 8
-            [preferred_number_days] => 3
-        )
-
-    [73] => Array
-        (
-            [id] => 73
-            [timetable_id] => 3
-            [subject_id] => 32
-            [trainee_group_id] => 4
-            [instructor_id] => 25
-            [room_id] => 1
-            [room_type_id] => 1
-            [room_fixed] => 1
-            [preferred_start_period] => 1
-            [preferred_end_period] => 8
-            [preferred_number_days] => 1
-        )
-
-)
-Array
-(
-    [0] => Array
-        (
-            [72] => Array
-                (
-                    [id] => 72
-                    [timetable_id] => 3
-                    [subject_id] => 33
-                    [trainee_group_id] => 10
-                    [instructor_id] => 19
-                    [room_id] => 20
-                    [room_type_id] => 10
-                    [room_fixed] => 
-                    [preferred_start_period] => 1
-                    [preferred_end_period] => 8
-                    [preferred_number_days] => 3
-                )
-
-            [73] => Array
-                (
-                    [id] => 73
-                    [timetable_id] => 3
-                    [subject_id] => 32
-                    [trainee_group_id] => 4
-                    [instructor_id] => 25
-                    [room_id] => 1
-                    [room_type_id] => 1
-                    [room_fixed] => 1
-                    [preferred_start_period] => 1
-                    [preferred_end_period] => 8
-                    [preferred_number_days] => 1
-                )
-
-        )
-
-    [1] => Array
-        (
-            [72] => Array
-                (
-                    [id] => 72
-                    [timetable_id] => 3
-                    [subject_id] => 33
-                    [trainee_group_id] => 10
-                    [instructor_id] => 19
-                    [room_id] => 17
-                    [room_type_id] => 10
-                    [room_fixed] => 
-                    [preferred_start_period] => 1
-                    [preferred_end_period] => 8
-                    [preferred_number_days] => 3
-                )
-
-            [73] => Array
-                (
-                    [id] => 73
-                    [timetable_id] => 3
-                    [subject_id] => 32
-                    [trainee_group_id] => 4
-                    [instructor_id] => 25
-                    [room_id] => 1
-                    [room_type_id] => 1
-                    [room_fixed] => 1
-                    [preferred_start_period] => 1
-                    [preferred_end_period] => 8
-                    [preferred_number_days] => 1
-                )
-
-        )
-
-    [2] => Array
-        (
-            [72] => Array
-                (
-                    [id] => 72
-                    [timetable_id] => 3
-                    [subject_id] => 33
-                    [trainee_group_id] => 10
-                    [instructor_id] => 19
-                    [room_id] => 20
-                    [room_type_id] => 10
-                    [room_fixed] => 
-                    [preferred_start_period] => 1
-                    [preferred_end_period] => 8
-                    [preferred_number_days] => 3
-                )
-
-            [73] => Array
-                (
-                    [id] => 73
-                    [timetable_id] => 3
-                    [subject_id] => 32
-                    [trainee_group_id] => 4
-                    [instructor_id] => 25
-                    [room_id] => 1
-                    [room_type_id] => 1
-                    [room_fixed] => 1
-                    [preferred_start_period] => 1
-                    [preferred_end_period] => 8
-                    [preferred_number_days] => 1
-                )
-
-        )
-
-)
-
-
-
-
-
-
-starting at: 1
-Array population
-(
-    [0] => Array timetable
-        (
-            [0] => Array meeting time
-                (
-                    [mt_id] => 0
-                    [sc] => Array
-                        (
-                            [id] => 72
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 10
-                            [instructor_id] => 4
-                            [room_id] => 23
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 6
-                )
-
-            [1] => Array
-                (
-                    [mt_id] => 1
-                    [sc] => Array
-                        (
-                            [id] => 72
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 10
-                            [instructor_id] => 4
-                            [room_id] => 23
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 7
-                )
-
-            [2] => Array
-                (
-                    [mt_id] => 2
-                    [sc] => Array
-                        (
-                            [id] => 72
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 10
-                            [instructor_id] => 4
-                            [room_id] => 23
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 4
-                )
-
-            [3] => Array
-                (
-                    [mt_id] => 3
-                    [sc] => Array
-                        (
-                            [id] => 73
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 4
-                            [instructor_id] => 4
-                            [room_id] => 24
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 1
-                )
-
-            [4] => Array
-                (
-                    [mt_id] => 4
-                    [sc] => Array
-                        (
-                            [id] => 73
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 4
-                            [instructor_id] => 4
-                            [room_id] => 24
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 4
-                )
-
-            [5] => Array
-                (
-                    [mt_id] => 5
-                    [sc] => Array
-                        (
-                            [id] => 73
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 4
-                            [instructor_id] => 4
-                            [room_id] => 24
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 5
-                )
-
-        )
-
-    [1] => Array
-        (
-            [0] => Array
-                (
-                    [mt_id] => 0
-                    [sc] => Array
-                        (
-                            [id] => 72
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 10
-                            [instructor_id] => 4
-                            [room_id] => 23
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 2
-                )
-
-            [1] => Array
-                (
-                    [mt_id] => 1
-                    [sc] => Array
-                        (
-                            [id] => 72
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 10
-                            [instructor_id] => 4
-                            [room_id] => 23
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 6
-                )
-
-            [2] => Array
-                (
-                    [mt_id] => 2
-                    [sc] => Array
-                        (
-                            [id] => 72
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 10
-                            [instructor_id] => 4
-                            [room_id] => 23
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 7
-                )
-
-            [3] => Array
-                (
-                    [mt_id] => 3
-                    [sc] => Array
-                        (
-                            [id] => 73
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 4
-                            [instructor_id] => 4
-                            [room_id] => 24
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 8
-                )
-
-            [4] => Array
-                (
-                    [mt_id] => 4
-                    [sc] => Array
-                        (
-                            [id] => 73
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 4
-                            [instructor_id] => 4
-                            [room_id] => 24
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 4
-                )
-
-            [5] => Array
-                (
-                    [mt_id] => 5
-                    [sc] => Array
-                        (
-                            [id] => 73
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 4
-                            [instructor_id] => 4
-                            [room_id] => 24
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 5
-                )
-
-        )
-
-    [2] => Array
-        (
-            [0] => Array
-                (
-                    [mt_id] => 0
-                    [sc] => Array
-                        (
-                            [id] => 72
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 10
-                            [instructor_id] => 4
-                            [room_id] => 24
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 9
-                )
-
-            [1] => Array
-                (
-                    [mt_id] => 1
-                    [sc] => Array
-                        (
-                            [id] => 72
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 10
-                            [instructor_id] => 4
-                            [room_id] => 24
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 4
-                )
-
-            [2] => Array
-                (
-                    [mt_id] => 2
-                    [sc] => Array
-                        (
-                            [id] => 72
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 10
-                            [instructor_id] => 4
-                            [room_id] => 24
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 5
-                )
-
-            [3] => Array
-                (
-                    [mt_id] => 3
-                    [sc] => Array
-                        (
-                            [id] => 73
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 4
-                            [instructor_id] => 4
-                            [room_id] => 23
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 4
-                )
-
-            [4] => Array
-                (
-                    [mt_id] => 4
-                    [sc] => Array
-                        (
-                            [id] => 73
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 4
-                            [instructor_id] => 4
-                            [room_id] => 23
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 5
-                )
-
-            [5] => Array
-                (
-                    [mt_id] => 5
-                    [sc] => Array
-                        (
-                            [id] => 73
-                            [timetable_id] => 3
-                            [subject_id] => 55
-                            [trainee_group_id] => 4
-                            [instructor_id] => 4
-                            [room_id] => 23
-                            [room_type_id] => 2
-                            [room_fixed] => 
-                            [preferred_start_period] => 1
-                            [preferred_end_period] => 8
-                            [preferred_number_days] => 2
-                        )
-
-                    [ts] => 11
-                )
-
-        )
-
-)
-
-*/

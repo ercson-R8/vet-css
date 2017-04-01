@@ -76,9 +76,9 @@
 
                                         {% for tableHeader in tableHeadings %}
                                             {% if (tableHeader == "Req. Period") %}
-                                                <th style="text-align:center">{{ tableHeader }}</th>
+                                                <td style="text-align:center">{{ tableHeader }}</td>
                                             {% else %}
-                                                <th>{{ tableHeader }}</th>
+                                                <td style="text-align:center">{{ tableHeader }}</td>
                                             {% endif %}
                                         {% endfor %}
                                         <th></th>
@@ -89,9 +89,9 @@
                                     <tr>
                                         {% for tableHeader in tableHeadings %}
                                             {% if (tableHeader == "Req. Period") %}
-                                                <th style="text-align:center">{{ tableHeader }}</th>
+                                                <td style="text-align:center">{{ tableHeader }}</td>
                                             {% else %}
-                                                <th>{{ tableHeader }}</th>
+                                                <td style="text-align:center">{{ tableHeader }}</td>
                                             {% endif %}
                                         {% endfor %}
                                         <th></th>
@@ -99,13 +99,21 @@
                                     
                                 </tfoot>
                                 <tbody>
-                                    {% for row in traineeGroupTable %}
-                                    <tr>
+                                    {% for row in subject %}
+                                    <tr >
                                         <td>{{ row.name }} </td>
                                         <td>{{ row.code }}</td>
                                         <td style="text-align:center">{{ row.required_period }}</td>
                                         <td>{{ row.description }}</td>
-                                        <td>..</td>
+                                        <td style="text-align:center">
+                                            <a href="../{{row.id}}/editCourse" data-toggle="tooltip" data-placement="right" title="Edit this Item!"  class="btn btn-xs btn-primary">
+                                                <span class="fa fa-edit"></span>
+                                            </a>
+                                            <a href="#" data-toggle="modal" id="{{ row.name }}"  data-target="#delete-modal" 
+                                               title="Delete this Item!"  class="btn btn-xs btn-danger" >
+                                                <span class="fa fa-remove" ></span>
+                                            </a>
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                     
@@ -129,4 +137,60 @@
     </div> 
     <!-- class="container-fluid" -->
 
+
+    <!-- Modal -->
+    <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Remove!</h4>
+                </div>
+                <div class="modal-body ">
+                    <form class="form center-block" name="addTraineeGroup" action="/resource/resourceController/deleteCourse" method="post">
+                            <div class="row">
+                                <div class="col-xs-1">
+                                    <i class="fa fa-warning text-danger fa-3x"></i>
+                                </div>
+                                <div class="col-xs-11">
+                                    <div class="huge text-danger">Warning</div>
+                                    <div class="lead">
+                                    
+                                    <p class="lead">By removing this course <span class="modal-message text-danger delete-content"></span>, all the timetables created that has this group will also be deleted from the database and will 
+                                        reset the current timetable. 
+                                    </p>
+                                     <input type="hidden" class="modal-input delete-input" name="course" value="">
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                                
+            
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger pull-right">Proceed and Delete</button>
+                    </form>
+                <div>
+
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <!-- class="container-fluid" -->
+    <script>
+        $(document).ready(function(){
+            $('#delete-modal').on('show.bs.modal', function(e) {
+                var $modal = $(this),
+                    deleteId = e.relatedTarget.id;
+                    $modal.find('.delete-content').html(deleteId);
+                    $modal.find('.delete-input').val(deleteId);
+            });
+
+            
+        });
+
+
+    </script>
 {% endblock %}

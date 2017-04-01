@@ -105,7 +105,7 @@
                                         <td style="text-align:center">{{ row.year_end }}</td>
                                         <td style="text-align:center">{{ row.term }}</td>
                                         <td> 
-                                            [{{row.id}}*{{row.created}}]<br/>{{ row.remarks }}
+                                            ({{row.id}}) {{row.created}}<br/>{{ row.remarks }}
                                         </td>
                                         <td style="text-align:center">
                                             <a href="/Timetable/TimetableController/{{row.id}}/setCurrentTimetable" data-toggle="tooltip" data-placement="right" title="Set as current!"  class="btn btn-xs btn-default">
@@ -115,7 +115,7 @@
                                                 <span class="fa fa-pencil text-primary  small"></span>
                                             </a>
                                             <a href="#" data-toggle="tooltip" data-placement="right" title="Delete this timetable!" class="btn btn-xs btn-default">
-                                                <span data-toggle="modal" data-target="#myModal" class="fa fa-trash-o text-danger small"></span>
+                                                <span data-toggle="modal" data-target="#myModal" class="fa fa-trash-o text-danger small" ></span>
                                             </a> 
                                         </td>
                                     </tr>
