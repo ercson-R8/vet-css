@@ -6,8 +6,7 @@
 {% block body %}
 
 
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous">
-    </script>
+
     <style>
 
         #ajaxFetch-list{float:left;list-style:none;margin-top:-3px;padding:0;width:190px;position: absolute;}
@@ -30,10 +29,6 @@
                             <h4>{{title}}</h4>
                         </div>
                         <div class="panel-body">
-
-                            {% for key,value in oldEntry %}
-                                {{ key }}=>{{ value }} <br/>
-                            {% endfor %}
 
                             {% for key,value in oldEntry %}
         
@@ -281,7 +276,6 @@
 
             $("#search-box-course").val( $('#id_subject').val() );
             $("#subject_id").val($('#id_subject_id').val());
-            alert( 'Instructor: '.$('#id_instructor_id').val() );
             
             $("#search-box-instructor").val( $('#id_instructor').val() );
             $("#instructor_id").val( $('#id_instructor_id').val() );
@@ -290,21 +284,13 @@
             $("#room_type_id").val( $('#id_room_type_id').val() );
 
             $("#search-box-room").val( $('#id_room').val() );
-             $("#room_id").val( $('#id_room_id').val() );
-
-
-
-
+            $("#room_id").val( $('#id_room_id').val() );
 
             $("#search-box-required_period").val( $('#id_required_period').val() );
-            
-
 
             $("#preferred_number_days").val( $('#id_days').val() );
             $("#preferred_start_period").val( $('#id_start').val() );
             $("#preferred_end_period").val( $('#id_end').val() );
-
-
 
             $("#subject_class_id").val( $('#id_id').val() );
             alert('Please note that changes made on this page will not reflect on the previously generated timetable.');
@@ -363,21 +349,22 @@
 
 
         /*
-                id-52 
-                trainee_group_id-28 
-                subject_id-64 
-                room_type_id-1 
-                room_id-25 
-                trainee_group-ELC-1A 
-                subject-test 
-                code-test101 
-                required_period-5 
-                instructor-Ericson Billedo 
-                room_type-Classroom 
-                room-Any Room 
-                days-4 
-                start-1 
-                end-8 
+                    id=>52 
+                    trainee_group_id=>28 
+                    subject_id=>64 
+                    instructor_id=>19 
+                    room_type_id=>2 
+                    room_id=>25 
+                    trainee_group=>ELC-1A 
+                    subject=>test 
+                    code=>test 111 
+                    required_period=>4 
+                    instructor=>Ericson Billedo 
+                    room_type=>Computer LAB 
+                    room=>Any Room 
+                    days=>2 
+                    start=>1 
+                    end=>8 
 
             Array
             (
@@ -406,10 +393,6 @@
 
         */
         
-
-
-
-
     </script>
 
 {% endblock %}

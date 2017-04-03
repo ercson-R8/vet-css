@@ -428,30 +428,6 @@ class TimetableController extends \Core\Controller{
      * @return	 	
      */
     public function updateSubjectClass (){
-        // echo "<pre>";
-        // print_r($_POST);
-        // exit;
-        /*
-            Array
-                (
-                    [trainee_group] => ELC-1A
-                    [trainee_group_id] => 28
-                    [subject] => test
-                    [subject_id] => 64
-                    [instructor] => Ericson Billedo
-                    [instructor_id] => 
-                    [preferred_number_days] => 4
-                    [preferred_start_period] => 1
-                    [preferred_end_period] => 8
-                    [room_type] => Classroom
-                    [room_type_id] => 1
-                    [room_id] => 25
-                    [subject_class_id] => 52
-                    [submit] => 
-                )
-
-
-        */
 
         $sessionData = Session::getInstance();
         $db = DB::getInstance();
@@ -925,7 +901,7 @@ class TimetableController extends \Core\Controller{
 
                     // add the fitness value / number of conflicts for the currently gerenrated table;
                     $db->query('UPDATE  timetable 
-                                SET     timetable.remarks = concat(remarks,\' This table has '.$fitnessValue.' CONFLICT(S).\')  
+                                SET     timetable.remarks = concat(\'('.$fitnessValue.') CONFLICT/S @ \')  
                                 WHERE   timetable.current = 1');
                 }
 
