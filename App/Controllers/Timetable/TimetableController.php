@@ -159,7 +159,7 @@ class TimetableController extends \Core\Controller{
             $db = DB::getInstance();   
 
             $db->select(
-                    array(  
+                    array(  'subject_class.id',
                             'trainee_group.name as \'trainee_group\'', 
                             'subject.name as \'subject\'',
                             'subject.code as \'code\'',
@@ -310,6 +310,383 @@ class TimetableController extends \Core\Controller{
         }
     }
 
+
+    /*
+     * editSubjectClass method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function editSubjectClass (){
+        
+        $sessionData = Session::getInstance();
+        // echo "<pre>parameter is : ";
+        // print_r($this->route_params['id']);
+        // exit;
+        $sessionData->editID = $this->route_params['id'];
+        
+        header("Location: /Timetable/TimetableController/redirectEditSubjectClass");
+        exit;
+    }
+
+
+    /*
+     * redirectEditTraineeGroup method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function redirectEditSubjectClass (){
+        $db = DB::getInstance();
+        $sessionData = Session::getInstance();
+   
+
+        $db->select(
+                array(  'subject_class.id',
+                        'subject_class.trainee_group_id',
+                        'subject_class.instructor_id',
+                        'subject_class.subject_id',
+                        'subject_class.room_type_id',
+                        'subject_class.room_id',
+                        'trainee_group.name as \'trainee_group\'', 
+                        'subject.name as \'subject\'',
+                        'subject.code as \'code\'',
+                        'subject.required_period as \'required_period\'',
+                        'concat (instructor.first_name,\' \', instructor.last_name) as \'instructor\'',
+                        'subject_class.instructor_id', 
+                        'room_type.name as \'room_type\'',
+                        
+
+                        'room.name as \'room\'',
+                        
+                        'subject_class.preferred_number_days as \'days\'', 
+                        'subject_class.preferred_start_period as \'start\'', 
+                        'subject_class.preferred_end_period as \'end\''
+                ),
+                array('subject_class 
+                        INNER JOIN trainee_group 
+                                ON subject_class.trainee_group_id = trainee_group.id 
+                        INNER JOIN subject 
+                                ON subject_class.subject_id = subject.id 
+                        INNER JOIN instructor 
+                                ON subject_class.instructor_id = instructor.id 
+                        INNER JOIN room_type 
+                                ON subject_class.room_type_id = room_type.id
+                        INNER JOIN room 
+                                ON subject_class.room_id = room.id' 
+                ),
+                array(
+                    ['subject_class.id', '=', $sessionData->editID]
+                )
+            );
+        $subject_class = ($db->getResults());
+
+        $oldEntry = [   "id"                => $subject_class[0]->id,
+                        "trainee_group_id"  => $subject_class[0]->trainee_group_id,
+                        "subject_id"        => $subject_class[0]->subject_id,
+                        "instructor_id"     => $subject_class[0]->instructor_id,
+                        "room_type_id"      => $subject_class[0]->room_type_id,
+                        "room_id"           => $subject_class[0]->room_id,
+                        "trainee_group"     => $subject_class[0]->trainee_group,
+                        "subject"           => $subject_class[0]->subject,
+                        "code"              => $subject_class[0]->code,
+                        "required_period"   => $subject_class[0]->required_period,
+                        "instructor"        => $subject_class[0]->instructor,
+                        "room_type"         => $subject_class[0]->room_type,
+                        "room"              => $subject_class[0]->room,
+                        "days"              => $subject_class[0]->days,
+                        "start"             => $subject_class[0]->start,
+                        "end"               => $subject_class[0]->end
+                    ];
+
+        $db->select(
+            array('*'),
+            array('timetable'),
+            array(['timetable.id', '=', $sessionData->currentTimetable])
+        );
+        
+        $timetable = ($db->getResults());
+        $tableTitle = 'List of classes for AY '.$timetable[0]->year_start.'-'.$timetable[0]->year_end.' Term '.$timetable[0]->term;
+        $tableSubTitle = '('.$timetable[0]->remarks.') '.$timetable[0]->created;
+
+        View::renderTemplate ('Timetables/editSubjectClassForm.twig.html', [
+                                    'subjectClass' => $subject_class,
+                                    'title' => 'Update A Subject Class ', 
+                                    'firstName' => $sessionData->firstName,
+                                    'tableTitle' => $tableTitle,
+                                    'tableSubTitle' => $tableSubTitle,
+                                    'oldEntry'      => $oldEntry,
+                                    'tableHeadings' => ['Group', 'Subject - Instructor' , 'Room' ,'No. of Days', 'Start - End']
+                                ]);
+
+    }
+
+    /*
+     * updateSubjectClass method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function updateSubjectClass (){
+        // echo "<pre>";
+        // print_r($_POST);
+        // exit;
+        /*
+            Array
+                (
+                    [trainee_group] => ELC-1A
+                    [trainee_group_id] => 28
+                    [subject] => test
+                    [subject_id] => 64
+                    [instructor] => Ericson Billedo
+                    [instructor_id] => 
+                    [preferred_number_days] => 4
+                    [preferred_start_period] => 1
+                    [preferred_end_period] => 8
+                    [room_type] => Classroom
+                    [room_type_id] => 1
+                    [room_id] => 25
+                    [subject_class_id] => 52
+                    [submit] => 
+                )
+
+
+        */
+
+        $sessionData = Session::getInstance();
+        $db = DB::getInstance();
+
+
+        $id                     = $_POST["subject_class_id"];
+        $subject_id             = $_POST["subject_id"];
+        $trainee_group_id       = $_POST["trainee_group_id"];
+        $instructor_id          = $_POST["instructor_id"];
+        $room_type_id           = $_POST["room_type_id"] ;  
+        $preferred_start_period = $_POST["preferred_start_period"];
+        $preferred_end_period   = $_POST["preferred_end_period"];
+        $preferred_number_days  = $_POST["preferred_number_days"];
+        if ($_POST["room_id"]) { // room_id is specified
+
+                $room_id = $_POST["room_id"];
+                $room_id_final = $room_id;
+                $room_fixed = 1;
+            
+            }else{ // any room can chosen later on. 
+            
+                $room_fixed = null;
+            
+                $room_id = 25; // this is free room, will be changed later based on room_type_id
+            
+            }
+
+
+
+        //create digest of the form submission:
+
+        $messageIdent = md5($_POST['subject_id']            . $_POST['trainee_group_id']    . $_POST['instructor_id'] . 
+                            $_POST['room_id']               . $_POST['room_type_id']        . $_POST['preferred_start_period']. 
+                            $_POST['preferred_end_period']  . $_POST['preferred_number_days']
+                            );
+        
+        //and check it against the stored value: $sessionData->email
+
+        $sessionMessageIdent = isset($sessionData->messageIdent) ? $sessionData->messageIdent: '';
+        if($messageIdent!=$sessionMessageIdent){//if it's different:          
+                //save the session var:
+                $sessionData->messageIdent = $messageIdent;
+                
+                // save the data
+
+                $db->update ('subject_class', 
+                                array(  ['subject_id' ,             '=', $subject_id],
+                                        ['instructor_id' ,          '=', $instructor_id],
+                                        ['trainee_group_id' ,       '=', $trainee_group_id],
+                                        ['room_id' ,                '=', $room_id],
+                                        ['room_fixed' ,             '=', $room_fixed],
+                                        ['room_type_id' ,           '=', $room_type_id],
+                                        ['preferred_start_period' , '=', $preferred_start_period],
+                                        ['preferred_end_period' ,   '=', $preferred_end_period],
+                                        ['preferred_number_days' ,  '=', $preferred_number_days],
+
+                                    ),
+                                array(['id','=', $id])
+                );
+                $db->select(
+                    array(  'subject_class.id',
+                            'subject_class.trainee_group_id',
+                            'subject_class.instructor_id',
+                            'subject_class.subject_id',
+                            'subject_class.room_type_id',
+                            'subject_class.room_id',
+                            'trainee_group.name as \'trainee_group\'', 
+                            'subject.name as \'subject\'',
+                            'subject.code as \'code\'',
+                            'subject.required_period as \'required_period\'',
+                            'concat (instructor.first_name,\' \', instructor.last_name) as \'instructor\'',
+                            'subject_class.instructor_id', 
+                            'room_type.name as \'room_type\'',
+                            'room.name as \'room\'',
+                            
+                            'subject_class.preferred_number_days as \'days\'', 
+                            'subject_class.preferred_start_period as \'start\'', 
+                            'subject_class.preferred_end_period as \'end\''
+                    ),
+                    array('subject_class 
+                            INNER JOIN trainee_group 
+                                    ON subject_class.trainee_group_id = trainee_group.id 
+                            INNER JOIN subject 
+                                    ON subject_class.subject_id = subject.id 
+                            INNER JOIN instructor 
+                                    ON subject_class.instructor_id = instructor.id 
+                            INNER JOIN room_type 
+                                    ON subject_class.room_type_id = room_type.id
+                            INNER JOIN room 
+                                    ON subject_class.room_id = room.id' 
+                    ),
+                    array(
+                        ['subject_class.id', '=', $sessionData->editID]
+                    )
+                );
+
+
+                $subject_class = ($db->getResults());
+                $oldEntry = [   "id"                => $subject_class[0]->id,
+                                "trainee_group_id"  => $subject_class[0]->trainee_group_id,
+                                "subject_id"        => $subject_class[0]->subject_id,
+                                "room_type_id"      => $subject_class[0]->room_type_id,
+                                "room_id"           => $subject_class[0]->room_id,
+                                "trainee_group"     => $subject_class[0]->trainee_group,
+                                "subject"           => $subject_class[0]->subject,
+                                "code"              => $subject_class[0]->code,
+                                "required_period"   => $subject_class[0]->required_period,
+                                "instructor"        => $subject_class[0]->instructor,
+                                "room_type"         => $subject_class[0]->room_type,
+                                "room"              => $subject_class[0]->room,
+                                "days"              => $subject_class[0]->days,
+                                "start"             => $subject_class[0]->start,
+                                "end"               => $subject_class[0]->end
+                            ];
+
+                $db->select(
+                    array('*'),
+                    array('timetable'),
+                    array(['timetable.id', '=', $sessionData->currentTimetable])
+                );
+                
+                $timetable = ($db->getResults());
+                $tableTitle = 'List of classes for AY '.$timetable[0]->year_start.'-'.$timetable[0]->year_end.' Term '.$timetable[0]->term;
+                $tableSubTitle = '('.$timetable[0]->remarks.') '.$timetable[0]->created;
+
+                View::renderTemplate ('Timetables/editSubjectClassForm.twig.html', [
+                                            'subjectClass' => $subject_class,
+                                            'title' => 'Update A Subject Class ', 
+                                            'firstName' => $sessionData->firstName,
+                                            'tableTitle' => $tableTitle,
+                                            'tableSubTitle' => $tableSubTitle,
+                                            'oldEntry'      => $oldEntry,
+                                            'tableHeadings' => ['Group', 'Subject - Instructor' , 'Room' ,'No. of Days', 'Start - End']
+                                        ]);
+
+                
+
+        } else {
+            //you've sent this already!
+            $db->select(
+                array(  'subject_class.id',
+                        'subject_class.trainee_group_id',
+                        'subject_class.instructor_id',
+                        'subject_class.subject_id',
+                        'subject_class.room_type_id',
+                        'subject_class.room_id',
+                        'trainee_group.name as \'trainee_group\'', 
+                        'subject.name as \'subject\'',
+                        'subject.code as \'code\'',
+                        'subject.required_period as \'required_period\'',
+                        'concat (instructor.first_name,\' \', instructor.last_name) as \'instructor\'',
+                        'subject_class.instructor_id', 
+                        'room_type.name as \'room_type\'',
+                        
+
+                        'room.name as \'room\'',
+                        
+                        'subject_class.preferred_number_days as \'days\'', 
+                        'subject_class.preferred_start_period as \'start\'', 
+                        'subject_class.preferred_end_period as \'end\''
+                ),
+                array('subject_class 
+                        INNER JOIN trainee_group 
+                                ON subject_class.trainee_group_id = trainee_group.id 
+                        INNER JOIN subject 
+                                ON subject_class.subject_id = subject.id 
+                        INNER JOIN instructor 
+                                ON subject_class.instructor_id = instructor.id 
+                        INNER JOIN room_type 
+                                ON subject_class.room_type_id = room_type.id
+                        INNER JOIN room 
+                                ON subject_class.room_id = room.id' 
+                ),
+                array(
+                    ['subject_class.id', '=', $sessionData->editID]
+                )
+            );
+
+
+            $subject_class = ($db->getResults());
+            $oldEntry = [   "id"                => $subject_class[0]->id,
+                            "trainee_group_id"  => $subject_class[0]->trainee_group_id,
+                            "subject_id"        => $subject_class[0]->subject_id,
+                            "instructor_id"     => $subject_class[0]->instructor_id,
+                            "room_type_id"      => $subject_class[0]->room_type_id,
+                            "room_id"           => $subject_class[0]->room_id,
+                            "trainee_group"     => $subject_class[0]->trainee_group,
+                            "subject"           => $subject_class[0]->subject,
+                            "code"              => $subject_class[0]->code,
+                            "required_period"   => $subject_class[0]->required_period,
+                            "instructor"        => $subject_class[0]->instructor,
+                            "room_type"         => $subject_class[0]->room_type,
+                            "room"              => $subject_class[0]->room,
+                            "days"              => $subject_class[0]->days,
+                            "start"             => $subject_class[0]->start,
+                            "end"               => $subject_class[0]->end
+                        ];
+
+            $db->select(
+                array('*'),
+                array('timetable'),
+                array(['timetable.id', '=', $sessionData->currentTimetable])
+            );
+            
+            $timetable = ($db->getResults());
+            $tableTitle = 'List of classes for AY '.$timetable[0]->year_start.'-'.$timetable[0]->year_end.' Term '.$timetable[0]->term;
+            $tableSubTitle = '('.$timetable[0]->remarks.') '.$timetable[0]->created;
+
+            View::renderTemplate ('Timetables/editSubjectClassForm.twig.html', [
+                                        'status' => '<div class="alert alert-danger alert-dismissable">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                <h4 class="text-center">Subject Class has already been updated!</h4>
+                                                        </div>',
+                                        'subjectClass' => $subject_class,
+                                        'title' => 'Update A Subject Class ', 
+                                        'firstName' => $sessionData->firstName,
+                                        'tableTitle' => $tableTitle,
+                                        'tableSubTitle' => $tableSubTitle,
+                                        'oldEntry'      => $oldEntry,
+                                        'tableHeadings' => ['Group', 'Subject - Instructor' , 'Room' ,'No. of Days', 'Start - End']
+                                    ]);
+
+
+
+            
+        }
+
+        
+
+    }
+
+
+
+
+
     /*
      * manageTimetable method 
      *
@@ -330,6 +707,7 @@ class TimetableController extends \Core\Controller{
         exit;
     }
 
+
     /*
      * editCurrentTimetable method 
      *
@@ -347,6 +725,8 @@ class TimetableController extends \Core\Controller{
         header("Location: /Timetable/TimetableController/addSubjectClass");
         exit;
     }
+
+
 
     /*
      * deleteCurrentTimetable method 
