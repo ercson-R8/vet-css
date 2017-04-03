@@ -38,7 +38,7 @@
 
 
                                 <div class="form-group form-group-lg" >
-                                    <input type="text" class="form-control" name="description" onblur="return x()" placeholder="Description">
+                                    <input type="text" class="form-control" name="description"  placeholder="Description">
                                 </div>       
 
                                 <div class="form-group">
@@ -106,8 +106,9 @@
                                         <td style="text-align:center">{{ row.required_period }}</td>
                                         <td>{{ row.description }}</td>
                                         <td style="text-align:center">
-                                            <a href="../{{row.id}}/editCourse" data-toggle="tooltip" data-placement="right" title="Edit this Item!"  class="btn btn-xs btn-primary">
+                                            <a href="/Resource/ResourceController/{{ row.id }}/editCourse" data-toggle="tooltip" data-placement="right" title="Edit this Item!" class="btn btn-xs btn-primary">
                                                 <span class="fa fa-edit"></span>
+                                            </a>
                                             </a>
                                             <a href="#" data-toggle="modal" id="{{ row.name }}"  data-target="#delete-modal" 
                                                title="Delete this Item!"  class="btn btn-xs btn-danger" >

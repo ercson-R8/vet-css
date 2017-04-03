@@ -559,7 +559,161 @@ class ResourceController extends \Core\Controller{
     }
     
 
+    /*
+     * editCourse method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function editCourse (){
+        
+        $sessionData = Session::getInstance();
+        // echo "<pre>parameter is : ";
+        // print_r($this->route_params['id']);
+        $sessionData->editID = $this->route_params['id'];
+        
+        header("Location: /Resource/ResourceController/redirectEditCourse");
+        exit;
+    }
 
+
+    /*
+     * redirectEditTraineeGroup method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function redirectEditCourse (){
+        $db = DB::getInstance();
+        $sessionData = Session::getInstance();
+
+        $db->query('SELECT * FROM subject WHERE subject.id = '.$sessionData->editID);
+        
+        $course = ($db->getResults());
+        
+        $oldEntry = [   "name"              => $course[0]->name,
+                        "id"                => $course[0]->id,
+                        "code"              => $course[0]->code,
+                        "required_period"   => $course[0]->required_period,
+                        "description"       => $course[0]->description
+                     ];
+
+
+        View::renderTemplate ('Resources/editCourseForm.twig.html', [
+                                    'firstName'     => $sessionData->firstName,
+                                    'course'        => $course,
+                                    'oldEntry'      => $oldEntry,
+                                    'title'         => 'Edit Course',
+                                    'tableHeadings' => ['Name', 'Code', 'Req. Period', 'Description']
+
+                                ]);
+
+    }
+
+    /*
+     * updateTraineeGroup method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function updateCourse (){
+        // echo "<pre>";
+        // print_r($_POST);
+
+        // exit;
+
+        $sessionData = Session::getInstance();
+        $db = DB::getInstance();
+
+        $name               = $_POST["name"] ;
+        $code               = $_POST["code"] ;
+        $required_period    = $_POST["required_period"] ;
+        $description        = $_POST["description"];
+        $id                 = $_POST["course_id"];
+        /*
+            Array
+                (
+                    [traineeGroup] => BUS
+                    [level] => 2
+                    [section] => A
+                    [TraineeGroup_id] => 4
+                    [description] => Term 2 Sales & Marketing Trainees
+                    [submit] => 
+                )
+
+        */
+        
+        //create digest of the form submission:
+
+        $messageIdent = md5($_POST['name'] . $_POST['code'] . $_POST['required_period'] . $_POST['description']);
+        
+        //and check it against the stored value: $sessionData->email
+
+        $sessionMessageIdent = isset($sessionData->messageIdent) ? $sessionData->messageIdent: '';
+        if($messageIdent!=$sessionMessageIdent){//if it's different:          
+                //save the session var:
+                $sessionData->messageIdent = $messageIdent;
+                
+                // save the data
+
+                $db->update ('subject', 
+                                array(  ['name' ,           '=', $name],
+                                        ['code',            '=', $code],
+                                        ['required_period', '=', $required_period],
+                                        ['description',     '=', $description]
+                                    ),
+                                array(['id','=', $id])
+                );
+
+
+                $db->query('SELECT * FROM subject WHERE subject.id = '.$sessionData->editID);
+                $course = ($db->getResults());
+        
+                $oldEntry = [   "name"              => $course[0]->name,
+                                "id"                => $course[0]->id,
+                                "code"              => $course[0]->code,
+                                "required_period"   => $course[0]->required_period,
+                                "description"       => $course[0]->description
+                            ];
+                View::renderTemplate ('Resources/editCourseForm.twig.html', [
+                                    'firstName'     => $sessionData->firstName,
+                                    'course'        => $course,
+                                    'oldEntry'      => $oldEntry,
+                                    'title'         => 'Edit Course',
+                                    'tableHeadings' => ['Name', 'Code', 'Req. Period', 'Description']
+
+                                ]);
+                
+
+        } else {
+            //you've sent this already!
+
+            $db->query('SELECT * FROM subject WHERE subject.id = '.$sessionData->editID);
+            $course = ($db->getResults());
+    
+            $oldEntry = [   "name"              => $course[0]->name,
+                            "id"                => $course[0]->id,
+                            "code"              => $course[0]->code,
+                            "required_period"   => $course[0]->required_period,
+                            "description"       => $course[0]->description
+                        ];
+            View::renderTemplate ('Resources/editCourseForm.twig.html', [
+                                    'status' => '<div class="alert alert-danger alert-dismissable">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                <h4 class="text-center">Course has already been updated!</h4>
+                                                        </div>',
+                                    'firstName'     => $sessionData->firstName,
+                                    'course'        => $course,
+                                    'oldEntry'      => $oldEntry,
+                                    'title'         => 'Edit Course',
+                                    'tableHeadings' => ['Name', 'Code', 'Req. Period', 'Description']
+                            ]);
+            
+        }
+
+        
+
+    }
 
 
     /*
@@ -753,13 +907,7 @@ class ResourceController extends \Core\Controller{
                 }
                 
             }
-            
-
-            
-
-
-
-            
+                        
         }else {
             header("Location: /home/logout");
 
@@ -830,6 +978,148 @@ class ResourceController extends \Core\Controller{
         }
         
     }    
+
+    /*
+     * editInstructor method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function editInstructor (){
+        
+        $sessionData = Session::getInstance();
+        // echo "<pre>parameter is : ";
+        // print_r($this->route_params['id']);
+        // exit;
+        $sessionData->editID = $this->route_params['id'];
+        
+        header("Location: /Resource/ResourceController/redirectEditInstructor");
+        exit;
+    }
+
+    /*
+     * redirectEditTraineeGroup method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function redirectEditInstructor (){
+        $db = DB::getInstance();
+        $sessionData = Session::getInstance();
+
+        $db->query('SELECT * FROM instructor WHERE instructor.id = '.$sessionData->editID);
+               
+        $instructor = ($db->getResults());
+
+        $oldEntry = [   "id"            => $instructor[0]->id,
+                        "id_number"     => $instructor[0]->id_number,
+                        "first_name"    => $instructor[0]->first_name,
+                        "last_name"     => $instructor[0]->last_name,
+                        "note"          => $instructor[0]->note
+                     ];
+
+
+        View::renderTemplate ('Resources/editInstructorForm.twig.html', [
+                                    'firstName'     => $sessionData->firstName,
+                                    'instructor'    => $instructor,
+                                    'oldEntry'      => $oldEntry,
+                                    'title'         => 'Edit Instructor',
+                                    'tableHeadings' => ['Name', 'Level', 'ID Number', 'Note']
+
+                                ]);
+
+    }
+
+    /*
+     * updateTraineeGroup method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function updateInstructor (){
+
+        $sessionData = Session::getInstance();
+        $db = DB::getInstance();
+
+        $first_name = $_POST["first_name"] ;
+        $last_name  = $_POST["last_name"] ;
+        $id_number  = $_POST["id_number"] ;
+        $note       = $_POST["note"];
+        $id         = $_POST["id"];
+        //create digest of the form submission:
+
+        $messageIdent = md5($_POST['first_name'] . $_POST['last_name'] . $_POST['id_number'] . $_POST['note']);
+        
+        //and check it against the stored value: $sessionData->email
+
+        $sessionMessageIdent = isset($sessionData->messageIdent) ? $sessionData->messageIdent: '';
+        if($messageIdent!=$sessionMessageIdent){//if it's different:          
+                //save the session var:
+                $sessionData->messageIdent = $messageIdent;
+                
+                // save the data
+
+                $db->update ('instructor', 
+                                array(  ['first_name',  '=', $first_name],
+                                        ['last_name',   '=', $last_name],
+                                        ['id_number',   '=', $id_number],
+                                        ['note',        '=', $note]
+                                    ),
+                                array(['id','=', $id])
+                );
+
+
+                $db->query('SELECT * FROM instructor WHERE instructor.id = '.$sessionData->editID);
+                $instructor = ($db->getResults());
+        
+                $oldEntry = [   "first_name"    => $instructor[0]->first_name,
+                                "last_name"     => $instructor[0]->last_name,
+                                "id_number"     => $instructor[0]->id_number,
+                                "note"          => $instructor[0]->note
+                               
+                            ];
+                View::renderTemplate ('Resources/editInstructorForm.twig.html', [
+                                    'firstName'     => $sessionData->firstName,
+                                    'instructor'    => $instructor,
+                                    'oldEntry'      => $oldEntry,
+                                    'title'         => 'Edit Instructor',
+                                    'tableHeadings' => ['Name', 'Level', 'ID Number', 'Note']
+
+                                ]);
+                
+
+        } else {
+            //you've sent this already!
+
+            $db->query('SELECT * FROM instructor WHERE instructor.id = '.$sessionData->editID);
+            $instructor = ($db->getResults());
+
+    
+            $oldEntry = [ "id"            => $instructor[0]->id,
+                            "id_number"     => $instructor[0]->id_number,
+                            "first_name"    => $instructor[0]->first_name,
+                            "last_name"     => $instructor[0]->last_name,
+                            "note"          => $instructor[0]->note
+                        ];
+            View::renderTemplate ('Resources/editInstructorForm.twig.html', [
+                                    'status' => '<div class="alert alert-danger alert-dismissable">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                <h4 class="text-center">Instructor has already been updated!</h4>
+                                                        </div>',
+                                    'firstName'     => $sessionData->firstName,
+                                    'instructor'    => $instructor,
+                                    'oldEntry'      => $oldEntry,
+                                    'title'         => 'Edit Course',
+                                    'tableHeadings' => ['Name', 'Level', 'ID Number', 'Note']
+
+                                ]);
+            
+        }
+
+        
+
+    }
+
 
     /*
      * addRoom - action will provide the controller mechanism to display a form with the list
@@ -1025,6 +1315,199 @@ class ResourceController extends \Core\Controller{
 
         }
     }
+
+    /*
+     * editInstructor method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function editRoom (){
+        
+        $sessionData = Session::getInstance();
+        $sessionData->editID = $this->route_params['id'];
+        // echo "<pre>";
+        // print_r($sessionData->editID);
+        // exit;
+        header("Location: /Resource/ResourceController/redirectEditRoom");
+        exit;
+    }
+
+    /*
+     * redirectEditRoom method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function redirectEditRoom (){
+        $db = DB::getInstance();
+        $sessionData = Session::getInstance();
+
+        $db->select(
+            array(  'room.id', 
+                    'room.name as \'RoomName\'', 
+                    'room.type as \'RoomType\'', 
+                    'room.location as \'RoomLoc\'', 
+                    'room.description as \'RoomDesc\'',
+                    'room_type.id as \'rtID\'', 
+                    'room_type.name as \'rtName\'', 
+                    'room_type.description as \'rtDesc\''),
+            array('room INNER JOIN room_type ON room.type = room_type.id'),
+            array(
+                ['room.id', '=', $sessionData->editID]
+            )
+        );
+        $room = ($db->getResults());
+
+        $oldEntry = [   "id"        => $room[0]->id,
+                        "RoomName"  => $room[0]->RoomName,
+                        "RoomType"  => $room[0]->RoomType,
+                        "RoomLoc"   => $room[0]->RoomLoc,
+                        "RoomDesc"  => $room[0]->RoomDesc
+                     ];
+        
+        View::renderTemplate ('Resources/editRoomForm.twig.html', [
+                                    'firstName'     => $sessionData->firstName,
+                                    'room'          => $room,
+                                    'oldEntry'      => $oldEntry,
+                                    'title'         => 'Edit Room',
+                                    'tableHeadings' => ['Name', 'Type', 'Location' ,'Description']
+
+                                ]);
+
+    }
+
+    /*
+     * updateRoom method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function updateRoom (){
+
+        $sessionData = Session::getInstance();
+        $db = DB::getInstance();
+
+        // echo "<pre>";
+        // print_r($_POST);
+        // exit;
+        /*
+                Array
+                    (
+                        [name] => ELX WRKSHOP 1
+                        [type] => 6
+                        [location] => Main Building
+                        [id] => 8
+                        [description] => Electronics workshop
+                        [submit] => 
+                    )
+                
+
+        */
+        $name           = $_POST["name"] ;
+        $type           = $_POST["type"] ;
+        $location       = $_POST["location"] ;
+        $description    = $_POST["description"];
+        $id             = $_POST["id"];
+
+        //create digest of the form submission:
+
+        $messageIdent = md5($_POST['name'] . $_POST['type'] . $_POST['location'] . $_POST['description']);
+        
+        //and check it against the stored value: $sessionData->email
+
+        $sessionMessageIdent = isset($sessionData->messageIdent) ? $sessionData->messageIdent: '';
+        if($messageIdent!=$sessionMessageIdent){//if it's different:          
+                //save the session var:
+                $sessionData->messageIdent = $messageIdent;
+                
+
+
+                $db->update ('room', 
+                                array(  ['name',  '=', $name],
+                                        ['type',   '=', $type],
+                                        ['location',   '=', $location],
+                                        ['description',        '=', $description]
+                                    ),
+                                array(['id','=', $id])
+                );
+
+
+                 $db->select(
+                    array(  'room.id', 
+                            'room.name as \'RoomName\'', 
+                            'room.type as \'RoomType\'', 
+                            'room.location as \'RoomLoc\'', 
+                            'room.description as \'RoomDesc\'',
+                            'room_type.id as \'rtID\'', 
+                            'room_type.name as \'rtName\'', 
+                            'room_type.description as \'rtDesc\''),
+                    array('room INNER JOIN room_type ON room.type = room_type.id'),
+                    array(
+                        ['room.id', '=', $sessionData->editID]
+                    )
+                );
+                $room = ($db->getResults());
+
+                $oldEntry = [   "id"        => $room[0]->id,
+                                "RoomName"  => $room[0]->RoomName,
+                                "RoomType"  => $room[0]->RoomType,
+                                "RoomLoc"   => $room[0]->RoomLoc,
+                                "RoomDesc"  => $room[0]->RoomDesc
+                            ];
+                View::renderTemplate ('Resources/editRoomForm.twig.html', [
+                                    'firstName'     => $sessionData->firstName,
+                                    'room'          => $room,
+                                    'oldEntry'      => $oldEntry,
+                                    'title'         => 'Edit Room',
+                                    'tableHeadings' => ['Name', 'Type', 'Location' ,'Description']
+
+                                ]);
+                
+
+        } else {
+            //you've sent this already!
+                $db->select(
+                    array(  'room.id', 
+                            'room.name as \'RoomName\'', 
+                            'room.type as \'RoomType\'', 
+                            'room.location as \'RoomLoc\'', 
+                            'room.description as \'RoomDesc\'',
+                            'room_type.id as \'rtID\'', 
+                            'room_type.name as \'rtName\'', 
+                            'room_type.description as \'rtDesc\''),
+                    array('room INNER JOIN room_type ON room.type = room_type.id'),
+                    array(
+                        ['room.id', '=', $sessionData->editID]
+                    )
+                );
+                $room = ($db->getResults());
+
+                $oldEntry = [   "id"        => $room[0]->id,
+                                "RoomName"  => $room[0]->RoomName,
+                                "RoomType"  => $room[0]->RoomType,
+                                "RoomLoc"   => $room[0]->RoomLoc,
+                                "RoomDesc"  => $room[0]->RoomDesc
+                            ];
+                View::renderTemplate ('Resources/editRoomForm.twig.html', [
+                                        'status' => '<div class="alert alert-danger alert-dismissable">
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                    <h4 class="text-center">Room has already been updated!</h4>
+                                                            </div>',
+                                        'firstName'     => $sessionData->firstName,
+                                        'room'          => $room,
+                                        'oldEntry'      => $oldEntry,
+                                        'title'         => 'Edit Room',
+                                        'tableHeadings' => ['Name', 'Type', 'Location' ,'Description']
+
+                                    ]);
+            
+        }
+
+        
+
+    }
+
 
     /*
      * deleteRoom method 

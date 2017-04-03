@@ -13,21 +13,27 @@
             <div class="col-lg-4 col-md-4 col-sm-4" >
                 <div class="well"> 
 
-                    <div class="panel panel-primary">
+                    <div class="panel panel-danger">
                         <div class="panel-heading">
                             <h3>{{title}}</h3>
                         </div>
                         <div class="panel-body">
+
+                            {% for key,value in oldEntry %}
+        
+                                <input type="hidden" name="name_{{ key }}" id="id_{{ key }}" value="{{ value }}">
+                                
+                            {% endfor %}
                             
-                            <form class="form   center-block" name="addTraineeGroup" action="/resource/resourceController/createNewRoom" method="post">
-                                <div class="form-group form-group-lg">
+                            <form class="form center-block" name="updateRoom" action="/resource/resourceController/updateRoom" method="post">
+                                <div class="form-group form-group-lg has-warning">
                                     
-                                    <input type="text" class="form-control" name="name" placeholder="Room name" required>
+                                    <input type="text" class="form-control" name="name" id="name" placeholder="Room name" value="" required>
                                 
                                     
                                 </div>
-                                <div class="form-group form-group-lg">
-                                    <select class="form-control" name="type" required>
+                                <div class="form-group form-group-lg has-warning">
+                                    <select class="form-control" name="type" id="type" required>
                                         <option value="">Select room type</option>
                                         <option value="1">Classroom</option>
                                         <option value="2">Computer LAB</option>
@@ -47,8 +53,8 @@
                                 </div>
 
 
-                                <div class="form-group form-group-lg">
-                                    <select class="form-control" name="location" required>
+                                <div class="form-group form-group-lg has-warning">
+                                    <select class="form-control" name="location" id="location" required>
                                         <option value="">Select location</option>
                                         <option value="Main Building">Main Building</option>
                                         <option value="Caravan">Caravan</option>
@@ -57,12 +63,13 @@
                                 </div>
 
 
-                                <div class="form-group form-group-lg" >
-                                    <input type="text" class="form-control" name="description" onblur="return x()" placeholder="Description">
+                                <div class="form-group form-group-lg has-warning" >
+                                    <input type="hidden" class="form-control"  name="id" id="id" value="">
+                                    <input type="text" class="form-control" name="description" id="description"  placeholder="Description">
                                 </div>       
 
-                                <div class="form-group">
-                                    <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit" >
+                                <div class="form-group has-warning">
+                                    <button class="btn btn-danger btn-lg btn-block" name="submit" type="submit" >
                                         {{title}}
                                     </button>                                    
                                 </div>
@@ -84,13 +91,13 @@
 
             <div class="col-lg-8 col-md-8 col-sm-8" >
                 <div class="well"> 
-                    <div class="panel panel-info">
+                    <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h3>List of Rooms</h3>
                         </div>
                         <div class="panel-body">
                             
-                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="">
                                 <thead>
                                    <tr>
                                         <td>No.</td>
@@ -101,7 +108,7 @@
                                                 <th>{{ tableHeader }}</th>
                                             {% endif %}
                                         {% endfor %}
-                                        <th></th>
+
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -115,27 +122,19 @@
                                                 <th>{{ tableHeader }}</th>
                                             {% endif %}
                                         {% endfor %}
-                                        <th></th>
+
                                     </tr>
                                     
                                 </tfoot>
                                 <tbody>
-                                    {% for row in rooms %}
+                                    {% for row in room %}
                                     <tr>
                                         <td>{{ row.id }}</td>
                                         <td>{{ row.RoomName }}</td>
                                         <td>{{ row.rtName }}</td>
                                         <td>{{ row.RoomLoc }}</td>
                                         <td>{{ row.RoomDesc }}</td>
-                                        <td style="text-align:center">
-                                            <a href="/Resource/ResourceController/{{ row.id }}/editRoom" data-toggle="tooltip" data-placement="right" title="Edit this Item!" class="btn btn-xs btn-primary">
-                                                <span class="fa fa-edit"></span>
-                                            </a>
-                                            <a href="#" data-toggle="modal" id="{{ row.id }} {{ row.RoomName }} ({{ row.RoomLoc }}) "  data-target="#delete-modal" 
-                                               title="Delete this Item!"  class="btn btn-xs btn-danger" >
-                                                <span class="fa fa-remove" ></span>
-                                            </a>
-                                        </td>
+
                                     </tr>
                                     {% endfor %}
                                     
@@ -201,14 +200,13 @@
     <!-- class="container-fluid" -->
     <script>
         $(document).ready(function(){
-            $('#delete-modal').on('show.bs.modal', function(e) {
-                var $modal = $(this),
-                    deleteId = e.relatedTarget.id;
-                    $modal.find('.delete-content').html(deleteId);
-                    $modal.find('.delete-input').val(deleteId);
-            });
+            $("#id").val( $('#id_id').val() );
 
-            
+            $("#name").val( $('#id_RoomName').val() );
+            $("#type").val( $('#id_RoomType').val() );
+            $("#location").val( $('#id_RoomLoc').val() );
+            $("#description").val( $('#id_RoomDesc').val() );
+
         });
 
 

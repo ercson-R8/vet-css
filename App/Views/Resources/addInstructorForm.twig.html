@@ -108,7 +108,7 @@
                                         <td style="text-align:center">{{ row.id_number }}</td>
                                         <td>{{ row.note }}</td>
                                         <td style="text-align:center">
-                                            <a href="../{{row.id}}/editCourse" data-toggle="tooltip" data-placement="right" title="Edit this Item!"  class="btn btn-xs btn-primary">
+                                            <a href="/Resource/ResourceController/{{ row.id }}/editInstructor" data-toggle="tooltip" data-placement="right" title="Edit this Item!" class="btn btn-xs btn-primary">
                                                 <span class="fa fa-edit"></span>
                                             </a>
                                             <a href="#" data-toggle="modal" id="{{ row.id }} {{ row.first_name }} {{ row.last_name }}"  data-target="#delete-modal" 
