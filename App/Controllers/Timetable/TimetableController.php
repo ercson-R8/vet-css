@@ -659,6 +659,167 @@ class TimetableController extends \Core\Controller{
 
     }
 
+    /*
+     * deleteSubjectClass method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function deleteSubjectClass (){
+        
+        /*
+            Array
+                (
+                    [subject_class] => 89
+                )
+        */
+        $sessionData = Session::getInstance();
+        $db = DB::getInstance();
+        $subjectClassID = $_POST['subject_class'];
+        
+        //create digest of the form submission:
+        $messageIdent = md5($_POST['subject_class']);
+
+        //and check it against the stored value: $sessionData->email
+
+        $sessionMessageIdent = isset($sessionData->messageIdent) ? $sessionData->messageIdent: '';
+
+        if($messageIdent!=$sessionMessageIdent){//if its different:          
+                //save the session var:
+                $sessionData->messageIdent = $messageIdent;
+                
+                // delete the data; DELETE FROM subject WHERE subject.name = 'test'
+                $db->delete('subject_class', 
+                        array(
+                            ['subject_class.id', '=', $subjectClassID]
+                        )
+                ); 
+                $db = DB::getInstance();   
+
+                $db->select(
+                        array(  'subject_class.id',
+                                'trainee_group.name as \'trainee_group\'', 
+                                'subject.name as \'subject\'',
+                                'subject.code as \'code\'',
+                                'subject.required_period as \'required_period\'',
+                                'concat (instructor.first_name,\' \', instructor.last_name) as \'instructor\'', 
+                                'room_type.name as \'room_type\'',
+                                'room.name as \'room\'',
+                                'subject_class.preferred_number_days as \'days\'', 
+                                'subject_class.preferred_start_period as \'start\'', 
+                                'subject_class.preferred_end_period as \'end\''
+                        ),
+                        array('subject_class 
+                                INNER JOIN trainee_group 
+                                        ON subject_class.trainee_group_id = trainee_group.id 
+                                INNER JOIN subject 
+                                        ON subject_class.subject_id = subject.id 
+                                INNER JOIN instructor 
+                                        ON subject_class.instructor_id = instructor.id 
+                                INNER JOIN room_type 
+                                        ON subject_class.room_type_id = room_type.id
+                                INNER JOIN room 
+                                        ON subject_class.room_id = room.id' 
+                        ),
+                        array(
+                            ['subject_class.timetable_id', '=', $sessionData->currentTimetable]
+                        )
+                    );
+                $subject_class = ($db->getResults());
+                
+
+                $db->select(
+                    array('*'),
+                    array('timetable'),
+                    array(['timetable.id', '=', $sessionData->currentTimetable])
+                );
+            
+                $timetable = ($db->getResults());
+                $tableTitle = 'List of classes for AY '.$timetable[0]->year_start.'-'.$timetable[0]->year_end.' Term '.$timetable[0]->term;
+                $tableSubTitle = '('.$timetable[0]->remarks.') '.$timetable[0]->created;
+                
+                // print_r($subject_class);
+
+                // print_r($timetable);
+                View::renderTemplate ('Timetables/addSubjectClassForm.twig.html', [
+                                            'subjectClass' => $subject_class,
+                                            'title' => 'Add a Class '.$sessionData->currentTimetable, 
+                                            'firstName' => $sessionData->firstName,
+                                            'tableTitle' => $tableTitle,
+                                            'tableSubTitle' => $tableSubTitle,
+                                            'tableHeadings' => ['Group', 'Subject - Instructor' , 'Room' ,'No. of Days', 'Start - End']
+                                        ]);
+
+
+
+                
+       
+        } else {
+            //you've sent this already!
+            $db = DB::getInstance();   
+
+            $db->select(
+                    array(  'subject_class.id',
+                            'trainee_group.name as \'trainee_group\'', 
+                            'subject.name as \'subject\'',
+                            'subject.code as \'code\'',
+                            'subject.required_period as \'required_period\'',
+                            'concat (instructor.first_name,\' \', instructor.last_name) as \'instructor\'', 
+                            'room_type.name as \'room_type\'',
+                            'room.name as \'room\'',
+                            'subject_class.preferred_number_days as \'days\'', 
+                            'subject_class.preferred_start_period as \'start\'', 
+                            'subject_class.preferred_end_period as \'end\''
+                    ),
+                    array('subject_class 
+                            INNER JOIN trainee_group 
+                                    ON subject_class.trainee_group_id = trainee_group.id 
+                            INNER JOIN subject 
+                                    ON subject_class.subject_id = subject.id 
+                            INNER JOIN instructor 
+                                    ON subject_class.instructor_id = instructor.id 
+                            INNER JOIN room_type 
+                                    ON subject_class.room_type_id = room_type.id
+                            INNER JOIN room 
+                                    ON subject_class.room_id = room.id' 
+                    ),
+                    array(
+                        ['subject_class.timetable_id', '=', $sessionData->currentTimetable]
+                    )
+                );
+            $subject_class = ($db->getResults());
+            
+
+            $db->select(
+                array('*'),
+                array('timetable'),
+                array(['timetable.id', '=', $sessionData->currentTimetable])
+            );
+        
+            $timetable = ($db->getResults());
+            $tableTitle = 'List of classes for AY '.$timetable[0]->year_start.'-'.$timetable[0]->year_end.' Term '.$timetable[0]->term;
+            $tableSubTitle = '('.$timetable[0]->remarks.') '.$timetable[0]->created;
+            
+            // print_r($subject_class);
+
+            // print_r($timetable);
+            View::renderTemplate ('Timetables/addSubjectClassForm.twig.html', [
+                                        'status' => '<div class="alert alert-danger alert-dismissable">
+                                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                            <h4 class="text-center">Data already deleted.</h4>
+                                                    </div>',
+                                        'subjectClass' => $subject_class,
+                                        'title' => 'Add a Class '.$sessionData->currentTimetable, 
+                                        'firstName' => $sessionData->firstName,
+                                        'tableTitle' => $tableTitle,
+                                        'tableSubTitle' => $tableSubTitle,
+                                        'tableHeadings' => ['Group', 'Subject - Instructor' , 'Room' ,'No. of Days', 'Start - End']
+                                    ]);
+
+            
+        }
+
+    }
 
 
 

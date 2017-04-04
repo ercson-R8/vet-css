@@ -6,8 +6,7 @@
 {% block body %}
 
 
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous">
-    </script>
+
     <style>
 
         #ajaxFetch-list{float:left;list-style:none;margin-top:-3px;padding:0;width:190px;position: absolute;}
@@ -51,18 +50,20 @@
                                                 </div>
                                                 <div class="form-group form-group-sm">
 
-                                                    <input type="text" class="form-control" name="instructor" placeholder="Instructor" id="search-box-instructor"required>
-                                                    <input type="hidden" class="form-control" name= "instructor_id" placeholder="" id="instructor_id" required>
-                                                    <p></p><div id="suggesstion-box-instructor"></div>
+                                                    <input type="number" min="1" max="5" step="1" class="form-control" name="preferred_number_days" placeholder="No. of days" required>
+                                                    
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td colspan="3" >
                                                 <div class="form-group form-group-sm">
-                                                    <input type="number" min="1" max="5" step="1" class="form-control" name="preferred_number_days" placeholder="No. of days" required>
-                                                    <span class="pull-left text-muted small"><i> Number of days</i></span>
+
+                                                    <input type="text" class="form-control" name="instructor" placeholder="Instructor" id="search-box-instructor"required>
+                                                    <input type="hidden" class="form-control" name= "instructor_id" placeholder="" id="instructor_id" required>
+                                                    <p></p><div id="suggesstion-box-instructor"></div>
                                                 </div>
+                                                
                                             </td>
                                            
                                         </tr>
@@ -178,8 +179,9 @@
                                              <a href="/Timetable/TimetableController/{{ row.id }}/editSubjectClass" data-toggle="tooltip" data-placement="right" title="Edit this Item!" class="btn btn-xs btn-primary">
                                                 <span class="fa fa-edit"></span>
                                             </a>
-                                            <a href="#" data-toggle="tooltip" data-placement="right" title="Delete this Item!"  class="btn btn-xs btn-danger">
-                                                <span class="fa fa-trash-o"></span>
+                                            <a href="#" data-toggle="modal" id="{{ row.id }}"  data-target="#delete-modal" 
+                                               title="Delete this Item!"  class="btn btn-xs btn-danger" >
+                                                <span class="fa fa-remove" ></span>
                                             </a>
                                         </td>
                                     </tr>
@@ -218,11 +220,62 @@
     <!-- class="container-fluid" -->
 
 
+    <!-- Modal -->
+    <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Remove!</h4>
+                </div>
+                <div class="modal-body ">
+                    <form class="form center-block" name="addTraineeGroup" action="/Timetable/TimetableController/deleteSubjectClass" method="post">
+                            <div class="row">
+                                <div class="col-xs-1">
+                                    <i class="fa fa-warning text-danger fa-3x"></i>
+                                </div>
+                                <div class="col-xs-11">
+                                    <div class="huge text-danger">Warning</div>
+                                    <div class="lead">
+                                    
+                                    <p class="lead">Removing this class with ID No. <span class="modal-message text-danger delete-content"></span>, 
+                                                    will not make any changes to the timetables already generated. You need to generate a new one to reflect the changes. 
+                                    </p>
+                                    <input type="hidden" class="modal-input delete-input" name="subject_class" value="">
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                                
+            
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger pull-right">Proceed and Delete</button>
+                    </form>
+                <div>
+
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
 
 
 
      <script>
         $(document).ready(function(){
+            $('#delete-modal').on('show.bs.modal', function(e) {
+                var $modal = $(this),
+                    deleteId = e.relatedTarget.id;
+                    alert(deleteId);
+                    $modal.find('.delete-content').html(deleteId);
+                    $modal.find('.delete-input').val(deleteId);
+            });
+
+
+
             $("#search-box-traineeGroup").keyup(function(){
                 $.ajax({
                 type: "POST",
