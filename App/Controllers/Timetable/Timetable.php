@@ -11,6 +11,7 @@ class Timetable{
     private $subjects, $traineeGroups, $rooms, $roomTypes, $instructors = null; 
     private $population = [];
     private $baseSubjectClass = null;
+
     /*
      * dummy method 
      *
@@ -24,6 +25,7 @@ class Timetable{
         }
         // echo "<h1>From dummy method</h1>";
     }
+
     /*
      * fetchBaseSubjectClass method fetches raw data from the database
      * returns an array representing the subject_class table.  
@@ -38,11 +40,11 @@ class Timetable{
         $db = DB::getInstance();
         $db->query("SELECT * FROM subject_class WHERE subject_class.timetable_id = {$timeTableID}");
         
-        // // print_r($db->getResults());
+        // print_r($db->getResults());
         if ($db->count()) {
             $i=0;
             foreach ($db->getResults() as $subjectClass) {
-                // print_r("\nCopying tables..."."\n");
+                print_r("Copying record no: ".$i."\n");
                 // this will collect each row of the selected table and store
                 // all of it in an assoc array.
                 $subjectClassSet[$subjectClass->id] =[
@@ -58,6 +60,7 @@ class Timetable{
                     "preferred_end_period" => $subjectClass->preferred_end_period,
                     "preferred_number_days" => $subjectClass->preferred_number_days,
                 ];
+                $i++;
             }
         }else{
             // todo 
@@ -69,6 +72,7 @@ class Timetable{
 
         return $subjectClassSet;
     }
+
     /*
      * assignRoom method assign a room to an individual
      *
@@ -90,7 +94,6 @@ class Timetable{
 
         return $room;
     }
-
 
     /*
      * setInitTimeSlot method 
@@ -313,11 +316,21 @@ class Timetable{
             for ($i=0; $i < sizeof($timetable); $i++) {
                 // gather all IDs belonging to this timeslot.
                 if ($timeslot == $timetable[$i]["ts"]) {
-                    //$subjectID[]        = $timetable[$i]["sc"]["subject_id"];
                     $roomID[]           = $timetable[$i]["sc"]["room_id"];
                     $traineeGroupID[]   = $timetable[$i]["sc"]["trainee_group_id"];
                     $instructorID[]     = $timetable[$i]["sc"]["instructor_id"];
-                    //$subjectID[]= $timetable[$i]["sc"]["id"];
+                    if ($timetable[$i]["sc"]["subject_id"] == 1 ) {
+                        // echo "study break\n";
+                        // print_r($timetable[$i]["sc"]);
+                        //$traineeGroupID[]   = $timetable[$i]["sc"]["trainee_group_id"];
+                    } else {
+                        // $roomID[]           = $timetable[$i]["sc"]["room_id"];
+                        // $traineeGroupID[]   = $timetable[$i]["sc"]["trainee_group_id"];
+                        // $instructorID[]     = $timetable[$i]["sc"]["instructor_id"];
+                        //$subjectID[]= $timetable[$i]["sc"]["id"];
+                    }
+                    
+                   
                 }
             }
             
@@ -413,15 +426,6 @@ class Timetable{
 
         }
 
-        // // print_r("\nchild"."\n");
-
-        // // print_r($child);
-        // exit;
-        // // print_r("\nChromoA"."\n");
-
-        // // print_r($chromoA);
-        // // print_r("\nChromoB"."\n");
-        // // print_r($chromoB);
 
         return $child;
 
@@ -556,16 +560,16 @@ class Timetable{
         // });
         for($i=0; $i < sizeof($tempTable); $i++){
                         
-            // print_r("\nmID:    ".$tempTable[$i]["mt_id"]. 
-            //         "\ttimeslot: ".$tempTable[$i]["ts"]. 
-            //         "\t\t(Class: ".$tempTable[$i]["sc"]["id"].
+            print_r("\nmID:    ".$tempTable[$i]["mt_id"]. 
+                    "\ttimeslot: ".$tempTable[$i]["ts"]. 
+                    "\t\t(Class: ".$tempTable[$i]["sc"]["id"].
                     
-            //         " Grp: ".$tempTable[$i]["sc"]["trainee_group_id"]. 
-            //         ")\t(Sbj: ".$tempTable[$i]["sc"]["subject_id"].
-            //         " Inst: ".$tempTable[$i]["sc"]["instructor_id"].
-            //         ")\t["."id ".$tempTable[$i]["sc"]["room_id"]."-".
-            //                 $this->getRoom($tempTable[$i]["sc"]["room_id"])->getName().
-            //         "]");
+                    " Grp: ".$tempTable[$i]["sc"]["trainee_group_id"]. 
+                    ")\t(Sbj: ".$tempTable[$i]["sc"]["subject_id"].
+                    " Inst: ".$tempTable[$i]["sc"]["instructor_id"].
+                    ")\t["."id ".$tempTable[$i]["sc"]["room_id"]."-".
+                            $this->getRoom($tempTable[$i]["sc"]["room_id"])->getName().
+                    "]");
         }
         
     }
@@ -581,8 +585,7 @@ class Timetable{
         $startMemory = memory_get_usage();
 
         $timetableID = $sessionData->currentTimetable;  // will be replaced by the actual database table id later
-        // print_r("\nTimetable #: ".$timetableID."\n<pre>");
-
+        print_r("\nTimetable #: ".$timetableID."\n<pre>");
 
         $timetableFitness = [];
         $subjectClassSet = []; // contains base plus initial room assignment
@@ -595,8 +598,8 @@ class Timetable{
         // random rooms if the property roomFixed = null.
   
         $this->baseSubjectClass = $this->fetchBaseSubjectClass($timetableID);
-        // print_r("\n<pre>Number of Classes: ".sizeof($this->baseSubjectClass)."\n");
-
+        print_r("\n<pre>Number of Classes: ".sizeof($this->baseSubjectClass)."\n");
+       
         // setup()
         //  # Step 1: The Population
         //    # Fill it with DNA encoded objects (pick random values to start)
@@ -607,15 +610,15 @@ class Timetable{
                     
             }
         }
-        
-        // // print_r($subjectClassSet);
-
+         
+        // print_r($subjectClassSet);
         for ($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++) { 
 
             $this->population[$timetable] = $this->setInitTimeSlot($subjectClassSet[$timetable]);
             $timetableFitness[$timetable] = $this->calcFitness($this->population[$timetable]);
             
         }
+
 
 
         /*
@@ -646,30 +649,30 @@ class Timetable{
         // while no fitTimetableFound 
         $generation = 0;
         while((!$fitTimetableFound) and ($generation < TimetableConfig::MAX_GEN)){
-            // print_r("\n<h2>======== generation: ".$generation." ===============</h2>");
-            // print_r("\nSize of population: ".sizeof($this->population)."\n");
-            // print_r("\nPopulation[0] ELITISM <b>". $this->calcFitness($this->population[0])."</b>");
-            // print_r("\nPopulation[1] ELITISM <b>". $this->calcFitness($this->population[1])."</b>");
-            // print_r("\nPopulation[3] ELITISM <b>". $this->calcFitness($this->population[3])."</b>");
-            // print_r("\nPopulation[4] ELITISM <b>". $this->calcFitness($this->population[4])."</b>");
+            print_r("\n<h2>======== generation: ".$generation." ===============</h2>");
+            print_r("\nSize of population: ".sizeof($this->population)."\n");
+            print_r("\nPopulation[0] ELITISM <b>". $this->calcFitness($this->population[0])."</b>");
+            print_r("\nPopulation[1] ELITISM <b>". $this->calcFitness($this->population[1])."</b>");
+            print_r("\nPopulation[3] ELITISM <b>". $this->calcFitness($this->population[3])."</b>");
+            print_r("\nPopulation[4] ELITISM <b>". $this->calcFitness($this->population[4])."</b>");
             //     1. evaluate fitness of timetables (population)
             for($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++){
                 $timetableFitness[$timetable] = $this->calcFitness($this->population[$timetable]);
                 
                 if(($timetableFitness[$timetable] == 0 )){
                     $fitnessValue = $this->calcFitness($this->population[$timetable]);
-                    // print_r("<h1>FOUND! CONFLICTS: ".$timetableFitness[$timetable]." </h1>");
-                    // print_r("\nPopulation[0] ELITISM <b>". $this->calcFitness($this->population[0])."</b>");
-                    // print_r("\nPopulation[1] ELITISM <b>". $this->calcFitness($this->population[1])."</b>");
-                    // print_r("\nPopulation[".$timetable."] has fitness of ".  $fitnessValue."</b>");
+                    print_r("<h1>FOUND! CONFLICTS: ".$timetableFitness[$timetable]." </h1>");
+                    print_r("\nPopulation[0] ELITISM <b>". $this->calcFitness($this->population[0])."</b>");
+                    print_r("\nPopulation[1] ELITISM <b>". $this->calcFitness($this->population[1])."</b>");
+                    print_r("\nPopulation[".$timetable."] has fitness of ".  $fitnessValue."</b>");
                     $fitTimetableFound = true;
 
                     $this->dispTable($this->population[$timetable], true);
                     
-                    // print_r("\n".""."\n"); // echo memory_get_usage() - $startMemory, ' bytes';
-                    // var_dump( ini_get('memory_limit') ); // var_dump(memory_get_usage() );
-                    // $time_end = microtime(true);$execution_time = ($time_end - $time_start);
-                    // echo '<b>Total Execution Time:</b> '.(round($execution_time,2)).' sec';
+                    print_r("\n".""."\n"); // echo memory_get_usage() - $startMemory, ' bytes';
+                    var_dump( ini_get('memory_limit') ); // var_dump(memory_get_usage() );
+                    $time_end = microtime(true);$execution_time = ($time_end - $time_start);
+                    echo '<b>Total Execution Time:</b> '.(round($execution_time,2)).' sec';
                     return ['timetable' => $this->population[$timetable] , 'fitnessValue' => $fitnessValue];
                 }
             }
@@ -700,9 +703,9 @@ class Timetable{
             $fitnessHighest = [array_search(min($timetableFitness), $timetableFitness) => min($timetableFitness)];
             $fitnessLowest = [array_search(max($timetableFitness), $timetableFitness) => max($timetableFitness)];
             $timetableFitnessSize = sizeof ($uniqueFitnessValues);
-            // print_r("\ntimetableFitness Total size: ".$timetableFitnessSize."\n");
-            // print_r($fitnessHighest);
-            // print_r($fitnessLowest);
+            print_r("\ntimetableFitness Total size: ".$timetableFitnessSize."\n");
+            print_r($fitnessHighest);
+            print_r($fitnessLowest);
             // print_r("\nFitnessValue=>"."Frequency\n");
 
             // 2.3 Normalize each fitness values
@@ -733,9 +736,9 @@ class Timetable{
             }
             $aveFit = round(array_sum($timetableFitness) / sizeof($timetableFitness) );
             
-            // print_r("\nSelection Pool: ".(sizeof($selectionPool)).
-            //         " Mating Pool: ".sizeof($matingPool).
-            //         " Average fitness: ".$aveFit."\n");
+            print_r("\nSelection Pool: ".(sizeof($selectionPool)).
+                    " Mating Pool: ".sizeof($matingPool).
+                    " Average fitness: ".$aveFit."\n");
             $n=0;
             // ELITISM, find the elite/s 
             // 4.2 save the top n timetables
@@ -750,10 +753,10 @@ class Timetable{
                 }
                 $n++;
             }
-            // print_r("\nPopulation[0] AFTER ELITISM <b>". $this->calcFitness($this->population[0])."</b>");
-            // print_r("\nPopulation[1] AFTER ELITISM <b>". $this->calcFitness($this->population[1])."</b>");
-            //  print_r("\nPopulation[3] AFTER ELITISM <b>". $this->calcFitness($this->population[3])."</b>");
-            //   print_r("\nPopulation[4] AFTER ELITISM <b>". $this->calcFitness($this->population[4])."</b>");
+            print_r("\nPopulation[0] AFTER ELITISM <b>". $this->calcFitness($this->population[0])."</b>");
+            print_r("\nPopulation[1] AFTER ELITISM <b>". $this->calcFitness($this->population[1])."</b>");
+             print_r("\nPopulation[3] AFTER ELITISM <b>". $this->calcFitness($this->population[3])."</b>");
+              print_r("\nPopulation[4] AFTER ELITISM <b>". $this->calcFitness($this->population[4])."</b>");
                      
             $crossRate = (int)(TimetableConfig::POP_SIZE * TimetableConfig::CROSSOVER_RATE ) ;
             
@@ -788,10 +791,10 @@ class Timetable{
 
 
             }
-            // print_r("\nPopulation[0] AFTER CROSS <b>". $this->calcFitness($this->population[0])."</b>");
-            // print_r("\nPopulation[1] AFTER CROSS <b>". $this->calcFitness($this->population[1])."</b>");
-            // print_r("\nPopulation[3] AFTER CROSS <b>". $this->calcFitness($this->population[3])."</b>");
-            // print_r("\nPopulation[4] AFTER CROSS <b>". $this->calcFitness($this->population[4])."</b>");
+            print_r("\nPopulation[0] AFTER CROSS <b>". $this->calcFitness($this->population[0])."</b>");
+            print_r("\nPopulation[1] AFTER CROSS <b>". $this->calcFitness($this->population[1])."</b>");
+            print_r("\nPopulation[3] AFTER CROSS <b>". $this->calcFitness($this->population[3])."</b>");
+            print_r("\nPopulation[4] AFTER CROSS <b>". $this->calcFitness($this->population[4])."</b>");
             
             // $this->dispTable($this->population[0]);
  
@@ -802,19 +805,19 @@ class Timetable{
 
 
 
-        // print_r("\n".""."\n");
-        // echo memory_get_usage() - $startMemory, ' bytes';
-        // var_dump( ini_get('memory_limit') );
-        // var_dump(memory_get_usage() );
+        print_r("\n".""."\n");
+        echo memory_get_usage() - $startMemory, ' bytes';
+        var_dump( ini_get('memory_limit') );
+        var_dump(memory_get_usage() );
         
-        // $time_end = microtime(true);
+        $time_end = microtime(true);
 
         //dividing with 60 will give the execution time in minutes other wise seconds
-        // $execution_time = ($time_end - $time_start);
+        $execution_time = ($time_end - $time_start);
 
         //execution time of the script
-        // echo '<b>Total Execution Time:</b> '.(round($execution_time,2)).' sec';
-        // print_r("\n".""."\n");
+        echo '<b>Total Execution Time:</b> '.(round($execution_time,2)).' sec';
+        print_r("\n".""."\n");
 
         // [0] is the elite
         $this->dispTable($this->population[0], true);

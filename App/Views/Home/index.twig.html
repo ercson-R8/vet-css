@@ -35,10 +35,12 @@
                                             <table width="50%" class="table"><tbody>
                                             <tr> 
 
-                                                {% if meeting.trainee_group  matches '/BUS/' %} 
+                                                {% if meeting.subject matches '/STU/' %} 
+                                                    <td style="background-color: #A3E4D7 ">
+                                                {% elseif meeting.trainee_group  matches '/BUS/' %}
                                                     <td style="background-color:#FAD7A0">
                                                 {% elseif meeting.trainee_group  matches '/ELC/' %}
-                                                    <td style="background-color:#A9DFBF">
+                                                    <td style="background-color:#AEB6BF">
                                                 {% elseif meeting.trainee_group  matches '/ELX/' %}
                                                     <td style="background-color:#D2B4DE">  
                                                 {% endif %}

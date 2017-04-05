@@ -104,13 +104,15 @@ class Test extends \Core\Controller {
 
 
     public function indexAction(){
-        // echo "testing from controller test....<br/>";
+        echo "testing from controller test....<br/>";
+// exit;
         $t = new Timetable();
         // $u = new Timetable();
         // $v = new Timetable();
         // $w = new Timetable();
 
         $t->GeneticAlgorithm();
+        exit;
         // $u->indexAction();
         // $v->indexAction();
         // $w->indexAction();

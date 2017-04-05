@@ -44,7 +44,7 @@ class TimetableConfig {
      * Total number of generation 
      * @var int 
      */
-    const MAX_GEN = 5000;
+    const MAX_GEN = 2000;
 
 
     /**  

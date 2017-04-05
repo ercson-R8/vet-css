@@ -146,6 +146,365 @@ class TimetableController extends \Core\Controller{
 
 
     /*
+     * manageTimetable method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function setCurrentTimetable (){
+        $sessionData = Session::getInstance();
+        $db = DB::getInstance();
+
+        $sessionData->currentTimetable = $this->route_params["id"];
+        $db->query('UPDATE timetable SET timetable.current = 0  WHERE timetable.current = 1');
+        $qry = 'UPDATE timetable SET timetable.current = 1  WHERE timetable.id = '.$sessionData->currentTimetable ;
+        $db->query($qry);
+
+
+        header("Location: /home/index");
+        exit;
+    }
+
+
+    /*
+     * editCurrentTimetable method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function editCurrentTimetable (){
+        $sessionData = Session::getInstance();
+        $db = DB::getInstance();
+
+        $sessionData->currentTimetable = $this->route_params["id"];
+        $db->query('UPDATE timetable SET timetable.current = 0  WHERE timetable.current = 1');
+        $qry = 'UPDATE timetable SET timetable.current = 1  WHERE timetable.id = '.$sessionData->currentTimetable ;
+        $db->query($qry);
+        header("Location: /Timetable/TimetableController/addSubjectClass");
+        exit;
+    }
+
+
+
+    /*
+     * deleteCurrentTimetable method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function deleteTimetable (){
+        // echo "<pre>";
+        // print_r($_POST);exit;
+        /*
+            Array
+                (
+                    [timetable_id] => 7
+                )
+        */
+        $sessionData = Session::getInstance();
+        $db = DB::getInstance();
+        $timetableID = $_POST['timetable_id'];
+
+        
+        //create digest of the form submission:
+        $messageIdent = md5($_POST['timetable_id']);
+
+        //and check it against the stored value: $sessionData->email
+
+        $sessionMessageIdent = isset($sessionData->messageIdent) ? $sessionData->messageIdent: '';
+
+        if($messageIdent!=$sessionMessageIdent){//if its different:          
+                //save the session var:
+                $sessionData->messageIdent = $messageIdent;
+                
+                // delete the data; DELETE FROM subject WHERE subject.name = 'test'
+                $db->delete('timetable', 
+                        array(
+                            ['timetable.id', '=', $timetableID]
+                        )
+                ); 
+
+                
+                $db = DB::getInstance();
+                $db->query('SELECT * FROM timetable');
+                
+                $timetable = ($db->getResults());
+                // print_r($timetable);
+                View::renderTemplate ('Timetables/addtimetableForm.twig.html', [
+                                            'status' => '<div class="alert alert-success alert-dismissable">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                <h4 class="text-center">Timetable has been deleted!</h4>
+                                                        </div>',
+                                            'timetable' => $timetable,
+                                            'title' => 'Add A Timetable',
+                                            'firstName' => $sessionData->firstName,
+                                            'tableHeadings' => ['Year Start', 'Year End', 'Term' ,'Description']
+                                        ]);
+                
+
+        } else {
+            //you've sent this already!
+            $db = DB::getInstance();
+            $db->query('SELECT * FROM timetable');
+            
+            $timetable = ($db->getResults());
+            // print_r($timetable);
+            View::renderTemplate ('Timetables/addtimetableForm.twig.html', [
+                                        'status' => '<div class="alert alert-danger alert-dismissable">
+                                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                            <h4 class="text-center">Data already deleted.</h4>
+                                                    </div>',
+                                        'timetable' => $timetable,
+                                        'title' => 'Add A Timetable',
+                                        'firstName' => $sessionData->firstName,
+                                        'tableHeadings' => ['Year Start', 'Year End', 'Term' ,'Description']
+                                    ]);
+            
+        }
+        
+    }
+
+
+    /*
+     * generateNewTimetable method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function generateNewTimetable (){
+        $sessionData = Session::getInstance();
+        $db = DB::getInstance();
+
+        // echo "generateNewTimetable<pre>";
+
+        $buttonClicked = (key($_POST));
+
+
+        
+
+        // insert the newData to the meeting TABLE 
+        if ($sessionData->inSession) {
+            // view timetable button was clicked
+            if ($buttonClicked === 'view'){
+
+                header("Location: /home");
+                exit;
+
+            
+            }else { // generate new timetable button was clicked
+
+                // check if this timetable does not have a generated timetable yet
+                // this is done by querying the meeting table if the currenttimetable ID exist;
+                
+                $db->query("SELECT * FROM meeting WHERE meeting.timetable_id = {$sessionData->currentTimetable}");
+                $meeting = $db->getResults();
+
+                /*
+                    if generated timetable already exist; 
+                    copy record of timetable with the current timetableID 
+                    and create a new entry in the timetable database table;
+                    append timestamp in the description;
+
+                    copy records in subject_class table; 
+                    and create duplicates of those record;
+
+                    else updated
+
+                */
+                if ($db->count()){ // generated timetable already exist
+                    
+                    // copy the timetable record
+                    $db->query("SELECT * FROM timetable WHERE timetable.id = {$sessionData->currentTimetable}");
+                    $currentTimetable = $db->getResults();
+                    
+                    // copy the subject_class record/s
+                    $db->query("SELECT * FROM subject_class WHERE timetable_id = {$sessionData->currentTimetable}");
+                    $currentSubjectClass = $db->getResults();
+                    /*
+                            currentTimetable stdClass Object
+                                (
+                                    [id] => 1
+                                    [year_start] => 2020
+                                    [year_end] => 2021
+                                    [term] => 1
+                                    [remarks] => test
+                                    [created] => 2017-03-30 15:02:39
+                                    [current] => 1
+                                )
+                                currentSubjectClass stdClass Object
+                                (
+                                    [id] => 1
+                                    [timetable_id] => 1
+                                    [subject_id] => 18
+                                    [trainee_group_id] => 31
+                                    [instructor_id] => 20
+                                    [room_id] => 25
+                                    [room_type_id] => 7
+                                    [room_id_final] => 
+                                    [room_fixed] => 
+                                    [preferred_start_period] => 1
+                                    [preferred_end_period] => 4
+                                    [preferred_number_days] => 4
+                                )
+                                currentSubjectClass stdClass Object
+                                (
+                                    [id] => 3
+                                    [timetable_id] => 1
+                                    [subject_id] => 2
+                                    [trainee_group_id] => 4
+
+                                    [instructor_id] => 51
+                                    [room_id] => 25
+                                    [room_type_id] => 1
+                                    [room_id_final] => 
+                                    [room_fixed] =>
+
+                                    [preferred_start_period] => 1
+                                    [preferred_end_period] => 8
+                                    [preferred_number_days] => 3
+                                )
+
+
+                    */
+
+                    // unset the current timetable, set field current to 0;
+                    $db->query('UPDATE timetable SET timetable.current = 0  WHERE timetable.current = 1');
+                    
+                    // copy the original row, making a duplicate data except for the ID and
+                    // the remarks which will be updated on the succeeding lines. This will loop once only. 
+                    foreach ( $currentTimetable as $result){
+                        $db->insert('timetable', 
+                                    array(  'year_start'    => $result->year_start,
+                                            'year_end'      =>  $result->year_end,
+                                            'term'          => $result->term,
+                                            'remarks'       => $result->remarks,
+                                            'current'       => 1
+                                    ));
+
+                    }
+                    $lastInsertId = $db->getlastInsertId();
+                    $sessionData->currentTimetable = $lastInsertId;
+
+                    // copy the original row, making a duplicate data for each record
+                    foreach ( $currentSubjectClass as $result){
+                        $db->insert('subject_class', 
+                                    array(  'timetable_id'          => $sessionData->currentTimetable,
+                                            'subject_id'            => $result->subject_id,
+                                            'trainee_group_id'      => $result->trainee_group_id,
+
+                                            'instructor_id'         => $result->instructor_id,
+                                            'room_id'               => $result->room_id,
+                                            'room_type_id'          => $result->room_type_id,
+                                            'room_id_final'         => $result->room_id_final,
+                                            'room_fixed'            => $result->room_fixed,
+
+                                            'preferred_start_period'=> $result->preferred_start_period,
+                                            'preferred_end_period'  => $result->preferred_end_period,
+                                            'preferred_number_days' => $result->preferred_number_days
+                                    ));
+                    }
+
+                    // process the data and generate a new timetable; 
+                    $t = new Timetable();
+                    $result = $t->GeneticAlgorithm();
+                    $timetable = $result['timetable'];
+
+                    // render another view without the loading GIF
+                    // and display some GA statistics
+                    $fitnessValue = $result['fitnessValue'];
+
+                    // fetch timetable_id, subject_class_id, time_slot etc. 
+                    $newData = [];
+
+                    // timetable_id	subject_class_id	trainee_group_id	subject_id	instructor_id	time_slot	room_id	timestamp
+                    for($i=0; $i < sizeof($timetable); $i++){
+                        $newData[] = [  'timetable_id'      =>$timetable[$i]["sc"]['timetable_id'], 
+                                        'subject_class_id'  =>$timetable[$i]["sc"]["id"],
+                                        'trainee_group_id'  =>$timetable[$i]["sc"]['trainee_group_id'],
+                                        'subject_id'        =>$timetable[$i]["sc"]['subject_id'],
+                                        'instructor_id'     =>$timetable[$i]["sc"]['instructor_id'],
+                                        'room_id'           =>$timetable[$i]["sc"]["room_id"], 
+                                        'time_slot'         =>$timetable[$i]["ts"] 
+                                        ]; 
+                    }
+
+                    foreach ($newData as $key => $value) {
+                        $db->insert('meeting', 
+                                    array(  'timetable_id'      =>  $value['timetable_id'],
+                                            'subject_class_id'  =>  $value['subject_class_id'],
+                                            'trainee_group_id'  =>  $value['trainee_group_id'],
+                                            'subject_id'        =>  $value['subject_id'],
+                                            'instructor_id'     =>  $value['instructor_id'],
+                                            'room_id'           =>  $value["room_id"], 
+                                            'time_slot'         =>  $value["time_slot"]
+                        ));
+                    }
+
+                    // add the fitness value / number of conflicts for the currently gerenrated table;
+                    $db->query('UPDATE  timetable 
+                                SET     timetable.remarks = concat(\'('.$fitnessValue.') CONFLICT/S @ \')  
+                                WHERE   timetable.current = 1');
+                }
+
+                // this is a NEW timetable and no table has been generated yet
+                else{ 
+                    // process the data and generate a new timetable; 
+                    $t = new Timetable();
+                    $result = $t->GeneticAlgorithm();
+                    $timetable = $result['timetable'];
+
+                    // render another view without the loading GIF
+                    // and display some GA statistics
+                    $fitnessValue = $result['fitnessValue'];
+
+                    // fetch timetable_id, subject_class_id, time_slot etc. 
+                    $newData = [];
+
+                    // timetable_id	subject_class_id	trainee_group_id	subject_id	instructor_id	time_slot	room_id	timestamp
+                    for($i=0; $i < sizeof($timetable); $i++){
+                        $newData[] = [  'timetable_id'      =>$timetable[$i]["sc"]['timetable_id'], 
+                                        'subject_class_id'  =>$timetable[$i]["sc"]["id"],
+                                        'trainee_group_id'  =>$timetable[$i]["sc"]['trainee_group_id'],
+                                        'subject_id'        =>$timetable[$i]["sc"]['subject_id'],
+                                        'instructor_id'     =>$timetable[$i]["sc"]['instructor_id'],
+                                        'room_id'           =>$timetable[$i]["sc"]["room_id"], 
+                                        'time_slot'         =>$timetable[$i]["ts"] 
+                                        ]; 
+                    }
+
+                    foreach ($newData as $key => $value) {
+                        $db->insert('meeting', 
+                                    array(  'timetable_id'      =>  $value['timetable_id'],
+                                            'subject_class_id'  =>  $value['subject_class_id'],
+                                            'trainee_group_id'  =>  $value['trainee_group_id'],
+                                            'subject_id'        =>  $value['subject_id'],
+                                            'instructor_id'     =>  $value['instructor_id'],
+                                            'room_id'           =>  $value["room_id"], 
+                                            'time_slot'         =>  $value["time_slot"]
+                        ));
+                    }
+
+                    // add the fitness value / number of conflicts for the currently gerenrated table;
+                    $db->query('UPDATE  timetable 
+                                SET     timetable.remarks = concat(remarks,\' This table has '.$fitnessValue.' CONFLICT(S).\')  
+                                WHERE   timetable.current = 1');
+                }
+
+                header("Location: /home");
+                exit;
+            }
+     
+                        
+        }else {
+            header("Location: /home/logout");
+            exit;
+
+        }
+
+    }
+
+
+    /*
      * addSubjectClass - action will provide the controller mechanism to display a form with the list
      * list of already store room from the database. 
      *
@@ -822,306 +1181,6 @@ class TimetableController extends \Core\Controller{
     }
 
 
-
-
-    /*
-     * manageTimetable method 
-     *
-     * @param		
-     * @return	 	
-     */
-    public function setCurrentTimetable (){
-        $sessionData = Session::getInstance();
-        $db = DB::getInstance();
-
-        $sessionData->currentTimetable = $this->route_params["id"];
-        $db->query('UPDATE timetable SET timetable.current = 0  WHERE timetable.current = 1');
-        $qry = 'UPDATE timetable SET timetable.current = 1  WHERE timetable.id = '.$sessionData->currentTimetable ;
-        $db->query($qry);
-
-
-        header("Location: /home/index");
-        exit;
-    }
-
-
-    /*
-     * editCurrentTimetable method 
-     *
-     * @param		
-     * @return	 	
-     */
-    public function editCurrentTimetable (){
-        $sessionData = Session::getInstance();
-        $db = DB::getInstance();
-
-        $sessionData->currentTimetable = $this->route_params["id"];
-        $db->query('UPDATE timetable SET timetable.current = 0  WHERE timetable.current = 1');
-        $qry = 'UPDATE timetable SET timetable.current = 1  WHERE timetable.id = '.$sessionData->currentTimetable ;
-        $db->query($qry);
-        header("Location: /Timetable/TimetableController/addSubjectClass");
-        exit;
-    }
-
-
-
-    /*
-     * deleteCurrentTimetable method 
-     *
-     * @param		
-     * @return	 	
-     */
-    public function deleteCurrentTimetable (){
-        $sessionData = Session::getInstance();
-        $db = DB::getInstance();
-
-        $sessionData->currentTimetable = $this->route_params["id"];
-        //$db->query('UPDATE timetable SET timetable.current = 0  WHERE timetable.current = 1');
-        //$qry = 'UPDATE timetable SET timetable.current = 1  WHERE timetable.id = '.$sessionData->currentTimetable ;
-        $db->query($qry);
-        header("Location: /Timetable/TimetableController/addSubjectClass");
-        exit;
-        
-    }
-
-
-    /*
-     * generateNewTimetable method 
-     *
-     * @param		
-     * @return	 	
-     */
-    public function generateNewTimetable (){
-        $sessionData = Session::getInstance();
-        $db = DB::getInstance();
-
-        // echo "generateNewTimetable<pre>";
-
-        $buttonClicked = (key($_POST));
-
-
-        
-
-        // insert the newData to the meeting TABLE 
-        if ($sessionData->inSession) {
-            // view timetable button was clicked
-            if ($buttonClicked === 'view'){
-
-                header("Location: /home");
-                exit;
-
-            
-            }else { // generate new timetable button was clicked
-
-                // check if this timetable does not have a generated timetable yet
-                // this is done by querying the meeting table if the currenttimetable ID exist;
-                
-                $db->query("SELECT * FROM meeting WHERE meeting.timetable_id = {$sessionData->currentTimetable}");
-                $meeting = $db->getResults();
-
-                /*
-                    if generated timetable already exist; 
-                    copy record of timetable with the current timetableID 
-                    and create a new entry in the timetable database table;
-                    append timestamp in the description;
-
-                    copy records in subject_class table; 
-                    and create duplicates of those record;
-
-                    else updated
-
-                */
-                if ($db->count()){ // generated timetable already exist
-                    
-                    // copy the timetable record
-                    $db->query("SELECT * FROM timetable WHERE timetable.id = {$sessionData->currentTimetable}");
-                    $currentTimetable = $db->getResults();
-                    
-                    // copy the subject_class record/s
-                    $db->query("SELECT * FROM subject_class WHERE timetable_id = {$sessionData->currentTimetable}");
-                    $currentSubjectClass = $db->getResults();
-                    /*
-                            currentTimetable stdClass Object
-                                (
-                                    [id] => 1
-                                    [year_start] => 2020
-                                    [year_end] => 2021
-                                    [term] => 1
-                                    [remarks] => test
-                                    [created] => 2017-03-30 15:02:39
-                                    [current] => 1
-                                )
-                                currentSubjectClass stdClass Object
-                                (
-                                    [id] => 1
-                                    [timetable_id] => 1
-                                    [subject_id] => 18
-                                    [trainee_group_id] => 31
-                                    [instructor_id] => 20
-                                    [room_id] => 25
-                                    [room_type_id] => 7
-                                    [room_id_final] => 
-                                    [room_fixed] => 
-                                    [preferred_start_period] => 1
-                                    [preferred_end_period] => 4
-                                    [preferred_number_days] => 4
-                                )
-                                currentSubjectClass stdClass Object
-                                (
-                                    [id] => 3
-                                    [timetable_id] => 1
-                                    [subject_id] => 2
-                                    [trainee_group_id] => 4
-
-                                    [instructor_id] => 51
-                                    [room_id] => 25
-                                    [room_type_id] => 1
-                                    [room_id_final] => 
-                                    [room_fixed] =>
-
-                                    [preferred_start_period] => 1
-                                    [preferred_end_period] => 8
-                                    [preferred_number_days] => 3
-                                )
-
-
-                    */
-
-                    // unset the current timetable, set field current to 0;
-                    $db->query('UPDATE timetable SET timetable.current = 0  WHERE timetable.current = 1');
-                    
-                    // copy the original row, making a duplicate data except for the ID and
-                    // the remarks which will be updated on the succeeding lines. This will loop once only. 
-                    foreach ( $currentTimetable as $result){
-                        $db->insert('timetable', 
-                                    array(  'year_start'    => $result->year_start,
-                                            'year_end'      =>  $result->year_end,
-                                            'term'          => $result->term,
-                                            'remarks'       => $result->remarks,
-                                            'current'       => 1
-                                    ));
-
-                    }
-                    $lastInsertId = $db->getlastInsertId();
-                    $sessionData->currentTimetable = $lastInsertId;
-
-                    // copy the original row, making a duplicate data for each record
-                    foreach ( $currentSubjectClass as $result){
-                        $db->insert('subject_class', 
-                                    array(  'timetable_id'          => $sessionData->currentTimetable,
-                                            'subject_id'            => $result->subject_id,
-                                            'trainee_group_id'      => $result->trainee_group_id,
-
-                                            'instructor_id'         => $result->instructor_id,
-                                            'room_id'               => $result->room_id,
-                                            'room_type_id'          => $result->room_type_id,
-                                            'room_id_final'         => $result->room_id_final,
-                                            'room_fixed'            => $result->room_fixed,
-
-                                            'preferred_start_period'=> $result->preferred_start_period,
-                                            'preferred_end_period'  => $result->preferred_end_period,
-                                            'preferred_number_days' => $result->preferred_number_days
-                                    ));
-                    }
-
-                    // process the data and generate a new timetable; 
-                    $t = new Timetable();
-                    $result = $t->GeneticAlgorithm();
-                    $timetable = $result['timetable'];
-
-                    // render another view without the loading GIF
-                    // and display some GA statistics
-                    $fitnessValue = $result['fitnessValue'];
-
-                    // fetch timetable_id, subject_class_id, time_slot etc. 
-                    $newData = [];
-
-                    // timetable_id	subject_class_id	trainee_group_id	subject_id	instructor_id	time_slot	room_id	timestamp
-                    for($i=0; $i < sizeof($timetable); $i++){
-                        $newData[] = [  'timetable_id'      =>$timetable[$i]["sc"]['timetable_id'], 
-                                        'subject_class_id'  =>$timetable[$i]["sc"]["id"],
-                                        'trainee_group_id'  =>$timetable[$i]["sc"]['trainee_group_id'],
-                                        'subject_id'        =>$timetable[$i]["sc"]['subject_id'],
-                                        'instructor_id'     =>$timetable[$i]["sc"]['instructor_id'],
-                                        'room_id'           =>$timetable[$i]["sc"]["room_id"], 
-                                        'time_slot'         =>$timetable[$i]["ts"] 
-                                        ]; 
-                    }
-
-                    foreach ($newData as $key => $value) {
-                        $db->insert('meeting', 
-                                    array(  'timetable_id'      =>  $value['timetable_id'],
-                                            'subject_class_id'  =>  $value['subject_class_id'],
-                                            'trainee_group_id'  =>  $value['trainee_group_id'],
-                                            'subject_id'        =>  $value['subject_id'],
-                                            'instructor_id'     =>  $value['instructor_id'],
-                                            'room_id'           =>  $value["room_id"], 
-                                            'time_slot'         =>  $value["time_slot"]
-                        ));
-                    }
-
-                    // add the fitness value / number of conflicts for the currently gerenrated table;
-                    $db->query('UPDATE  timetable 
-                                SET     timetable.remarks = concat(\'('.$fitnessValue.') CONFLICT/S @ \')  
-                                WHERE   timetable.current = 1');
-                }
-
-                // this is a NEW timetable and no table has been generated yet
-                else{ 
-                    // process the data and generate a new timetable; 
-                    $t = new Timetable();
-                    $result = $t->GeneticAlgorithm();
-                    $timetable = $result['timetable'];
-
-                    // render another view without the loading GIF
-                    // and display some GA statistics
-                    $fitnessValue = $result['fitnessValue'];
-
-                    // fetch timetable_id, subject_class_id, time_slot etc. 
-                    $newData = [];
-
-                    // timetable_id	subject_class_id	trainee_group_id	subject_id	instructor_id	time_slot	room_id	timestamp
-                    for($i=0; $i < sizeof($timetable); $i++){
-                        $newData[] = [  'timetable_id'      =>$timetable[$i]["sc"]['timetable_id'], 
-                                        'subject_class_id'  =>$timetable[$i]["sc"]["id"],
-                                        'trainee_group_id'  =>$timetable[$i]["sc"]['trainee_group_id'],
-                                        'subject_id'        =>$timetable[$i]["sc"]['subject_id'],
-                                        'instructor_id'     =>$timetable[$i]["sc"]['instructor_id'],
-                                        'room_id'           =>$timetable[$i]["sc"]["room_id"], 
-                                        'time_slot'         =>$timetable[$i]["ts"] 
-                                        ]; 
-                    }
-
-                    foreach ($newData as $key => $value) {
-                        $db->insert('meeting', 
-                                    array(  'timetable_id'      =>  $value['timetable_id'],
-                                            'subject_class_id'  =>  $value['subject_class_id'],
-                                            'trainee_group_id'  =>  $value['trainee_group_id'],
-                                            'subject_id'        =>  $value['subject_id'],
-                                            'instructor_id'     =>  $value['instructor_id'],
-                                            'room_id'           =>  $value["room_id"], 
-                                            'time_slot'         =>  $value["time_slot"]
-                        ));
-                    }
-
-                    // add the fitness value / number of conflicts for the currently gerenrated table;
-                    $db->query('UPDATE  timetable 
-                                SET     timetable.remarks = concat(remarks,\' This table has '.$fitnessValue.' CONFLICT(S).\')  
-                                WHERE   timetable.current = 1');
-                }
-
-                header("Location: /home");
-                exit;
-            }
-     
-                        
-        }else {
-            header("Location: /home/logout");
-            exit;
-
-        }
-
-    }
 
 
 
