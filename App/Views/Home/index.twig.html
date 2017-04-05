@@ -34,13 +34,13 @@
                                             {% if meeting.time_slot == time_slot %}
                                             <table width="50%" class="table"><tbody>
                                             <tr> 
-                                                {% if 'Fabien' starts with 'F' %}
-                                                {% endif %}
 
-                                                {% if meeting.code  starts with 'B' %} 
-                                                    <td style="background-color:#F5EEF8">
-                                                {% else %}
-                                                    <td style="background-color:#EBF5FB">
+                                                {% if meeting.trainee_group  matches '/BUS/' %} 
+                                                    <td style="background-color:#FAD7A0">
+                                                {% elseif meeting.trainee_group  matches '/ELC/' %}
+                                                    <td style="background-color:#A9DFBF">
+                                                {% elseif meeting.trainee_group  matches '/ELX/' %}
+                                                    <td style="background-color:#D2B4DE">  
                                                 {% endif %}
                                                 
                                                 <b>{{ meeting.trainee_group }}</b><br/>

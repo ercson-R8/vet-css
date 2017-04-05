@@ -110,7 +110,7 @@ class Test extends \Core\Controller {
         // $v = new Timetable();
         // $w = new Timetable();
 
-        $t->indexAction();
+        $t->GeneticAlgorithm();
         // $u->indexAction();
         // $v->indexAction();
         // $w->indexAction();

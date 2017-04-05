@@ -313,22 +313,19 @@ class Timetable{
             for ($i=0; $i < sizeof($timetable); $i++) {
                 // gather all IDs belonging to this timeslot.
                 if ($timeslot == $timetable[$i]["ts"]) {
-                    $subjectClassID[] = $timetable[$i]["sc"]["subject_id"];
-                    $roomID[] = $timetable[$i]["sc"]["room_id"];
-                    $traineeGroupID[] = $timetable[$i]["sc"]["trainee_group_id"];
-                    $instructorID[] = $timetable[$i]["sc"]["instructor_id"];
+                    //$subjectID[]        = $timetable[$i]["sc"]["subject_id"];
+                    $roomID[]           = $timetable[$i]["sc"]["room_id"];
+                    $traineeGroupID[]   = $timetable[$i]["sc"]["trainee_group_id"];
+                    $instructorID[]     = $timetable[$i]["sc"]["instructor_id"];
                     //$subjectID[]= $timetable[$i]["sc"]["id"];
                 }
             }
             
             // the difference between size of the arrayID and the number of UNIQUE items in that
             // array is 0 then there is no conflict.
-            $totalConflicts +=  (sizeof($subjectClassID)-sizeof(array_unique($subjectClassID))) 
-                                + (sizeof($roomID)-sizeof(array_unique($roomID)))
-                                + (sizeof($traineeGroupID)-sizeof(array_unique($traineeGroupID)))
-                                + (sizeof($instructorID)-sizeof(array_unique($instructorID))) 
-                                // + (sizeof($subjectID)-sizeof(array_unique($subjectID)))
-                                
+            $totalConflicts +=    (sizeof($roomID)          -sizeof(array_unique($roomID)))
+                                + (sizeof($traineeGroupID)  -sizeof(array_unique($traineeGroupID)))
+                                + (sizeof($instructorID)    -sizeof(array_unique($instructorID)))                                
                                 ;
         }
 
@@ -598,7 +595,7 @@ class Timetable{
         // random rooms if the property roomFixed = null.
   
         $this->baseSubjectClass = $this->fetchBaseSubjectClass($timetableID);
-        // print_r("\nNumber of Classes: ".sizeof($this->baseSubjectClass)."\n");
+        // print_r("\n<pre>Number of Classes: ".sizeof($this->baseSubjectClass)."\n");
 
         // setup()
         //  # Step 1: The Population
@@ -653,6 +650,8 @@ class Timetable{
             // print_r("\nSize of population: ".sizeof($this->population)."\n");
             // print_r("\nPopulation[0] ELITISM <b>". $this->calcFitness($this->population[0])."</b>");
             // print_r("\nPopulation[1] ELITISM <b>". $this->calcFitness($this->population[1])."</b>");
+            // print_r("\nPopulation[3] ELITISM <b>". $this->calcFitness($this->population[3])."</b>");
+            // print_r("\nPopulation[4] ELITISM <b>". $this->calcFitness($this->population[4])."</b>");
             //     1. evaluate fitness of timetables (population)
             for($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++){
                 $timetableFitness[$timetable] = $this->calcFitness($this->population[$timetable]);
@@ -669,9 +668,8 @@ class Timetable{
                     
                     // print_r("\n".""."\n"); // echo memory_get_usage() - $startMemory, ' bytes';
                     // var_dump( ini_get('memory_limit') ); // var_dump(memory_get_usage() );
-                    $time_end = microtime(true);$execution_time = ($time_end - $time_start);
+                    // $time_end = microtime(true);$execution_time = ($time_end - $time_start);
                     // echo '<b>Total Execution Time:</b> '.(round($execution_time,2)).' sec';
-
                     return ['timetable' => $this->population[$timetable] , 'fitnessValue' => $fitnessValue];
                 }
             }
@@ -693,7 +691,7 @@ class Timetable{
 
             //     2. Process fitness values.             
             //         2.1 Find the best timetable so far
-            $uniqueFitnessValues =  $timetableFitness; // array_unique ($timetableFitness); //  
+            $uniqueFitnessValues = $timetableFitness; //  array_unique ($timetableFitness); //  
             asort($uniqueFitnessValues);
 
             //        2.2 eliminate the least fit timetable.
@@ -701,21 +699,26 @@ class Timetable{
 
             $fitnessHighest = [array_search(min($timetableFitness), $timetableFitness) => min($timetableFitness)];
             $fitnessLowest = [array_search(max($timetableFitness), $timetableFitness) => max($timetableFitness)];
-            
+            $timetableFitnessSize = sizeof ($uniqueFitnessValues);
+            // print_r("\ntimetableFitness Total size: ".$timetableFitnessSize."\n");
+            // print_r($fitnessHighest);
+            // print_r($fitnessLowest);
             // print_r("\nFitnessValue=>"."Frequency\n");
-            // 2.3 Normalize each fitness values: (fitnessVale/TotalFitness) * 100
+
+            // 2.3 Normalize each fitness values
+
             foreach($uniqueFitnessValues as $key => $fitnessValue){
-                
+                // print_r("\n".$fitnessValue."\n");
                 // 2.3 Normalize each fitness values: (fitnessVale/TotalFitness) * 100 
-                $matingPoolFrequency =    round ((  ((1/($fitnessValue+1)* 100))  /  TimetableConfig::POP_SIZE ) * 100)           ;
-                if(fmod($key, 4) == 0 ){
-                    // echo"\n";
-                }
+                $matingPoolFrequency =    round ((  ((1/(($fitnessValue)+1)* 100))  /  TimetableConfig::POP_SIZE ) * 100)           ;
+                // if(fmod($key, 4) == 0 ){
+                //     echo"\n";
+                // }
 
 
-                if ($fitnessValue < 20 ){
-                    // print_r("<b>[".$fitnessValue."]</b>=>".$matingPoolFrequency."");
-                }                
+                // if (1){ //($fitnessValue < 20 ){
+                //     print_r("<b>[".$fitnessValue."]</b>=>".$matingPoolFrequency."");
+                // }                
                 // 3. prepare matingPool indexes
                 // 3.1 Populate the matingPool
                 
@@ -728,8 +731,11 @@ class Timetable{
                 $selectionPool[$key] = $this->population[$key];
 
             }
-
-            // print_r("\nSelection Pool: ".(sizeof($selectionPool)-TimetableConfig::ELITISM)." Mating Pool: ".sizeof($matingPool)."\n");
+            $aveFit = round(array_sum($timetableFitness) / sizeof($timetableFitness) );
+            
+            // print_r("\nSelection Pool: ".(sizeof($selectionPool)).
+            //         " Mating Pool: ".sizeof($matingPool).
+            //         " Average fitness: ".$aveFit."\n");
             $n=0;
             // ELITISM, find the elite/s 
             // 4.2 save the top n timetables
@@ -746,6 +752,8 @@ class Timetable{
             }
             // print_r("\nPopulation[0] AFTER ELITISM <b>". $this->calcFitness($this->population[0])."</b>");
             // print_r("\nPopulation[1] AFTER ELITISM <b>". $this->calcFitness($this->population[1])."</b>");
+            //  print_r("\nPopulation[3] AFTER ELITISM <b>". $this->calcFitness($this->population[3])."</b>");
+            //   print_r("\nPopulation[4] AFTER ELITISM <b>". $this->calcFitness($this->population[4])."</b>");
                      
             $crossRate = (int)(TimetableConfig::POP_SIZE * TimetableConfig::CROSSOVER_RATE ) ;
             
@@ -782,6 +790,8 @@ class Timetable{
             }
             // print_r("\nPopulation[0] AFTER CROSS <b>". $this->calcFitness($this->population[0])."</b>");
             // print_r("\nPopulation[1] AFTER CROSS <b>". $this->calcFitness($this->population[1])."</b>");
+            // print_r("\nPopulation[3] AFTER CROSS <b>". $this->calcFitness($this->population[3])."</b>");
+            // print_r("\nPopulation[4] AFTER CROSS <b>". $this->calcFitness($this->population[4])."</b>");
             
             // $this->dispTable($this->population[0]);
  
@@ -797,17 +807,18 @@ class Timetable{
         // var_dump( ini_get('memory_limit') );
         // var_dump(memory_get_usage() );
         
-        $time_end = microtime(true);
+        // $time_end = microtime(true);
 
         //dividing with 60 will give the execution time in minutes other wise seconds
-        $execution_time = ($time_end - $time_start);
+        // $execution_time = ($time_end - $time_start);
 
         //execution time of the script
         // echo '<b>Total Execution Time:</b> '.(round($execution_time,2)).' sec';
         // print_r("\n".""."\n");
 
         // [0] is the elite
-        // $this->dispTable($this->population[0], true);
+        $this->dispTable($this->population[0], true);
+
         return ['timetable' => $this->population[0] , 'fitnessValue' => $this->calcFitness($this->population[0])];
 
     }
