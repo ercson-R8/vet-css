@@ -56,6 +56,7 @@ class TimetableController extends \Core\Controller{
                                         'timetable' => $timetable,
                                         'title' => 'Add A Timetable',
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableHeadings' => ['Year Start', 'Year End', 'Term' ,'Description']
                                     ]);
         }else {
@@ -238,6 +239,7 @@ class TimetableController extends \Core\Controller{
                                             'timetable' => $timetable,
                                             'title' => 'Add A Timetable',
                                             'firstName' => $sessionData->firstName,
+                                            'accessRight'   => $sessionData->rights,
                                             'tableHeadings' => ['Year Start', 'Year End', 'Term' ,'Description']
                                         ]);
                 
@@ -257,6 +259,7 @@ class TimetableController extends \Core\Controller{
                                         'timetable' => $timetable,
                                         'title' => 'Add A Timetable',
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableHeadings' => ['Year Start', 'Year End', 'Term' ,'Description']
                                     ]);
             
@@ -567,6 +570,7 @@ class TimetableController extends \Core\Controller{
                                         'subjectClass' => $subject_class,
                                         'title' => 'Add a Class '.$sessionData->currentTimetable, 
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableTitle' => $tableTitle,
                                         'tableSubTitle' => $tableSubTitle,
                                         'tableHeadings' => ['Group', 'Subject - Instructor' , 'Room' ,'No. of Days', 'Start - End']
@@ -772,6 +776,7 @@ class TimetableController extends \Core\Controller{
                                     'subjectClass' => $subject_class,
                                     'title' => 'Update A Subject Class ', 
                                     'firstName' => $sessionData->firstName,
+                                    'accessRight'   => $sessionData->rights,
                                     'tableTitle' => $tableTitle,
                                     'tableSubTitle' => $tableSubTitle,
                                     'oldEntry'      => $oldEntry,
@@ -916,6 +921,7 @@ class TimetableController extends \Core\Controller{
                                             'subjectClass' => $subject_class,
                                             'title' => 'Update A Subject Class ', 
                                             'firstName' => $sessionData->firstName,
+                                            'accessRight'   => $sessionData->rights,
                                             'tableTitle' => $tableTitle,
                                             'tableSubTitle' => $tableSubTitle,
                                             'oldEntry'      => $oldEntry,
@@ -1003,6 +1009,7 @@ class TimetableController extends \Core\Controller{
                                         'subjectClass' => $subject_class,
                                         'title' => 'Update A Subject Class ', 
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableTitle' => $tableTitle,
                                         'tableSubTitle' => $tableSubTitle,
                                         'oldEntry'      => $oldEntry,
@@ -1104,6 +1111,7 @@ class TimetableController extends \Core\Controller{
                                             'subjectClass' => $subject_class,
                                             'title' => 'Add a Class '.$sessionData->currentTimetable, 
                                             'firstName' => $sessionData->firstName,
+                                            'accessRight'   => $sessionData->rights,
                                             'tableTitle' => $tableTitle,
                                             'tableSubTitle' => $tableSubTitle,
                                             'tableHeadings' => ['Group', 'Subject - Instructor' , 'Room' ,'No. of Days', 'Start - End']
@@ -1170,6 +1178,7 @@ class TimetableController extends \Core\Controller{
                                         'subjectClass' => $subject_class,
                                         'title' => 'Add a Class '.$sessionData->currentTimetable, 
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableTitle' => $tableTitle,
                                         'tableSubTitle' => $tableSubTitle,
                                         'tableHeadings' => ['Group', 'Subject - Instructor' , 'Room' ,'No. of Days', 'Start - End']

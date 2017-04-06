@@ -83,7 +83,7 @@ class LoginController extends \Core\Controller
         // print_r($user);
         // print_r("\n".$_POST['password']."\n");
         if($db->count() > 0 && password_verify(($_POST['password']), htmlspecialchars( $user[0]->password)) ){
-            print_r("\nYou are logged in.."."\n");
+            // print_r("\nYou are logged in.."."\n");
             $sessionData->email = $user[0]->email;
             $sessionData->firstName = $user[0]->first_name;
             $sessionData->lastName = $user[0]->last_name;
@@ -91,9 +91,9 @@ class LoginController extends \Core\Controller
             $sessionData->rights = $user[0]->rights;
 
             $sessionData->inSession = true;
-            print_r($user[0]);
-            print_r($user[0]->email);
-            print_r($user[0]->password);
+            // print_r($user[0]);
+            // print_r($user[0]->email);
+            // print_r($user[0]->password);
             header("Location: /home/index");
 
         }else{

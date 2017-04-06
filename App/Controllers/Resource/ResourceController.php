@@ -55,6 +55,7 @@ class ResourceController extends \Core\Controller{
             View::renderTemplate ('Resources/addTraineeGroupForm.twig.html', [
                                         'traineeGroupTable' => $traineeGroupTable,
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'trainee_group' => $trainee_group,
                                         'title' => 'Add New Trainee Group',
                                         'tableHeadings' => ['Name', 'Level', 'Section', 'Description']
@@ -119,6 +120,7 @@ class ResourceController extends \Core\Controller{
                                                         <h4 class="text-center">Trainee Group already exist!</h4>
                                                 </div>',
                                     'firstName' => $sessionData->firstName,
+                                    'accessRight'   => $sessionData->rights,
                                     'title' => 'Add New Trainee Group',
                                     'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                     'traineeGroupTable' => $traineeGroupTable
@@ -156,6 +158,7 @@ class ResourceController extends \Core\Controller{
                                                         </div>',
                                             'title' => 'Add New Trainee Group',
                                             'firstName' => $sessionData->firstName,
+                                            'accessRight'   => $sessionData->rights,
                                             'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                             'traineeGroupTable' => $traineeGroupTable
                                         ]);
@@ -171,6 +174,7 @@ class ResourceController extends \Core\Controller{
                                                         </div>',
                                             'title' => 'Add New Trainee Group',
                                             'firstName' => $sessionData->firstName,
+                                            'accessRight'   => $sessionData->rights,
                                             'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                             'traineeGroupTable' => $traineeGroupTable
                                         ]);
@@ -388,6 +392,7 @@ class ResourceController extends \Core\Controller{
                                                     </div>',
                                         'title' => 'Add New Trainee Group',
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                         'traineeGroupTable' => $traineeGroupTable
                                     ]);
@@ -403,6 +408,7 @@ class ResourceController extends \Core\Controller{
                                                     </div>',
                                         'title' => 'Add New Trainee Group',
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                         'traineeGroupTable' => $traineeGroupTable
                                     ]);
@@ -431,6 +437,7 @@ class ResourceController extends \Core\Controller{
                                         'subject' => $subject,
                                         'title' => 'Add New Course',
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableHeadings' => ['Name', 'Code', 'Req. Period', 'Description']
 
                                     ]);
@@ -488,6 +495,7 @@ class ResourceController extends \Core\Controller{
                                                     </div>',
                                         'title' => 'Add New Course',
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                         'subject' => $subject
                                     ]);
@@ -523,6 +531,7 @@ class ResourceController extends \Core\Controller{
                                                         </div>',
                                             'title' => 'Add New Course',
                                             'firstName' => $sessionData->firstName,
+                                            'accessRight'   => $sessionData->rights,
                                             'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                             'subject' => $subject
                                         ]);
@@ -539,6 +548,7 @@ class ResourceController extends \Core\Controller{
                                                         </div>',
                                             'title' => 'Add New Course',
                                             'firstName' => $sessionData->firstName,
+                                            'accessRight'   => $sessionData->rights,
                                             'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                             'subject' => $subject
                                         ]);
@@ -757,6 +767,7 @@ class ResourceController extends \Core\Controller{
                                                     </div>',
                                         'title' => 'Add New Course',
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                         'subject' => $subject
                                     ]);
@@ -772,6 +783,7 @@ class ResourceController extends \Core\Controller{
                                                     </div>',
                                         'title' => 'Add New Course',
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                         'subject' => $subject
                                     ]);
@@ -797,6 +809,7 @@ class ResourceController extends \Core\Controller{
                                         'instructors' => $instructors,
                                         'title' => 'Add A New Instructor',
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableHeadings' => ['First name', 'Last name', 'ID Number' ,'Note']
 
                                     ]);
@@ -850,6 +863,7 @@ class ResourceController extends \Core\Controller{
                                                     </div>',
                                         'title' => 'Add New Instructor',
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableHeadings' => ['Name', 'Level', 'ID Number', 'Note'],
                                         'instructors' => $instructors
                                     ]);
@@ -885,6 +899,7 @@ class ResourceController extends \Core\Controller{
                                                         </div>',
                                             'title' => 'Add New Instructor',
                                             'firstName' => $sessionData->firstName,
+                                            'accessRight'   => $sessionData->rights,
                                             'tableHeadings' => ['Name', 'Level', 'Section', 'Note'],
                                             'instructors' => $instructors
                                         ]);
@@ -901,6 +916,7 @@ class ResourceController extends \Core\Controller{
                                                         </div>',
                                             'title' => 'Add New Instructor',
                                             'firstName' => $sessionData->firstName,
+                                            'accessRight'   => $sessionData->rights,
                                             'tableHeadings' => ['Name', 'Level', 'Section', 'Description'],
                                             'traineeGroupTable' => $instructor
                                         ]);
@@ -956,6 +972,7 @@ class ResourceController extends \Core\Controller{
                                                     </div>',
                                         'title' => 'Add New Instructor',
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableHeadings' => ['First name', 'Last name', 'ID Number' ,'Note'],
                                         'instructors' => $instructors
                                     ]);
@@ -1152,6 +1169,7 @@ class ResourceController extends \Core\Controller{
                                         'rooms' => $rooms,
                                         'title' => 'Add A New Room',
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableHeadings' => ['Name', 'Type', 'Location' ,'Description']
                                     ]);
         }else {
@@ -1221,6 +1239,7 @@ class ResourceController extends \Core\Controller{
                                                     </div>',
                                         'title' => 'Add New Room',
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableHeadings' =>  ['Name', 'Type', 'Location' ,'Description'],
                                         'rooms' => $rooms
                                     ]);
@@ -1272,6 +1291,7 @@ class ResourceController extends \Core\Controller{
                                             'rooms' => $rooms,
                                             'title' => 'Add New Room',
                                             'firstName' => $sessionData->firstName,
+                                            'accessRight'   => $sessionData->rights,
                                             'tableHeadings' =>  ['Name', 'Type', 'Location' ,'Description']
                                             
                                         ]);
@@ -1303,6 +1323,7 @@ class ResourceController extends \Core\Controller{
                                                         </div>',
                                             'title' => 'Add New Room',
                                             'firstName' => $sessionData->firstName,
+                                            'accessRight'   => $sessionData->rights,
                                             'tableHeadings' =>  ['Name', 'Type', 'Location' ,'Description'],
                                             'rooms' => $rooms
                                         ]);
@@ -1565,6 +1586,7 @@ class ResourceController extends \Core\Controller{
                                                     </div>',
                                         'title' => 'Add New Room',
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableHeadings' =>  ['Name', 'Type', 'Location' ,'Description'],
                                         'rooms' => $rooms
                                     ]);
@@ -1593,6 +1615,7 @@ class ResourceController extends \Core\Controller{
                                                     </div>',
                                         'title' => 'Add New Room',
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableHeadings' =>  ['Name', 'Type', 'Location' ,'Description'],
                                         'rooms' => $rooms
                                     ]);

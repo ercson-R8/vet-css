@@ -327,7 +327,6 @@ class Timetable{
                         // $roomID[]           = $timetable[$i]["sc"]["room_id"];
                         // $traineeGroupID[]   = $timetable[$i]["sc"]["trainee_group_id"];
                         // $instructorID[]     = $timetable[$i]["sc"]["instructor_id"];
-                        //$subjectID[]= $timetable[$i]["sc"]["id"];
                     }
                     
                    
@@ -760,7 +759,7 @@ class Timetable{
                      
             $crossRate = (int)(TimetableConfig::POP_SIZE * TimetableConfig::CROSSOVER_RATE ) ;
             
-            // print_r("\nCROSS up to : =====> ".$crossRate."\n");
+            print_r("\nCROSS up to : =====> ".$crossRate."\n");
             
             for( $timetable=TimetableConfig::ELITISM; $timetable < $crossRate ; $timetable++ ){
                 if(fmod($timetable+3, 5) == 0 ){
