@@ -37,27 +37,27 @@ class TimetableConfig {
      * The number of timetables in a population
      * @var int 
      */
-    const POP_SIZE = 50;
+    const POP_SIZE = 75;
 
 
     /**  
      * Total number of generation 
      * @var int 
      */
-    const MAX_GEN = 2000;
+    const MAX_GEN = 5000;
 
 
     /**  
      * The rate of mutation for a child timetable.
      * @var float 
      */
-    const MUTATION_RATE = 0.03;
+    const MUTATION_RATE = 0.01;
 
     /**  
      * The rate of crossover for a set of timetables. 
      * @var float 
      */
-    const CROSSOVER_RATE = 0.99;
+    const CROSSOVER_RATE = 0.95;
 
     /**  
      * The number of elites to be kept in the population. 

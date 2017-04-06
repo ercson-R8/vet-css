@@ -316,17 +316,17 @@ class Timetable{
             for ($i=0; $i < sizeof($timetable); $i++) {
                 // gather all IDs belonging to this timeslot.
                 if ($timeslot == $timetable[$i]["ts"]) {
-                    $roomID[]           = $timetable[$i]["sc"]["room_id"];
-                    $traineeGroupID[]   = $timetable[$i]["sc"]["trainee_group_id"];
-                    $instructorID[]     = $timetable[$i]["sc"]["instructor_id"];
+                    // $roomID[]           = $timetable[$i]["sc"]["room_id"];
+                    // $traineeGroupID[]   = $timetable[$i]["sc"]["trainee_group_id"];
+                    // $instructorID[]     = $timetable[$i]["sc"]["instructor_id"];
                     if ($timetable[$i]["sc"]["subject_id"] == 1 ) {
                         // echo "study break\n";
                         // print_r($timetable[$i]["sc"]);
-                        //$traineeGroupID[]   = $timetable[$i]["sc"]["trainee_group_id"];
+                        $traineeGroupID[]   = $timetable[$i]["sc"]["trainee_group_id"];
                     } else {
-                        // $roomID[]           = $timetable[$i]["sc"]["room_id"];
-                        // $traineeGroupID[]   = $timetable[$i]["sc"]["trainee_group_id"];
-                        // $instructorID[]     = $timetable[$i]["sc"]["instructor_id"];
+                        $roomID[]           = $timetable[$i]["sc"]["room_id"];
+                        $traineeGroupID[]   = $timetable[$i]["sc"]["trainee_group_id"];
+                        $instructorID[]     = $timetable[$i]["sc"]["instructor_id"];
                     }
                     
                    
@@ -580,7 +580,7 @@ class Timetable{
 
         //place this before any script you want to calculate time
         $time_start = microtime(true);
-        ini_set('max_execution_time', 600); //300 seconds = 5 minutes
+        ini_set('max_execution_time', 900); //300 seconds = 5 minutes
         $startMemory = memory_get_usage();
 
         $timetableID = $sessionData->currentTimetable;  // will be replaced by the actual database table id later
@@ -712,7 +712,7 @@ class Timetable{
             foreach($uniqueFitnessValues as $key => $fitnessValue){
                 // print_r("\n".$fitnessValue."\n");
                 // 2.3 Normalize each fitness values: (fitnessVale/TotalFitness) * 100 
-                $matingPoolFrequency =    round ((  ((1/(($fitnessValue)+1)* 100))  /  TimetableConfig::POP_SIZE ) * 100)           ;
+                $matingPoolFrequency =    round ((  ((1/(($fitnessValue)+1)* 100))  /  max($timetableFitness) ) * 100)           ;
                 // if(fmod($key, 4) == 0 ){
                 //     echo"\n";
                 // }
