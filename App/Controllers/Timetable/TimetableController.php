@@ -52,7 +52,7 @@ class TimetableController extends \Core\Controller{
             
             $timetable = ($db->getResults());
             // print_r($timetable);
-            View::renderTemplate ('Timetables/addtimetableForm.twig.html', [
+            View::renderTemplate ('Timetables/addTimetableForm.twig.html', [
                                         'timetable' => $timetable,
                                         'title' => 'Add A Timetable',
                                         'firstName' => $sessionData->firstName,
@@ -231,7 +231,7 @@ class TimetableController extends \Core\Controller{
                 
                 $timetable = ($db->getResults());
                 // print_r($timetable);
-                View::renderTemplate ('Timetables/addtimetableForm.twig.html', [
+                View::renderTemplate ('Timetables/addTimetableForm.twig.html', [
                                             'status' => '<div class="alert alert-success alert-dismissable">
                                                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                                                                 <h4 class="text-center">Timetable has been deleted!</h4>
@@ -251,7 +251,7 @@ class TimetableController extends \Core\Controller{
             
             $timetable = ($db->getResults());
             // print_r($timetable);
-            View::renderTemplate ('Timetables/addtimetableForm.twig.html', [
+            View::renderTemplate ('Timetables/addTimetableForm.twig.html', [
                                         'status' => '<div class="alert alert-danger alert-dismissable">
                                                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                                                             <h4 class="text-center">Data already deleted.</h4>
