@@ -21,10 +21,8 @@ class Timetable{
      * @return	 	
      */
     public function dummy (){
-        
-        for ($i=0; $i < 100000; $i++) { 
-            # code...
-        }
+        echo "<pre>dummy";
+
         // echo "<h1>From dummy method</h1>";
     }
 
@@ -376,6 +374,7 @@ class Timetable{
 
         return $totalConflicts;
     }
+
 
 
     /*

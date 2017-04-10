@@ -61,6 +61,7 @@ class UserController extends \Core\Controller{
             View::renderTemplate ('Users/addUserForm.twig.html', [
                                         'userGroupTable'    => $userGroupTable,
                                         'firstName'         => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'user_group'        => $user_group,
                                         'title'             => 'Add New User',
                                         'tableHeadings'     => ['First', 'Last', 'Email', 'Rights']
@@ -126,6 +127,7 @@ class UserController extends \Core\Controller{
                                                 </div>',
                                     'userGroupTable'    => $userGroupTable,
                                     'firstName'         => $sessionData->firstName,
+                                    'accessRight'       => $sessionData->rights,
                                     'user_group'        => $user_group,
                                     'title'             => 'Add New User',
                                     'tableHeadings'     => ['First', 'Last', 'Email', 'Rights']

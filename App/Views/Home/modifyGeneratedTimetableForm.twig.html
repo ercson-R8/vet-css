@@ -32,7 +32,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="well">
-                                <form class="form center-block" name="formTimetable" action="/" method="post">
+                                <form class="form center-block" name="formRecheckTimetable" action="recheckTimetable" method="post">
                                     <div class="col-lg-6 col-md-6 col-sm-6" >
                                         <div class="form-group form-group-sm">
                                             <button class="btn btn-success btn-sm btn-block" name="view" type="submit">
@@ -43,7 +43,7 @@
                                     <div class="col-lg-6 col-md-6 col-sm-6" >
                                         <div class="form-group form-group-sm">
                                             <button class="btn btn-primary btn-sm btn-block" name="generate" type="submit">
-                                            ReGenerate timetable
+                                            Recheck This Timetable
                                             </button>
                                         </div>
                                     </div>
@@ -89,7 +89,7 @@
 
                                         </td>
                                         <td style="text-align:center">
-                                            <a href="#" data-toggle="modal" id="mt_id_{{ row.id }}" 
+                                            <a href="#" data-toggle="modal" id="{{ row.id }}" 
                                              <a href="#" data-toggle="modal" data-target="#edit-modal" title="Edit this Item!" class="btn btn-xs btn-primary">
                                                 <span class="fa fa-edit"></span>
                                             </a>
@@ -143,7 +143,7 @@
                     <h4 class="modal-title" id="myModalLabel">Update Generated Timetable</h4>
                 </div>
                 <div class="modal-body ">
-                    <form class="form center-block" name="addTraineeGroup" action="/Timetable/TimetableController/deleteSubjectClass" method="post">
+                    <form class="form center-block" name="updateGeneratedTimetable" action="updateGeneratedTimetable" method="post">
                         <div class="row">
                             <div class="col-xs-1">
                                 <i class="fa fa-warning text-info fa-3x"></i>
@@ -163,7 +163,7 @@
                                             <td>
                                                 <div class="form-group form-group-sm">
                                                     
-                                                    <input type="text" class="form-control"  name="room_type" placeholder="Room type" id="search-box-roomType" required>
+                                                    <input type="text" class="form-control"  name="room_type" placeholder="Room type" id="search-box-roomType">
                                                     <input type="hidden" class="form-control" name="room_type_id" placeholder="" id="room_type_id" required>
                                                     <span class="pull-left text-muted small"><i>Room type</i></span>
                                                     <p></p><div id="suggesstion-box-roomType"></div>
@@ -172,8 +172,8 @@
                                             <td colspan="2">
                                                 <div class="form-group form-group-sm">
 
-                                                        <input type="text" class="form-control" name="room_id_dummy" placeholder="-Room-" id="search-box-room" value="" disabled >
-                                                        <input type="hidden" class="form-control" name= "room_id" placeholder="" id="room_id" required>
+                                                        <input type="text" class="form-control" name="room_id_dummy" placeholder="-Room-" id="search-box-room" value="" required disabled >
+                                                        <input type="hidden" class="form-control" name= "room_id" placeholder="" id="room_id" >
                                                         <span class="pull-left text-muted small"><i>Room selected</i></span>
                                                         <p></p><div id="suggesstion-box-room"></div>
 
@@ -188,7 +188,8 @@
                 <!-- class="panel-body" -->
             
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger pull-right">Proceed and Delete</button>
+                    <input type="hidden" class="modal-input edit-input" name="meeting_id" value="">
+                    <button type="submit" class="btn btn-primary pull-right">Proceed and Update</button>
                     </form>
                 <div>
 
