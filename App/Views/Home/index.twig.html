@@ -6,15 +6,24 @@
 
 {% block body %}
         <span class="text-muted small">
+            <a href="/"  title="Remove Filter!"  class="btn btn-xs btn-primary" >Make Changes
+                <span class="fa fa-cog" ></span>
+            </a>
+
             <a href="#" data-toggle="modal" id="{{ row.id }}"  data-target="#filter-modal" 
-                title="Filter!"  class="btn btn-xs btn-danger" >Filter Here
+                title="Filter!"  class="btn btn-xs btn-primary" > Filter Here   
                 <span class="fa fa-filter  " ></span>
             </a>
+            
             <a href="/"  title="Remove Filter!"  class="btn btn-xs btn-success" >Remove Filter
-                <span class="fa fa-filter  " ></span>
+                <span class="fa fa-play  " ></span>
             </a>
+             
         </span>
-        <span class="text-muted small pull-right">Generated @ <b style="color:red">{{timestamp}}</b></span>
+        <span class="text-muted small pull-right">
+            Generated @ <b style="color:red">{{timestamp}}</b>
+            
+        </span>
         
         <div class="panel-body">
             <table width="100%" class="table table-striped table-bordered" id="-currentTimetable">
