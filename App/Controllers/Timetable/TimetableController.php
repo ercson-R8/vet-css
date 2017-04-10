@@ -415,6 +415,9 @@ class TimetableController extends \Core\Controller{
                     // render another view without the loading GIF
                     // and display some GA statistics
                     $fitnessValue = $result['fitnessValue'];
+                    
+                    // conflict at timeslot number;
+                    $conflicts =  $result['conflicts'];
 
                     // fetch timetable_id, subject_class_id, time_slot etc. 
                     $newData = [];
@@ -426,7 +429,7 @@ class TimetableController extends \Core\Controller{
                                         'trainee_group_id'  =>$timetable[$i]["sc"]['trainee_group_id'],
                                         'subject_id'        =>$timetable[$i]["sc"]['subject_id'],
                                         'instructor_id'     =>$timetable[$i]["sc"]['instructor_id'],
-                                        'room_id'           =>$timetable[$i]["sc"]["room_id"], 
+                                        'room_id'           =>$timetable[$i]["rm"], 
                                         'time_slot'         =>$timetable[$i]["ts"] 
                                         ]; 
                     }
@@ -444,9 +447,8 @@ class TimetableController extends \Core\Controller{
                     }
 
                     // add the fitness value / number of conflicts for the currently gerenrated table;
-                    $db->query('UPDATE  timetable 
-                                SET     timetable.remarks = concat(\'('.$fitnessValue.') CONFLICT/S @ \')  
-                                WHERE   timetable.current = 1');
+                    $remarks = '('.$fitnessValue.')'.'Conflict/s ['.$conflicts.']';
+                    $db->query('UPDATE  timetable SET timetable.remarks = \''.$remarks.'\' WHERE   timetable.current = 1');
                 }
 
                 // this is a NEW timetable and no table has been generated yet
@@ -454,11 +456,17 @@ class TimetableController extends \Core\Controller{
                     // process the data and generate a new timetable; 
                     $t = new Timetable();
                     $result = $t->GeneticAlgorithm();
+                    // echo "<pre>controller here.. \n";
+                    // print_r($result);
+                    
                     $timetable = $result['timetable'];
 
                     // render another view without the loading GIF
                     // and display some GA statistics
                     $fitnessValue = $result['fitnessValue'];
+
+                    // conflict at timeslot number;
+                    $conflicts =  $result['conflicts'];
 
                     // fetch timetable_id, subject_class_id, time_slot etc. 
                     $newData = [];
@@ -470,7 +478,7 @@ class TimetableController extends \Core\Controller{
                                         'trainee_group_id'  =>$timetable[$i]["sc"]['trainee_group_id'],
                                         'subject_id'        =>$timetable[$i]["sc"]['subject_id'],
                                         'instructor_id'     =>$timetable[$i]["sc"]['instructor_id'],
-                                        'room_id'           =>$timetable[$i]["sc"]["room_id"], 
+                                        'room_id'           =>$timetable[$i]["rm"], 
                                         'time_slot'         =>$timetable[$i]["ts"] 
                                         ]; 
                     }
@@ -488,9 +496,9 @@ class TimetableController extends \Core\Controller{
                     }
 
                     // add the fitness value / number of conflicts for the currently gerenrated table;
-                    $db->query('UPDATE  timetable 
-                                SET     timetable.remarks = concat(remarks,\' This table has '.$fitnessValue.' CONFLICT(S).\')  
-                                WHERE   timetable.current = 1');
+
+                    $remarks = '('.$fitnessValue.')'.'Conflict/s ['.$conflicts.']';
+                    $db->query('UPDATE  timetable SET timetable.remarks = \''.$remarks.'\' WHERE   timetable.current = 1');
                 }
 
                 header("Location: /home");

@@ -491,16 +491,14 @@ class Test extends \Core\Controller {
      */
     public function stringSplit (){
         // Example 1
-        $pizza  = "1 piece2 piece3 piece4 piece5 piece6";
-        $pieces = explode(" ", $pizza);
-        echo $pieces[0]; // piece1
-        echo $pieces[2]; // piece2
-        print_r("\n"."\n");
-        // Example 2
-        $data = "foo:*:1023:1000::/home/foo:/bin/sh";
-        list($user, $pass, $uid, $gid, $gecos, $home, $shell) = explode(":", $data);
-        echo $user; // foo
-        echo $pass; // *
+        echo "<pre>";
+        $i = 5;
+        $j = '2.2.3';
+        $remarks = '('.$i.')'.'Conflict/s ['.$j.']';
+        $str1 = ('UPDATE  timetable 
+                    SET     timetable.remarks = \''.$remarks.'\'
+                    WHERE   timetable.current = 1');
+        print_r("\n".$str1."\n");
 
     }
 
