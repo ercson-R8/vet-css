@@ -483,7 +483,8 @@ class Home extends \Core\Controller
                             'subject.code as \'code\'',
                             'concat (instructor.first_name,\' \', instructor.last_name) as\'instructor\'', 
                             'room.name as \'room\'',
-                            'meeting.time_slot'
+                            'meeting.time_slot',
+                            'meeting.id'
 
                     ),
                     array('meeting
@@ -498,7 +499,6 @@ class Home extends \Core\Controller
                     ),
                     array(
                         ['meeting.timetable_id', '=', $sessionData->currentTimetable]
-                        // ,['instructor.first_name', 'LIKE', '%Fat%']
                     )
                 );
             $meetings = ($db->getResults());
@@ -514,7 +514,19 @@ class Home extends \Core\Controller
                                     'tableHeadings' => ['Group', 'Course', 'Instructor', 'Timeslot', 'Room']
 
                                 ]);
+        }else { // there is no generated timetable for this current one;
+            View::renderTemplate ('Home/index.twig.html', [
+                                        'firstName'     => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
+                                        'lastName'      => $sessionData->lastName,
+                                        'tableTitle'    => 'No timetable generated yet!<br/> Generate using the Timetable menu above.',
+                                        'tableSubTitle' => '',
+                                        'meeting'       => []
+                                    ]);
         }
+
+
+
     }
 
 

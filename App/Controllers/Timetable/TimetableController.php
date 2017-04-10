@@ -1317,10 +1317,6 @@ class TimetableController extends \Core\Controller{
                                     echo $result->id ?>','<?php echo $result->name; ?>');"><?php echo $result->name; ?>
                         </li>
 
-
-
-
-
                         <?php 
                         
                         
