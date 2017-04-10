@@ -183,9 +183,6 @@ class Home extends \Core\Controller
     }
 
 
-
-
-
     /*
      * generatePeriods method 
      *
@@ -404,13 +401,124 @@ class Home extends \Core\Controller
     }
 
 
+    public function modifyGeneratedTimetable(){
+        $sessionData = Session::getInstance();
+        // session was processed by the before Method above; 
+
+        $db = DB::getInstance();
+        // fetch timetable info 
+
+        
+        $db->select(
+            array('*'),
+            array('timetable'),
+            array(['timetable.current', '=', '1'])
+        );
+        $timetable = ($db->getResults());
+        if($db->count() > 0){
+            $sessionData->currentTimetable = $timetable[0]->id;
+        }else{
+            // need to redirect ... wip
+            header("Location: /Timetable/TimetableController/addTimetable");
+            exit;
+            
+        }
+        
+        $tableTitle = 'List of classes for AY '.$timetable[0]->year_start.'-'.$timetable[0]->year_end.' Term '.$timetable[0]->term;
+        $tableSubTitle = ''.$timetable[0]->remarks.' '.$timetable[0]->created;
+
+        // fetch meeting info; 
+        $db->select(
+            array('*'),
+            array('meeting'),
+            array(['meeting.timetable_id', '=', $sessionData->currentTimetable])
+        );
 
 
+        $meeting = ($db->getResults());
+        
 
-    public function demoAction(){
-        View::renderTemplate ('Home/demo.twig.html');
+        // if there exist a generated timetable for this current timetable; 
+        // fetch the data and pass it to the view index.twig.html; 
+        if ($db->count()){
+            $timestamp = $meeting[0]->timestamp;
 
+            // setup the periods and their corresponding time slots; 
+            if(true) {
+                $time_slots = [];
+                
+                // will contain all the periods with their corresponding time slots; 
+                $time_col = [];
+                
+                // 8:00 - 8:50 , 8:50 - 9:40 etc... 
+                $period = $this->generatePeriods(TimetableConfig::TOTAL_PERIODS);
+
+                // 0 to 4 
+                $numDays = TimetableConfig::TOTAL_DAYS;
+
+                $totalTimeSlot = TimetableConfig::TOTAL_TIME_SLOTS;
+
+                // get all the timeslots
+                for ($i=0; $i < $totalTimeSlot; $i++) { 
+                    $time_slots[]=$i;
+                }
+
+                // group time slots according to the day they fall into; 
+                for ($i=0; $i <sizeof ($period); $i++) { 
+                    for ($j=0; $j < $totalTimeSlot; $j++) {
+                        if (($j==$i) or (fmod($j-$i, TimetableConfig::TOTAL_PERIODS))== 0 ){
+                            $shift = array_shift($time_slots);
+                            $time_col[$period[$i]][] = $j;
+                        }
+                    }
+                }
+            }
+        
+            // fetch the data from the database;
+            $db = DB::getInstance();
+            $db->select(
+                    array(  
+                            'trainee_group.name as \'trainee_group\'',
+                            'subject.name as \'subject\'',
+                            'subject.code as \'code\'',
+                            'concat (instructor.first_name,\' \', instructor.last_name) as\'instructor\'', 
+                            'room.name as \'room\'',
+                            'meeting.time_slot'
+
+                    ),
+                    array('meeting
+                                INNER JOIN trainee_group
+                                    ON meeting.trainee_group_id = trainee_group.id
+                                INNER JOIN subject
+                                    ON meeting.subject_id = subject.id
+                                INNER JOIN instructor
+                                    ON meeting.instructor_id = instructor.id
+                                INNER JOIN room
+                                    on meeting.room_id = room.id' 
+                    ),
+                    array(
+                        ['meeting.timetable_id', '=', $sessionData->currentTimetable]
+                        // ,['instructor.first_name', 'LIKE', '%Fat%']
+                    )
+                );
+            $meetings = ($db->getResults());
+
+
+         View::renderTemplate ('/Home/modifyGeneratedTimetableForm.twig.html', [
+                                    'firstName'     => $sessionData->firstName,
+                                    'accessRight'   => $sessionData->rights,
+                                    'tableTitle'    => $tableTitle,
+                                    'tableSubTitle' => $tableSubTitle,
+                                    'meetings'      => $meetings,
+                                    'title'         => 'Modify Generated Timetable',
+                                    'tableHeadings' => ['Group', 'Course', 'Instructor', 'Timeslot', 'Room']
+
+                                ]);
+        }
     }
+
+
+
 
 
     /*
@@ -425,6 +533,13 @@ class Home extends \Core\Controller
         $sessionData->destroy();
         header("Location: /auth/LoginController/index");
         exit;
+    }
+
+
+
+    public function demoAction(){
+        View::renderTemplate ('Home/demo.twig.html');
+
     }
 
     /** 
@@ -475,34 +590,6 @@ class Home extends \Core\Controller
 
 
 
-    /*
-     * readTraineeGroup method 
-     *
-     * @param		
-     * @return	 	
-     */
-    public function readTraineeGroup(){
-
-        if(!empty($_POST["keyword"])) {
-            $db = DB::getInstance();
-            $keyword = "'".$_POST["keyword"]."%'";
-          
-            $db->query("SELECT * FROM trainee_group WHERE trainee_group.name LIKE {$keyword} ORDER BY trainee_group.name LIMIT 0,10");
-            //  print_r($db->count());
-            if ($db->count()){
-                ?>
-                    <ul id="traineeGroup-list" class="list-unstyled">
-                    <?php
-                        foreach ($db->getResults() as $result){
-                        ?>
-                        <li onClick="selectCountry('<?php echo $result->name ?>');"><?php echo $result->name; ?></li>
-                        <?php } ?>
-                    </ul>
-                <?php
-            }            
-        }
-
-    }
 
 
     public function testAction(){
