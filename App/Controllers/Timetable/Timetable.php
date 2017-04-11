@@ -789,8 +789,8 @@ class Timetable{
                         break;
                     }
                     $this->mutationRate = $this->mutationRate + 0.01;
-                    $this->population[0] = $this->mutate($this->population[0]);
-                    $this->population[0] = $this->crossover($this->mutate($this->population[0]), $this->mutate($this->population[0]));
+                    // $this->population[0] = $this->mutate($this->population[0]);
+                    // $this->population[0] = $this->crossover($this->mutate($this->population[0]), $this->mutate($this->population[0]));
                     $stagnantCounter = 0;
 
                     $terminateCounter++;
