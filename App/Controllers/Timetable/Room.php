@@ -30,8 +30,7 @@ class Room {
     public function __construct ($ID = null, $name = null, $type = null,
                                     $location = null, $description = null){
         $this->ID = $ID;
-        // room 4 is designated canteen
-        $this->name = ($ID == 4 ? null : $name); 
+        $this->name = $name; 
         $this->type = $type;
         $this->location = $location;
         $this->description  = $description;

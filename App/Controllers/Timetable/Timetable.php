@@ -781,7 +781,7 @@ class Timetable{
             if ( $populationZeroFitnessValue == $currentFitnessValue){
                 $stagnantCounter++;
 
-                if ($stagnantCounter == 500){
+                if ($stagnantCounter == 300){
                     
                     print_r("\nStagnantCounter @ ".$stagnantCounter."\n");
 
