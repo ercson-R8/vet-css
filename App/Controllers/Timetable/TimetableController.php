@@ -501,8 +501,8 @@ class TimetableController extends \Core\Controller{
                     $db->query('UPDATE  timetable SET timetable.remarks = \''.$remarks.'\' WHERE   timetable.current = 1');
                 }
 
-                header("Location: /home");
-                exit;
+                // header("Location: /home");
+                // exit;
             }
      
                         

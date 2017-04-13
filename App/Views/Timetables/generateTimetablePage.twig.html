@@ -41,9 +41,34 @@
                                 <div id="myBar"></div>
                                 </div>
                                 -->
+
+                            <!-- Progress bar holder -->
+                            <div id="progress" style="width:500px;border:1px solid #ccc;"></div>
+                            <!-- Progress information -->
+                            <div id="information" style="width:"></div>
                             
-                            <span id="progress"></span>
+                            <hr>
+                            Timetable #: <span id="id_timetable">0</span> <br/>
+                            No. of Classes: <span id="id_class_size">0</span> 
+                            Population size: <span id="id_population_size">0</span> 
+                            Maximum Generation: <span id="id_max_generation">0</span> <br/>
+                            <br>
+                            <br>
+                            Generation: <b> <span id="id_generation">0</span> </b> <br>
+                            Total time: <b> <span id="id_time">0</span> seconds </b> <br>
+                            Fittest table: <b> <span id="id_fittest">0</span> conflict/s</b> <br>
+                           
+                            Average: <b> <span id="id_average">0</span> </b> <br>
+                            Elite +1: <b> <span id="id_elite">0</span> </b> <br>
+                            Selection Pool Size: <b> <span id="id_selection_size">0</span> </b> Mating Pool Size: <span id="id_mating_size">0</span> </b><br>
+                            Stagnant counter: <span id="id_stagnant">0</span> Mutation Rate: <span id="id_mutation">0</span>
+
                             
+                            <br><br>
+
+                            <span id="id_result"></span>
+                            <span id="test"></span>
+
 
                         </div>
                         <!-- class="panel-body" -->
@@ -79,137 +104,5 @@
     });
 </script>
 
-
-    <script>
-        $(document).ready(function(){
-            $("#search-box-traineeGroup").keyup(function(){
-                $.ajax({
-                type: "POST",
-                url: "/timetable/TimetableController/ajaxFetchTraineeGroups",
-                data:'keyword='+$(this).val(),
-                beforeSend: function(){
-                    $("#search-box-traineeGroup").css("background","#FFF url(../../vendor/image/LoaderIcon.gif) no-repeat 100px");
-
-                },
-                success: function(data){
-                    $("#suggesstion-box-traineeGroup").show();
-                    $("#suggesstion-box-traineeGroup").html(data);
-                    $("#search-box-traineeGroup").css("background","#FFF");
-                    $("#suggesstion-box-traineeGroup").css("background","#F1F1FA");
-                }
-                });
-            });
-
-            $("#search-box-course").keyup(function(){
-                $.ajax({
-                type: "POST",
-                url: "/timetable/TimetableController/ajaxFetchCourses",
-                data:'keyword='+$(this).val(),
-                beforeSend: function(){
-                    $("#search-box-course").css("background","#FFF url(../../vendor/image/LoaderIcon.gif) no-repeat 100px");
-
-                },
-                success: function(data){
-                    $("#suggesstion-box-course").show();
-                    $("#suggesstion-box-course").html(data);
-                    $("#search-box-course").css("background","#FFF");
-                    $("#suggesstion-box-course").css("background","#F1F1FA");
-                }
-                });
-            });
-
-            $("#search-box-instructor").keyup(function(){
-                $.ajax({
-                type: "POST",
-                url: "/timetable/TimetableController/ajaxFetchInstructors",
-                data:'keyword='+$(this).val(),
-                beforeSend: function(){
-                    $("#search-box-instructor").css("background","#FFF url(../../vendor/image/LoaderIcon.gif) no-repeat 100px");
-
-                },
-                success: function(data){
-                    $("#suggesstion-box-instructor").show();
-                    $("#suggesstion-box-instructor").html(data);
-                    $("#search-box-instructor").css("background","#FFF");
-                    $("#suggesstion-box-instructor").css("background","#F1F1FA");
-                }
-                });
-            });
-
-            $("#search-box-roomType").keyup(function(){
-                $.ajax({
-                type: "POST",
-                url: "/timetable/TimetableController/ajaxFetchRoomTypes",
-                data:'keyword='+$(this).val(),
-                beforeSend: function(){
-                    $("#search-box-roomType").css("background","#FFF url(../../vendor/image/LoaderIcon.gif) no-repeat 120px");
-
-                },
-                success: function(data){
-                    $("#suggesstion-box-roomType").show();
-                    $("#suggesstion-box-roomType").html(data);
-                    $("#search-box-roomType").css("background","#FFF");
-                    $("#suggesstion-box-roomType").css("background","#F1F1FA");
-                }
-                });
-            });
-            
-        });
-
-        function selectOptionsTraineeGroup(code, traineeGroupName) {
-            $("#search-box-traineeGroup").val(traineeGroupName);
-            $("#trainee_group_id").val(code);
-            $("#suggesstion-box-traineeGroup").hide();
-            $("#loading").hide();
-        }
-
-        function selectOptionsCourse(code, subjectName) {
-            $("#search-box-course").val(subjectName);
-            $("#subject_id").val(code);
-            $("#suggesstion-box-course").hide();
-            $("#loading").hide();
-        }
-        
-        function selectOptionsInstructor(code, fullName) {
-            $("#search-box-instructor").val(fullName);
-            $("#instructor_id").val(code);
-            $("#suggesstion-box-instructor").hide();
-            $("#loading").hide();
-        }
-
-        function selectOptionsRoomType(code, roomTypeName) {
-
-            $("#search-box-roomType").val(roomTypeName);
-            $("#suggesstion-box-roomType").hide();
-            $("#loading").hide();
-            //alert("code val: "+ code);
-
-            //var x = $("#search-box-roomType").val();
-            $("#room_type_id").val(code);
-            
-            $.ajax({
-                type: "POST",
-                url: "/timetable/TimetableController/"+  $("#room_type_id").val()+"/ajaxFetchRooms",
-                data:'keyword='+$("#room_type_id").val(),
-                beforeSend: function(){
-                    //alert("beforeSend "+$("#room_type_id").val());
-                },
-                success: function(data){
-                    //alert("success "+$("#room_type_id").val());
-                    $("#suggesstion-box-room").show();
-                    $("#suggesstion-box-room").html(data);
-                }
-            });
-
-        }
-
-        function selectOptionsRoom(code, fullName) {
-            $("#search-box-room").val(fullName);
-            $("#room_id").val(code);
-            $("#suggesstion-box-room").hide();
-            $("#loading").hide();
-        }
-
-    </script>
 
 {% endblock %}
