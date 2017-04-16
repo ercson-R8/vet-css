@@ -414,10 +414,25 @@ class Home extends \Core\Controller
 
         $db = DB::getInstance();
         // fetch timetable info 
+        
+        $buttonClicked = (key($_POST));
 
-        echo "<pre>recheckTimetable";
-        print_r($_POST);
-        print_r('Current timetable is: '.$sessionData->currentTimetable);
+        // insert the newData to the meeting TABLE 
+        if ($sessionData->inSession) {
+            // view timetable button was clicked
+            if ($buttonClicked === 'view'){
+
+                header("Location: /home");
+                exit;
+            }
+        }
+
+
+        
+
+        // echo "<pre>recheckTimetable";
+        // print_r($_POST);
+        // print_r('Current timetable is: '.$sessionData->currentTimetable);
 
         // ------------------------------------
         // fetch meeting info; 
@@ -600,6 +615,8 @@ class Home extends \Core\Controller
 
 
     public function modifyGeneratedTimetable(){
+        
+
         $sessionData = Session::getInstance();
         // session was processed by the before Method above; 
 
@@ -621,6 +638,8 @@ class Home extends \Core\Controller
             exit;
             
         }
+
+
         
         $tableTitle = 'List of classes for AY '.$timetable[0]->year_start.'-'.$timetable[0]->year_end.' Term '.$timetable[0]->term;
         $tableSubTitle = ''.$timetable[0]->remarks.' '.$timetable[0]->created;
@@ -732,6 +751,10 @@ class Home extends \Core\Controller
      * @return	 	
      */
     public function updateGeneratedTimetable (){
+        // echo "<pre>";
+        // print_r($_POST);
+        // exit;
+        
         $sessionData = Session::getInstance();
         $db = DB::getInstance();
 

@@ -126,16 +126,15 @@
                         {% if accessRight  == 1 %}
                         
                             <li data-toggle="tooltip" data-placement="left" title="Add user">
-                                <a href="#"><i class="fa fa-group fa-fw fa-2x" ></i>Add User</a>
+                                <a href="/User/UserController/addUser"><i class="fa fa-group fa-fw fa-2x" ></i>Manage User</a>
                             </li>
                             <li class="divider"></li>
                         {% endif %}
 
-                        <li data-toggle="tooltip" data-placement="left" title="Change you password"><a href="#"><i class="fa fa-wrench fa-fw fa-2x" ></i>Reset Password</a>
+                        <li data-toggle="tooltip" data-placement="left" title="Change you password">
+                            <a href="/User/UserController/editProfile"><i class="fa fa-wrench fa-fw fa-2x" ></i>Edit Profile</a>
                         </li>
    
-                        <li data-toggle="tooltip" data-placement="bottom" title="Change account information"><a href="#"><i class="fa fa-magic fa-fw fa-2x"></i>Edit Profile</a>
-                        </li>
                         <li class="divider"></li>
                         <li><a href="/home/logout"><i class="fa fa-sign-out fa-fw fa-2x"></i> Logout</a>
                         </li>

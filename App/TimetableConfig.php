@@ -7,7 +7,7 @@ class TimetableConfig {
      | TimetableConfig
      |--------------------------------------------------------------------------
      | 
-     | This class contains the settings used to build a timetable.  
+     | This class contains the settings use to build a timetable.  
      | 
      | 
      | 
@@ -37,14 +37,14 @@ class TimetableConfig {
      * The number of timetables in a population
      * @var int 
      */
-    const POP_SIZE = 100;
+    const POP_SIZE = 50;
 
 
     /**  
      * Total number of generation 
      * @var int 
      */
-    const MAX_GEN = 2000;
+    const MAX_GEN = 5000;
 
 
     /**  
@@ -61,9 +61,15 @@ class TimetableConfig {
 
     /**  
      * The number of elites to be kept in the population. 
-     * @var float 
+     * @var int 
      */
     const ELITISM = 5; 
+
+    /**  
+     * The number of generations with stagnant individual 
+     * @var int 
+     */
+    const MAX_STAGNANT = 500; 
 
 
 }

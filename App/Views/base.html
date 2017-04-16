@@ -120,15 +120,14 @@
                         {% if accessRight  == 1 %}
                         
                             <li data-toggle="tooltip" data-placement="left" title="Add users">
-                                <a href="/User/UserController/addUser"><i class="fa fa-group fa-fw fa-2x" ></i>Add User</a>
+                                <a href="/User/UserController/addUser"><i class="fa fa-group fa-fw fa-2x" ></i>Manage User</a>
                             </li>
                             <li class="divider"></li>
                         {% endif %}
-                        <li data-toggle="tooltip" data-placement="left" title="Change you password"><a href="#"><i class="fa fa-wrench fa-fw fa-2x" ></i>Reset Password</a>
+                        <li data-toggle="tooltip" data-placement="left" title="Change you password">
+                            <a href="/User/UserController/editProfile"><i class="fa fa-wrench fa-fw fa-2x" ></i>Edit Profile</a>
                         </li>
-   
-                        <li data-toggle="tooltip" data-placement="bottom" title="Change account information"><a href="#"><i class="fa fa-magic fa-fw fa-2x"></i>Edit Profile</a>
-                        </li>
+
                         <li class="divider"></li>
                         <li><a href="/home/logout"><i class="fa fa-sign-out fa-fw fa-2x"></i> Logout</a>
                         </li>
@@ -227,21 +226,6 @@
 <!-- Custom Theme JavaScript -->
 <script src="../../dist/js/sb-admin-2.js"></script>
 
-<!-- Page-Level Demo Scripts - Tables - Use for reference -->
-{#<script>
-    $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-            responsive: true,
-            //"pagingType": "full_numbers",
-            //"bPaginate": false,
-            // "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-            // "ordering": false
-            scrollY:        '100vh',
-            //scrollCollapse: true,
-            paging:         false
-        });
-    });
-</script>#}
 
 <script>
     $(document).ready(function() {
@@ -272,7 +256,8 @@
             "paging":   false,
             "ordering": false,
             "info":     false
-        });
+    });
+
 
 </script>
 

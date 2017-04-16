@@ -751,7 +751,7 @@ class Timetable{
         $generation = 0;
         $stagnantCounter = 0;
         $terminateCounter = 0;
-        $currentFitnessValue = 0;
+        $currentFitnessValue = 100;
         $execution_time = 0;
         $time_start = time(); //microtime(true);
 
@@ -765,36 +765,36 @@ class Timetable{
 
             //     1. evaluate fitness of timetables (population)
             for($timetable=0; $timetable < TimetableConfig::POP_SIZE; $timetable++){
+                
+                $fitnessValue = $this->calcFitness($this->population[$timetable]);
 
-                $timetableFitness[$timetable] = $this->calcFitness($this->population[$timetable]);
+                $timetableFitness[$timetable] =  $fitnessValue;
                 
                 if(($timetableFitness[$timetable] == 0 )){
 
-                    $resultSummary = "<h3>Zero Conflict Timetable Generated Succesfully!</h3> 
-                                        <br>Click <b><a href='/home'>here to see the result</br>";
+                    // Send output to browser immediately
+                    flush(); 
+                    // This is for the buffer achieve the minimum size in order to flush data
+                    echo str_repeat(' ',1024*64);
+
+                    $resultSummary      = '<hr/><span class=\"fa fa-heart text-danger\"></span>'
+                                          .' Zero Conflict Timetable Generated! <br/><br/>'
+                                          .'Click <b><a href=\'/home\'>here to see the result</br> ';
+                    
                     echo '<script language="javascript">
+                            alert("Zero Conflict Timetable Generated Succesfully!");
+                            document.getElementById("id_result").innerHTML      ="'.$resultSummary.'";
+                            document.getElementById("id_fittest").innerHTML     ="'.$timetableFitness[$timetable].'";
                             
-                            document.getElementById("id_result").innerHTML="'.$resultSummary.' ";
-                            document.getElementById("test").innerHTML="asdfasdf";
-
-
                         </script>';
 
                     // This is for the buffer achieve the minimum size in order to flush data
-                        echo str_repeat(' ',1024*64);
-
-
-                    // Send output to browser immediately
-                        flush();  
-
-                    $fitnessValue = $this->calcFitness($this->population[$timetable]);
+                    echo str_repeat(' ',1024*64);
 
                     $fitTimetableFound = true;
-
-
                     $conflicts = '';
        
-                    $result = [ 'timetable'     => $this->population[0] , 
+                    $result = [ 'timetable'     => $this->population[$timetable] , 
                                 'fitnessValue'  => $fitnessValue,
                                 'conflicts'     => $conflicts
                                 ];
@@ -856,17 +856,19 @@ class Timetable{
 
 
 
-            $populationZeroFitnessValue = $uniqueFitnessValues[TimetableConfig::ELITISM]; //$this->calcFitness($timetableFitness[TimetableConfig::ELITISM]);
+            $populationZeroFitnessValue =  $uniqueFitnessValues[TimetableConfig::ELITISM-1];
+            // $uniqueFitnessValues[TimetableConfig::ELITISM]; 
+            // $this->calcFitness($timetableFitness[TimetableConfig::ELITISM]);
             
             $aveFit = round(array_sum($timetableFitness) / sizeof($timetableFitness) );
             if ( $populationZeroFitnessValue == $currentFitnessValue){
                 $stagnantCounter++;
 
-                if ($stagnantCounter == 100){
+                if ($stagnantCounter == TimetableConfig::MAX_STAGNANT){
                     
                     //print_r("\nStagnantCounter @ ".$stagnantCounter."\n");
 
-                    if($terminateCounter > 5){
+                    if($terminateCounter > 9){
                         break;
                     }
                     $this->mutationRate = $this->mutationRate + 0.01;
@@ -876,15 +878,25 @@ class Timetable{
 
                     $terminateCounter++;
                     
-                    //print_r("\nMutationRate now @ ".$this->mutationRate.". TerminateCounter @ ".$terminateCounter.". Generating new POPULATION\n");
-
                     for ($timetable= 1; $timetable < TimetableConfig::POP_SIZE; $timetable++) { 
 
                         $this->population[$timetable] = $this->initPopulation($subjectClassSet[$timetable]);
-
+                        
                         $timetableFitness[$timetable] = $this->calcFitness($this->population[$timetable]);
                     
                     }
+                    $uniqueFitnessValues = $timetableFitness; //  array_unique ($timetableFitness); //  
+
+                    asort($uniqueFitnessValues);
+
+                    $timetableFitnessSize = sizeof ($uniqueFitnessValues);
+
+                    $populationZeroFitnessValue =  $uniqueFitnessValues[TimetableConfig::ELITISM-1];
+                    $aveFit = round(array_sum($timetableFitness) / sizeof($timetableFitness) );
+                    echo '<br>id_elite '.$populationZeroFitnessValue;
+                    echo '<br>id_average '.$aveFit; 
+
+                    
                 }
 
             }else{
@@ -913,6 +925,8 @@ class Timetable{
             }
            
             
+
+
             // Javascript for updating the progress bar and information
             $percent = intval($generation/$total * 100)."%";
 
@@ -920,31 +934,31 @@ class Timetable{
             
             $execution_time = ($time_end - $time_start); 
             
-            echo '<script language="javascript">
-                    document.getElementById("progress").innerHTML="<div style=\"width:'.$percent.';background-color:#ddd;\">&nbsp;</div>";
+            echo '<script>
+                    document.getElementById("progress").innerHTML="<div style=\"width:'.$percent.';background-color:#2ECC71;\">&nbsp;</div>";
 
-                    document.getElementById("id_generation").innerHTML  ="'.$generation.' ";
+                    document.getElementById("id_generation").innerHTML  ="'.$generation.'";
 
-                    document.getElementById("id_time").innerHTML        ="'. ($execution_time).' ";
+                    document.getElementById("id_time").innerHTML        ="'. ($execution_time).'";
                     
-                    document.getElementById("id_fittest").innerHTML     ="'.$uniqueFitnessValues[0].' ";
+                    document.getElementById("id_fittest").innerHTML     ="'.$uniqueFitnessValues[0].'";
 
-                    document.getElementById("id_elite").innerHTML       ="'.$uniqueFitnessValues[TimetableConfig::ELITISM].'";
+                    document.getElementById("id_elite").innerHTML       ="'.$populationZeroFitnessValue.'";
 
-                    document.getElementById("id_average").innerHTML     ="'.$aveFit.' ";
+                    document.getElementById("id_average").innerHTML     ="'.$aveFit.'";
 
-                    document.getElementById("id_stagnant").innerHTML    ="'.$stagnantCounter.' "; 
+                    document.getElementById("id_stagnant").innerHTML    ="'.$stagnantCounter.'"; 
 
-                    document.getElementById("id_selection_size").innerHTML="'.(sizeof($selectionPool)).' "; 
+                    document.getElementById("id_selection_size").innerHTML="'.($crossRate).'"; 
 
-                    document.getElementById("id_mating_size").innerHTML     ="'.sizeof($matingPool).' "; 
+                    document.getElementById("id_mating_size").innerHTML     ="'.sizeof($matingPool).'"; 
 
                     document.getElementById("id_mutation").innerHTML        ="'.$this->mutationRate.' "; 
                     
 
                 </script>';
             // This is for the buffer achieve the minimum size in order to flush data
-                echo str_repeat(' ',1024*64);
+                // echo str_repeat(' ',1024*64);
 
 
             // Send output to browser immediately
@@ -993,10 +1007,17 @@ class Timetable{
         $conflicts = null;
         foreach ($this->conflicts as $key => $value) {
             $conflicts .= $value. '.';
-        }        
+        }       
+
+        // This is for the buffer achieve the minimum size in order to flush data
+            echo str_repeat(' ',1024*64);
 
 
-        $resultSummary = "Click <b><a href='/home'>here to see the result</br>";
+        // Send output to browser immediately
+            flush(); 
+
+
+        $resultSummary = "<hr>Processing done. Click <b><a href='/home'>here to see the result.";
         echo '<script language="javascript">
                 
                 document.getElementById("id_result").innerHTML="'.$resultSummary.' ";
@@ -1102,7 +1123,7 @@ class Timetable{
         $chosenRoom = [];
 
         foreach ($this->rooms as $room) {
-            if ($room->getType() == $roomType) {
+            if ($room->getType() === $roomType) {
                 $chosenRoom[]= $room;
             }
         }

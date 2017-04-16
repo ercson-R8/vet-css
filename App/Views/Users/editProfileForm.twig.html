@@ -1,0 +1,97 @@
+{% extends "base_level_1.html" %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block body %}
+
+
+    {{ status | raw}}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4" ></div>
+            <div class="col-lg-4 col-md-4 col-sm-4" >
+                <div class="well"> 
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3>{{title}}</h3>
+                        </div>
+                        <div class="panel-body">
+
+                            {% for key,value in oldEntry %}
+                                 
+                                 <input type="hidden" name="name_{{ key }}" id="id_{{ key }}" value="{{ value }}">
+                                
+                            {% endfor %}
+                            <form class="form   center-block" name="createNewUser" action="/User/UserController/updateProfile" method="post">
+                            
+                                <div class="form-group form-group">
+                                    <input type="text" class="form-control" name="first_name" id="first_name" placeholder="First name"  autofocus>                                    
+                                </div>
+                                <div class="form-group form-group">
+                                   <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last name"  >
+                                </div>
+
+                                <div class="form-group form-group">
+                                    <input class="form-control input" placeholder="Enter your email" name="email" id="email" type="email">
+                                </div>
+                                <hr/>
+                                <div class="form-group">
+                                    <input class="form-control input" placeholder="Password" name="password" id="password" type="password" value="" ><br/>
+                                    <input class="form-control input" placeholder="Confirm Password" name="confirm_password" id="confirm_password" type="password" value="" >
+                                    
+                                </div>
+                                
+
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control"  name="user_id" id="user_id" value="">
+                                    <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit" >
+                                        Update Profile
+                                    </button>                                    
+                                </div>
+                            </form>
+                        
+                        </div>
+                        <!-- class="panel-body" -->
+                        <div class="panel-footer">
+                            <span><a href="/home/index">Cancel and go back home</a></span>
+                        </div>
+                        <!-- class="panel-footer" -->
+                    </div>
+                    <!-- class="panel panel-primary" -->
+
+                </div>
+                <!-- class="well" -->
+            </div>
+            <!-- class="col-lg-6 col-md-6 col-sm-6" -->
+
+
+
+        </div>
+        <!-- class="row" -->
+    </div> 
+    <!-- class="container-fluid" -->
+
+<script>
+    $(document).ready(function(){
+
+       
+
+
+        $('#user_id').val( $('#id_id').val()  );
+        $('#first_name').val( $('#id_first_name').val()  );
+        $('#last_name').val( $('#id_last_name').val()  );
+        $('#email').val( $('#id_email').val()  );
+       
+        
+        
+
+    });
+</script>
+
+
+    
+{% endblock %}
+
+
+

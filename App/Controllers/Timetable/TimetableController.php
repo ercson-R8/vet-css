@@ -926,6 +926,10 @@ class TimetableController extends \Core\Controller{
                 $tableSubTitle = '('.$timetable[0]->remarks.') '.$timetable[0]->created;
 
                 View::renderTemplate ('Timetables/editSubjectClassForm.twig.html', [
+                                            'status' => '<div class="alert alert-success alert-dismissable">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                <h4 class="text-center">Subject Class has been updated!</h4>
+                                                        </div>',
                                             'subjectClass' => $subject_class,
                                             'title' => 'Update A Subject Class ', 
                                             'firstName' => $sessionData->firstName,

@@ -36,35 +36,28 @@
                             <small class="text-muted pull-right">{{tableSubTitle}}</small> </h4> 
                         </div>
                         <div class="panel-body">
-                            <h3>Please wait while the timetable is being generated ...    </h3>
-                            <!-- <div id="myProgress">
-                                <div id="myBar"></div>
-                                </div>
-                                -->
+                            <h4>Please wait while the timetable is being generated ...    </h4>
 
                             <!-- Progress bar holder -->
-                            <div id="progress" style="width:500px;border:1px solid #ccc;"></div>
+                            <div id="progress" style="width:400px;border:2px solid #7DCEA0;"></div>
                             <!-- Progress information -->
                             <div id="information" style="width:"></div>
                             
                             <hr>
                             Timetable #: <span id="id_timetable">0</span> <br/>
-                            No. of Classes: <span id="id_class_size">0</span> 
+                            No. of Classes: <span id="id_class_size"><b>0</b></span> 
                             Population size: <span id="id_population_size">0</span> 
-                            Maximum Generation: <span id="id_max_generation">0</span> <br/>
-                            <br>
-                            <br>
+                            Maximum Generation: <span id="id_max_generation">0</span>
+                            <hr>
                             Generation: <b> <span id="id_generation">0</span> </b> <br>
-                            Total time: <b> <span id="id_time">0</span> seconds </b> <br>
-                            Fittest table: <b> <span id="id_fittest">0</span> conflict/s</b> <br>
+                            Total time: <b> <span id="id_time">0</span> </b>seconds  <br>
+                            Fittest table: <b> <span id="id_fittest" class="text text-danger">0</span> conflict/s</b> <br>
                            
-                            Average: <b> <span id="id_average">0</span> </b> <br>
-                            Elite +1: <b> <span id="id_elite">0</span> </b> <br>
-                            Selection Pool Size: <b> <span id="id_selection_size">0</span> </b> Mating Pool Size: <span id="id_mating_size">0</span> </b><br>
-                            Stagnant counter: <span id="id_stagnant">0</span> Mutation Rate: <span id="id_mutation">0</span>
+                            Average: <b> <span id="id_average">0</span> </b> <br><br>
+                            Elite -1: <b> <span id="id_elite">0</span> </b> <br>
+                            Selection Pool Size:  <span id="id_selection_size">0</span> Mating Pool Size: <b><span id="id_mating_size">0</span></b><br>
+                            Stagnant counter: <span id="id_stagnant">0</span> Mutation Rate: <b><span id="id_mutation">0</span></b>
 
-                            
-                            <br><br>
 
                             <span id="id_result"></span>
                             <span id="test"></span>
@@ -86,23 +79,7 @@
 
 
 
-<script>
-    $(document).ready(function(){
-        var elem = document.getElementById("myBar");   
-        var width = 1;
-        var id = setInterval(frame, 500);
-        function frame() {
-            if (width >= 100) {
-            clearInterval(id);
-            var id = setInterval(frame, 400);
-            width = 1;
-            } else {
-            width++; 
-            elem.style.width = width + '%'; 
-            }
-        }
-    });
-</script>
+
 
 
 {% endblock %}
