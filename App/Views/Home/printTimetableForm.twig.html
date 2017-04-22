@@ -1,0 +1,177 @@
+
+{% extends "baseHeader.html" %}
+
+{% block title %} {{title}}  {% endblock %}
+
+
+{% block body %}
+
+    <style>
+
+        #ajaxFetch-list{float:left;list-style:none;margin-top:-3px;padding:0;width:190px;position: absolute;}
+        #ajaxFetch-list li{padding: 10px; background: #f9f9f9; border-bottom: #e3e6f4 1px solid;}
+        #ajaxFetch-list li:hover{background:#eaf5ff;cursor: pointer;}
+
+    </style>
+
+        <div>
+            <div class="container">
+                <div class="row"></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="fa fa-print fa-2x"></i> Which would you like to print?</h3>
+                        </div>
+                        <div class="panel-body">
+
+                            <form class="form center-block" name="printTimetableOptions" id="printTimetableOptions" action="/home/" method="post">
+                                <div class="row">
+                                    <div class="col-xs-1">
+                                        <i class="fa fa-info-circle  text-info fa-3x"></i>
+                                    </div>
+                                    <div class="col-xs-11">
+                                        <div class="huge text-primary"> &nbsp;Filter by</div>
+                                            <div class="form-group">
+                                                <label></label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="filter" id="trainee" value="trainee" checked>Trainee Group
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="filter" id="instructor" value="instructor">Instructor
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="filter" id="room" value="room">Room
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label></label>
+                                                <input class="form-control" name="filter_data" id="search-box" autofocus>
+                                                <div id="suggesstion-box"></div>
+                                                <p class="help-block"></p>
+                                            </div>
+
+                                        <div class="lead">  </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary pull-right">Proceed and Print</button>
+                        </form>
+                            {{errorMessage | raw}}
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4"></div>
+            </div>
+        </div>
+
+
+
+<script>
+$(document).ready(function(){
+    
+   
+        
+    	 // alert(optionSelected);
+        $(document).ready(function(){
+            $("#search-box").keyup(function(){
+                var optionSelected = $('input[name=filter]:checked', '#printTimetableOptions').val();
+                // alert(optionSelected);
+                if (optionSelected == 'trainee'){
+                    alert(optionSelected);
+                    searchTraineeGroup();
+                }
+
+            });
+
+            function searchTraineeGroup(){
+                
+
+                $.ajax({
+                    type: "POST",
+                    url: "/timetable/TimetableController/ajaxFetchTraineeGroups",
+                    data:'keyword='+$(this).val(),
+                    beforeSend: function(){
+                        alert();
+                        $("#search-box").css("background","#FFF url(../vendor/image/LoaderIcon.gif) no-repeat 100px");
+
+                    },
+                    success: function(data){
+                        $("#suggesstion-box").show();
+                        $("#suggesstion-box").html(data);
+                        $("#search-box").css("background","#FFF");
+                        $("#suggesstion-box").css("background","#F1F1FA");
+                    }
+                });
+            }
+
+
+
+            $("#search-box-instructor").keyup(function(){
+                $.ajax({
+                type: "POST",
+                url: "/timetable/TimetableController/ajaxFetchInstructors",
+                data:'keyword='+$(this).val(),
+                beforeSend: function(){
+                    $("#search-box-instructor").css("background","#FFF url(../../vendor/image/LoaderIcon.gif) no-repeat 100px");
+
+                },
+                success: function(data){
+                    $("#suggesstion-box-instructor").show();
+                    $("#suggesstion-box-instructor").html(data);
+                    $("#search-box-instructor").css("background","#FFF");
+                    $("#suggesstion-box-instructor").css("background","#F1F1FA");
+                }
+                });
+            });
+
+            $("#search-box-roomType").keyup(function(){
+                $.ajax({
+                type: "POST",
+                url: "/timetable/TimetableController/ajaxFetchRoomTypes",
+                data:'keyword='+$(this).val(),
+                beforeSend: function(){
+                    $("#search-box-roomType").css("background","#FFF url(../../vendor/image/LoaderIcon.gif) no-repeat 120px");
+
+                },
+                success: function(data){
+                    $("#suggesstion-box-roomType").show();
+                    $("#suggesstion-box-roomType").html(data);
+                    $("#search-box-roomType").css("background","#FFF");
+                    $("#suggesstion-box-roomType").css("background","#F1F1FA");
+                }
+                });
+            });
+            
+        });
+
+        function selectOptionsTraineeGroup(code, traineeGroupName) {
+            $("#search-box-traineeGroup").val(traineeGroupName);
+            $("#trainee_group_id").val(code);
+            $("#suggesstion-box-traineeGroup").hide();
+            $("#loading").hide();
+        }
+
+        
+        function selectOptionsInstructor(code, fullName) {
+            $("#search-box-instructor").val(fullName);
+            $("#instructor_id").val(code);
+            $("#suggesstion-box-instructor").hide();
+            $("#loading").hide();
+        }
+
+
+        function selectOptionsRoom(code, fullName) {
+            $("#search-box-room").val(fullName);
+            $("#room_id").val(code);
+            $("#suggesstion-box-room").hide();
+            $("#loading").hide();
+        }
+
+    });
+
+</script>
+
+{% endblock %}

@@ -12,7 +12,7 @@
     <title>{% block title %}{% endblock %}</title>
 
     <!-- jQuery -->
-        <script src="../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../vendor/jquery/jquery.min.js"></script>
     
     <!-- Bootstrap Core JavaScript -->
     <script src="../../vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -61,30 +61,38 @@
             </div>
             <!-- /.navbar-header -->
             <ul class="nav navbar-top-links navbar-right">
-                {% if accessRight  == 1 %}
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" data-toggle="tooltip" data-placement="left" title="Manage courses, instructors, rooms, etc.." href="#">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-toggle="tooltip" data-placement="left" title="Manage timetables" href="#">
                          Timetable  <i class="fa fa-list-alt fa-fw fa-2x"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
+
+                        {% if accessRight  == 1 %}
                         <li data-toggle="tooltip" data-placement="bottom" title="Add, change or remove timetables">
                             <a href="/Timetable/TimetableController/addTimetable">
-                            <i class="fa fa-table fa-2x"></i> &nbsp;Manage Timetable</a>
+                                <i class="fa fa-table fa-2x"></i> &nbsp;Manage Timetable</a>
                         </li>
-   
+                        {% endif %}
+
+                        <li data-toggle="tooltip" data-placement="bottom" title="Print timetables">
+                             <a href="/Timetable/TimetableController/printTimetableOptions" target="_blank">
+                                <i class="fa fa-print fa-2x"></i> &nbsp;Print Timetable</a>
+                        </li>
+
+                        {% if accessRight  == 1 %}
                         <li class="divider"></li>
                         <li data-toggle="tooltip" data-placement="bottom" title="Remove timetable">
                             <a href="/Timetable/TimetableController/addTimetable" class="text-danger">
-                            <i class="fa fa-trash-o text-danger fa-2x"></i>
-                            <span class="text-danger">&nbsp; Remove Timetable</span>
-                            </a>
+                                <i class="fa fa-trash-o text-danger fa-2x"></i>
+                                <span class="text-danger">&nbsp; Remove Timetable</span>
+                                </a>
                         </li>
+                        {% endif %}
 
                     </ul>
                     <!-- /.dropdown-user -->
                 </li>
                 <!-- /.dropdown -->
-                 {% endif %}
                 {% if accessRight  == 1 %}
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-toggle="tooltip" data-placement="left" title="Manage courses, instructors, rooms, etc.." href="#">

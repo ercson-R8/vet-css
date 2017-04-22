@@ -238,20 +238,13 @@ class Home extends \Core\Controller
      * @return	 	
      */
     public function filterTimetable (){
-        // $filter = $_POST;
-        // echo "<pre>";
-        // print_r($_POST);
-        // exit;
-       /*
-            [filter] => trainee
-            [filter_data] => asdfasdf
 
-       */
 
         $sessionData = Session::getInstance();
         // session was processed by the before Method above; 
 
         $db = DB::getInstance();
+        
         // fetch timetable info 
         $db->select(
             array('*'),
@@ -816,6 +809,25 @@ class Home extends \Core\Controller
     }
 
 
+    /*
+     * printOptions method 
+     *
+     * @param		
+     * @return	 	
+     */
+    public function printTimetableOptionsAction (){
+        $sessionData = Session::getInstance();
+        View::renderTemplate ('Home/printTimetableForm.twig.html', [
+                                        'firstName'     => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
+                                        'lastName'      => $sessionData->lastName,
+                                        'title'         => 'Print'
+                                    ]);
+    }
+
+
+
+
 
     public function demoAction(){
         View::renderTemplate ('Home/demo.twig.html');
@@ -867,9 +879,6 @@ class Home extends \Core\Controller
              }
         
     } 
-
-
-
 
 
     public function testAction(){

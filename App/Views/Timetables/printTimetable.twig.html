@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{ title }}</title>
+
+	
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../../vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+
+
+    <!-- Custom Fonts -->
+    <link href="../../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+    <br>
+    <div id="printTable">
+        <div>
+            <center>
+                <img src="../../vendor/image/vet-logo.jpg"  alt="VET Logo" style="width:100%;height:130px;" >
+            </center>
+            <h2 class="text-center">Shinas Vocational Education & Training</h2>
+            <br>
+            <h4 class="text-center">{{ print_item | raw }}</h4>
+            <p class="text-center">{{academic_year| raw }}</p>
+        </div>
+        <hr>
+
+        <p class="text text-default small"></p>
+
+        <div class="panel-body">
+            <table width="100%" class="table table-striped table-bordered" id="dataTables-currentTimetable">
+                <thead>
+                    {#<tr style="color:red">#}
+                    <tr style="color:darkblue">
+                        <td class="text small" style="text-align:center"><strong>Time</strong></td>
+                        <td class="text small" style="text-align:center"><strong>Sunday</strong></td>
+                        <td class="text small" style="text-align:center"><strong>Monday</strong></td>
+                        <td class="text small" style="text-align:center"><strong>Tuesday</strong></td>
+                        <td class="text small" style="text-align:center"><strong>Wednesday</strong></td>
+                        <td class="text small" style="text-align:center"><strong>Thursday</strong></td>
+                    
+                    </tr>
+                </thead>
+                <tbody>
+
+                    
+                    {% for key, value in time_col %}
+                        <tr>
+                            <td class="text small text-center" style="vertical-align:middle "> {{ key }}</td>
+                            {% for time_slot in value %}
+                                
+                                    <td class="text small" style="text-align:center">
+                                        
+                                        {% for meeting in meetings %}
+                                            
+                                            {% if meeting.time_slot == time_slot %}
+                                            <table width="50%" class="table"><tbody>
+                                                
+                                            <tr> 
+                                                
+                                                    
+                                                        
+
+                                                
+                                                {% if meeting.subject matches '/STU/' %} 
+                                                
+                                                    <td style="background-color: #A3E4D7 ">
+                                                {% elseif meeting.trainee_group  matches '/BUS/' %}
+                                                    <td style="background-color:#FAD7A0">
+                                                {% elseif meeting.trainee_group  matches '/ELC/' %}
+                                                    <td style="background-color:#D4E6F1">
+                                                {% elseif meeting.trainee_group  matches '/ELX/' %}
+                                                    <td style="background-color:#D2B4DE">  
+                                                {% endif %}
+                                                
+                                                <b>{{ meeting.trainee_group }}</b><br/>
+                                                <span class="small">{{ meeting.code }}</span>-
+                                                
+                                                <span class="small"><i>{{ meeting.subject }}</i><br/></span>
+                                                <span class="small "><strong>{{ meeting.instructor }}</strong> -  </span>
+                                                <span class="text-default small"><i>{{ meeting.room }}</i></span>
+                                                
+                                                </td>
+                                                
+                                                
+                                            </tr>
+                                            </tbody></table>
+                                            {% endif %}
+                                            
+                                        {% endfor %}
+                                            
+                                    </td>
+                                    
+                            {% endfor %}
+                        </tr>
+
+
+
+                    
+                    {% endfor %}
+                    
+
+                    
+                    
+                    
+                </tbody>
+                
+            </table>
+            <!-- /.table-responsive -->
+            
+
+            <br><br>
+            <table width="100%">
+                <tr>
+                    <td>Prepared by</td>
+                    <td>Noted by</td>
+                    <td>Noted by</td>
+                    <td>Approved by</td>
+                </tr>
+                <tr>
+                    <td>&nbsp; </td>
+                    <td>&nbsp; </td>
+                    <td>&nbsp; </td>
+                    <td>&nbsp; </td>
+                </tr>
+                <tr>
+                    <td>&nbsp; </td>
+                    <td>&nbsp; </td>
+                    <td>&nbsp; </td>
+                    <td>&nbsp; </td>
+                </tr>
+                <tr>
+                    <td><b>MR. MACARIO B. BARREDO </td>
+                    <td><b>MR. CONRADO T. TORRES JR. </td>
+                    <td><b>MR. AHMED AL MAQBALI </td>
+                    <td><b>MR. MOHAMMED AL BALUSHI </b></td>
+                </tr>
+
+                <tr>
+                    <td><span class="text small ">Mechatronics instructor</span></td>
+                    <td><span class="text small ">Technical Coordinator</span></td>
+                    <td><span class="text small ">Head Of Department</span></td>
+                    <td><span class="text small ">Assistant Principal</span></td>
+                </tr>
+                
+            </table>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="../../vendor/jquery/jquery.min.js"></script>
+
+    <script>
+
+        $(document).ready(function(){
+
+                var originalContents = $("body").html();
+                var printContents = $("#printTable").html();
+                $("body").html(printContents);
+                window.print();
+                //$("body").html(originalContents);
+                //window.close();
+
+            //var divToPrint=document.getElementById("printTable");
+            //newWin= window.open("");
+            //newWin.document.write(divToPrint.outerHTML);
+            //newWin.print();
+            //newWin.close();
+        });
+
+    </script>        
+
+    
+</body>
+
+</html>

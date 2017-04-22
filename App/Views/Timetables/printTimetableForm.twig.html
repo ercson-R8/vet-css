@@ -1,0 +1,138 @@
+
+{% extends "baseHeader.html" %}
+
+{% block title %} {{title}}  {% endblock %}
+
+
+{% block body %}
+
+    <style>
+
+        #ajaxFetch-list{float:left;list-style:none;margin-top:-3px;padding:0;width:190px;position: absolute;}
+        #ajaxFetch-list li{padding: 10px; background: #f9f9f9; border-bottom: #e3e6f4 1px solid;}
+        #ajaxFetch-list li:hover{background:#AEB6BF  ;cursor: pointer;}
+
+    </style>
+
+        <div>
+            <div class="container">
+                <div class="row"></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="fa fa-print fa-2x"></i> Which one would you like to print?</h3>
+                        </div>
+                        <div class="panel-body">
+
+                            <form class="form center-block" name="printTimetableOptions" id="printTimetableOptions" action="/Timetable/TimetableController/printTimetable" method="post">
+                                <div class="row">
+                                    <div class="col-xs-1">
+                                        <i class="fa fa-info-circle  text-info fa-3x"></i>
+                                    </div>
+                                    <div class="col-xs-11">
+                                        <div class="huge text-primary"> &nbsp;Filter by</div>
+                                            <div class="form-group">
+                                                <label></label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="filter" id="trainee" value="trainee" checked>Trainee Group
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="filter" id="instructor" value="instructor">Instructor
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="filter" id="room" value="room">Room
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label></label>
+                                                <input class="form-control" name="filter_data" id="search-box" autofocus>
+                                                <input type="hidden" class="form-control" name= "trainee_group_id" placeholder="" id="trainee_group_id" required>
+                                                <input type="hidden" class="form-control" name= "instructor_id" placeholder="" id="instructor_id" required>
+                                                <input type="hidden" class="form-control" name= "room_id" placeholder="" id="room_id" required>
+                                                
+                                                <p class="help-block"><div id="suggesstion-box"></div></p>
+                                            </div>
+
+                                        <div class="lead">  </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary pull-right">Proceed and Print</button>
+                        </form>
+                            {{errorMessage | raw}}
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4"></div>
+            </div>
+        </div>
+
+
+
+<script>
+
+        $(document).ready(function(){
+            $("#search-box").keyup(function(){
+                var optionSelected = $('input[name=filter]:checked', '#printTimetableOptions').val();
+                var action = '';
+                //alert(optionSelected);
+                if (optionSelected == 'trainee'){
+                    action = "/timetable/TimetableController/ajaxFetchTraineeGroups";
+                }
+                if (optionSelected == 'instructor'){
+                    action = "/timetable/TimetableController/ajaxFetchInstructors";
+                }
+                if (optionSelected == 'room'){
+                    action = "/timetable/TimetableController/ajaxFetchRoomsPrint";
+                }
+                    
+                $.ajax({
+                    type: "POST",
+                    url: action,
+                    data:'keyword='+$(this).val(),
+                    beforeSend: function(){
+                        
+                        $("#search-box").css("background","#FFF url(../../vendor/image/LoaderIcon.gif) no-repeat 100px");
+
+                    },
+                    success: function(data){
+                        $("#suggesstion-box").show();
+                        $("#suggesstion-box").html(data);
+                        $("#search-box").css("background","#FFF");
+                        $("#suggesstion-box").css("background","#F1F1FA");
+                    }
+                });
+
+
+            });            
+        });
+
+        function selectOptionsTraineeGroup(code, traineeGroupName) {
+            $("#search-box").val(traineeGroupName);
+            $("#trainee_group_id").val(code);
+            $("#suggesstion-box").hide();
+            $("#loading").hide();
+        }
+
+        function selectOptionsInstructor(code, fullName) {
+            $("#search-box").val(fullName);
+            $("#instructor_id").val(code);
+            $("#suggesstion-box").hide();
+            $("#loading").hide();
+        }
+
+        function selectOptionsRoom(code, fullName) {
+            $("#search-box").val(fullName);
+            $("#room_id").val(code);
+            $("#suggesstion-box").hide();
+            $("#loading").hide();
+        }
+
+
+
+</script>
+
+{% endblock %}
