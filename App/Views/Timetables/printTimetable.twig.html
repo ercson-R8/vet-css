@@ -38,7 +38,7 @@
     <div id="printTable">
         <div>
             <center>
-                <img src="../../vendor/image/vet-logo.jpg"  alt="VET Logo" style="width:100%;height:130px;" >
+                <img src="../../vendor/image/vet-logo.jpg"  alt="VET Logo" style="width:100%;height:135px;" >
             </center>
             <h2 class="text-center">Shinas Vocational Education & Training</h2>
             <br>
@@ -175,19 +175,12 @@
     <script>
 
         $(document).ready(function(){
-
-                var originalContents = $("body").html();
-                var printContents = $("#printTable").html();
-                $("body").html(printContents);
-                window.print();
-                //$("body").html(originalContents);
-                //window.close();
-
-            //var divToPrint=document.getElementById("printTable");
-            //newWin= window.open("");
-            //newWin.document.write(divToPrint.outerHTML);
-            //newWin.print();
-            //newWin.close();
+            var originalContents = $("body").html();
+            var printContents = $("#printTable").html();
+            $("body").html(printContents);
+            window.print();
+            //$("body").html(originalContents);
+            //window.close();
         });
 
     </script>        
