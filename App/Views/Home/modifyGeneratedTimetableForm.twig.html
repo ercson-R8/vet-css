@@ -89,8 +89,7 @@
 
                                         </td>
                                         <td style="text-align:center">
-                                            <a href="#" data-toggle="modal" id="{{ row.id }}" 
-                                             <a href="#" data-toggle="modal" data-target="#edit-modal" title="Edit this Item!" class="btn btn-xs btn-primary">
+                                            <a href="#" data-toggle="modal" id="{{ row.id }}" data-target="#edit-modal" title="Edit this Item!" class="btn btn-xs btn-primary">
                                                 <span class="fa fa-edit"></span>
                                             </a>
 
@@ -181,6 +180,7 @@
                                             </td>
                                         </tr>
                                 </table>
+                                Available timeslot(s): <div class="edit-timeslotAvailable" name="edit-timeslotAvailable" value=""> </div>
                             </div>
                             </div>
 
@@ -188,6 +188,7 @@
                 <!-- class="panel-body" -->
             
                 <div class="modal-footer">
+                    
                     <input type="hidden" class="modal-input edit-input" name="meeting_id" value="">
                     <button type="submit" class="btn btn-primary pull-right">Proceed and Update</button>
                     </form>
@@ -203,11 +204,27 @@
     <script>
         $(document).ready(function(){
             $('#edit-modal').on('show.bs.modal', function(e) {
-                var $modal = $(this),
-                    deleteId = e.relatedTarget.id;
-                    //alert(deleteId);
-                    $modal.find('.edit-content').html(deleteId);
-                    $modal.find('.edit-input').val(deleteId);
+                var $modal = $(this),  dataId = e.relatedTarget.id;
+                    
+                    // alert(dataId);
+                    $modal.find('.edit-input').val(dataId);
+                    
+                    // fetch available timeslots
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/ajaxFetchTimeslotAvailable",
+                        data:'keyword='+dataId,
+                        
+                        success: function(data){
+                            //alert("1");
+                            $modal.find('.edit-timeslotAvailable').html(data);
+                            // $("#suggesstion-box-roomType").html(data);
+                           
+                        }
+                    });
+                    
+                    
             });
         });
 
@@ -247,7 +264,7 @@
                     //alert("beforeSend "+$("#room_type_id").val());
                 },
                 success: function(data){
-                    alert("success "+$("#room_type_id").val());
+                    //alert("success "+$("#room_type_id").val());
                     $("#suggesstion-box-room").show();
                     $("#suggesstion-box-room").html(data);
                 }

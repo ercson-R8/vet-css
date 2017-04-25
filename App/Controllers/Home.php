@@ -421,12 +421,6 @@ class Home extends \Core\Controller
         }
 
 
-        
-
-        // echo "<pre>recheckTimetable";
-        // print_r($_POST);
-        // print_r('Current timetable is: '.$sessionData->currentTimetable);
-
         // ------------------------------------
         // fetch meeting info; 
         $db->select(
@@ -441,6 +435,7 @@ class Home extends \Core\Controller
 
         // if there exist a generated timetable for this current timetable; 
         // fetch the data and pass it to the view index.twig.html; 
+
         if ($db->count()){
             $timestamp = $meeting[0]->timestamp;
             // fetch the data from the database; ts subject_id trainee_group_id instructor_id rm
@@ -473,40 +468,14 @@ class Home extends \Core\Controller
                 );
             $meeting = ($db->getResults());
 
-            
-            
-
-            // usort($meeting, function($a, $b) { return $a->time_slot - $b->time_slot; });
-            // print_r("\n<pre>"."\n");
-            // print_r($meeting);
-           /*
-                [0] => stdClass Object
-                    (
-                        [id] => 11
-                        [room_id] => 2
-                        [subject_id] => 6
-                        [trainee_group_id] => 4
-                        [instructor_id] => 51
-                        [time_slot] => 20
-                    ) 
-                    ["sc"]["subject_id"]
-                    ["mt_id" => id, "ts" => ts, "rm" => rm, 
-                                                "sc"=>[
-                                                    "subject_id"            => subject_id, 
-                                                    "trainee_group_id"      => trainee_group_id, 
-                                                    "instructor_id"         => instructor_id
-                                                    ]
-                    ]
-
-           */
-
             // $timetable [] = ["mt_id"=>$mt_id, "sc"=>$subjectClass, "ts"=>$slot, "rm"=> $room ];
             foreach ($meeting as $key => $value) {
-                $timetable [] = [    "mt_id"=>$value->id, "ts"=>$value->time_slot, "rm"=> $value->room_id,
-                                        "sc" => [   "subject_id"        => $value->subject_id, 
-                                                    "trainee_group_id"  => $value->trainee_group_id,
-                                                    "instructor_id"     => $value->instructor_id
-                                        ]
+
+                $timetable [] = [   "mt_id"=>$value->id, "ts"=>$value->time_slot, "rm"=> $value->room_id,
+                                    "sc" => [   "subject_id"        => $value->subject_id, 
+                                                "trainee_group_id"  => $value->trainee_group_id,
+                                                "instructor_id"     => $value->instructor_id
+                                    ]
                     ];
             }
 
@@ -515,13 +484,21 @@ class Home extends \Core\Controller
             // conflict at timeslot number;
 
             $conflicts = null;
+
             foreach ($this->conflicts as $key => $value) {
+
                 $conflicts .= $value. '.';
+
             }
+
             // add the fitness value / number of conflicts for the currently gerenrated table;
+            
             $remarks = '('.$fitnessValue.')'.'Conflict/s ['.$conflicts.']';
+            
             $db->query('UPDATE  timetable SET timetable.remarks = \''.$remarks.'\' WHERE   timetable.current = 1');
+            
             header("Location: modifyGeneratedTimetable");
+            
             exit;
                 
 
@@ -529,6 +506,7 @@ class Home extends \Core\Controller
         
         
         }else { // there is no generated timetable for this current one;
+            
             View::renderTemplate ('Home/index.twig.html', [
                                         'firstName'     => $sessionData->firstName,
                                         'accessRight'   => $sessionData->rights,
@@ -537,8 +515,9 @@ class Home extends \Core\Controller
                                         'tableSubTitle' => '',
                                         'meeting'       => []
                                     ]);
+             exit;
         }
-        exit;
+       
         
     }
 
@@ -556,12 +535,14 @@ class Home extends \Core\Controller
 
         for ($i=0; $i < sizeof($timetable); $i++) {
 
-            // fetch timeslot that is associated with a subjectClassID
+            // fetch timeslot that is associated with a 
+            
             array_push($timeslots, $timetable[$i]["ts"]);
 
         }
 
         // remove duplicate timeslot from the list of timeslot that is associated with a subjectClassID
+        
         $timeslots = (array_unique($timeslots));
 
 
@@ -793,21 +774,197 @@ class Home extends \Core\Controller
         exit;
     }
 
-
     /*
-     * logoutAction method 
+     * ajaxFetchTimeslotAvailable method 
      *
-     * @param 	
-     * @return	 
+     * @param		
+     * @return	 	
      */
-    public function logoutAction (){
-                
+    public function ajaxFetchTimeslotAvailable (){
+        // echo "<pre>";
+       
         $sessionData = Session::getInstance();
-        $sessionData->destroy();
-        header("Location: /auth/LoginController/index");
+        $db = DB::getInstance();
+        $meetingId = $_POST['keyword'];
+
+        // fetch details for this meetingID
+        // SELECT * FROM `meeting` WHERE meeting.id = 16978
+        $db->query("SELECT * FROM meeting WHERE meeting.id = {$meetingId}");
+        $currentMeetingID = $db->getResults();
+
+        /*
+                    $currentMeetingID[0]->time_slot
+                    Array
+                        (
+                            [0] => stdClass Object
+                                (
+                                    [id] => 16976
+                                    [timetable_id] => 18
+                                    [subject_class_id] => 3763
+                                    [trainee_group_id] => 4
+                                    [subject_id] => 3
+                                    [instructor_id] => 63
+                                    [time_slot] => 38
+                                    [room_id] => 2
+                                    [timestamp] => 2017-04-21 12:04:21
+                                )
+
+                        )
+
+        */
+
+        // fetch meeting info; 
+        $db->select(
+            array('*'),
+            array('meeting'),
+            array(['meeting.timetable_id', '=', $sessionData->currentTimetable])
+        );
+
+
+        $meeting = ($db->getResults());
+        
+
+        // if there exist a generated timetable for this current timetable; 
+        // fetch the data and pass it to the view index.twig.html; 
+
+        if ($db->count()){
+            $timestamp = $meeting[0]->timestamp;
+            // fetch the data from the database; ts subject_id trainee_group_id instructor_id rm
+
+            $db->select(
+                    array(  
+                            'meeting.id',
+                            'meeting.room_id',
+                            'meeting.subject_id',
+                            'trainee_group_id',
+                            'meeting.instructor_id',
+                            'meeting.room_id',
+                            'meeting.time_slot'
+
+                    ),
+                    array('meeting
+                                INNER JOIN trainee_group
+                                    ON meeting.trainee_group_id = trainee_group.id
+                                INNER JOIN subject
+                                    ON meeting.subject_id = subject.id
+                                INNER JOIN instructor
+                                    ON meeting.instructor_id = instructor.id
+                                INNER JOIN room
+                                    on meeting.room_id = room.id' 
+                    ),
+                    array(
+                        ['meeting.timetable_id', '=', $sessionData->currentTimetable]
+                    )
+                );
+            $meeting = ($db->getResults());
+
+            // $timetable [] = ["mt_id"=>$mt_id, "sc"=>$subjectClass, "ts"=>$slot, "rm"=> $room ];
+            foreach ($meeting as $key => $value) {
+
+                $timetable [] = [   "mt_id"=>$value->id, "ts"=>$value->time_slot, "rm"=> $value->room_id,
+                                    "sc" => [   "subject_id"        => $value->subject_id, 
+                                                "trainee_group_id"  => $value->trainee_group_id,
+                                                "instructor_id"     => $value->instructor_id
+                                    ]
+                    ];
+            }
+
+
+            // collect all timeslots used
+            $timeslots = [];
+
+            for ($i=0; $i < sizeof($timetable); $i++) {
+
+                // fetch timeslot that is associated with a 
+                
+                array_push($timeslots, $timetable[$i]["ts"]);
+
+            }
+            // remove duplicate timeslot from the list of timeslot that is associated with a subjectClassID
+
+            
+            
+            
+            $timeslots = (array_unique($timeslots));
+            sort($timeslots);
+            // print_r($timeslots);
+            // exit;
+            // find available timeslots
+            
+            $fullyAvailableTimeslots = [];
+            $partiallyAvailableTimeslots = [];
+            
+            foreach ($timeslots as $timeslot) {
+
+                $subjectClassID =[];
+                $roomID = [];
+                $traineeGroupID = [];
+                $instructorID = [];
+
+                for ($i=0; $i < sizeof($timetable); $i++) {
+
+                    // gather all IDs belonging to this timeslot. 
+                    if ($timeslot == $timetable[$i]["ts"]) {
+                        $roomID[]           = $timetable[$i]['rm'];
+                        $traineeGroupID[]   = $timetable[$i]["sc"]["trainee_group_id"];
+                        $instructorID[]     = $timetable[$i]["sc"]["instructor_id"];
+                    }
+                }
+
+                // if on this timeslot, the instructor and the trainee_group is NOT found
+                // then this timeslot is not available 
+                if (! in_array($currentMeetingID[0]->trainee_group_id,    $traineeGroupID) && 
+                    ! in_array($currentMeetingID[0]->instructor_id,       $instructorID) ){
+
+                        if ( ! in_array($currentMeetingID[0]->room_id,    $roomID) ){
+                            $fullyAvailableTimeslots[]      = $timeslot;
+                        }else{
+                            $partiallyAvailableTimeslots[]  = $timeslot;
+                        }
+
+                }
+
+                
+            }
+
+
+            
+
+            sort($fullyAvailableTimeslots);
+            sort($partiallyAvailableTimeslots);
+            echo ' <div class="text-success">Fully available: <b> ';
+            foreach ($fullyAvailableTimeslots as $key => $value) {
+                echo $value.", ";
+            }
+            echo '</b></div>';
+            echo ' <div class="text-danger">Room change needed: ';
+
+            foreach ($partiallyAvailableTimeslots as $key => $value) {
+                echo $value.", ";
+            }
+            exit;
+                
+
+
+        
+        
+        }else { // there is no generated timetable for this current one;
+            
+            View::renderTemplate ('Home/index.twig.html', [
+                                        'firstName'     => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
+                                        'lastName'      => $sessionData->lastName,
+                                        'tableTitle'    => 'No timetable generated yet!<br/> Generate using the Timetable menu above.',
+                                        'tableSubTitle' => '',
+                                        'meeting'       => []
+                                    ]);
+             exit;
+        }
+
+
+        header("Location: modifyGeneratedTimetable");
         exit;
     }
-
 
     /*
      * printOptions method 
@@ -826,11 +983,37 @@ class Home extends \Core\Controller
     }
 
 
+    /*
+     * logoutAction method 
+     *
+     * @param 	
+     * @return	 
+     */
+    public function logoutAction (){
+                
+        $sessionData = Session::getInstance();
+        $sessionData->destroy();
+        header("Location: /auth/LoginController/index");
+        exit;
+    }
+
+
 
 
 
     public function demoAction(){
-        View::renderTemplate ('Home/demo.twig.html');
+        $people = array("Peter", "Joe", "Glenn", "Cleveland");
+        print_r($people);
+        if (!in_array("Glenn", $people))
+        {
+        echo "Match found";
+        }
+        else
+        {
+        echo "Match not found";
+        }
+
+        // View::renderTemplate ('Home/demo.twig.html');
 
     }
 
