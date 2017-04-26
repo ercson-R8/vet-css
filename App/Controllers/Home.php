@@ -829,6 +829,7 @@ class Home extends \Core\Controller
 
         if ($db->count()){
             $timestamp = $meeting[0]->timestamp;
+
             // fetch the data from the database; ts subject_id trainee_group_id instructor_id rm
 
             $db->select(
@@ -871,6 +872,7 @@ class Home extends \Core\Controller
 
 
             // collect all timeslots used
+
             $timeslots = [];
 
             for ($i=0; $i < sizeof($timetable); $i++) {
@@ -895,16 +897,18 @@ class Home extends \Core\Controller
             $partiallyAvailableTimeslots = [];
             
             foreach ($timeslots as $timeslot) {
-
+                
+                
                 $subjectClassID =[];
                 $roomID = [];
                 $traineeGroupID = [];
                 $instructorID = [];
 
                 for ($i=0; $i < sizeof($timetable); $i++) {
-
+                    
                     // gather all IDs belonging to this timeslot. 
                     if ($timeslot == $timetable[$i]["ts"]) {
+
                         $roomID[]           = $timetable[$i]['rm'];
                         $traineeGroupID[]   = $timetable[$i]["sc"]["trainee_group_id"];
                         $instructorID[]     = $timetable[$i]["sc"]["instructor_id"];
@@ -913,18 +917,32 @@ class Home extends \Core\Controller
 
                 // if on this timeslot, the instructor and the trainee_group is NOT found
                 // then this timeslot is not available 
+
+
                 if (! in_array($currentMeetingID[0]->trainee_group_id,    $traineeGroupID) && 
                     ! in_array($currentMeetingID[0]->instructor_id,       $instructorID) ){
+
+                        // print_r("\nMatch here!"."\n");
 
                         if ( ! in_array($currentMeetingID[0]->room_id,    $roomID) ){
                             $fullyAvailableTimeslots[]      = $timeslot;
                         }else{
+
                             $partiallyAvailableTimeslots[]  = $timeslot;
                         }
 
+                }else{
+                    // print_r("\nno Match!"." ");
                 }
 
                 
+            }
+
+            // check for vacant timeslots
+            for ($i=0; $i < TimetableConfig::TOTAL_TIME_SLOTS; $i++) { 
+                if (!(in_array($i, $timeslots) )) {
+                    $fullyAvailableTimeslots[] = $i;
+                }
             }
 
 
@@ -932,12 +950,12 @@ class Home extends \Core\Controller
 
             sort($fullyAvailableTimeslots);
             sort($partiallyAvailableTimeslots);
-            echo ' <div class="text-success">Fully available: <b> ';
+            echo '<div class="text-success">Fully available: <b> ';
             foreach ($fullyAvailableTimeslots as $key => $value) {
                 echo $value.", ";
             }
             echo '</b></div>';
-            echo ' <div class="text-danger">Room change needed: ';
+            echo '<div class="text-danger">Room change needed: ';
 
             foreach ($partiallyAvailableTimeslots as $key => $value) {
                 echo $value.", ";

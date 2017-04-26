@@ -79,8 +79,11 @@
                                                 
                                                 <span class="small"><i>{{ meeting.subject }}</i><br/></span>
                                                 <span class="small "><strong>{{ meeting.instructor }}</strong> -  </span>
-                                                <span class="text-default small">#{{ meeting.time_slot }} @ <i>{{ meeting.room }}</i></span>
-                                                
+                                                <span class="text-default small"> 
+                                                    {% if accessRight  == 1 %} 
+                                                        #{{ meeting.time_slot }} @ 
+                                                    {% endif %}
+                                                    <i>{{ meeting.room }}</i></span>
                                                 </td>
                                                 
                                                 
