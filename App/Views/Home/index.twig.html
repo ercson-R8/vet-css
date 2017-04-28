@@ -61,17 +61,30 @@
                                                
                                                     
                                                        
-
                                                 
-                                                {% if meeting.subject matches '/STU/' %} 
+                                                
+                                               {% if meeting.subject matches '/STUDY BREAK/' %} 
                                                 
                                                     <td style="background-color: #A3E4D7 ">
-                                                {% elseif meeting.trainee_group  matches '/BUS/' %}
-                                                    <td style="background-color:#FAD7A0">
-                                                {% elseif meeting.trainee_group  matches '/ELC/' %}
-                                                    <td style="background-color:#D4E6F1">
-                                                {% elseif meeting.trainee_group  matches '/ELX/' %}
-                                                    <td style="background-color:#D2B4DE">  
+                                                {% elseif meeting.code  matches '/BBSSM/' %}
+                                                    <td style="background-color:#F9E79F">
+                                                {% elseif meeting.code  matches '/EELHW/' %}
+                                                    <td style="background-color:#E8DAEF">
+                                                {% elseif meeting.code  matches '/EECIM/' %}
+                                                    <td style="background-color:#AED6F1">
+                                                {% elseif meeting.code  matches '/ENTRP/' %}
+                                                    <td style="background-color:#F9E79F">
+                                                
+                                                {% elseif meeting.code  matches '/INTE/' %}
+                                                    <td style="background-color:#FADBD8">
+                                                {% elseif meeting.code  matches '/TCENG/' %}
+                                                    <td style="background-color:#FEF9E7">
+                                                {% elseif meeting.code  matches '/TWENG/' %}
+                                                    <td style="background-color:#FEF9E7">
+                                                {% elseif meeting.code  matches '/PUENG/' %}
+                                                    <td style="background-color:#FEF9E7">   
+                                                {% else %}
+                                                    <td style="background-color:#EAECEE">
                                                 {% endif %}
                                                 
                                                 <b>{{ meeting.trainee_group }}</b><br/>

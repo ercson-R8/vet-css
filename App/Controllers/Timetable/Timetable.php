@@ -830,17 +830,22 @@ class Timetable{
 
             $fitnessHighest = [array_search(min($timetableFitness), $timetableFitness) => min($timetableFitness)];
             $fitnessLowest = [array_search(max($timetableFitness), $timetableFitness) => max($timetableFitness)];
+            
+            $normalizer = max($timetableFitness);
 
             $timetableFitnessSize = sizeof ($uniqueFitnessValues);
-
-
+            // echo "<pre>";
+            // print_r($uniqueFitnessValues);
+            // print_r($normalizer);
+            // print_r("\ntimetableFitnessSize ".$timetableFitnessSize."\n");
             // 2.3 Normalize each fitness values
 
             foreach($uniqueFitnessValues as $key => $fitnessValue){
 
                 // 2.3 Normalize each fitness values: (fitnessVale/TotalFitness) * 100 
-                $matingPoolFrequency =    round ((  ((1/(($fitnessValue) + 1 )* 100))  /  max($timetableFitness)  ) * 100);
-              
+                $matingPoolFrequency =    round ((  ((1/(($fitnessValue) + 1 )* $normalizer))  /  max($timetableFitness)  ) * $normalizer);
+                
+
                 // 3. prepare matingPool indexes
                 // 3.1 Populate the matingPool
                 
@@ -964,7 +969,9 @@ class Timetable{
             // Send output to browser immediately
                 flush();
             
-            //print_r("\nCROSS up to : =====> ".$crossRate."\n");
+            
+            
+            // print_r("\nCROSS up to : =====> ".$crossRate."\n".sizeof($matingPool));
             
             for( $timetable=TimetableConfig::ELITISM; $timetable < $crossRate ; $timetable++ ){
                
