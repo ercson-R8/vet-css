@@ -37,7 +37,7 @@ class TimetableConfig {
      * The number of timetables in a population
      * @var int 
      */
-    const POP_SIZE = 50;
+    const POP_SIZE = 20;
 
 
     /**  
