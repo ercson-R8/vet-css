@@ -242,7 +242,7 @@ class TimetableController extends \Core\Controller{
                                             'title' => 'Add A Timetable',
                                             'firstName' => $sessionData->firstName,
                                             'accessRight'   => $sessionData->rights,
-                                            'tableHeadings' => ['Year Start', 'Year End', 'Term' ,'Description']
+                                            'tableHeadings' => ['AY', 'Term', 'Timetable #' ,'Description']
                                         ]);
                 
 
@@ -262,7 +262,8 @@ class TimetableController extends \Core\Controller{
                                         'title' => 'Add A Timetable',
                                         'firstName' => $sessionData->firstName,
                                         'accessRight'   => $sessionData->rights,
-                                        'tableHeadings' => ['Year Start', 'Year End', 'Term' ,'Description']
+                                        'tableHeadings' => ['AY', 'Term', 'Timetable #' ,'Description']
+                                        
                                     ]);
             
         }

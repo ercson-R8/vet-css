@@ -230,6 +230,7 @@ class ResourceController extends \Core\Controller{
         View::renderTemplate ('Resources/editTraineeGroupForm.twig.html', [
                                     'firstName'     => $sessionData->firstName,
                                     'trainee_group' => $trainee_group,
+                                    'accessRight'   => $sessionData->rights,
                                     'oldEntry'      => $oldEntry,
                                     'title'         => 'Edit Trainee Group',
                                     'tableHeadings' => ['Name', 'Level', 'Section', 'Description']
@@ -310,6 +311,7 @@ class ResourceController extends \Core\Controller{
                                                         </div>',
                                     'firstName'     => $sessionData->firstName,
                                     'trainee_group' => $trainee_group,
+                                    'accessRight'   => $sessionData->rights,
                                     'oldEntry'      => $oldEntry,
                                     'title'         => 'Edit Trainee Group',
                                     'tableHeadings' => ['Name', 'Level', 'Section', 'Description']
@@ -338,6 +340,7 @@ class ResourceController extends \Core\Controller{
                                     'firstName'     => $sessionData->firstName,
                                     'trainee_group' => $trainee_group,
                                     'oldEntry'      => $oldEntry,
+                                    'accessRight'   => $sessionData->rights,
                                     'title'         => 'Edit Trainee Group',
                                     'tableHeadings' => ['Name', 'Level', 'Section', 'Description']
 
@@ -613,6 +616,7 @@ class ResourceController extends \Core\Controller{
                                     'firstName'     => $sessionData->firstName,
                                     'course'        => $course,
                                     'oldEntry'      => $oldEntry,
+                                    'accessRight'   => $sessionData->rights,
                                     'title'         => 'Edit Course',
                                     'tableHeadings' => ['Name', 'Code', 'Req. Period', 'Description']
 
@@ -688,6 +692,7 @@ class ResourceController extends \Core\Controller{
                 View::renderTemplate ('Resources/editCourseForm.twig.html', [
                                     'firstName'     => $sessionData->firstName,
                                     'course'        => $course,
+                                    'accessRight'   => $sessionData->rights,
                                     'oldEntry'      => $oldEntry,
                                     'title'         => 'Edit Course',
                                     'tableHeadings' => ['Name', 'Code', 'Req. Period', 'Description']
@@ -714,6 +719,7 @@ class ResourceController extends \Core\Controller{
                                                         </div>',
                                     'firstName'     => $sessionData->firstName,
                                     'course'        => $course,
+                                    'accessRight'   => $sessionData->rights,
                                     'oldEntry'      => $oldEntry,
                                     'title'         => 'Edit Course',
                                     'tableHeadings' => ['Name', 'Code', 'Req. Period', 'Description']
@@ -988,6 +994,7 @@ class ResourceController extends \Core\Controller{
                                                     </div>',
                                         'title' => 'Add New Instructor',
                                         'firstName' => $sessionData->firstName,
+                                        'accessRight'   => $sessionData->rights,
                                         'tableHeadings' => ['First name', 'Last name', 'ID Number' ,'Note'],
                                         'instructors' => $instructors
                                     ]);
@@ -1040,6 +1047,7 @@ class ResourceController extends \Core\Controller{
                                     'firstName'     => $sessionData->firstName,
                                     'instructor'    => $instructor,
                                     'oldEntry'      => $oldEntry,
+                                    'accessRight'   => $sessionData->rights,
                                     'title'         => 'Edit Instructor',
                                     'tableHeadings' => ['Name', 'Level', 'ID Number', 'Note']
 
@@ -1099,6 +1107,7 @@ class ResourceController extends \Core\Controller{
                                     'firstName'     => $sessionData->firstName,
                                     'instructor'    => $instructor,
                                     'oldEntry'      => $oldEntry,
+                                    'accessRight'   => $sessionData->rights,
                                     'title'         => 'Edit Instructor',
                                     'tableHeadings' => ['Name', 'Level', 'ID Number', 'Note']
 
@@ -1126,6 +1135,7 @@ class ResourceController extends \Core\Controller{
                                     'firstName'     => $sessionData->firstName,
                                     'instructor'    => $instructor,
                                     'oldEntry'      => $oldEntry,
+                                    'accessRight'   => $sessionData->rights,
                                     'title'         => 'Edit Course',
                                     'tableHeadings' => ['Name', 'Level', 'ID Number', 'Note']
 
@@ -1391,6 +1401,7 @@ class ResourceController extends \Core\Controller{
                                     'firstName'     => $sessionData->firstName,
                                     'room'          => $room,
                                     'oldEntry'      => $oldEntry,
+                                    'accessRight'   => $sessionData->rights,
                                     'title'         => 'Edit Room',
                                     'tableHeadings' => ['Name', 'Type', 'Location' ,'Description']
 
@@ -1480,6 +1491,7 @@ class ResourceController extends \Core\Controller{
                                     'firstName'     => $sessionData->firstName,
                                     'room'          => $room,
                                     'oldEntry'      => $oldEntry,
+                                    'accessRight'   => $sessionData->rights,
                                     'title'         => 'Edit Room',
                                     'tableHeadings' => ['Name', 'Type', 'Location' ,'Description']
 
