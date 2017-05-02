@@ -31,27 +31,30 @@
                             <small class="text-muted pull-right">{{tableSubTitle}}</small> </h4> 
                         </div>
                         <div class="panel-body">
-                            <div class="well">
-                                <form class="form center-block" name="formRecheckTimetable" action="recheckTimetable" method="post">
-                                    <div class="col-lg-6 col-md-6 col-sm-6" >
-                                        <div class="form-group form-group-sm">
-                                            <button class="btn btn-success btn-sm btn-block" name="view" type="submit">
-                                            View and set as current timetable
-                                            </button>
+                            {% if accessRight  == 1 %}
+                                <div class="well">
+                                    <form class="form center-block" name="formRecheckTimetable" action="recheckTimetable" method="post">
+                                        
+                                        <div class="col-lg-6 col-md-6 col-sm-6" >
+                                            <div class="form-group form-group-sm">
+                                                <button class="btn btn-success btn-sm btn-block" name="view" type="submit">
+                                                View and set as current timetable
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6" >
-                                        <div class="form-group form-group-sm">
-                                            <button class="btn btn-primary btn-sm btn-block" name="generate" type="submit">
-                                            Recheck This Timetable
-                                            </button>
+                                        <div class="col-lg-6 col-md-6 col-sm-6" >
+                                            <div class="form-group form-group-sm">
+                                                <button class="btn btn-primary btn-sm btn-block" name="generate" type="submit">
+                                                Recheck This Timetable
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
-                                <h1></h1>
-                            </div>
-                            <!-- class="well" -->
-                            
+                                    </form>
+                                    <h1></h1>
+                                    
+                                </div>
+                                <!-- class="well" -->
+                            {% endif %}
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
@@ -150,35 +153,36 @@
                             <div class="col-xs-11">
                                 <div class="huge text-info">Update This Class</div>
                                 <table width="100%" class="table table-hover">
-                                    
-                                        <tr>
-                                            <td>
-                                                <div class="form-group form-group-sm">
-                                                    <input type="number" min="0" max="39" step="1" class="form-control" name="timeslot" placeholder="" required>
-                                                    <span class="pull-left text-muted small"><i>Timeslot</i></span>
-                                                    
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-group form-group-sm">
-                                                    
-                                                    <input type="text" class="form-control"  name="room_type" placeholder="Room type" id="search-box-roomType">
-                                                    <input type="hidden" class="form-control" name="room_type_id" placeholder="" id="room_type_id" required>
-                                                    <span class="pull-left text-muted small"><i>Room type</i></span>
-                                                    <p></p><div id="suggesstion-box-roomType"></div>
-                                                </div>
-                                            </td>
-                                            <td colspan="2">
-                                                <div class="form-group form-group-sm">
+                                        {% if accessRight  == 1 %}
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group form-group-sm">
+                                                        <input type="number" min="0" max="39" step="1" class="form-control" name="timeslot" placeholder="" required>
+                                                        <span class="pull-left text-muted small"><i>Timeslot</i></span>
+                                                        
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group form-group-sm">
+                                                        
+                                                        <input type="text" class="form-control"  name="room_type" placeholder="Room type" id="search-box-roomType">
+                                                        <input type="hidden" class="form-control" name="room_type_id" placeholder="" id="room_type_id" required>
+                                                        <span class="pull-left text-muted small"><i>Room type</i></span>
+                                                        <p></p><div id="suggesstion-box-roomType"></div>
+                                                    </div>
+                                                </td>
+                                                <td colspan="2">
+                                                    <div class="form-group form-group-sm">
 
-                                                        <input type="text" class="form-control" name="room_id_dummy" placeholder="-Room-" id="search-box-room" value="" required disabled >
-                                                        <input type="hidden" class="form-control" name= "room_id" placeholder="" id="room_id" >
-                                                        <span class="pull-left text-muted small"><i>Room selected</i></span>
-                                                        <p></p><div id="suggesstion-box-room"></div>
+                                                            <input type="text" class="form-control" name="room_id_dummy" placeholder="-Room-" id="search-box-room" value="" required disabled >
+                                                            <input type="hidden" class="form-control" name= "room_id" placeholder="" id="room_id" >
+                                                            <span class="pull-left text-muted small"><i>Room selected</i></span>
+                                                            <p></p><div id="suggesstion-box-room"></div>
 
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
                                 </table>
                                 Available timeslot(s): <div class="edit-timeslotAvailable" name="edit-timeslotAvailable" value=""> </div>
                             </div>
@@ -190,7 +194,9 @@
                 <div class="modal-footer">
                     
                     <input type="hidden" class="modal-input edit-input" name="meeting_id" value="">
-                    <button type="submit" class="btn btn-primary pull-right">Proceed and Update</button>
+                    {% if accessRight  == 1 %}
+                        <button type="submit" class="btn btn-primary pull-right">Proceed and Update</button>
+                    {% endif %}
                     </form>
                 <div>
 
